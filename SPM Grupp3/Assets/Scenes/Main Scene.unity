@@ -162,7 +162,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 169008312}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b98eb8808e8721c48ba8787a93d64974, type: 3}
   m_Name: 
@@ -571,45 +571,29 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 5295385650673486424, guid: 09e5a24fa7db1e24883f24fe68dcddab, type: 3}
-      propertyPath: m_Enabled
-      value: 0
+    - target: {fileID: 443439550436477660, guid: 09e5a24fa7db1e24883f24fe68dcddab, type: 3}
+      propertyPath: bullet
+      value: 
+      objectReference: {fileID: 7742709337259951351, guid: 41ec29a2c996bc84ba9bd2051fb60b58, type: 3}
+    - target: {fileID: 443439550436477660, guid: 09e5a24fa7db1e24883f24fe68dcddab, type: 3}
+      propertyPath: fireRate
+      value: 8
       objectReference: {fileID: 0}
-    - target: {fileID: 5295385650673486424, guid: 09e5a24fa7db1e24883f24fe68dcddab, type: 3}
-      propertyPath: m_ActionEvents.Array.size
-      value: 7
+    - target: {fileID: 443439550436477660, guid: 09e5a24fa7db1e24883f24fe68dcddab, type: 3}
+      propertyPath: bulletSpeed
+      value: 40
       objectReference: {fileID: 0}
-    - target: {fileID: 5295385650673486424, guid: 09e5a24fa7db1e24883f24fe68dcddab, type: 3}
-      propertyPath: m_ActionEvents.Array.data[4].m_ActionId
-      value: 8a63bb77-bda8-4532-9b54-7a3c077e660c
+    - target: {fileID: 443439550436477660, guid: 09e5a24fa7db1e24883f24fe68dcddab, type: 3}
+      propertyPath: bulletSpread
+      value: 35
       objectReference: {fileID: 0}
-    - target: {fileID: 5295385650673486424, guid: 09e5a24fa7db1e24883f24fe68dcddab, type: 3}
-      propertyPath: m_ActionEvents.Array.data[5].m_ActionId
-      value: 655fdd78-4e58-4a9a-b281-6b79b35ecba5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5295385650673486424, guid: 09e5a24fa7db1e24883f24fe68dcddab, type: 3}
-      propertyPath: m_ActionEvents.Array.data[6].m_ActionId
-      value: 19ebe928-752d-4f67-933c-959855ed0ddd
-      objectReference: {fileID: 0}
-    - target: {fileID: 5295385650673486424, guid: 09e5a24fa7db1e24883f24fe68dcddab, type: 3}
-      propertyPath: m_ActionEvents.Array.data[4].m_ActionName
-      value: Builder/Back[/Mouse/backButton,/DualShock4GamepadHID/buttonEast]
-      objectReference: {fileID: 0}
-    - target: {fileID: 5295385650673486424, guid: 09e5a24fa7db1e24883f24fe68dcddab, type: 3}
-      propertyPath: m_ActionEvents.Array.data[5].m_ActionName
-      value: Builder/Builder Menu[/Keyboard/b]
-      objectReference: {fileID: 0}
-    - target: {fileID: 5295385650673486424, guid: 09e5a24fa7db1e24883f24fe68dcddab, type: 3}
-      propertyPath: m_ActionEvents.Array.data[6].m_ActionName
-      value: Builder/Move Pointer[/Mouse/position,/DualShock4GamepadHID/leftStick/up,/DualShock4GamepadHID/leftStick/down,/DualShock4GamepadHID/leftStick/left,/DualShock4GamepadHID/leftStick/right]
+    - target: {fileID: 443439550436477660, guid: 09e5a24fa7db1e24883f24fe68dcddab, type: 3}
+      propertyPath: bulletSpreadMaxRadius
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 7281666120820181771, guid: 09e5a24fa7db1e24883f24fe68dcddab, type: 3}
       propertyPath: m_Name
       value: PlayerTank Variant
-      objectReference: {fileID: 0}
-    - target: {fileID: 7395931260379148723, guid: 09e5a24fa7db1e24883f24fe68dcddab, type: 3}
-      propertyPath: m_Enabled
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7946175401524171185, guid: 09e5a24fa7db1e24883f24fe68dcddab, type: 3}
       propertyPath: m_RootOrder
@@ -654,14 +638,6 @@ PrefabInstance:
     - target: {fileID: 7946175401524171185, guid: 09e5a24fa7db1e24883f24fe68dcddab, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8126564965902738823, guid: 09e5a24fa7db1e24883f24fe68dcddab, type: 3}
-      propertyPath: m_Constraints
-      value: 80
-      objectReference: {fileID: 0}
-    - target: {fileID: 8126564965902738823, guid: 09e5a24fa7db1e24883f24fe68dcddab, type: 3}
-      propertyPath: m_Interpolate
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 09e5a24fa7db1e24883f24fe68dcddab, type: 3}

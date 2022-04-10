@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class BuilderScript : MonoBehaviour
 {
@@ -10,7 +11,6 @@ public class BuilderScript : MonoBehaviour
     [SerializeField] private LayerMask gameBoardMask;
     [SerializeField] private LayerMask towerMask;
     [SerializeField] private GameObject tower;
-
 
     // Update is called once per frame
     void Update()
