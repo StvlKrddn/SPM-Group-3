@@ -7,6 +7,7 @@ public class BulletBehavior : MonoBehaviour
     private float bulletSpeed;
     private float range;
     [SerializeField] private TankController tank;
+    [SerializeField] private float bulletDamage;
     
     private Vector3 originalPosition;
 
@@ -30,4 +31,6 @@ public class BulletBehavior : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    public float BulletDamage { get { return bulletDamage; } set { bulletDamage = value; } }
 }
