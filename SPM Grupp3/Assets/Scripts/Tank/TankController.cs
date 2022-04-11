@@ -5,8 +5,6 @@ using UnityEngine.InputSystem;
 
 public class TankController : MonoBehaviour
 {
-    // NOTE(August): OM DEN RÖR PÅ SIG KONSTIGT KAN DET BERO PÅ ATT ROTATIONEN ÄR LÅST PÅ RIGIDBODY
-
     [Header("Movement properties")]
     [SerializeField] private float movementSpeed = 5;
 
@@ -27,53 +25,73 @@ public class TankController : MonoBehaviour
     private Rigidbody rb;
     private PlayerInput playerInput;
     private Transform bulletSpawner;
+    private Transform turretObject;
 
     // Caching input actions
-    private InputAction moveAction;
+    //private InputAction moveAction;
     private InputAction moveGamepadAction;
+    private InputAction aimAction;
     private InputAction boostAction;
     private InputAction shootAction;
 
-    private float turnSpeed;
-    private Vector2 movementInputVector;
     private Vector2 gamepadInputVector;
+    private Vector3 aimInputVector;
+    private float turnSpeed;
+    private float aimSpeed;
     private bool allowedToShoot = true;
     private bool allowedToBoost = true;
     private float boostTimer;
     private float speedBeforeBoost;
+    private Matrix4x4 isoMatrix;
+
+    // Keyboard movement
+    //private Vector2 movementInputVector;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
 
-        bulletSpawner = transform.Find("BarrelEnd");
+        turretObject = transform.GetChild(0);
+
+        bulletSpawner = turretObject.Find("BarrelEnd");
 
         InitializeInputSystem();
 
-        turnSpeed = movementSpeed / 1.5f;
+        aimSpeed = movementSpeed * 5;
 
         speedBeforeBoost = movementSpeed;
 
         bulletSpread = Mathf.Clamp(bulletSpread, 0, 60);
+
     }
 
     void InitializeInputSystem()
     {
         playerInput = GetComponent<PlayerInput>();
-        moveAction = playerInput.actions["Move"];
-        moveGamepadAction = playerInput.actions["Move Gamepad"];
+
+        moveGamepadAction = playerInput.actions["Move"];
+        aimAction = playerInput.actions["Aim"];
         boostAction = playerInput.actions["Boost"];
         shootAction = playerInput.actions["Shoot"];
+
+        /* Eplanation of isometric movement can be found here: https://youtu.be/8ZxVBCvJDWk */
+
+        //Create isometric matrix
+        isoMatrix = Matrix4x4.Rotate(Quaternion.Euler(0, 45, 0));
+
+        // Keyboard movement
+        //moveAction = playerInput.actions["Move (OLD)"];
+
     }
 
     void Update()
     {
-        movementInputVector = moveAction.ReadValue<Vector2>();
+        //movementInputVector = moveAction.ReadValue<Vector2>();
         gamepadInputVector = moveGamepadAction.ReadValue<Vector2>();
-        
-        
-        
+        aimInputVector = aimAction.ReadValue<Vector2>();
+
         Boost();
+        RotateTurret();
 
         if (shootAction.IsPressed() && allowedToShoot)
         {
@@ -84,17 +102,21 @@ public class TankController : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (movementInputVector.magnitude > 0f)
+        Move();
+        // Keyboard movement
+        /*if (movementInputVector.magnitude > 0f)
         {
             Move();
         }
         else if (gamepadInputVector.magnitude > 0f)
         {
             GamepadMove();
-        }
+        }*/
     }
 
-    void Move()
+
+    // Keyboard movement
+    /*void Move()
     {
         // Moving back and forth
         Vector3 movement = transform.forward * movementInputVector.y * movementSpeed * Time.deltaTime;
@@ -104,25 +126,39 @@ public class TankController : MonoBehaviour
         Vector3 rotationVector = new Vector3(0, movementInputVector.x * turnSpeed * Time.deltaTime * 100f, 0);
         Quaternion rotation = Quaternion.Euler(rotationVector);
         rb.MoveRotation(rb.rotation * rotation);
-    }
+    }*/
 
-    void GamepadMove()
+    void Move()
     {
         // Reform the input vector to the right plane
         Vector3 movementVector = new Vector3(gamepadInputVector.x, 0, gamepadInputVector.y);
 
-        /* Eplanation of isometric movement can be found here: https://youtu.be/8ZxVBCvJDWk */
-
-        // Create a matrix
-        Matrix4x4 isoMatrix = Matrix4x4.Rotate(Quaternion.Euler(0, 45, 0));
-
-        // Skewer the input vector 45 degrees to accomodate for the isometric perspective
-        Vector3 skewedVector = isoMatrix.MultiplyPoint3x4(movementVector);
+        Vector3 skewedVector = TranslateToIsometric(movementVector);
         
-        Vector3 movement = skewedVector * MovementSpeed * Time.deltaTime;
+        Vector3 movement = skewedVector * movementSpeed * Time.deltaTime;
 
         rb.MovePosition(transform.position + movement);
-        transform.LookAt(transform.position + skewedVector);
+
+        if (moveGamepadAction.IsPressed())
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(skewedVector), Time.deltaTime * movementSpeed);
+        }
+
+        //transform.LookAt(transform.position + skewedVector);
+    }
+
+    void RotateTurret()
+    {
+        Vector3 aimVector = new Vector3(aimInputVector.x, 0, aimInputVector.y);
+
+        Vector3 skewedVector = TranslateToIsometric(aimVector);
+
+        if (aimAction.IsPressed())
+        {
+            turretObject.rotation = Quaternion.Slerp(turretObject.rotation, Quaternion.LookRotation(skewedVector), Time.deltaTime * aimSpeed);
+        }
+        
+        //turretObject.LookAt(turretObject.position + skewedVector);
     }
 
     IEnumerator Shoot()
@@ -139,15 +175,15 @@ public class TankController : MonoBehaviour
         
         GameObject spawnedBullet = Instantiate(
             original: bullet, 
-            position: bulletSpawner.transform.position, 
-            rotation: transform.rotation * spreadDirection
+            position: bulletSpawner.position, 
+            rotation: bulletSpawner.rotation * spreadDirection
             );
     }
 
     Quaternion ComputeBulletSpread()
     {
         // Produce a random rotation within a certain radius
-        Vector3 randomDirection = transform.forward + Random.insideUnitSphere * bulletSpread;
+        Vector3 randomDirection = bulletSpawner.forward + Random.insideUnitSphere * bulletSpread;
 
         // Prevent too much spread up and down
         randomDirection = new Vector3(Mathf.Clamp01(randomDirection.x), randomDirection.y, randomDirection.z);
@@ -185,6 +221,12 @@ public class TankController : MonoBehaviour
         allowedToBoost = false;
         yield return new WaitForSeconds(boostCooldownTime);
         allowedToBoost = true;
+    }
+
+    Vector3 TranslateToIsometric(Vector3 vector)
+    {
+        // Skewer the input vector 45 degrees to accomodate for the isometric perspective
+        return isoMatrix.MultiplyPoint3x4(vector);
     }
 
     public float MovementSpeed 
