@@ -3,13 +3,13 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
-    public GameObject tank1;
-    public GameObject tank2;
+    [SerializeField] private float speed = 10f;
+    [SerializeField] private float hp = 100f;
+    private GameObject tank1;
+    private GameObject tank2;
     private GameManager gM;
-    private float speed = 10;
     private Transform target;
     private int currIndex = 0;
-    private float hp = 1;
     private int damage = 1;
     private int moneyDrop = 1;
     private float shotTimer = 0f;
@@ -95,6 +95,20 @@ public class EnemyController : MonoBehaviour
             }
         }
 	}
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("PlayerShots"))
+        {
+            print("Enemy hit!");
+            BulletBehavior bullet = other.gameObject.GetComponent<BulletBehavior>();
+            hp -= bullet.BulletDamage;
+            if (hp < 0)
+            {
+                EnemyDeath();
+            }
+        }
+    }
 
     private void EnemyDeath()
     {
