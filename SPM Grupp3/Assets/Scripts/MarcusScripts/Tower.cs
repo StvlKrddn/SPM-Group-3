@@ -128,10 +128,7 @@ public class Tower : MonoBehaviour
         {
             GameObject towerHit = GetTower();
 
-            print(towerHit.transform.parent);
-            print(tower);
-
-            if (tower == towerHit.transform.parent)
+            if (towerHit != null && tower == towerHit.transform.parent)
             {
                 if (radius.activeSelf)
                 {

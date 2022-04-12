@@ -100,13 +100,13 @@ public class EnemyController : MonoBehaviour
     {
         if (other.CompareTag("PlayerShots"))
         {
-            print("Enemy hit!");
             BulletBehavior bullet = other.gameObject.GetComponent<BulletBehavior>();
             hp -= bullet.BulletDamage;
             if (hp < 0)
             {
                 EnemyDeath();
             }
+            Destroy(bullet);
         }
     }
 
