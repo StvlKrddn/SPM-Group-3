@@ -238,7 +238,7 @@ public class TankController : MonoBehaviour
         get { return movementSpeed; } 
         
         // Any time movement speed is altered from another script, it updates the speedBeforeBoost value to reflect the new speed
-        set { movementSpeed = value; speedBeforeBoost = movementSpeed; } 
+        set { movementSpeed = value; speedBeforeBoost = value; } 
     }
     public float FireRate { get { return fireRate; } set { fireRate = value; } }
     public float BulletSpread { get { return bulletSpread; } set { bulletSpread = value; } }
