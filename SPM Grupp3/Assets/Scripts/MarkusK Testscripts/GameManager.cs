@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,17 +13,28 @@ public class GameManager : MonoBehaviour
     public Transform regularEnemy;
     public Transform spawnPosition;
 
+    public Text waveUI;
+    public Text liveUI;
+    public Text moneyUI;
+    public Text materialUI;
+
     public bool waveOff = false;
     public float timer = 0;
     public float timeBetweenWave = 3f;
     public float timeBetweenEnemy = 0.5f;
 
-    // Update is called once per frame
-    void Update()
+	private void Start()
+	{
+        UpdateResourcesUI();
+	}
+
+	// Update is called once per frame
+	void Update()
     {
         if (timer >= timeBetweenWave)
         {
             StartCoroutine(SpawnWave());
+            UpdateResourcesUI();
             timer = 0;
             waveOff = true;
         }
@@ -72,6 +84,7 @@ public class GameManager : MonoBehaviour
     public void TakeDamage(int damage)
     {
         baseHealth -= damage;
+        UpdateResourcesUI();
         if (baseHealth <= 0)
         {
             Defeat();
@@ -81,11 +94,13 @@ public class GameManager : MonoBehaviour
     public void AddMoney(int addMoney)
     {
         money += addMoney;
+        UpdateResourcesUI();
     }
 
     public void AddMaterial(int addMaterial)
     {
         money += addMaterial;
+        UpdateResourcesUI();
     }
 
     public bool spendResources(int moneySpent, int materialSpent)
@@ -94,12 +109,20 @@ public class GameManager : MonoBehaviour
         {
             money -= moneySpent;
             material -= materialSpent;
+            UpdateResourcesUI();
             return true;
         }
         //Show Error
         return false;
     }
 
+    private void UpdateResourcesUI()
+    {
+        moneyUI.text = "Money: " + money;
+        materialUI.text = "Material: " + material;
+        waveUI.text = "Current Wave: " + currentWave;
+        liveUI.text = "Lives: " + baseHealth; 
+    }
 
     private void Victory()
     {
