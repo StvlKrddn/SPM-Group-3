@@ -2,11 +2,20 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
+    private GameManager gM;
     private float speed = 10;
     private Transform target;
     private int currIndex = 0;
+    private int damage = 1;
+    private int moneyDrop = 1;
 
     // Start is called before the first frame update
+
+    private void Awake()
+    {
+        gM = FindObjectOfType<GameManager>();
+    }
+
     void Start()
     {
         target = Waypoints.wayPoints[currIndex];
@@ -33,17 +42,23 @@ public class EnemyController : MonoBehaviour
     {
         if (Waypoints.wayPoints.Length - 1 <= currIndex)
         {
-            currIndex = -1;
-            //EnemyDeath();
-            //return;
+            EnemyDeathBase();
+            return;
         }
         currIndex++;
         target = Waypoints.wayPoints[currIndex];
     }
 
+    private void EnemyDeathBase()
+    {
+        gM.TakeDamage(damage);
+        Destroy(gameObject);
+    }
+
     private void EnemyDeath()
     {
-        //Drop material
         Destroy(gameObject);
+        //Get moneyDrop
+        //Drop material
     }
 }
