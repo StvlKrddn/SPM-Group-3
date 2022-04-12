@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public class TankController : MonoBehaviour
 {
     [Header("Movement properties")]
-    [SerializeField] private float movementSpeed = 5;
+    [SerializeField] private float movementSpeed = 5f;
 
     [Header("Shooting properties")]
     [SerializeField] private float fireRate = 0.2f;
@@ -41,7 +41,11 @@ public class TankController : MonoBehaviour
     private bool allowedToShoot = true;
     private bool allowedToBoost = true;
     private float boostTimer;
+    private float boostAccelerationTimeMultiplier = 8f;
     private float speedBeforeBoost;
+    private float bulletSpreadBeforeBoost;
+    private float bulletSpreadDuringBoostMultiplier = 2f;
+    private float bulletSpreadIncreaseMultiplier = 10f;
     private Matrix4x4 isoMatrix;
 
     // Keyboard movement
@@ -60,9 +64,9 @@ public class TankController : MonoBehaviour
         aimSpeed = movementSpeed * 5;
 
         speedBeforeBoost = movementSpeed;
+        bulletSpreadBeforeBoost = bulletSpread;
 
         bulletSpread = Mathf.Clamp(bulletSpread, 0, 60);
-
     }
 
     void InitializeInputSystem()
@@ -143,8 +147,6 @@ public class TankController : MonoBehaviour
         {
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(skewedVector), Time.deltaTime * movementSpeed);
         }
-
-        //transform.LookAt(transform.position + skewedVector);
     }
 
     void RotateTurret()
@@ -157,8 +159,6 @@ public class TankController : MonoBehaviour
         {
             turretObject.rotation = Quaternion.Slerp(turretObject.rotation, Quaternion.LookRotation(skewedVector), Time.deltaTime * aimSpeed);
         }
-        
-        //turretObject.LookAt(turretObject.position + skewedVector);
     }
 
     IEnumerator Shoot()
@@ -207,12 +207,16 @@ public class TankController : MonoBehaviour
             boostTimer -= Time.deltaTime;
 
             // Multiply movement speed
-            movementSpeed = speedBeforeBoost * boostSpeedMultiplier;
+            movementSpeed = Mathf.Lerp(movementSpeed, speedBeforeBoost * boostSpeedMultiplier, Time.deltaTime * boostAccelerationTimeMultiplier);
+
+            // Increase bullet spread during boost
+            bulletSpread = Mathf.Lerp(bulletSpread, bulletSpreadBeforeBoost * bulletSpreadDuringBoostMultiplier, Time.deltaTime * bulletSpreadIncreaseMultiplier);
         }
         else
         {
-            // Reset movement speed
-            movementSpeed = speedBeforeBoost;
+            // Reset movement speed and bullet spread
+            movementSpeed = Mathf.Lerp(movementSpeed, speedBeforeBoost, Time.deltaTime * boostAccelerationTimeMultiplier);
+            bulletSpread = Mathf.Lerp(bulletSpread, bulletSpreadBeforeBoost, Time.deltaTime * bulletSpreadIncreaseMultiplier);
         }
     }
 
