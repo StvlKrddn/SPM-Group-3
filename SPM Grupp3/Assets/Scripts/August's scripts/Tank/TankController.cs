@@ -10,9 +10,12 @@ public class TankController : MonoBehaviour
     [Header("Movement properties")]
     [SerializeField] private float movementSpeed = 6f;
 
+    [Header("Health")]
+    [SerializeField] private float health = 50f;
+
     [Header("Shooting properties")]
     [SerializeField] private float fireRate = 0.2f;
-    [SerializeField] private float bulletSpread = 50f;
+    [SerializeField] private float bulletSpread = 35f;
     [SerializeField] private float bulletRange = 20f;
     [SerializeField] private float bulletSpeed = 35f;
 
@@ -21,11 +24,10 @@ public class TankController : MonoBehaviour
     [SerializeField] private float boostDuration = 1f;
     [SerializeField] private float boostCooldownTime = 5f;
 
-    [Header("Bullet prefab: ")]
+    [Header("Random components: ")]
     [SerializeField] private GameObject bullet;
-
-    [Header("Input Manager: ")]
-    [SerializeField] private PlayerInputManager inputManager;
+    [SerializeField] private Transform garage;
+    [SerializeField] private GameManager gameManager;
 
     // Components
     private Rigidbody rb;
@@ -46,6 +48,7 @@ public class TankController : MonoBehaviour
     private float aimSpeed;
     private bool allowedToShoot = true;
     private bool allowedToBoost = true;
+    private bool allowedToMove = true;
     private float boostTimer;
     private float boostAccelerationTimeMultiplier = 8f;
     private float speedBeforeBoost;
@@ -85,6 +88,8 @@ public class TankController : MonoBehaviour
         bulletSpreadBeforeBoost = bulletSpread;
 
         bulletSpread = Mathf.Clamp(bulletSpread, 0, 60);
+
+        gameManager.OnNewWave += OnNewWave;
 
         //Create isometric matrix
         isoMatrix = Matrix4x4.Rotate(Quaternion.Euler(0, 45, 0));
@@ -222,5 +227,31 @@ public class TankController : MonoBehaviour
     {
         // Skewer the input vector 45 degrees to accomodate for the isometric perspective
         return isoMatrix.MultiplyPoint3x4(vector);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("EnemyBullet"))
+        {
+            EnemyBullet enemyBullet = other.gameObject.GetComponent<EnemyBullet>();
+            health -= enemyBullet.damage;
+            if (health < 0)
+            {
+                print("Tank destroyed!");
+                MoveToGarage();
+            }
+            Destroy(enemyBullet);
+        }
+    }
+
+    void MoveToGarage()
+    {
+        transform.position = garage.position;
+        allowedToMove = false;
+    }
+
+    void OnNewWave()
+    {
+        allowedToMove = true;
     }
 }

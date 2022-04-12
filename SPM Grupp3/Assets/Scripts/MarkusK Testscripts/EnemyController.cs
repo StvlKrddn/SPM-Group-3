@@ -106,7 +106,6 @@ public class EnemyController : MonoBehaviour
             {
                 EnemyDeath();
             }
-            Destroy(bullet);
         }
     }
 

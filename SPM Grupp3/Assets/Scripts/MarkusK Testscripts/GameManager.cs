@@ -1,14 +1,15 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using System;
 
 public class GameManager : MonoBehaviour
 {
     public int baseHealth = 100; // Change basestats of our game
     public int material = 0;
     public int money = 350;
-    public int currentWave = 0;    
-    public int victoryWave = 10;
+    public int currentWave = 0;
+    public int victoryWave = 5;
 
     public Transform regularEnemy;
     public Transform spawnPosition;
@@ -23,18 +24,19 @@ public class GameManager : MonoBehaviour
     public float timeBetweenWave = 3f;
     public float timeBetweenEnemy = 0.5f;
 
-	private void Start()
-	{
-        UpdateResourcesUI();
-	}
+    public event Action OnNewWave;
 
-	// Update is called once per frame
-	void Update()
+    private void Start()
+    {
+        UpdateResourcesUI();
+    }
+
+    // Update is called once per frame
+    void Update()
     {
         if (timer >= timeBetweenWave)
         {
             StartCoroutine(SpawnWave());
-            UpdateResourcesUI();
             timer = 0;
             waveOff = true;
         }
@@ -45,8 +47,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private IEnumerator SpawnWave ()
+    private IEnumerator SpawnWave()
     {
+        OnNewWave?.Invoke();
         currentWave++;
         if (currentWave > victoryWave) //Victory condition
         {
@@ -58,14 +61,26 @@ public class GameManager : MonoBehaviour
         switch (currentWave) //Indivdually controls each lane spawns and length
         {
             case 1:
-            waveLength = 5;
-            StartCoroutine(SpawnEnemies(regularEnemy, 3));
-            break;
+                waveLength = 5;
+                StartCoroutine(SpawnEnemies(regularEnemy, 3));
+                break;
 
             case 2:
-            waveLength = 5;
-            StartCoroutine(SpawnEnemies(regularEnemy, 3));
-            break;
+                waveLength = 5;
+                StartCoroutine(SpawnEnemies(regularEnemy, 3));
+                break;
+            case 3:
+                waveLength = 10;
+                StartCoroutine(SpawnEnemies(regularEnemy, 5));
+                break;
+            case 4:
+                waveLength = 10;
+                StartCoroutine(SpawnEnemies(regularEnemy, 5));
+                break;
+            case 5:
+                waveLength = 12;
+                StartCoroutine(SpawnEnemies(regularEnemy, 8));
+                break;
         }
         yield return new WaitForSeconds(waveLength);
         waveOff = false;
@@ -84,22 +99,28 @@ public class GameManager : MonoBehaviour
     public void TakeDamage(int damage)
     {
         baseHealth -= damage;
-        UpdateResourcesUI();
         if (baseHealth <= 0)
         {
             Defeat();
         }
     }
 
+    private void UpdateResourcesUI()
+    {
+        moneyUI.text = "Money: " + money;
+        materialUI.text = "Material: " + material;
+        waveUI.text = "Current Wave: " + currentWave;
+        liveUI.text = "Lives: " + baseHealth;
+    }
+
     public void AddMoney(int addMoney)
     {
         money += addMoney;
-        UpdateResourcesUI();
     }
 
     public void AddMaterial(int addMaterial)
     {
-        money += addMaterial;
+        material += addMaterial;
         UpdateResourcesUI();
     }
 
@@ -109,20 +130,12 @@ public class GameManager : MonoBehaviour
         {
             money -= moneySpent;
             material -= materialSpent;
-            UpdateResourcesUI();
             return true;
         }
         //Show Error
         return false;
     }
 
-    private void UpdateResourcesUI()
-    {
-        moneyUI.text = "Money: " + money;
-        materialUI.text = "Material: " + material;
-        waveUI.text = "Current Wave: " + currentWave;
-        liveUI.text = "Lives: " + baseHealth; 
-    }
 
     private void Victory()
     {
@@ -133,4 +146,5 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Defeat");
     }
+
 }

@@ -7,13 +7,13 @@ public class MaterialBehavior : MonoBehaviour
 {
     [SerializeField] private float bobbingSpeed = 5f;
     [SerializeField] private float bobbingStrength = 0.2f;
+    private GameManager gameManager;
 
     private Vector3 originalPosition;
 
     void Start()
     {
-        
-
+        gameManager = FindObjectOfType<GameManager>();
         originalPosition = transform.position;
     }
 
@@ -27,7 +27,7 @@ public class MaterialBehavior : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            GameManager_AUGUST.Materials++;
+            gameManager.AddMaterial(1);
             Destroy(gameObject);
         }
     }
