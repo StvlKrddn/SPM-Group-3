@@ -15,14 +15,14 @@ public class BuilderScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        /*if (Input.GetMouseButtonDown(0))
         {
             SpawnTower();
         }
         if (Input.GetMouseButton(1))
         {
             DeleteTower();
-        }
+        }*/
     }
 
     void DeleteTower()
