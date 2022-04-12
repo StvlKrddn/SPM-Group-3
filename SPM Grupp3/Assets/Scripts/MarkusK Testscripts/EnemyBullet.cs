@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyBullet : MonoBehaviour
 {
-    private float speed = 7.5f;
+    private float speed = 10f;
     private Transform target;
     public GameObject tank1;
     public GameObject tank2;
