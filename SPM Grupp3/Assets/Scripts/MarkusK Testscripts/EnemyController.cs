@@ -84,6 +84,7 @@ public class EnemyController : MonoBehaviour
         Destroy(gameObject);
     }
 
+    /* if needed
 	private void OnTriggerEnter(Collider other)
 	{
         if (other.tag == "tankbullet") //change to tankbullet and turretbullets
@@ -95,6 +96,7 @@ public class EnemyController : MonoBehaviour
             }
         }
 	}
+    */
 
     private void EnemyDeath()
     {

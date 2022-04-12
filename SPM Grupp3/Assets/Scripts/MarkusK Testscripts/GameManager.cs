@@ -3,7 +3,7 @@ using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
-    public int baseHealth = 100;
+    public int baseHealth = 100; // Change basestats of our game
     public int material = 0;
     public int money = 350;
     public int currentWave = 0;    
@@ -47,12 +47,12 @@ public class GameManager : MonoBehaviour
         {
             case 1:
             waveLength = 5;
-            StartCoroutine(SpawnEnemies(regularEnemy, 1));
+            StartCoroutine(SpawnEnemies(regularEnemy, 3));
             break;
 
             case 2:
             waveLength = 5;
-            StartCoroutine(SpawnEnemies(regularEnemy, 0));
+            StartCoroutine(SpawnEnemies(regularEnemy, 3));
             break;
         }
         yield return new WaitForSeconds(waveLength);
