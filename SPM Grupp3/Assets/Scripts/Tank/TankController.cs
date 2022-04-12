@@ -5,6 +5,8 @@ using UnityEngine.InputSystem;
 
 public class TankController : MonoBehaviour
 {
+
+    // Inspector variables
     [Header("Movement properties")]
     [SerializeField] private float movementSpeed = 5f;
 
@@ -22,21 +24,25 @@ public class TankController : MonoBehaviour
     [Header("Bullet prefab: ")]
     [SerializeField] private GameObject bullet;
 
+    [Header("Input Manager: ")]
+    [SerializeField] private PlayerInputManager inputManager;
+
+    // Components
     private Rigidbody rb;
     private PlayerInput playerInput;
     private Transform bulletSpawner;
     private Transform turretObject;
 
     // Caching input actions
-    //private InputAction moveAction;
     private InputAction moveGamepadAction;
     private InputAction aimAction;
     private InputAction boostAction;
     private InputAction shootAction;
 
+    // Private variables
+    private float playerID;
     private Vector2 gamepadInputVector;
     private Vector3 aimInputVector;
-    private float turnSpeed;
     private float aimSpeed;
     private bool allowedToShoot = true;
     private bool allowedToBoost = true;
@@ -48,18 +54,30 @@ public class TankController : MonoBehaviour
     private float bulletSpreadIncreaseMultiplier = 10f;
     private Matrix4x4 isoMatrix;
 
-    // Keyboard movement
-    //private Vector2 movementInputVector;
+    // Getters and Setters
+    public float MovementSpeed
+    {
+        get { return movementSpeed; }
+
+        // Any time movement speed is altered from another script, it updates the speedBeforeBoost value to reflect the new speed
+        set { movementSpeed = value; speedBeforeBoost = value; }
+    }
+    public float FireRate { get { return fireRate; } set { fireRate = value; } }
+    public float BulletSpread { get { return bulletSpread; } set { bulletSpread = value; } }
+    public float BulletRange { get { return bulletRange; } set { bulletRange = value; } }
+    public float BulletSpeed { get { return bulletSpeed; } set { bulletSpeed = value; } }
+    public float BoostSpeedMultiplier { get { return boostSpeedMultiplier; } set { boostSpeedMultiplier = value; } }
+    public float BoostDuration { get { return boostDuration; } set { boostDuration = value; } }
+    public float BoostCooldownTime { get { return boostCooldownTime; } set { boostCooldownTime = value; } }
 
     void Awake()
     {
+        InitializeInputSystem();
+
         rb = GetComponent<Rigidbody>();
 
         turretObject = transform.GetChild(0);
-
         bulletSpawner = turretObject.Find("BarrelEnd");
-
-        InitializeInputSystem();
 
         aimSpeed = movementSpeed * 5;
 
@@ -67,30 +85,26 @@ public class TankController : MonoBehaviour
         bulletSpreadBeforeBoost = bulletSpread;
 
         bulletSpread = Mathf.Clamp(bulletSpread, 0, 60);
+
+        //Create isometric matrix
+        isoMatrix = Matrix4x4.Rotate(Quaternion.Euler(0, 45, 0));
+        /* Eplanation of isometric translation can be found here: https://youtu.be/8ZxVBCvJDWk */
     }
 
     void InitializeInputSystem()
     {
         playerInput = GetComponent<PlayerInput>();
 
+        playerID = playerInput.playerIndex;
+
         moveGamepadAction = playerInput.actions["Move"];
         aimAction = playerInput.actions["Aim"];
         boostAction = playerInput.actions["Boost"];
         shootAction = playerInput.actions["Shoot"];
-
-        /* Eplanation of isometric movement can be found here: https://youtu.be/8ZxVBCvJDWk */
-
-        //Create isometric matrix
-        isoMatrix = Matrix4x4.Rotate(Quaternion.Euler(0, 45, 0));
-
-        // Keyboard movement
-        //moveAction = playerInput.actions["Move (OLD)"];
-
     }
 
     void Update()
     {
-        //movementInputVector = moveAction.ReadValue<Vector2>();
         gamepadInputVector = moveGamepadAction.ReadValue<Vector2>();
         aimInputVector = aimAction.ReadValue<Vector2>();
 
@@ -107,30 +121,7 @@ public class TankController : MonoBehaviour
     void FixedUpdate()
     {
         Move();
-        // Keyboard movement
-        /*if (movementInputVector.magnitude > 0f)
-        {
-            Move();
-        }
-        else if (gamepadInputVector.magnitude > 0f)
-        {
-            GamepadMove();
-        }*/
     }
-
-
-    // Keyboard movement
-    /*void Move()
-    {
-        // Moving back and forth
-        Vector3 movement = transform.forward * movementInputVector.y * movementSpeed * Time.deltaTime;
-        rb.MovePosition(transform.position + movement);
-
-        // Rotating
-        Vector3 rotationVector = new Vector3(0, movementInputVector.x * turnSpeed * Time.deltaTime * 100f, 0);
-        Quaternion rotation = Quaternion.Euler(rotationVector);
-        rb.MoveRotation(rb.rotation * rotation);
-    }*/
 
     void Move()
     {
@@ -232,20 +223,4 @@ public class TankController : MonoBehaviour
         // Skewer the input vector 45 degrees to accomodate for the isometric perspective
         return isoMatrix.MultiplyPoint3x4(vector);
     }
-
-    public float MovementSpeed 
-    {
-        get { return movementSpeed; } 
-        
-        // Any time movement speed is altered from another script, it updates the speedBeforeBoost value to reflect the new speed
-        set { movementSpeed = value; speedBeforeBoost = value; } 
-    }
-    public float FireRate { get { return fireRate; } set { fireRate = value; } }
-    public float BulletSpread { get { return bulletSpread; } set { bulletSpread = value; } }
-    public float BulletRange { get { return bulletRange; } set { bulletRange = value; } }
-    public float BulletSpeed { get { return bulletSpeed; } set { bulletSpeed = value; } }
-    public float BoostSpeedMultiplier { get { return boostSpeedMultiplier; } set { boostSpeedMultiplier = value; } }
-    public float BoostDuration { get { return boostDuration; } set { boostDuration = value; } }
-    public float BoostCooldownTime { get { return boostCooldownTime; } set { boostCooldownTime = value; } }
-
 }

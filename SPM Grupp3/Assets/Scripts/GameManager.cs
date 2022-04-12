@@ -27,6 +27,6 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        print(materials);
+        //print(materials);
     }
 }
