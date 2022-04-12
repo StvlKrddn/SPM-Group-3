@@ -8,7 +8,7 @@ public class TowerPlacement : MonoBehaviour
     public GameObject UI;
     public GameObject position;
     private GameObject placedTower;
-    public GameObject placementClicked;
+/*    public GameObject placementClicked;*/
     public Color hoverColor;
     private Renderer rend;
     private Color startColor;
@@ -38,7 +38,7 @@ public class TowerPlacement : MonoBehaviour
             return;
         }
 
-        if (buildManager.GetTowerToBuild() == null)
+        if (buildManager.TowerToBuild == null)
         {
             return;
         }
@@ -59,6 +59,8 @@ public class TowerPlacement : MonoBehaviour
         }*/
     }
 
+
+
     private void OnMouseEnter()
     {
         if (placedTower == null)
@@ -77,7 +79,7 @@ public class TowerPlacement : MonoBehaviour
 
     public void InstantiateTower()
     {
-        GameObject towerToBuild = buildManager.GetTowerToBuild();
+        GameObject towerToBuild = buildManager.TowerToBuild;
         placedTower = Instantiate(towerToBuild, position.transform.position, position.transform.rotation);        
         /*UI.SetActive(false);*/
     }

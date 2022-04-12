@@ -16,14 +16,14 @@ public class Shop : MonoBehaviour
     public void PurchaseCannonTower()
     {
         Debug.Log("Cannon Tower");
-        buildManager.SetTowerToBuild(buildManager.cannonTowerPrefab);
+        buildManager.TowerToBuild = buildManager.cannonTowerPrefab;
         /*towerPlacement.InstantiateTower();*/
     }
 
     public void PurchaseMissileTower()
     {
         Debug.Log("Missile Tower");
-        buildManager.SetTowerToBuild(buildManager.missileTowerPrefab);
+        buildManager.TowerToBuild = buildManager.missileTowerPrefab;
         /*towerPlacement.InstantiateTower();*/
     }
 }

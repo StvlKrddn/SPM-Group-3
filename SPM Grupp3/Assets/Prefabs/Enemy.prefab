@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5940178821907547975}
   m_Layer: 7
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -109,8 +109,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 57547971186a87d42976304bb1cc566f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tank1: {fileID: 0}
-  tank2: {fileID: 0}
+  speed: 10
+  hp: 100
   bullet: {fileID: 7304705245191953964, guid: 8a28b8f1e0bbf7849953dbe29c51590a, type: 3}
   material: {fileID: 2880112694638519676, guid: ad4ab04936b9afa45a48c743a72df55b, type: 3}
 --- !u!1 &5940178823432169950

@@ -18,6 +18,7 @@ public class Tower : MonoBehaviour
     public Transform firePoint;
     public GameObject radius;
     public GameObject tower;
+    public LayerMask towers;
     
     private Transform target;
 
@@ -68,7 +69,8 @@ public class Tower : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        /*radius.SetActive(false);*/
+        radius.transform.localScale = new Vector3(range * 2f,0.01f,range * 2f);
+        radius.SetActive(false);
 
         InvokeRepeating("UpdateTarget", 0f, 0.5f);
     }
@@ -85,18 +87,22 @@ public class Tower : MonoBehaviour
         }
     }
 
-    private void OnMouseDown()
+
+
+    RaycastHit CastRayFromCamera(LayerMask layerMask)
     {
-        Debug.Log("Does this run?");
-        if (radius.activeSelf)
-        {
-            radius.SetActive(false);
-        }
-        else
-        {
-            radius.SetActive(true);
-        }
+        // Get mouse position
+        Vector3 mousePosition = Input.mousePosition;
+
+        // Create a ray from camera to mouse position
+        Ray cameraRay = Camera.main.ScreenPointToRay(mousePosition);
+
+        // Raycast along the ray and return the hit point
+        Physics.Raycast(ray: cameraRay, hitInfo: out RaycastHit hit, maxDistance: Mathf.Infinity, layerMask: layerMask);
+
+        return hit;
     }
+
 
     // Update is called once per frame
     void Update()
@@ -117,5 +123,33 @@ public class Tower : MonoBehaviour
             }
             fireCountdown -= Time.deltaTime;           
         }
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            GameObject towerHit = GetTower();
+
+            print(towerHit.transform.parent);
+            print(tower);
+
+            if (tower == towerHit.transform.parent)
+            {
+                if (radius.activeSelf)
+                {
+                    radius.SetActive(true);
+                }
+                else
+                {
+                    radius.SetActive(false);
+                }
+            }
+        }
+    }
+
+    GameObject GetTower()
+    {
+        RaycastHit hit = CastRayFromCamera(towers);
+
+        // If a tower was hit, return the tower
+        return hit.collider != null ? hit.collider.gameObject : null;
     }
 }

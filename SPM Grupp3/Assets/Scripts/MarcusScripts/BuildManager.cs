@@ -21,12 +21,14 @@ public class BuildManager : MonoBehaviour
 
     private GameObject towerToBuild;
 
-    public GameObject GetTowerToBuild()
+    public GameObject TowerToBuild { get { return towerToBuild; } set { towerToBuild = value; } }
+
+/*    public GameObject GetTowerToBuild()
     {
         return towerToBuild;
     }
     public void SetTowerToBuild(GameObject tower)
     {
         towerToBuild = tower;
-    }
+    }*/
 }
