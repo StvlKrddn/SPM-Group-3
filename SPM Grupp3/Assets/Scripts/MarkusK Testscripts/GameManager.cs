@@ -17,12 +17,6 @@ public class GameManager : MonoBehaviour
     public float timeBetweenWave = 3f;
     public float timeBetweenEnemy = 0.5f;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
     // Update is called once per frame
     void Update()
     {
@@ -42,25 +36,23 @@ public class GameManager : MonoBehaviour
     private IEnumerator SpawnWave ()
     {
         currentWave++;
-        if (currentWave > victoryWave)
+        if (currentWave > victoryWave) //Victory condition
         {
-            Debug.Log("Victory");
             Victory();
             yield break;
         }
 
         int waveLength = 0;
-        switch (currentWave)
+        switch (currentWave) //Indivdually controls each lane spawns and length
         {
             case 1:
             waveLength = 5;
-            StartCoroutine(SpawnEnemies(regularEnemy, 3));
-                
+            StartCoroutine(SpawnEnemies(regularEnemy, 1));
             break;
 
             case 2:
             waveLength = 5;
-            StartCoroutine(SpawnEnemies(regularEnemy, 3));
+            StartCoroutine(SpawnEnemies(regularEnemy, 0));
             break;
         }
         yield return new WaitForSeconds(waveLength);
@@ -71,7 +63,7 @@ public class GameManager : MonoBehaviour
     {
         for (int i = 0; i < count; i++)
         {
-            Instantiate(enemyType, spawnPosition.position, spawnPosition.rotation);
+            Instantiate(enemyType, spawnPosition.position, spawnPosition.rotation); //Spawn enemy and wait for time between enemy
             yield return new WaitForSeconds(timeBetweenEnemy);
         }
         yield return false;
@@ -86,14 +78,36 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void AddMoney(int addMoney)
+    {
+        money += addMoney;
+    }
+
+    public void AddMaterial(int addMaterial)
+    {
+        money += addMaterial;
+    }
+
+    public bool spendResources(int moneySpent, int materialSpent)
+    {
+        if (moneySpent < money && materialSpent < material)
+        {
+            money -= moneySpent;
+            material -= materialSpent;
+            return true;
+        }
+        //Show Error
+        return false;
+    }
+
 
     private void Victory()
     {
-
+        Debug.Log("Victory");
     }
 
     private void Defeat()
     {
-
+        Debug.Log("Defeat");
     }
 }
