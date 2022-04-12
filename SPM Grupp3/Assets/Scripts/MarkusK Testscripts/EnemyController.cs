@@ -9,7 +9,7 @@ public class EnemyController : MonoBehaviour
     private float speed = 10;
     private Transform target;
     private int currIndex = 0;
-    private int hp = 1;
+    private float hp = 1;
     private int damage = 1;
     private int moneyDrop = 1;
     private float shotTimer = 0f;
@@ -83,20 +83,18 @@ public class EnemyController : MonoBehaviour
         gM.TakeDamage(damage);
         Destroy(gameObject);
     }
-
-    /* if needed
-	private void OnTriggerEnter(Collider other)
-	{
-        if (other.tag == "tankbullet") //change to tankbullet and turretbullets
+	private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.tag == "PlayerShots") //change to tankbullet and turretbullets
         {
-            //take damage from bullet
+           Debug.Log("fdeaf");
+            hp -= collision.gameObject.GetComponent<BulletBehavior>().BulletDamage;
             if (hp <= 0)
             {
                 EnemyDeath();
             }
         }
 	}
-    */
 
     private void EnemyDeath()
     {
