@@ -20,15 +20,43 @@ public class BuildManager : MonoBehaviour
 
 
     private GameObject towerToBuild;
+    private GameObject clickedArea;
+    public GameObject placedTower;
+    private TowerPlacement towerPlacement;
 
     public GameObject TowerToBuild { get { return towerToBuild; } set { towerToBuild = value; } }
+    public GameObject ClickedArea { get { return clickedArea; } set { clickedArea = value; } }
 
-/*    public GameObject GetTowerToBuild()
+    private void Start()
     {
-        return towerToBuild;
+        
     }
-    public void SetTowerToBuild(GameObject tower)
+
+    public void InstantiateTower()
     {
-        towerToBuild = tower;
-    }*/
+        /*       GameObject towerToBuild = TowerToBuild;*/
+        //if (gameManager.Money < towerToBuild)
+        if (clickedArea == null)
+        {
+            return;
+        }
+        towerPlacement = clickedArea.GetComponent<TowerPlacement>();
+        placedTower = Instantiate(TowerToBuild, ClickedArea.transform.GetChild(0).transform.position, ClickedArea.transform.GetChild(0).transform.rotation);
+        towerPlacement.SetDoNotHover();
+        towerPlacement.SetStartColor();
+        ClickedArea = null;
+        TowerToBuild = null;
+        /*UI.SetActive(false);*/
+    }
+
+    
+
+    /*    public GameObject GetTowerToBuild()
+        {
+            return towerToBuild;
+        }
+        public void SetTowerToBuild(GameObject tower)
+        {
+            towerToBuild = tower;
+        }*/
 }

@@ -5,33 +5,75 @@ using UnityEngine;
 public class Shop : MonoBehaviour
 {
     BuildManager buildManager;
-    TowerPlacement towerPlacement;
-    GameManager gameManager;
+    public TowerPlacement towerPlacement;
+    public GameManager gameManager;
+
 
     // Start is called before the first frame update
     void Start()
     {
         buildManager = BuildManager.instance;
+        
     }
 
     public void PurchaseCannonTower()
     {
-        Debug.Log("Cannon Tower");
         buildManager.TowerToBuild = buildManager.cannonTowerPrefab;
-        //towerPlacement.InstantiateTower();
 
-        // Tower cost money
-        /*if (buildManager.TowerToBuild.cost < gameManager.Money)
+        towerPlacement = buildManager.ClickedArea.GetComponent<TowerPlacement>();
+
+        print(buildManager.TowerToBuild.GetComponent<Tower>().cost);
+        print(gameManager.Money);
+        if (buildManager.TowerToBuild.GetComponent<Tower>().cost > gameManager.Money)
         {
-            gameManager.spendResources(buildManager.TowerToBuild.cost, 0);
-        }*/
+            towerPlacement.SetStartColor();
+            buildManager.ClickedArea = null;
+            buildManager.TowerToBuild = null;
+            return;
+        }
+
+
+        gameManager.spendResources(buildManager.TowerToBuild.GetComponent<Tower>().cost, 0);
+
+        print(buildManager.TowerToBuild.GetComponent<Tower>().cost);
+        print(gameManager.Money);
+
+        Debug.Log("Cannon Tower");
+        
+        
+        buildManager.InstantiateTower();
+
+        
+
     }
 
     public void PurchaseMissileTower()
     {
-        Debug.Log("Missile Tower");
         buildManager.TowerToBuild = buildManager.missileTowerPrefab;
-        //towerPlacement.InstantiateTower();
+
+        towerPlacement = buildManager.ClickedArea.GetComponent<TowerPlacement>();
+
+        print(buildManager.TowerToBuild.GetComponent<Tower>().cost);
+        print(gameManager.Money);
+
+        if (buildManager.TowerToBuild.GetComponent<Tower>().cost > gameManager.Money)
+        {
+            towerPlacement.SetStartColor();
+            buildManager.ClickedArea = null;
+            buildManager.TowerToBuild = null;
+            return;
+        }
+
+        gameManager.spendResources(buildManager.TowerToBuild.GetComponent<Tower>().cost, 0);
+
+        print(buildManager.TowerToBuild.GetComponent<Tower>().cost);
+        print(gameManager.Money);
+
+        Debug.Log("Missile Tower");
+        
+        buildManager.InstantiateTower();
+
+
 
         // Tower cost money
         /*if (buildManager.TowerToBuild.cost < gameManager.Money)
