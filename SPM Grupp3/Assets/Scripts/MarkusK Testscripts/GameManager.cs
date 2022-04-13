@@ -5,9 +5,10 @@ using System;
 
 public class GameManager : MonoBehaviour
 {
+
     [Header("Stats: ")]
     [SerializeField] private float timeBetweenWave = 3f;
-    [SerializeField] private float baseHealth = 100f; // Change basestats of our game
+    [SerializeField] private float baseHealth = 100f;
     [SerializeField] private float material = 0f;
     [SerializeField] private float money = 350f;
     [SerializeField] private float victoryWave = 5f;
@@ -27,6 +28,7 @@ public class GameManager : MonoBehaviour
     private bool waveOff = false;
     private float timer = 0;
 
+    // Event that other scripts can subscribe to. Invoked when a new wave starts
     public event Action OnNewWave;
 
     private int[] enemiesAmount = { 3, 3, 5, 5, 8 };
@@ -41,7 +43,6 @@ public class GameManager : MonoBehaviour
         UpdateResourcesUI();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (timer >= timeBetweenWave)
@@ -59,6 +60,7 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator SpawnWave()
     {
+        // Invoke event if not null
         OnNewWave?.Invoke();
         currentWave++;
         if (currentWave > victoryWave) //Victory condition
