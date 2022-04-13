@@ -43,7 +43,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0b2bc8acbd3945445b0e48d988fc46c8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -15
+      value: -12
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0b2bc8acbd3945445b0e48d988fc46c8, type: 3}
       propertyPath: m_LocalPosition.y
@@ -51,7 +51,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0b2bc8acbd3945445b0e48d988fc46c8, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -15
+      value: -37
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0b2bc8acbd3945445b0e48d988fc46c8, type: 3}
       propertyPath: m_LocalRotation.w
@@ -167,6 +167,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementSpeed: 5
+  health: 50
   fireRate: 0.2
   bulletSpread: 50
   bulletRange: 20
@@ -175,7 +176,8 @@ MonoBehaviour:
   boostDuration: 1
   boostCooldownTime: 5
   bullet: {fileID: 2133051396195009634, guid: 106daae10656ed5469f19ea9fecc8f9c, type: 3}
-  inputManager: {fileID: 0}
+  garage: {fileID: 0}
+  gameManager: {fileID: 0}
 --- !u!114 &5295385650673486424
 MonoBehaviour:
   m_ObjectHideFlags: 0

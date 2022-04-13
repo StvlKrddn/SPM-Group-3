@@ -132,8 +132,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 169008313}
+  - component: {fileID: 169008314}
+  - component: {fileID: 169008315}
   m_Layer: 0
-  m_Name: BuilderPlayer
+  m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -154,6 +156,74 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &169008314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 169008312}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 865119aa34c06be41a3b49989bec82eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeBetweenWave: 3
+  baseHealth: 100
+  material: 0
+  money: 350
+  victoryWave: 5
+  regularEnemy: {fileID: 5940178821907547974, guid: ebabe95a03637314a8f1d189111fd669, type: 3}
+  timeBetweenEnemy: 0.5
+  spawnPosition: {fileID: 2056127576}
+  waveUI: {fileID: 591892735}
+  liveUI: {fileID: 900610268}
+  moneyUI: {fileID: 267819083}
+  materialUI: {fileID: 1163894759}
+--- !u!114 &169008315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 169008312}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 621567455fd1c4ceb811cc8a00b6a1a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_NotificationBehavior: 2
+  m_MaxPlayerCount: 2
+  m_AllowJoining: 1
+  m_JoinBehavior: 0
+  m_PlayerJoinedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_PlayerLeftEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_JoinAction:
+    m_UseReference: 0
+    m_Action:
+      m_Name: 
+      m_Type: 0
+      m_ExpectedControlType: 
+      m_Id: 
+      m_Processors: 
+      m_Interactions: 
+      m_SingletonActionBindings: []
+      m_Flags: 0
+    m_Reference: {fileID: 0}
+  m_PlayerPrefab: {fileID: 7281666120820181771, guid: 241e5146e51d1324db7d8d626fdc52c7, type: 3}
+  m_SplitScreen: 0
+  m_MaintainAspectRatioInSplitScreen: 0
+  m_FixedNumberOfSplitScreens: -1
+  m_SplitScreenRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
 --- !u!1 &267819081
 GameObject:
   m_ObjectHideFlags: 0
@@ -473,7 +543,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 880772915}
-  - component: {fileID: 880772914}
   - component: {fileID: 880772916}
   m_Layer: 0
   m_Name: Waypoints
@@ -482,33 +551,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &880772914
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 880772913}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 865119aa34c06be41a3b49989bec82eb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  baseHealth: 100
-  material: 0
-  money: 350
-  currentWave: 0
-  victoryWave: 10
-  regularEnemy: {fileID: 5940178821907547974, guid: ebabe95a03637314a8f1d189111fd669, type: 3}
-  spawnPosition: {fileID: 2056127576}
-  waveUI: {fileID: 591892735}
-  liveUI: {fileID: 900610268}
-  moneyUI: {fileID: 267819083}
-  materialUI: {fileID: 1163894759}
-  waveOff: 0
-  timer: 0
-  timeBetweenWave: 3
-  timeBetweenEnemy: 0.5
 --- !u!4 &880772915
 Transform:
   m_ObjectHideFlags: 0
@@ -1004,10 +1046,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 794988757240648394, guid: 241e5146e51d1324db7d8d626fdc52c7, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 61.2
-      objectReference: {fileID: 0}
     - target: {fileID: 4941730507560064115, guid: 241e5146e51d1324db7d8d626fdc52c7, type: 3}
       propertyPath: garage
       value: 
@@ -1015,7 +1053,7 @@ PrefabInstance:
     - target: {fileID: 4941730507560064115, guid: 241e5146e51d1324db7d8d626fdc52c7, type: 3}
       propertyPath: gameManager
       value: 
-      objectReference: {fileID: 880772914}
+      objectReference: {fileID: 169008314}
     - target: {fileID: 7281666120820181771, guid: 241e5146e51d1324db7d8d626fdc52c7, type: 3}
       propertyPath: m_Name
       value: PlayerTank
@@ -1646,7 +1684,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6056684213601267866, guid: b565c3dd56bc04c41b49cb35d925c2cd, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -24
+      value: -26
       objectReference: {fileID: 0}
     - target: {fileID: 6056684213601267866, guid: b565c3dd56bc04c41b49cb35d925c2cd, type: 3}
       propertyPath: m_LocalPosition.y

@@ -5,26 +5,36 @@ using System;
 
 public class GameManager : MonoBehaviour
 {
-    public int baseHealth = 100; // Change basestats of our game
-    public int material = 0;
-    public int money = 350;
-    public int currentWave = 0;
-    public int victoryWave = 5;
+    [Header("Stats: ")]
+    [SerializeField] private float timeBetweenWave = 3f;
+    [SerializeField] private float baseHealth = 100f; // Change basestats of our game
+    [SerializeField] private float material = 0f;
+    [SerializeField] private float money = 350f;
+    [SerializeField] private float victoryWave = 5f;
+    
+    [Header("Enemies: ")]
+    [SerializeField] private Transform regularEnemy;
+    [SerializeField] private float timeBetweenEnemy = 0.5f;
+    [SerializeField] private Transform spawnPosition;
 
-    public Transform regularEnemy;
-    public Transform spawnPosition;
+    [Header("UI Elements: ")]
+    [SerializeField] private Text waveUI;
+    [SerializeField] private Text liveUI;
+    [SerializeField] private Text moneyUI;
+    [SerializeField] private Text materialUI;
 
-    public Text waveUI;
-    public Text liveUI;
-    public Text moneyUI;
-    public Text materialUI;
-
-    public bool waveOff = false;
-    public float timer = 0;
-    public float timeBetweenWave = 3f;
-    public float timeBetweenEnemy = 0.5f;
+    private int currentWave = 0;
+    private bool waveOff = false;
+    private float timer = 0;
 
     public event Action OnNewWave;
+
+    private int[] enemiesAmount = { 3, 3, 5, 5, 8 };
+    public int amountOfWaves;
+
+    public Vector3[] theWaves;
+
+    public float Money { get; set; }
 
     private void Start()
     {
@@ -57,6 +67,14 @@ public class GameManager : MonoBehaviour
             yield break;
         }
 
+     //   for (int i = 0; i < theWaves[currentWave].Length; i++)
+     //   {
+     //       StartCoroutine(SpawnEnemies(regularEnemy, theWaves[currentWave][i]));
+     //   }
+
+
+
+
         int waveLength = 0;
         switch (currentWave) //Indivdually controls each lane spawns and length
         {
@@ -86,7 +104,7 @@ public class GameManager : MonoBehaviour
         waveOff = false;
     }
 
-    IEnumerator SpawnEnemies(Transform enemyType, int count)
+    IEnumerator SpawnEnemies(Transform enemyType, float count)
     {
         for (int i = 0; i < count; i++)
         {
@@ -96,13 +114,14 @@ public class GameManager : MonoBehaviour
         yield return false;
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
         baseHealth -= damage;
         if (baseHealth <= 0)
         {
             Defeat();
         }
+        UpdateResourcesUI();
     }
 
     private void UpdateResourcesUI()
@@ -113,23 +132,25 @@ public class GameManager : MonoBehaviour
         liveUI.text = "Lives: " + baseHealth;
     }
 
-    public void AddMoney(int addMoney)
+    public void AddMoney(float addMoney)
     {
         money += addMoney;
+        UpdateResourcesUI();
     }
 
-    public void AddMaterial(int addMaterial)
+    public void AddMaterial(float addMaterial)
     {
         material += addMaterial;
         UpdateResourcesUI();
     }
 
-    public bool spendResources(int moneySpent, int materialSpent)
+    public bool spendResources(float moneySpent, float materialSpent)
     {
         if (moneySpent < money && materialSpent < material)
         {
             money -= moneySpent;
             material -= materialSpent;
+            UpdateResourcesUI();
             return true;
         }
         //Show Error

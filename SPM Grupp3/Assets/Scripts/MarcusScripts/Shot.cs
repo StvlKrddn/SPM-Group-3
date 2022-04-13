@@ -6,6 +6,7 @@ public class Shot : MonoBehaviour
 {
     private Transform target;
     public float shotSpeed = 1f;
+    [SerializeField] private float shotDamage = 50f;
     public GameObject hitEffect;
 
     public void Seek(Transform _target)
@@ -36,8 +37,11 @@ public class Shot : MonoBehaviour
 
     void HitTarget()
     {
+        EnemyController enemyTarget = target.GetComponent<EnemyController>();
         GameObject effectInstance = Instantiate(hitEffect, transform.position, transform.rotation);
         Destroy(effectInstance, 1f);
+
+        //enemyTarget.TakeDamage(shotDamage);
         Destroy(target.gameObject);
         Destroy(gameObject);
     }

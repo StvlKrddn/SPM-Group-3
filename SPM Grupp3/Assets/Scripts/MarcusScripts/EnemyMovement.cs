@@ -13,12 +13,19 @@ public class EnemyMovement : MonoBehaviour
     private Transform target;
     private int damage = 1;
     public GameObject[] wayPoints;
+/*    public Transform wayPointContainer;*/
     public float minDist; 
 
 
 /*    private void Start()
     {
-        target = Waypoints.wayPoints[currIndex];
+        //target = Waypoints.wayPoints[currIndex];
+        Transform waypointContainer = transform.Find("Waypoints");
+        
+        for (int i = 0; i < waypointContainer.childCount; i++)
+        {
+            wayPoints[i] = waypointContainer.GetChild(i).gameObject;
+        }
     }*/
 
     // Update is called once per frame
@@ -42,8 +49,6 @@ public class EnemyMovement : MonoBehaviour
             }
         }
 
-
-
         /*transform.position += moveSpeed * moveDirection * Time.deltaTime;*/
 /*
         if (countdown <= 0f)
@@ -59,20 +64,30 @@ public class EnemyMovement : MonoBehaviour
                 }*/
     }
 
-/*    private void NextTarget()
+    private void OnTriggerEnter(Collider other)
     {
-        if (Waypoints.wayPoints.Length - 1 <= currIndex) // Changes waypoint to til the enemy reaches the last waypoint
+        if (other.CompareTag("PlayerShots"))
         {
-            EnemyDeathBase();
-            return;
+            BulletBehavior bullet = other.gameObject.GetComponent<BulletBehavior>();
+            //GameObject hitEffektInstance = Instantiate(hitEffect, transform.position, transform.rotation);
+            Destroy(gameObject);
         }
-        currIndex++;
-        target = Waypoints.wayPoints[currIndex];
     }
 
-    private void EnemyDeathBase()
-    {
-        gM.TakeDamage(damage);
-        Destroy(gameObject);
-    }*/
+    /*    private void NextTarget()
+        {
+            if (Waypoints.wayPoints.Length - 1 <= currIndex) // Changes waypoint to til the enemy reaches the last waypoint
+            {
+                EnemyDeathBase();
+                return;
+            }
+            currIndex++;
+            target = Waypoints.wayPoints[currIndex];
+        }
+
+        private void EnemyDeathBase()
+        {
+            gM.TakeDamage(damage);
+            Destroy(gameObject);
+        }*/
 }

@@ -8,6 +8,7 @@ public class Tower : MonoBehaviour
     
     public float range = 15f;
     public float fireRate = 1f;
+    public float cost = 150f;
     private float fireCountdown = 0f;
 
     [Header("Unity Setup Fields")]
@@ -87,8 +88,6 @@ public class Tower : MonoBehaviour
         }
     }
 
-
-
     RaycastHit CastRayFromCamera(LayerMask layerMask)
     {
         // Get mouse position
@@ -102,12 +101,18 @@ public class Tower : MonoBehaviour
 
         return hit;
     }
+    
+    GameObject GetTower()
+    {
+        RaycastHit hit = CastRayFromCamera(towers);
 
+        // If a tower was hit, return the tower
+        return hit.collider != null ? hit.collider.gameObject : null;
+    }
 
     // Update is called once per frame
     void Update()
     {
-
         if (target != null)
         {
             // Lock on target
@@ -142,11 +147,4 @@ public class Tower : MonoBehaviour
         }
     }
 
-    GameObject GetTower()
-    {
-        RaycastHit hit = CastRayFromCamera(towers);
-
-        // If a tower was hit, return the tower
-        return hit.collider != null ? hit.collider.gameObject : null;
-    }
 }

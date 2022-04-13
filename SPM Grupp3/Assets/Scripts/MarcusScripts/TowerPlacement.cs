@@ -10,11 +10,14 @@ public class TowerPlacement : MonoBehaviour
     private GameObject placedTower;
 /*    public GameObject placementClicked;*/
     public Color hoverColor;
+    public GameManager gameManager;
     private Renderer rend;
     private Color startColor;
     private bool clicked = false;
 
+
     BuildManager buildManager;
+    public Shop shop;
 
     // Start is called before the first frame update
     void Start()
@@ -79,8 +82,9 @@ public class TowerPlacement : MonoBehaviour
 
     public void InstantiateTower()
     {
-        GameObject towerToBuild = buildManager.TowerToBuild;
-        placedTower = Instantiate(towerToBuild, position.transform.position, position.transform.rotation);        
+        GameObject towerToBuild = buildManager.TowerToBuild.gameObject;
+        //if (gameManager.Money < towerToBuild)
+            placedTower = Instantiate(towerToBuild, position.transform.position, position.transform.rotation);        
         /*UI.SetActive(false);*/
     }
 }

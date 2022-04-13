@@ -5,6 +5,7 @@ public class EnemyController : MonoBehaviour
 {
     [SerializeField] private float speed = 10f;
     [SerializeField] private float hp = 100f;
+    [SerializeField] private GameObject hitEffect;
     private GameObject tank1;
     private GameObject tank2;
     private GameManager gM;
@@ -83,29 +84,23 @@ public class EnemyController : MonoBehaviour
         gM.TakeDamage(damage);
         Destroy(gameObject);
     }
-	private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.tag == "PlayerShots") //change to tankbullet and turretbullets
-        {
-           Debug.Log("fdeaf");
-            hp -= collision.gameObject.GetComponent<BulletBehavior>().BulletDamage;
-            if (hp <= 0)
-            {
-                EnemyDeath();
-            }
-        }
-	}
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("PlayerShots"))
         {
             BulletBehavior bullet = other.gameObject.GetComponent<BulletBehavior>();
-            hp -= bullet.BulletDamage;
-            if (hp < 0)
-            {
-                EnemyDeath();
-            }
+            GameObject hitEffektInstance = Instantiate(hitEffect, transform.position, transform.rotation);
+            TakeDamage(bullet.BulletDamage);
+        }
+    }
+
+    public void TakeDamage(float damage)
+    {
+        hp -= damage;
+        if (hp < 0)
+        {
+            EnemyDeath();
         }
     }
 
