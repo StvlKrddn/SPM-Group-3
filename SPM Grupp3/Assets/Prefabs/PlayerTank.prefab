@@ -51,7 +51,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0b2bc8acbd3945445b0e48d988fc46c8, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -37
+      value: -32.11
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0b2bc8acbd3945445b0e48d988fc46c8, type: 3}
       propertyPath: m_LocalRotation.w
@@ -169,7 +169,7 @@ MonoBehaviour:
   movementSpeed: 5
   health: 50
   fireRate: 0.2
-  bulletSpread: 35
+  bulletSpread: 5
   bulletRange: 20
   bulletSpeed: 35
   boostSpeedMultiplier: 5
@@ -247,6 +247,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 9270b16b-15dc-4d8a-9da9-5fb1d9564cf5
     m_ActionName: Tank/Aim[/XInputControllerWindows/rightStick/up,/XInputControllerWindows/rightStick/down,/XInputControllerWindows/rightStick/left,/XInputControllerWindows/rightStick/right]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: ffeaff2e-a9d8-483e-9724-97b44ccc2b0a
+    m_ActionName: Tank/Accept
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: Gamepad
   m_DefaultActionMap: Tank

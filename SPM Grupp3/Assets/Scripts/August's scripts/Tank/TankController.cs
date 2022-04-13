@@ -58,6 +58,7 @@ public class TankController : MonoBehaviour
     private float bulletSpreadDuringBoostMultiplier = 2f;
     private float bulletSpreadIncreaseMultiplier = 10f;
     private Matrix4x4 isoMatrix;
+    private float currentHealth;
 
     // Getters and Setters
     public float MovementSpeed
@@ -79,6 +80,8 @@ public class TankController : MonoBehaviour
     void Awake()
     {
         InitializeInputSystem();
+
+        currentHealth = health;
 
         rb = GetComponent<Rigidbody>();
 
@@ -253,13 +256,13 @@ public class TankController : MonoBehaviour
         if (other.gameObject.CompareTag("EnemyBullet"))
         {
             EnemyBullet enemyBullet = other.gameObject.GetComponent<EnemyBullet>();
-            health -= enemyBullet.damage;
-            if (health < 0)
+            currentHealth -= enemyBullet.damage;
+            if (currentHealth < 0)
             {
                 print("Tank destroyed!");
                 MoveToGarage();
             }
-            Destroy(enemyBullet);
+          
         }
     }
 
@@ -278,5 +281,7 @@ public class TankController : MonoBehaviour
     void OnNewWave()
     {
         allowedToMove = true;
+        currentHealth = health;
+        
     }
 }

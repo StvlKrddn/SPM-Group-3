@@ -11,7 +11,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float baseHealth = 100f;
     [SerializeField] private float material = 0f;
     [SerializeField] private float money = 350f;
-    [SerializeField] private float victoryWave = 5f;
+    [SerializeField] private float victoryWave = 9f;
     
     [Header("Enemies: ")]
     [SerializeField] private Transform regularEnemy;
@@ -69,38 +69,55 @@ public class GameManager : MonoBehaviour
             yield break;
         }
 
-     //   for (int i = 0; i < theWaves[currentWave].Length; i++)
-     //   {
-     //       StartCoroutine(SpawnEnemies(regularEnemy, theWaves[currentWave][i]));
-     //   }
-
-
+        //   for (int i = 0; i < theWaves[currentWave].Length; i++)
+        //   {
+        //       StartCoroutine(SpawnEnemies(regularEnemy, theWaves[currentWave][i]));
+        //   }
 
 
         int waveLength = 0;
         switch (currentWave) //Indivdually controls each lane spawns and length
-        {
+        {   
             case 1:
                 waveLength = 5;
-                StartCoroutine(SpawnEnemies(regularEnemy, 3));
+           //     yield return new WaitForSeconds(3);
+                StartCoroutine(SpawnEnemies(regularEnemy, 6));
                 break;
 
             case 2:
                 waveLength = 5;
-                StartCoroutine(SpawnEnemies(regularEnemy, 3));
+                StartCoroutine(SpawnEnemies(regularEnemy, 9));
                 break;
             case 3:
                 waveLength = 10;
-                StartCoroutine(SpawnEnemies(regularEnemy, 5));
+                StartCoroutine(SpawnEnemies(regularEnemy, 12));
                 break;
             case 4:
                 waveLength = 10;
-                StartCoroutine(SpawnEnemies(regularEnemy, 5));
+                StartCoroutine(SpawnEnemies(regularEnemy, 15));
                 break;
             case 5:
                 waveLength = 12;
-                StartCoroutine(SpawnEnemies(regularEnemy, 8));
+                StartCoroutine(SpawnEnemies(regularEnemy, 15));
                 break;
+            case 6:
+                waveLength = 14;
+                StartCoroutine(SpawnEnemies(regularEnemy, 15));
+                break;
+            case 7:
+                waveLength = 16;
+                StartCoroutine(SpawnEnemies(regularEnemy, 18));
+                break;
+            case 8:
+                waveLength = 18;
+                StartCoroutine(SpawnEnemies(regularEnemy, 22));
+                break;
+            case 9:
+                waveLength = 20;
+                StartCoroutine(SpawnEnemies(regularEnemy, 26));
+                break;
+
+
         }
         yield return new WaitForSeconds(waveLength);
         waveOff = false;

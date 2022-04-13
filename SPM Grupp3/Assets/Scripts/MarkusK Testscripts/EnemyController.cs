@@ -11,8 +11,8 @@ public class EnemyController : MonoBehaviour
     private GameManager gM;
     private Transform target;
     private int currIndex = 0;
-    private int damage = 1;
-    private int moneyDrop = 1;
+    private int damage = 10;
+    private int moneyDrop = 10;
     private float shotTimer = 0f;
     private float shotCD = 3f;
     public Transform bullet;
