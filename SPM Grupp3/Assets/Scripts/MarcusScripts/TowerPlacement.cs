@@ -82,9 +82,9 @@ public class TowerPlacement : MonoBehaviour
 
     public void InstantiateTower()
     {
-        GameObject towerToBuild = buildManager.TowerToBuild.gameObject;
+        GameObject towerToBuild = buildManager.TowerToBuild;
         //if (gameManager.Money < towerToBuild)
-            placedTower = Instantiate(towerToBuild, position.transform.position, position.transform.rotation);        
+        placedTower = Instantiate(towerToBuild, position.transform.position, position.transform.rotation);        
         /*UI.SetActive(false);*/
     }
 }
