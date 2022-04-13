@@ -113,6 +113,7 @@ public class TankController : MonoBehaviour
     {
         // Unsubscribe to avoid memory leaks
         gameManager.OnNewWave -= OnNewWave;
+        garageTrigger.OnTankEnterGarage -= OnTankEnterGarage;
     }
 
     void InitializeInputSystem()
@@ -259,7 +260,6 @@ public class TankController : MonoBehaviour
                 print("Tank destroyed!");
                 MoveToGarage();
             }
-            Destroy(enemyBullet);
         }
     }
 
@@ -269,14 +269,17 @@ public class TankController : MonoBehaviour
         allowedToMove = false;
     }
 
-    void OnTankEnterGarage()
+    void OnTankEnterGarage(TankController player)
     {
-        print("Entered Garage!");
-        gameObject.SetActive(false);
+        print("Entered Garage");
+        //player.gameObject.SetActive(false);
+        player.PlayerInput.SwitchCurrentActionMap("Disabled");
     }
 
     void OnNewWave()
     {
+        print("New Wave");
+        playerInput.SwitchCurrentActionMap("Tank");
         allowedToMove = true;
     }
 }

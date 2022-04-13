@@ -9,7 +9,8 @@ public class GarageTrigger : MonoBehaviour
     private PlayerInput playerInput;
     private InputAction acceptAction;
 
-    public event Action OnTankEnterGarage;
+    public delegate void EventHandler(TankController gameObject); // Used to create events that send data
+    public event EventHandler OnTankEnterGarage;
 
     private void OnTriggerStay(Collider other)
     {
@@ -22,8 +23,7 @@ public class GarageTrigger : MonoBehaviour
             print("Enter Garage? (Press A)");
             if (acceptAction.IsPressed())
             {
-                print("Entered Garage!");
-                //OnTankEnterGarage?.Invoke();
+                OnTankEnterGarage?.Invoke(player);
             }
         }   
     }

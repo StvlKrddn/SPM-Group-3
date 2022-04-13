@@ -1,5 +1,5 @@
 {
-    "name": "PlayerControlls",
+    "name": "TankControlls",
     "maps": [
         {
             "name": "Tank",
@@ -330,125 +330,10 @@
             ]
         },
         {
-            "name": "Builder",
+            "name": "DIsabled",
             "id": "73290f25-c680-4f6d-a201-515879a1970a",
-            "actions": [
-                {
-                    "name": "Accept",
-                    "type": "Button",
-                    "id": "b572b20a-7a35-4211-9394-134b48f11421",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Cancel",
-                    "type": "Button",
-                    "id": "6526891f-c998-45a6-932f-6d28ebbd1e90",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "Back",
-                    "type": "Button",
-                    "id": "8a63bb77-bda8-4532-9b54-7a3c077e660c",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "MovePointer",
-                    "type": "Value",
-                    "id": "19ebe928-752d-4f67-933c-959855ed0ddd",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                }
-            ],
-            "bindings": [
-                {
-                    "name": "",
-                    "id": "a5afcf2f-74cc-48ad-961c-bd91b65a23b9",
-                    "path": "<Gamepad>/buttonSouth",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "Accept",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "Joystick Pointer",
-                    "id": "ffd442bb-bf35-426e-86d9-8a6645f09594",
-                    "path": "2DVector",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "MovePointer",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "up",
-                    "id": "c4504dd9-d47d-403b-b743-5393bda49f93",
-                    "path": "<Gamepad>/leftStick/up",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "MovePointer",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "down",
-                    "id": "28b1e0d6-5957-4c80-8bf1-dd75f1742082",
-                    "path": "<Gamepad>/leftStick/down",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "MovePointer",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "left",
-                    "id": "6fce085b-519e-45b4-8a2b-bc671fed08ac",
-                    "path": "<Gamepad>/leftStick/left",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "MovePointer",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "right",
-                    "id": "540a5c0e-e164-49d2-be6e-193420b64234",
-                    "path": "<Gamepad>/leftStick/right",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "MovePointer",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "",
-                    "id": "b0dab0f7-4187-4332-be33-c4b79fd0784e",
-                    "path": "<Gamepad>/buttonEast",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "Cancel",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                }
-            ]
+            "actions": [],
+            "bindings": []
         }
     ],
     "controlSchemes": [

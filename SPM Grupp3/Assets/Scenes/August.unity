@@ -521,6 +521,55 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 591892733}
   m_CullTransparentMesh: 1
+--- !u!1 &605793595 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1660514274241024684, guid: 213f3c390b78f8e48a0e0800817a65e6, type: 3}
+  m_PrefabInstance: {fileID: 1463270554}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &605793596
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 605793595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7444dc0139af8ed4392f38e24ee889d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  garage: {fileID: 0}
+  cursorTransform: {fileID: 0}
+--- !u!114 &605793597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 605793595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 100b460020a15704692cc0ec34331d8a, type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 1
+  m_DefaultControlScheme: 
+  m_DefaultActionMap: UI
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
 --- !u!1001 &759006858
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1619,6 +1668,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BuildManager
       objectReference: {fileID: 0}
+    - target: {fileID: 1950758295527031529, guid: 213f3c390b78f8e48a0e0800817a65e6, type: 3}
+      propertyPath: garage
+      value: 
+      objectReference: {fileID: 532270513}
     - target: {fileID: 7535505671864968792, guid: 213f3c390b78f8e48a0e0800817a65e6, type: 3}
       propertyPath: m_RootOrder
       value: 8
@@ -2400,7 +2453,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcdc732b2ad87cf4fa19811d60122d88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  towerPlacement: {fileID: 0}
 --- !u!1001 &1904732731
 PrefabInstance:
   m_ObjectHideFlags: 0
