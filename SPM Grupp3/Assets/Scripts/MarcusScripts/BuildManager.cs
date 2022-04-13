@@ -19,9 +19,9 @@ public class BuildManager : MonoBehaviour
     public GameObject missileTowerPrefab;
 
 
-    private Tower towerToBuild;
+    private GameObject towerToBuild;
 
-    public Tower TowerToBuild { get { return towerToBuild; } set { towerToBuild = value; } }
+    public GameObject TowerToBuild { get { return towerToBuild; } set { towerToBuild = value; } }
 
 /*    public GameObject GetTowerToBuild()
     {
