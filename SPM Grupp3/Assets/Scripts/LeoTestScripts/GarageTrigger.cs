@@ -4,10 +4,14 @@ using UnityEngine;
 
 public class GarageTrigger : MonoBehaviour
 {
+
+    [SerializeField] private GameObject buildingUI;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        // Sätter Panelen till osynlig
+        buildingUI.SetActive(false);
     }
 
     // Update is called once per frame
@@ -21,7 +25,17 @@ public class GarageTrigger : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            other.gameObject.SetActive(false);
+            buildingUI.SetActive(true);
+            //other.gameObject.SetActive(false);
         }   
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            buildingUI.SetActive(false);
+            //other.gameObject.SetActive(false);
+        }
     }
 }

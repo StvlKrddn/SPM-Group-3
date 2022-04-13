@@ -36,6 +36,7 @@ public class EnemyBullet : MonoBehaviour
         direction.Normalize();
     }
 
+
     // Update is called once per frame
     void Update()
     {
@@ -45,5 +46,9 @@ public class EnemyBullet : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+    public int GetDamage()
+    {
+        return (int) damage;
     }
 }
