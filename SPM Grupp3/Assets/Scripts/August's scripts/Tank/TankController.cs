@@ -34,6 +34,8 @@ public class TankController : MonoBehaviour
     private PlayerInput playerInput;
     private Transform bulletSpawner;
     private Transform turretObject;
+    private Transform spawnPoint;
+    private GarageTrigger garageTrigger;
 
     // Caching input actions
     private InputAction moveGamepadAction;
@@ -72,6 +74,7 @@ public class TankController : MonoBehaviour
     public float BoostSpeedMultiplier { get { return boostSpeedMultiplier; } set { boostSpeedMultiplier = value; } }
     public float BoostDuration { get { return boostDuration; } set { boostDuration = value; } }
     public float BoostCooldownTime { get { return boostCooldownTime; } set { boostCooldownTime = value; } }
+    public PlayerInput PlayerInput { get { return playerInput; } }
 
     void Awake()
     {
@@ -82,6 +85,11 @@ public class TankController : MonoBehaviour
         turretObject = transform.GetChild(0);
         bulletSpawner = turretObject.Find("BarrelEnd");
 
+        spawnPoint = garage.Find("PlayerSpawn");
+        transform.position = spawnPoint.position;
+
+        garageTrigger = garage.Find("GarageTrigger").gameObject.GetComponent<GarageTrigger>();
+
         aimSpeed = movementSpeed * 5;
 
         speedBeforeBoost = movementSpeed;
@@ -89,11 +97,22 @@ public class TankController : MonoBehaviour
 
         bulletSpread = Mathf.Clamp(bulletSpread, 0, 60);
 
-        gameManager.OnNewWave += OnNewWave;
-
         //Create isometric matrix
         isoMatrix = Matrix4x4.Rotate(Quaternion.Euler(0, 45, 0));
         /* Eplanation of isometric translation can be found here: https://youtu.be/8ZxVBCvJDWk */
+    }
+
+    void OnEnable()
+    {
+        // Subscribe to event, when a new wave starts
+        gameManager.OnNewWave += OnNewWave;
+        garageTrigger.OnTankEnterGarage += OnTankEnterGarage;
+    }
+
+    void OnDisable()
+    {
+        // Unsubscribe to avoid memory leaks
+        gameManager.OnNewWave -= OnNewWave;
     }
 
     void InitializeInputSystem()
@@ -246,8 +265,14 @@ public class TankController : MonoBehaviour
 
     void MoveToGarage()
     {
-        transform.position = garage.position;
+        transform.position = spawnPoint.position;
         allowedToMove = false;
+    }
+
+    void OnTankEnterGarage()
+    {
+        print("Entered Garage!");
+        gameObject.SetActive(false);
     }
 
     void OnNewWave()

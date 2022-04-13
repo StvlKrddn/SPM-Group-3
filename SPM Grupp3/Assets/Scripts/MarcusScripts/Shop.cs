@@ -5,7 +5,7 @@ using UnityEngine;
 public class Shop : MonoBehaviour
 {
     BuildManager buildManager;
-    public TowerPlacement towerPlacement;
+    TowerPlacement towerPlacement;
     GameManager gameManager;
 
     // Start is called before the first frame update
@@ -18,7 +18,7 @@ public class Shop : MonoBehaviour
     {
         Debug.Log("Cannon Tower");
         buildManager.TowerToBuild = buildManager.cannonTowerPrefab;
-        towerPlacement.InstantiateTower();
+        //towerPlacement.InstantiateTower();
 
         // Tower cost money
         /*if (buildManager.TowerToBuild.cost < gameManager.Money)
@@ -31,7 +31,7 @@ public class Shop : MonoBehaviour
     {
         Debug.Log("Missile Tower");
         buildManager.TowerToBuild = buildManager.missileTowerPrefab;
-        towerPlacement.InstantiateTower();
+        //towerPlacement.InstantiateTower();
 
         // Tower cost money
         /*if (buildManager.TowerToBuild.cost < gameManager.Money)

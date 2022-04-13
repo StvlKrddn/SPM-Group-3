@@ -17,7 +17,7 @@ public class TowerPlacement : MonoBehaviour
 
 
     BuildManager buildManager;
-    public Shop shop;
+    //public Shop shop;
 
     // Start is called before the first frame update
     void Start()

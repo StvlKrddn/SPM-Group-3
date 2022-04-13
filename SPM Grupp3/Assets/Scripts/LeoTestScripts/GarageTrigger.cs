@@ -1,27 +1,30 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class GarageTrigger : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    private PlayerInput playerInput;
+    private InputAction acceptAction;
 
-    // Update is called once per frame
-    void Update()
-    {
+    public event Action OnTankEnterGarage;
 
-        
-    }
-
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            other.gameObject.SetActive(false);
+            TankController player = other.GetComponent<TankController>();
+            playerInput = player.PlayerInput;
+            acceptAction = playerInput.actions["Accept"];
+
+            print("Enter Garage? (Press A)");
+            if (acceptAction.IsPressed())
+            {
+                print("Entered Garage!");
+                //OnTankEnterGarage?.Invoke();
+            }
         }   
     }
 }
