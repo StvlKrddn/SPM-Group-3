@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
 
     public Vector3[] theWaves;
 
-    public float Money { get; set; }
+    public float Money { get { return money; } set { money = value; } }
 
     private void Start()
     {
@@ -146,7 +146,7 @@ public class GameManager : MonoBehaviour
 
     public bool spendResources(float moneySpent, float materialSpent)
     {
-        if (moneySpent < money && materialSpent < material)
+        if (moneySpent <= money && materialSpent <= material)
         {
             money -= moneySpent;
             material -= materialSpent;

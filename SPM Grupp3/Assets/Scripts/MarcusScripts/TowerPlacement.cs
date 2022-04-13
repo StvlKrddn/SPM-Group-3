@@ -7,17 +7,19 @@ public class TowerPlacement : MonoBehaviour
 {
     public GameObject UI;
     public GameObject position;
-    private GameObject placedTower;
 /*    public GameObject placementClicked;*/
     public Color hoverColor;
     public GameManager gameManager;
     private Renderer rend;
     private Color startColor;
-    private bool clicked = false;
-
+    public bool clicked = false;
+/*    private GameObject placedTower;*/
+    
 
     BuildManager buildManager;
     public Shop shop;
+    private Shop test;
+    private bool hover = true;
 
     // Start is called before the first frame update
     void Start()
@@ -25,6 +27,7 @@ public class TowerPlacement : MonoBehaviour
         rend = GetComponent<Renderer>();
         startColor = rend.material.color;
         buildManager = BuildManager.instance;
+        test = UI.transform.GetChild(0).gameObject.GetComponent<Shop>();
     }
 
     // Update is called once per frame
@@ -35,41 +38,46 @@ public class TowerPlacement : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if (placedTower != null)
+        if (buildManager.ClickedArea != null)
         {
-            Debug.Log("Tower Already There");
+            Debug.Log("Tower Already There = 100");
             return;
         }
-
-        if (buildManager.TowerToBuild == null)
+        else
         {
-            return;
+            buildManager.ClickedArea = gameObject;
+            clicked = true;
         }
 
-        InstantiateTower();
+
+        /*InstantiateTower();*/
 
 /*        if (UI.activeSelf)
         {
-            placementClicked = null;
+            buildManager.ClickedArea = null;
             UI.SetActive(false);
             clicked = false;
         }
         else
         {
-            placementClicked = gameObject;
+            buildManager.ClickedArea = gameObject;
             UI.SetActive(true);
             clicked = true;
         }*/
     }
 
-
+    public void SetDoNotHover()
+    {
+        hover = false;
+    }
 
     private void OnMouseEnter()
     {
-        if (placedTower == null)
+        if (hover)
         {
             rend.material.color = hoverColor;
-        }      
+        }
+          
     }
     private void OnMouseExit()
     {
@@ -80,11 +88,10 @@ public class TowerPlacement : MonoBehaviour
         
     }
 
-    public void InstantiateTower()
+    public void SetStartColor()
     {
-        GameObject towerToBuild = buildManager.TowerToBuild;
-        //if (gameManager.Money < towerToBuild)
-        placedTower = Instantiate(towerToBuild, position.transform.position, position.transform.rotation);        
-        /*UI.SetActive(false);*/
+        rend.material.color = startColor;
     }
+
+
 }
