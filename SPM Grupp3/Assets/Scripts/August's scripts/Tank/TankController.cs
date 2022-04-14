@@ -30,7 +30,6 @@ public class TankController : MonoBehaviour
 
     // Components
     private Rigidbody rb;
-    private PlayerInput playerInput;
     private Transform bulletSpawner;
     private Transform turretObject;
     private Transform spawnPoint;
@@ -38,11 +37,13 @@ public class TankController : MonoBehaviour
     private GarageTrigger garageTrigger;
     private GameManager gameManager;
 
-    // Caching input actions
+    // Input components
     private InputAction moveGamepadAction;
     private InputAction aimAction;
     private InputAction boostAction;
     private InputAction shootAction;
+    private PlayerInput playerInput;
+    private PlayerInputManager inputManager;
 
     // Private variables
     private float playerID;
@@ -80,7 +81,11 @@ public class TankController : MonoBehaviour
 
     void Awake()
     {
+        gameManager = FindObjectOfType<GameManager>();
+
         InitializeInputSystem();
+
+        SetPlayerColor();
 
         currentHealth = health;
 
@@ -88,8 +93,6 @@ public class TankController : MonoBehaviour
 
         turretObject = transform.GetChild(0);
         bulletSpawner = turretObject.Find("BarrelEnd");
-
-        gameManager = FindObjectOfType<GameManager>();
 
         garage = GameObject.Find("Garage").transform;
         spawnPoint = garage.Find("PlayerSpawn");
@@ -123,9 +126,23 @@ public class TankController : MonoBehaviour
         garageTrigger.OnTankEnterGarage -= OnTankEnterGarage;
     }
 
+    public void SetPlayerColor()
+    {
+        Renderer renderer = GetComponent<Renderer>();
+        if (playerInput.playerIndex == 0)
+        {
+            renderer.material.color = Color.blue;
+        }
+        else
+        {
+            renderer.material.color = Color.red;
+        }
+    }
+
     void InitializeInputSystem()
     {
         playerInput = GetComponent<PlayerInput>();
+        inputManager = gameManager.GetComponent<PlayerInputManager>();
 
         playerID = playerInput.playerIndex;
 
