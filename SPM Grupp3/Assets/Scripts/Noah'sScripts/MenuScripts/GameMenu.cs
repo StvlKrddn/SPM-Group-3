@@ -14,14 +14,25 @@ public class GameMenu : MonoBehaviour
     {
         escapePanel.SetActive(false);
         closeMessage.SetActive(false);
+        Cursor.visible = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        // Ska ändras till Esc, Tab för tillfället för att visa att musen kan bli osynlig
+        if (Input.GetKeyDown(KeyCode.Tab))
         {
-            escapePanel.SetActive(!escapePanel.activeInHierarchy);
+            if (!escapePanel.active)
+            {
+                Cursor.visible = true;
+                escapePanel.SetActive(true);
+            }
+            else if(!closeMessage.active)
+            {
+                Cursor.visible = !Cursor.visible;
+                escapePanel.SetActive(false);
+            }
         }
     }
 

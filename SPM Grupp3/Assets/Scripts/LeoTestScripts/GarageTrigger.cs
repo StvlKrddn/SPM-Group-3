@@ -6,6 +6,7 @@ public class GarageTrigger : MonoBehaviour
 {
 
     [SerializeField] private GameObject buildingUI;
+    [SerializeField] private Texture2D cursorImage;
 
     // Start is called before the first frame update
     void Start()
@@ -26,6 +27,8 @@ public class GarageTrigger : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             buildingUI.SetActive(true);
+            Cursor.visible = true;
+            // Cursor.SetCursor(cursorImage, Vector2.zero, CursorMode.ForceSoftware);
             //other.gameObject.SetActive(false);
         }   
     }
@@ -35,6 +38,7 @@ public class GarageTrigger : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             buildingUI.SetActive(false);
+            Cursor.visible = false;
             //other.gameObject.SetActive(false);
         }
     }
