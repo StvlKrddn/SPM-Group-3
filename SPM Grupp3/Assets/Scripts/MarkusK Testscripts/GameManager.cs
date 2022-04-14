@@ -80,7 +80,7 @@ public class GameManager : MonoBehaviour
         {   
             case 1:
                 waveLength = 5;
-           //     yield return new WaitForSeconds(3);
+                yield return new WaitForSeconds(3);
                 StartCoroutine(SpawnEnemies(regularEnemy, 6));
                 break;
 
