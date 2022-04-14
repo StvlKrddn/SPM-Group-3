@@ -26,8 +26,7 @@ public class TankController : MonoBehaviour
 
     [Header("Random components: ")]
     [SerializeField] private GameObject bullet;
-    [SerializeField] private Transform garage;
-    [SerializeField] private GameManager gameManager;
+    
 
     // Components
     private Rigidbody rb;
@@ -35,7 +34,9 @@ public class TankController : MonoBehaviour
     private Transform bulletSpawner;
     private Transform turretObject;
     private Transform spawnPoint;
+    private Transform garage;
     private GarageTrigger garageTrigger;
+    private GameManager gameManager;
 
     // Caching input actions
     private InputAction moveGamepadAction;
@@ -88,11 +89,14 @@ public class TankController : MonoBehaviour
         turretObject = transform.GetChild(0);
         bulletSpawner = turretObject.Find("BarrelEnd");
 
-        spawnPoint = garage.Find("PlayerSpawn");
-        transform.position = spawnPoint.position;
+        gameManager = FindObjectOfType<GameManager>();
 
+        garage = GameObject.Find("Garage").transform;
+        spawnPoint = garage.Find("PlayerSpawn");
         garageTrigger = garage.Find("GarageTrigger").gameObject.GetComponent<GarageTrigger>();
 
+        transform.position = spawnPoint.position;
+        
         aimSpeed = movementSpeed * 5;
 
         speedBeforeBoost = movementSpeed;
