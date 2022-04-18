@@ -28,9 +28,6 @@ public class GameManager : MonoBehaviour
     private bool waveOff = false;
     private float timer = 0;
 
-    // Event that other scripts can subscribe to. Invoked when a new wave starts
-    public event Action OnNewWave;
-
     private int[] enemiesAmount = { 3, 3, 5, 5, 8 };
     public int amountOfWaves;
 
@@ -60,9 +57,14 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator SpawnWave()
     {
-        // Invoke event if not null
-        OnNewWave?.Invoke();
         currentWave++;
+        
+        // Invoke new wave event
+        EventHandler.Instance.InvokeEvent(new NewWaveEvent(
+            description: "New wave started",
+            currentWave: currentWave
+            ));
+
         if (currentWave > victoryWave) //Victory condition
         {
             Victory();

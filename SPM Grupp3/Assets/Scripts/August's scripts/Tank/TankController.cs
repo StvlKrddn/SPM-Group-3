@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(Rigidbody), typeof(BoxCollider))]
 public class TankController : MonoBehaviour
 {
 
@@ -24,7 +25,7 @@ public class TankController : MonoBehaviour
     [SerializeField] private float boostDuration = 1f;
     [SerializeField] private float boostCooldownTime = 5f;
 
-    [Header("Random components: ")]
+    [Header("Bullet prefab: ")]
     [SerializeField] private GameObject bullet;
     
 
@@ -52,7 +53,6 @@ public class TankController : MonoBehaviour
     private float aimSpeed;
     private bool allowedToShoot = true;
     private bool allowedToBoost = true;
-    private bool allowedToMove = true;
     private float boostTimer;
     private float boostAccelerationTimeMultiplier = 8f;
     private float speedBeforeBoost;
@@ -114,31 +114,17 @@ public class TankController : MonoBehaviour
 
     void OnEnable()
     {
-        // Subscribe to event, when a new wave starts
-        gameManager.OnNewWave += OnNewWave;
-        garageTrigger.OnTankEnterGarage += OnTankEnterGarage;
+        // Subscribe to events
+        EventHandler.Instance.RegisterListener<NewWaveEvent>(OnNewWave);
     }
 
     void OnDisable()
     {
-        // Unsubscribe to avoid memory leaks
-        gameManager.OnNewWave -= OnNewWave;
-        garageTrigger.OnTankEnterGarage -= OnTankEnterGarage;
+        // Unsubscribe to events to avoid memory leaks
+        EventHandler.Instance.UnregisterListener<NewWaveEvent>(OnNewWave);
+        //garageTrigger.OnTankEnterGarage -= OnTankEnterGarage;
     }
-
-    public void SetPlayerColor()
-    {
-        Renderer renderer = GetComponent<Renderer>();
-        if (playerInput.playerIndex == 0)
-        {
-            renderer.material.color = Color.blue;
-        }
-        else
-        {
-            renderer.material.color = Color.red;
-        }
-    }
-
+    
     void InitializeInputSystem()
     {
         playerInput = GetComponent<PlayerInput>();
@@ -150,6 +136,19 @@ public class TankController : MonoBehaviour
         aimAction = playerInput.actions["Aim"];
         boostAction = playerInput.actions["Boost"];
         shootAction = playerInput.actions["Shoot"];
+    }
+
+    public void SetPlayerColor()
+    {
+        Renderer renderer = GetComponent<Renderer>();
+        if (playerID == 0)
+        {
+            renderer.material.color = Color.blue;
+        }
+        else
+        {
+            renderer.material.color = Color.red;
+        }
     }
 
     void Update()
@@ -278,35 +277,29 @@ public class TankController : MonoBehaviour
         if (other.gameObject.CompareTag("EnemyBullet"))
         {
             EnemyBullet enemyBullet = other.gameObject.GetComponent<EnemyBullet>();
-            currentHealth -= enemyBullet.damage;
-            if (currentHealth < 0)
-            {
-                print("Tank destroyed!");
-                MoveToGarage();
-            }
-          
+            TakeDamage(enemyBullet.damage);
         }
     }
 
-    void MoveToGarage()
+    void TakeDamage(float damage)
+    {
+        currentHealth -= damage;
+        if (currentHealth < 0)
+        {
+            print("Tank destroyed!");
+            DestroyTank();
+        }
+    }
+
+    void DestroyTank()
     {
         transform.position = spawnPoint.position;
-        allowedToMove = false;
     }
 
-    void OnTankEnterGarage(TankController player)
-    {
-        print("Entered Garage");
-        //player.gameObject.SetActive(false);
-        player.PlayerInput.SwitchCurrentActionMap("Disabled");
-    }
-
-    void OnNewWave()
+    void OnNewWave(NewWaveEvent eventInfo)
     {
         print("New Wave");
         playerInput.SwitchCurrentActionMap("Tank");
-        allowedToMove = true;
         currentHealth = health;
-        
     }
 }

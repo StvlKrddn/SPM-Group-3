@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class DieEvent : Event
 {
-    public GameObject Invoker;
-    public AudioClip[] DeathSounds;     // If object has multiple death sounds, for example to play a random one
-    public GameObject DeathParticles;
+    public readonly GameObject Invoker;
+    public readonly AudioClip[] DeathSounds;     // If object has multiple death sounds, for example to play a random one
+    public readonly GameObject DeathParticles;
 
 
     public DieEvent(string description, GameObject invoker, AudioClip[] deathSounds, GameObject deathParticles) : base(description)

@@ -32,10 +32,10 @@ public class EventHandler : MonoBehaviour
         }
     }
 
-    public void RegisterListener<T>(Action<T> listener) where T : Event
+    public void RegisterListener<TEventType>(Action<TEventType> listener) where TEventType : Event
     {
         // Get the type of Event
-        Type eventType = typeof(T);
+        Type eventType = typeof(TEventType);
 
         // If the dictionary hasn't been declared yet
         if (eventListeners == null)
@@ -50,16 +50,16 @@ public class EventHandler : MonoBehaviour
         }
 
         // Wrap listener call to return an EventListener
-        EventListener wrapper = (eventInfo) => { listener((T)eventInfo); };
+        EventListener wrapper = (eventInfo) => { listener((TEventType)eventInfo); };
 
         // Add listener to the Event
         eventListeners[eventType].Add(wrapper);
     }
 
-    public void UnregisterListener<TGenericEventType>(Action<TGenericEventType> listener) where TGenericEventType : Event
+    public void UnregisterListener<TEventType>(Action<TEventType> listener) where TEventType : Event
     {
         // Get the type of event passed in
-        Type eventType = typeof(TGenericEventType);
+        Type eventType = typeof(TEventType);
 
         // If the event is not in the dictionary or the list of listeners is empty, there's nothing to unregister
         if (!eventListeners.ContainsKey(eventType) || eventListeners[eventType].Count == 0)
@@ -68,7 +68,7 @@ public class EventHandler : MonoBehaviour
         }
 
         // Wrap listener call to return an EventListener
-        EventListener wrapper = (eventInfo) => { listener((TGenericEventType)eventInfo); };
+        EventListener wrapper = (eventInfo) => { listener((TEventType)eventInfo); };
 
         // Remove listener from the list in dictionary
         eventListeners[eventType].Remove(wrapper);
@@ -79,16 +79,14 @@ public class EventHandler : MonoBehaviour
         // Get the type of event
         Type eventClass = eventInfo.GetType();
 
-        if (eventListeners == null || eventListeners[eventClass] == null)
+        if (eventListeners.ContainsKey(eventClass))
         {
-            // No one to shout at
-            return;
+            // Shout at anyone listening
+            foreach (EventListener listener in eventListeners[eventClass])
+            {
+                listener(eventInfo);
+            }
         }
 
-        // Shout at anyone listening
-        foreach (EventListener listener in eventListeners[eventClass])
-        {
-            listener(eventInfo);
-        }
     }
 }
