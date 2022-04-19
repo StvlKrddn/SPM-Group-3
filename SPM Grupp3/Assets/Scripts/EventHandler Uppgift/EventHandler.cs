@@ -9,18 +9,15 @@ public class EventHandler : MonoBehaviour
     delegate void EventListener(Event info);
     Dictionary<Type, List<EventListener>> eventListeners = new Dictionary<Type, List<EventListener>>();
 
-    public static EventHandler Instance { get { return instance; } }
-
-    void OnEnable()
-    {
-        if (instance == null)
+    public static EventHandler Instance { 
+        get 
         {
-            instance = this;
-        }
-        else
-        {
-            print("More than one EventHandler! GameObject: " + gameObject.name);
-        }
+            if (instance == null)
+            {
+                instance = FindObjectOfType<EventHandler>();
+            }
+            return instance; 
+        } 
     }
 
     public void RegisterListener<TEventType>(Action<TEventType> listener) where TEventType : Event

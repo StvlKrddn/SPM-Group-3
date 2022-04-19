@@ -12,7 +12,8 @@ public class BoostAbility : MonoBehaviour
     [SerializeField] private float boostCooldownTime = 5f;
 
     InputAction boostAction;
-    TankController tank;
+    TankController tankController;
+    TankState tankState;
 
     float speedBeforeBoost;
     bool allowedToBoost = true;
@@ -26,10 +27,11 @@ public class BoostAbility : MonoBehaviour
 
     void Start()
     {
-        tank = GetComponent<TankController>();
+        tankController = GetComponent<TankController>();
+        tankState = GetComponent<TankState>();
 
-        speedBeforeBoost = tank.StandardSpeed;
-        boostAction = tank.PlayerInput.actions["Boost"];
+        speedBeforeBoost = tankController.StandardSpeed;
+        boostAction = tankState.PlayerInput.actions["Boost"];
     }
 
     void Update()
@@ -52,12 +54,12 @@ public class BoostAbility : MonoBehaviour
             boostTimer -= Time.deltaTime;
 
             // Multiply movement speed
-            tank.StandardSpeed = Mathf.Lerp(tank.StandardSpeed, speedBeforeBoost * boostSpeedMultiplier, Time.deltaTime * boostAccelerationTimeMultiplier);
+            tankController.StandardSpeed = Mathf.Lerp(tankController.StandardSpeed, speedBeforeBoost * boostSpeedMultiplier, Time.deltaTime * boostAccelerationTimeMultiplier);
         }
         else
         {
             // Reset movement speed
-            tank.StandardSpeed = Mathf.Lerp(tank.StandardSpeed, speedBeforeBoost, Time.deltaTime * boostAccelerationTimeMultiplier);
+            tankController.StandardSpeed = Mathf.Lerp(tankController.StandardSpeed, speedBeforeBoost, Time.deltaTime * boostAccelerationTimeMultiplier);
         }
     }
 

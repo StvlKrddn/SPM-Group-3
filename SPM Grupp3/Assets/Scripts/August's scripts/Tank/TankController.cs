@@ -3,99 +3,65 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(Rigidbody), typeof(BoxCollider))]
+[RequireComponent(typeof(Rigidbody), typeof(BoxCollider), typeof(TankState))]
 public class TankController : MonoBehaviour
 {
-
     // Inspector variables
     [SerializeField] private float movementSpeed = 6f;
-    [SerializeField] private float health = 50f;
 
     // Components
-    protected Rigidbody rb;
-    protected Transform turretObject;
-    protected Transform spawnPoint;
-    protected Transform garage;
-    protected GameManager gameManager;
+    Rigidbody rb;
+    Transform turretObject;
 
     // Input components
-    protected InputAction moveGamepadAction;
-    protected InputAction aimAction;
-    protected PlayerInput playerInput;
-    protected PlayerInputManager inputManager;
+    InputAction moveGamepadAction;
+    InputAction aimAction;
 
     // Instance variables
-    protected Vector2 gamepadInputVector;
+    Vector2 gamepadInputVector;
     protected Vector3 aimInputVector;
-    protected float playerID;
-    protected float aimSpeed;
-    protected float currentHealth;
-    protected float standardSpeed;
-    protected Matrix4x4 isoMatrix;
+    float aimSpeed;
+    float standardSpeed;
+    Matrix4x4 isoMatrix;
 
     // Getters and Setters
-    public float StandardSpeed { get { return standardSpeed; } set { standardSpeed = value; } }
-    
-    public PlayerInput PlayerInput { get { return playerInput; } }
+    public float StandardSpeed { 
+        get 
+        { 
+            // Shady code until i figure out a fix
+            if (standardSpeed == 0)
+            {
+                standardSpeed = movementSpeed;
+            }
+            return standardSpeed; 
+        } 
+        set { standardSpeed = value; } }
 
-    void Awake()
+    void Start()
     {
-        gameManager = FindObjectOfType<GameManager>();
-
         InitializeInputSystem();
 
-        SetPlayerColor();
-
-        currentHealth = health;
         standardSpeed = movementSpeed;
 
         rb = GetComponent<Rigidbody>();
 
         turretObject = transform.GetChild(0);
-
-        garage = GameObject.Find("Garage").transform;
-        spawnPoint = garage.Find("PlayerSpawn");
-
-        transform.position = spawnPoint.position;
         
         aimSpeed = standardSpeed * 5;
 
         //Create isometric matrix
         isoMatrix = Matrix4x4.Rotate(Quaternion.Euler(0, 45, 0));
         /* Eplanation of isometric translation can be found here: https://youtu.be/8ZxVBCvJDWk */
-
-        // Subscribe to events
-        EventHandler.Instance.RegisterListener<NewWaveEvent>(OnNewWave);
     }
 
-    void OnDestroy()
-    {
-        // Unsubscribe to events to avoid memory leaks
-        EventHandler.Instance.UnregisterListener<NewWaveEvent>(OnNewWave);
-    }
+    
     
     void InitializeInputSystem()
     {
-        playerInput = GetComponent<PlayerInput>();
-        inputManager = gameManager.GetComponent<PlayerInputManager>();
-
-        playerID = playerInput.playerIndex;
+        PlayerInput playerInput = GetComponent<TankState>().PlayerInput;
 
         moveGamepadAction = playerInput.actions["Move"];
         aimAction = playerInput.actions["Aim"];
-    }
-
-    public void SetPlayerColor()
-    {
-        Renderer renderer = GetComponent<Renderer>();
-        if (playerID == 0)
-        {
-            renderer.material.color = Color.blue;
-        }
-        else
-        {
-            renderer.material.color = Color.red;
-        }
     }
 
     void Update()
@@ -145,40 +111,5 @@ public class TankController : MonoBehaviour
     {
         // Skewer the input vector 45 degrees to accomodate for the isometric perspective
         return isoMatrix.MultiplyPoint3x4(vector);
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.CompareTag("EnemyBullet"))
-        {
-            EnemyBullet enemyBullet = other.gameObject.GetComponent<EnemyBullet>();
-            TakeDamage(enemyBullet.damage);
-        }
-    }
-
-    void TakeDamage(float damage)
-    {
-        currentHealth -= damage;
-        if (currentHealth < 0)
-        {
-            print("Tank destroyed!");
-            DestroyTank();
-        }
-    }
-
-    void DestroyTank()
-    {
-        transform.position = spawnPoint.position;
-    }
-
-    void OnNewWave(NewWaveEvent eventInfo)
-    {
-        print("New Wave");
-        currentHealth = health;
-        if (playerInput.currentActionMap == playerInput.actions.FindActionMap("Parked"))
-        {
-            print("Parked!");
-            playerInput.SwitchCurrentActionMap("Tank");
-        }
     }
 }

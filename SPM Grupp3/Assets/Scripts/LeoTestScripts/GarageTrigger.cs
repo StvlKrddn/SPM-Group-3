@@ -12,7 +12,7 @@ public class GarageTrigger : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            TankController player = other.GetComponent<TankController>();
+            TankState player = other.GetComponent<TankState>();
             acceptAction = player.PlayerInput.actions["Accept"];
 
             print("Enter Garage? (Press A)");

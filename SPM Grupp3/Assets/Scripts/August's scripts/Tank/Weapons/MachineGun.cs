@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(TankController))]
 public class MachineGun : MonoBehaviour
 {
     [SerializeField] private float fireRate = 0.2f;
-    [SerializeField] private float bulletSpread = 35f;
+    [SerializeField] private float bulletSpread = 20f;
     [SerializeField] private float bulletRange = 20f;
     [SerializeField] private float bulletSpeed = 35f;
 
@@ -16,7 +17,7 @@ public class MachineGun : MonoBehaviour
     Transform bulletSpawner;
     Transform turretObject;
     InputAction shootAction;
-    TankController tank;
+    TankState tank;
 
     bool allowedToShoot = true;
 
@@ -27,7 +28,7 @@ public class MachineGun : MonoBehaviour
 
     void Start()
     {
-        tank = GetComponent<TankController>();
+        tank = GetComponent<TankState>();
 
         bulletSpread = Mathf.Clamp(bulletSpread, 0, 50);
 
