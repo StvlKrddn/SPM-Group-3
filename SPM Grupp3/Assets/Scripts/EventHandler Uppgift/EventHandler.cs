@@ -9,16 +9,7 @@ public class EventHandler : MonoBehaviour
     delegate void EventListener(Event info);
     Dictionary<Type, List<EventListener>> eventListeners = new Dictionary<Type, List<EventListener>>();
 
-    public static EventHandler Instance { 
-        get 
-        { 
-            if (instance == null)
-            {
-                instance = FindObjectOfType<EventHandler>();
-            }
-            return instance; 
-        } 
-    }
+    public static EventHandler Instance { get { return instance; } }
 
     void OnEnable()
     {

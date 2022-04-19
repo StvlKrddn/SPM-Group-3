@@ -8,75 +8,34 @@ public class TankController : MonoBehaviour
 {
 
     // Inspector variables
-    [Header("Movement properties")]
     [SerializeField] private float movementSpeed = 6f;
-
-    [Header("Health")]
     [SerializeField] private float health = 50f;
 
-    [Header("Shooting properties")]
-    [SerializeField] private float fireRate = 0.2f;
-    [SerializeField] private float bulletSpread = 35f;
-    [SerializeField] private float bulletRange = 20f;
-    [SerializeField] private float bulletSpeed = 35f;
-
-    [Header("Boost properties")]
-    [SerializeField] private float boostSpeedMultiplier = 3f;
-    [SerializeField] private float boostDuration = 1f;
-    [SerializeField] private float boostCooldownTime = 5f;
-
-    [Header("Bullet prefab: ")]
-    [SerializeField] private GameObject bullet;
-    
-
     // Components
-    private Rigidbody rb;
-    private Transform bulletSpawner;
-    private Transform turretObject;
-    private Transform spawnPoint;
-    private Transform garage;
-    private GarageTrigger garageTrigger;
-    private GameManager gameManager;
+    protected Rigidbody rb;
+    protected Transform turretObject;
+    protected Transform spawnPoint;
+    protected Transform garage;
+    protected GameManager gameManager;
 
     // Input components
-    private InputAction moveGamepadAction;
-    private InputAction aimAction;
-    private InputAction boostAction;
-    private InputAction shootAction;
-    private PlayerInput playerInput;
-    private PlayerInputManager inputManager;
+    protected InputAction moveGamepadAction;
+    protected InputAction aimAction;
+    protected PlayerInput playerInput;
+    protected PlayerInputManager inputManager;
 
-    // Private variables
-    private float playerID;
-    private Vector2 gamepadInputVector;
-    private Vector3 aimInputVector;
-    private float aimSpeed;
-    private bool allowedToShoot = true;
-    private bool allowedToBoost = true;
-    private float boostTimer;
-    private float boostAccelerationTimeMultiplier = 8f;
-    private float speedBeforeBoost;
-    private float bulletSpreadBeforeBoost;
-    private float bulletSpreadDuringBoostMultiplier = 2f;
-    private float bulletSpreadIncreaseMultiplier = 10f;
-    private Matrix4x4 isoMatrix;
-    private float currentHealth;
+    // Instance variables
+    protected Vector2 gamepadInputVector;
+    protected Vector3 aimInputVector;
+    protected float playerID;
+    protected float aimSpeed;
+    protected float currentHealth;
+    protected float standardSpeed;
+    protected Matrix4x4 isoMatrix;
 
     // Getters and Setters
-    public float MovementSpeed
-    {
-        get { return movementSpeed; }
-
-        // Any time movement speed is altered from another script, it updates the speedBeforeBoost value to reflect the new speed
-        set { movementSpeed = value; speedBeforeBoost = value; }
-    }
-    public float FireRate { get { return fireRate; } set { fireRate = value; } }
-    public float BulletSpread { get { return bulletSpread; } set { bulletSpread = value; } }
-    public float BulletRange { get { return bulletRange; } set { bulletRange = value; } }
-    public float BulletSpeed { get { return bulletSpeed; } set { bulletSpeed = value; } }
-    public float BoostSpeedMultiplier { get { return boostSpeedMultiplier; } set { boostSpeedMultiplier = value; } }
-    public float BoostDuration { get { return boostDuration; } set { boostDuration = value; } }
-    public float BoostCooldownTime { get { return boostCooldownTime; } set { boostCooldownTime = value; } }
+    public float StandardSpeed { get { return standardSpeed; } set { standardSpeed = value; } }
+    
     public PlayerInput PlayerInput { get { return playerInput; } }
 
     void Awake()
@@ -88,41 +47,31 @@ public class TankController : MonoBehaviour
         SetPlayerColor();
 
         currentHealth = health;
+        standardSpeed = movementSpeed;
 
         rb = GetComponent<Rigidbody>();
 
         turretObject = transform.GetChild(0);
-        bulletSpawner = turretObject.Find("BarrelEnd");
 
         garage = GameObject.Find("Garage").transform;
         spawnPoint = garage.Find("PlayerSpawn");
-        garageTrigger = garage.Find("GarageTrigger").gameObject.GetComponent<GarageTrigger>();
 
         transform.position = spawnPoint.position;
         
-        aimSpeed = movementSpeed * 5;
-
-        speedBeforeBoost = movementSpeed;
-        bulletSpreadBeforeBoost = bulletSpread;
-
-        bulletSpread = Mathf.Clamp(bulletSpread, 0, 60);
+        aimSpeed = standardSpeed * 5;
 
         //Create isometric matrix
         isoMatrix = Matrix4x4.Rotate(Quaternion.Euler(0, 45, 0));
         /* Eplanation of isometric translation can be found here: https://youtu.be/8ZxVBCvJDWk */
-    }
 
-    void OnEnable()
-    {
         // Subscribe to events
         EventHandler.Instance.RegisterListener<NewWaveEvent>(OnNewWave);
     }
 
-    void OnDisable()
+    void OnDestroy()
     {
         // Unsubscribe to events to avoid memory leaks
         EventHandler.Instance.UnregisterListener<NewWaveEvent>(OnNewWave);
-        //garageTrigger.OnTankEnterGarage -= OnTankEnterGarage;
     }
     
     void InitializeInputSystem()
@@ -134,8 +83,6 @@ public class TankController : MonoBehaviour
 
         moveGamepadAction = playerInput.actions["Move"];
         aimAction = playerInput.actions["Aim"];
-        boostAction = playerInput.actions["Boost"];
-        shootAction = playerInput.actions["Shoot"];
     }
 
     public void SetPlayerColor()
@@ -156,14 +103,7 @@ public class TankController : MonoBehaviour
         gamepadInputVector = moveGamepadAction.ReadValue<Vector2>();
         aimInputVector = aimAction.ReadValue<Vector2>();
 
-        Boost();
-        RotateTurret();
-
-        if (shootAction.IsPressed() && allowedToShoot)
-        {
-            StartCoroutine(Shoot());
-        }
-            
+        RotateTurret(); 
     }
 
     void FixedUpdate()
@@ -173,18 +113,19 @@ public class TankController : MonoBehaviour
 
     void Move()
     {
-        // Reform the input vector to the right plane
+        // Translate the input vector to the right plane
         Vector3 movementVector = new Vector3(gamepadInputVector.x, 0, gamepadInputVector.y);
 
+        // Translate vector to an isometric viewpoint
         Vector3 skewedVector = TranslateToIsometric(movementVector);
         
-        Vector3 movement = skewedVector * movementSpeed * Time.deltaTime;
+        Vector3 movement = skewedVector * standardSpeed * Time.deltaTime;
 
         rb.MovePosition(transform.position + movement);
 
         if (moveGamepadAction.IsPressed())
         {
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(skewedVector), Time.deltaTime * movementSpeed);
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(skewedVector), Time.deltaTime * standardSpeed);
         }
     }
 
@@ -198,73 +139,7 @@ public class TankController : MonoBehaviour
         {
             turretObject.rotation = Quaternion.Slerp(turretObject.rotation, Quaternion.LookRotation(skewedVector), Time.deltaTime * aimSpeed);
         }
-    }
-
-    IEnumerator Shoot()
-    {
-        allowedToShoot = false;
-        SpawnBullet();
-        yield return new WaitForSeconds(fireRate);
-        allowedToShoot = true;
-    }
-
-    void SpawnBullet()
-    {
-        Quaternion spreadDirection = ComputeBulletSpread();
-        
-        GameObject spawnedBullet = Instantiate(
-            original: bullet, 
-            position: bulletSpawner.position, 
-            rotation: bulletSpawner.rotation * spreadDirection
-            );
-    }
-
-    Quaternion ComputeBulletSpread()
-    {
-        // Produce a random rotation within a certain radius
-        Vector3 randomDirection = bulletSpawner.forward + Random.insideUnitSphere * bulletSpread;
-
-        // Prevent too much spread up and down
-        randomDirection = new Vector3(Mathf.Clamp01(randomDirection.x), randomDirection.y, randomDirection.z);
-
-        return Quaternion.Euler(randomDirection);
-    }
-
-    void Boost()
-    {
-        if (boostAction.IsPressed() && allowedToBoost)
-        {
-            StartCoroutine(BoostCooldown());
-        
-            boostTimer = boostDuration;
-        }
-        
-        // If the boost timer is not yet finished
-        if (boostTimer > 0f)
-        {
-            // Subtract elapsed time since last frame from timer
-            boostTimer -= Time.deltaTime;
-
-            // Multiply movement speed
-            movementSpeed = Mathf.Lerp(movementSpeed, speedBeforeBoost * boostSpeedMultiplier, Time.deltaTime * boostAccelerationTimeMultiplier);
-
-            // Increase bullet spread during boost
-            bulletSpread = Mathf.Lerp(bulletSpread, bulletSpreadBeforeBoost * bulletSpreadDuringBoostMultiplier, Time.deltaTime * bulletSpreadIncreaseMultiplier);
-        }
-        else
-        {
-            // Reset movement speed and bullet spread
-            movementSpeed = Mathf.Lerp(movementSpeed, speedBeforeBoost, Time.deltaTime * boostAccelerationTimeMultiplier);
-            bulletSpread = Mathf.Lerp(bulletSpread, bulletSpreadBeforeBoost, Time.deltaTime * bulletSpreadIncreaseMultiplier);
-        }
-    }
-
-    IEnumerator BoostCooldown()
-    {
-        allowedToBoost = false;
-        yield return new WaitForSeconds(boostCooldownTime);
-        allowedToBoost = true;
-    }
+    } 
 
     Vector3 TranslateToIsometric(Vector3 vector)
     {
@@ -299,7 +174,11 @@ public class TankController : MonoBehaviour
     void OnNewWave(NewWaveEvent eventInfo)
     {
         print("New Wave");
-        playerInput.SwitchCurrentActionMap("Tank");
         currentHealth = health;
+        if (playerInput.currentActionMap == playerInput.actions.FindActionMap("Parked"))
+        {
+            print("Parked!");
+            playerInput.SwitchCurrentActionMap("Tank");
+        }
     }
 }

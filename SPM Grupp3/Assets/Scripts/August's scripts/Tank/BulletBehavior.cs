@@ -4,18 +4,21 @@ using UnityEngine;
 
 public class BulletBehavior : MonoBehaviour
 {
-    private float bulletSpeed;
-    private float range;
-    [SerializeField] private GameObject tank;
     [SerializeField] private float bulletDamage;
     
-    private Vector3 originalPosition;
+    GameObject tank;
+
+    float bulletSpeed;
+    float range;
+    
+    Vector3 originalPosition;
 
     void Start()
     {
+        tank = FindObjectOfType<TankController>().gameObject;
         originalPosition = transform.position;
-        bulletSpeed = tank.GetComponent<TankController>().BulletSpeed;
-        range = tank.GetComponent<TankController>().BulletRange;
+        bulletSpeed = tank.GetComponent<MachineGun>().BulletSpeed;
+        range = tank.GetComponent<MachineGun>().BulletRange;
     }
 
     void Update()
