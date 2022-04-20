@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(TankController))]
-public class Canon : MonoBehaviour
+public class Canon : MonoBehaviour, ITankWeapon
 {
     [SerializeField] private float fireRate = 0.8f;
     [SerializeField] private float bulletSpread = 0f;
@@ -12,9 +12,10 @@ public class Canon : MonoBehaviour
     [SerializeField] private float bulletSpeed = 50f;
 
     [Header("Bullet prefab: ")]
-    [SerializeField] private GameObject bullet;
+    [SerializeField] private GameObject bulletPrefab;
 
     Transform bulletSpawner;
+    BulletBehavior bullet;
     Transform turretObject;
     InputAction shootAction;
     TankState tank;
@@ -29,6 +30,8 @@ public class Canon : MonoBehaviour
     void Start()
     {
         tank = GetComponent<TankState>();
+
+        bullet = bulletPrefab.GetComponent<BulletBehavior>();
 
         bulletSpread = Mathf.Clamp(bulletSpread, 0, 50);
 
@@ -60,7 +63,7 @@ public class Canon : MonoBehaviour
         Quaternion spreadDirection = ComputeBulletSpread();
 
         GameObject spawnedBullet = Instantiate(
-            original: bullet,
+            original: bulletPrefab,
             position: bulletSpawner.position,
             rotation: bulletSpawner.rotation * spreadDirection
             );
@@ -75,5 +78,20 @@ public class Canon : MonoBehaviour
         randomDirection = new Vector3(Mathf.Clamp01(randomDirection.x), randomDirection.y, randomDirection.z);
 
         return Quaternion.Euler(randomDirection);
+    }
+
+    public void UpgradeFirerate(float modifier)
+    {
+        fireRate += modifier;
+    }
+
+    public void UpgradeDamage(float modifier)
+    {
+        bullet.BulletDamage += modifier;
+    }
+
+    public void UpgradeRange(float modifier)
+    {
+        bullet.BulletRange += modifier;
     }
 }

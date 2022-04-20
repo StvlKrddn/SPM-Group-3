@@ -92,6 +92,7 @@ public class EnemyController : MonoBehaviour
             BulletBehavior bullet = other.gameObject.GetComponent<BulletBehavior>();
             GameObject hitEffektInstance = Instantiate(hitEffect, transform.position, transform.rotation);
             TakeDamage(bullet.BulletDamage);
+            Destroy(hitEffektInstance, 1f);
         }
     }
 
