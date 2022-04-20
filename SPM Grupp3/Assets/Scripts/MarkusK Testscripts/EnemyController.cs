@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyController : MonoBehaviour
@@ -18,11 +20,15 @@ public class EnemyController : MonoBehaviour
     public Transform bullet;
     public Transform material;
 
+    private float defaultSpeed;
+    public List<int> poisonTickTimers = new List<int>();
+
 
     // Start is called before the first frame update
 
     private void Awake()
     {
+        defaultSpeed = speed;
         gM = FindObjectOfType<GameManager>();
         //Change to right tank when done with tanks
         tank1 = FindObjectOfType<TankController>().gameObject;
@@ -111,4 +117,37 @@ public class EnemyController : MonoBehaviour
         Destroy(gameObject);
     }
 
+    public void HitBySlow(float slowProc)
+    {
+        speed *= slowProc;
+        Invoke("SlowDuration", 3f);
+    }
+
+    void SlowDuration()
+    {
+        speed = defaultSpeed;
+    }
+
+    public void HitByPoison(int ticks, int dps)
+    {
+        if (poisonTickTimers.Count <= 0)
+        {
+            poisonTickTimers.Add(ticks);
+            StartCoroutine(PoisonTick(dps));
+        }
+    }
+
+    IEnumerator PoisonTick(int dps)
+    {
+        while (poisonTickTimers.Count > 0)
+        {
+            for (int i = 0; i < poisonTickTimers.Count; i++)
+            {
+                poisonTickTimers[i]--;
+            }
+            TakeDamage(dps);
+            poisonTickTimers.RemoveAll(i => i == 0);
+            yield return new WaitForSeconds(0.75f);
+        }
+    }
 }

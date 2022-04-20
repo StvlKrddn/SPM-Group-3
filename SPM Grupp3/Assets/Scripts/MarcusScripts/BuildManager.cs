@@ -17,7 +17,8 @@ public class BuildManager : MonoBehaviour
 
     public GameObject cannonTowerPrefab;
     public GameObject missileTowerPrefab;
-
+    public GameObject slowTowerPrefab;
+    public GameObject poisonTowerPrefab;
 
     private GameObject towerToBuild;
     private GameObject clickedArea;

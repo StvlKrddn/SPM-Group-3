@@ -8,6 +8,10 @@ public class Shot : MonoBehaviour
     public float shotSpeed = 1f;
     [SerializeField] private float shotDamage = 50f;
     public GameObject hitEffect;
+    [SerializeField] private int poisonTicks = 5;
+    [SerializeField] private int poisonDamagePerTick = 25;
+
+    [SerializeField] private float slowProc = 0.7f;
 
     public void Seek(Transform _target)
     {
@@ -41,8 +45,30 @@ public class Shot : MonoBehaviour
         GameObject effectInstance = Instantiate(hitEffect, transform.position, transform.rotation);
         Destroy(effectInstance, 1f);
 
-        //enemyTarget.TakeDamage(shotDamage);
-        Destroy(target.gameObject);
+        TypeOfShot(enemyTarget);
+        
+/*        Destroy(target.gameObject);*/
         Destroy(gameObject);
+    }
+
+    void TypeOfShot(EnemyController enemyTarget)
+    {
+        switch (gameObject.tag)
+        {
+            case "PoisonTower":
+                shotDamage = 0f;
+                enemyTarget.HitByPoison(poisonTicks, poisonDamagePerTick);
+                break;
+            case "SlowTower":
+                shotDamage = 0f;
+                enemyTarget.HitBySlow(slowProc);
+                break;
+            case "MissileTower":
+                break;
+            default:
+                enemyTarget.TakeDamage(shotDamage);
+                break;
+        }
+            
     }
 }
