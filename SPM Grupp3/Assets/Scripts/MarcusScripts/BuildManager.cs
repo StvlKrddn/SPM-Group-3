@@ -1,10 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class BuildManager : MonoBehaviour
 {
+    [SerializeField] private Transform garage;
+    
     public static BuildManager instance;
+    
+    private GarageTrigger garageTrigger;
 
     private void Awake()
     {

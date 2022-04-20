@@ -6,7 +6,7 @@ public class Shot : MonoBehaviour
 {
     private Transform target;
     public float shotSpeed = 1f;
-    [SerializeField] private float shotDamage = 50f;
+    [SerializeField] private float shotDamage = 5000f;
     public GameObject hitEffect;
     [SerializeField] private int poisonTicks = 5;
     [SerializeField] private int poisonDamagePerTick = 25;
@@ -45,10 +45,16 @@ public class Shot : MonoBehaviour
         GameObject effectInstance = Instantiate(hitEffect, transform.position, transform.rotation);
         Destroy(effectInstance, 1f);
 
+<<<<<<< HEAD
         TypeOfShot(enemyTarget);
         
 /*        Destroy(target.gameObject);*/
         Destroy(gameObject);
+=======
+        enemyTarget.TakeDamage(shotDamage);
+    //    Destroy(target.gameObject);
+          Destroy(gameObject);
+>>>>>>> main
     }
 
     void TypeOfShot(EnemyController enemyTarget)

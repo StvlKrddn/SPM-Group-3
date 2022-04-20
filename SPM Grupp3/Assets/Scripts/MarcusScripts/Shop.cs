@@ -56,7 +56,7 @@ public class Shop : MonoBehaviour
         print(buildManager.TowerToBuild.GetComponent<Tower>().cost);
         print(gameManager.Money);
 
-        if (buildManager.TowerToBuild.GetComponent<Tower>().cost > gameManager.Money)
+        if (!gameManager.spendResources(buildManager.TowerToBuild.GetComponent<Tower>().cost, 5) )
         {
             towerPlacement.SetStartColor();
             buildManager.ClickedArea = null;
@@ -64,7 +64,7 @@ public class Shop : MonoBehaviour
             return;
         }
 
-        gameManager.spendResources(buildManager.TowerToBuild.GetComponent<Tower>().cost, 0);
+     //   gameManager.spendResources(buildManager.TowerToBuild.GetComponent<Tower>().cost, 5);
 
         print(buildManager.TowerToBuild.GetComponent<Tower>().cost);
         print(gameManager.Money);
