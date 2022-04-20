@@ -150,4 +150,16 @@ public class EnemyController : MonoBehaviour
             yield return new WaitForSeconds(0.75f);
         }
     }
+
+    public void HitBySplash(float radius, float splashDamage)
+    {
+        Collider[] colliders = Physics.OverlapSphere(transform.position, radius);
+        foreach (Collider c in colliders)
+        {
+            if (c.GetComponent<EnemyController>())
+            {
+                c.GetComponent<EnemyController>().TakeDamage(splashDamage);
+            }
+        }
+    }
 }

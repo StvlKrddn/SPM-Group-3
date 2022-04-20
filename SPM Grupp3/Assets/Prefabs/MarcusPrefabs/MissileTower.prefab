@@ -102,7 +102,7 @@ GameObject:
   - component: {fileID: 1569145757135069706}
   m_Layer: 8
   m_Name: Shot
-  m_TagString: Bullet
+  m_TagString: MissileTower
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -184,8 +184,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shotSpeed: 40
-  shotDamage: 500000
+  shotDamage: 40
   hitEffect: {fileID: 5202362185975563897, guid: afc452a4019ab8b47ac2ea888849a086, type: 3}
+  poisonTicks: 5
+  poisonDamagePerTick: 25
+  slowProc: 0.7
+  splashRadius: 3
+  splashDamage: 20
 --- !u!1 &1569145758302136571
 GameObject:
   m_ObjectHideFlags: 0

@@ -12,6 +12,8 @@ public class Shot : MonoBehaviour
     [SerializeField] private int poisonDamagePerTick = 25;
 
     [SerializeField] private float slowProc = 0.7f;
+    [SerializeField] private float splashRadius = 1f;
+    [SerializeField] private float splashDamage = 20f;
 
     public void Seek(Transform _target)
     {
@@ -45,16 +47,10 @@ public class Shot : MonoBehaviour
         GameObject effectInstance = Instantiate(hitEffect, transform.position, transform.rotation);
         Destroy(effectInstance, 1f);
 
-<<<<<<< HEAD
         TypeOfShot(enemyTarget);
         
 /*        Destroy(target.gameObject);*/
         Destroy(gameObject);
-=======
-        enemyTarget.TakeDamage(shotDamage);
-    //    Destroy(target.gameObject);
-          Destroy(gameObject);
->>>>>>> main
     }
 
     void TypeOfShot(EnemyController enemyTarget)
@@ -70,6 +66,8 @@ public class Shot : MonoBehaviour
                 enemyTarget.HitBySlow(slowProc);
                 break;
             case "MissileTower":
+                enemyTarget.HitBySplash(splashRadius, splashDamage);
+                enemyTarget.TakeDamage(shotDamage);
                 break;
             default:
                 enemyTarget.TakeDamage(shotDamage);
