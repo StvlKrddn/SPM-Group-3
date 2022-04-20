@@ -34,7 +34,12 @@ public class BuildManager : MonoBehaviour
 
     private void Start()
     {
-        
+        EventHandler.Instance.RegisterListener<GarageEvent>(EnterBuildMode);
+    }
+
+    void OnDisable()
+    {
+        //EventHandler.Instance.UnregisterListener<GarageEvent>(EnterBuildMode);
     }
 
     public void InstantiateTower()
@@ -54,7 +59,12 @@ public class BuildManager : MonoBehaviour
         /*UI.SetActive(false);*/
     }
 
-    
+    void EnterBuildMode(GarageEvent eventInfo)
+    {
+        print("Entered Build Mode!");
+        //player.PlayerInput.SwitchCurrentActionMap("Builder");
+    }
+
 
     /*    public GameObject GetTowerToBuild()
         {

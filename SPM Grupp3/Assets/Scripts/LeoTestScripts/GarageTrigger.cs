@@ -19,7 +19,6 @@ public class GarageTrigger : MonoBehaviour
             if (acceptAction.IsPressed())
             {
                 print("Entered Garage");
-                player.PlayerInput.SwitchCurrentActionMap("Parked");
                 EventHandler.Instance.InvokeEvent(new GarageEvent(
                     description: "A player entered the garage",
                     player: other.gameObject

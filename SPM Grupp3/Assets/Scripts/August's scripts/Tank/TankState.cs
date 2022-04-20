@@ -37,7 +37,10 @@ public class TankState : MonoBehaviour
 
         // Subscribe to events
         EventHandler.Instance.RegisterListener<NewWaveEvent>(OnNewWave);
+        EventHandler.Instance.RegisterListener<GarageEvent>(OnEnterGarage);
     }
+
+    
 
     void InitializeInputSystem()
     {
@@ -66,10 +69,10 @@ public class TankState : MonoBehaviour
         transform.position = spawnPoint.position;
     }
 
-    void OnDestroy()
+    void OnDisable()
     {
         // Unsubscribe to events to avoid memory leaks
-        EventHandler.Instance.UnregisterListener<NewWaveEvent>(OnNewWave);
+        //EventHandler.Instance.UnregisterListener<NewWaveEvent>(OnNewWave);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -100,9 +103,10 @@ public class TankState : MonoBehaviour
     void OnNewWave(NewWaveEvent eventInfo)
     {
         currentHealth = health;
-        if (playerInput.currentActionMap == playerInput.actions.FindActionMap("Parked"))
-        {
-            playerInput.SwitchCurrentActionMap("Tank");
-        }
+    }
+
+    void OnEnterGarage(GarageEvent obj)
+    {
+        playerInput.SwitchCurrentActionMap("Builder");
     }
 }
