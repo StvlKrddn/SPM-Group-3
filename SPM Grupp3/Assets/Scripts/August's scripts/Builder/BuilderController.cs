@@ -23,12 +23,12 @@ public class BuilderController : MonoBehaviour
 
     bool previousMouseState;
 
-    void OnEnable()
+    void Awake()
     {
         InputSystem.onAfterUpdate += UpdateVirtualMouse;
-        EventHandler.Instance.RegisterListener<GarageEvent>(EnterBuildMode);
+        EventHandler.Instance.RegisterListener<EnterBuildModeEvent>(EnterBuildMode);
 
-        playerInput = GetComponent<PlayerInput>();
+        playerInput = transform.parent.GetComponent<PlayerInput>();
         stickAction = playerInput.actions["Cursor"];
         acceptAction = playerInput.actions["Accept"];
 
@@ -72,7 +72,7 @@ public class BuilderController : MonoBehaviour
 
     Vector2 MoveMouse()
     {
-        Vector2 cursorMovement = stickAction.ReadValue<Vector2>();
+        Vector2 cursorMovement = Gamepad.current.leftStick.ReadValue();
         cursorMovement *= cursorSpeed * Time.unscaledDeltaTime;
         Vector2 newPosition = virtualMouse.position.ReadValue() + cursorMovement;
 
@@ -87,7 +87,7 @@ public class BuilderController : MonoBehaviour
 
     void CheckIfClicked()
     {
-        bool isAcceptPressed = acceptAction.IsPressed();
+        bool isAcceptPressed = Gamepad.current.aButton.IsPressed();
 
         // If the button is not already pressed
         if (previousMouseState != isAcceptPressed)
@@ -110,7 +110,7 @@ public class BuilderController : MonoBehaviour
         cursorTransform.anchoredPosition = anchoredPosition;
     }
 
-    void EnterBuildMode(GarageEvent eventInfo)
+    void EnterBuildMode(EnterBuildModeEvent eventInfo)
     {
         cursorTransform.gameObject.SetActive(true);
     }

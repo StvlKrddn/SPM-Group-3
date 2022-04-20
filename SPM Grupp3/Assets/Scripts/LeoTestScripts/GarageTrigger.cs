@@ -10,7 +10,7 @@ public class GarageTrigger : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Tank"))
         {
             TankState player = other.GetComponent<TankState>();
             acceptAction = player.PlayerInput.actions["Accept"];
@@ -18,10 +18,9 @@ public class GarageTrigger : MonoBehaviour
             print("Enter Garage? (Press A)");
             if (acceptAction.IsPressed())
             {
-                print("Entered Garage");
-                EventHandler.Instance.InvokeEvent(new GarageEvent(
-                    description: "A player entered the garage",
-                    player: other.gameObject
+                EventHandler.Instance.InvokeEvent(new PlayerSwitchEvent(
+                    description: "A player switched mode",
+                    playerContainer: other.transform.parent.gameObject
                     ));
             }
         }   

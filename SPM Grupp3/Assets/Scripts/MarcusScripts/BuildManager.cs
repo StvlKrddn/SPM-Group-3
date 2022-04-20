@@ -32,11 +32,6 @@ public class BuildManager : MonoBehaviour
     public GameObject TowerToBuild { get { return towerToBuild; } set { towerToBuild = value; } }
     public GameObject ClickedArea { get { return clickedArea; } set { clickedArea = value; } }
 
-    private void Start()
-    {
-        EventHandler.Instance.RegisterListener<GarageEvent>(EnterBuildMode);
-    }
-
     void OnDisable()
     {
         //EventHandler.Instance.UnregisterListener<GarageEvent>(EnterBuildMode);
@@ -57,12 +52,6 @@ public class BuildManager : MonoBehaviour
         ClickedArea = null;
         TowerToBuild = null;
         /*UI.SetActive(false);*/
-    }
-
-    void EnterBuildMode(GarageEvent eventInfo)
-    {
-        print("Entered Build Mode!");
-        //player.PlayerInput.SwitchCurrentActionMap("Builder");
     }
 
 

@@ -1,5 +1,5 @@
 {
-    "name": "TankControlls",
+    "name": "PlayerControlls",
     "maps": [
         {
             "name": "Tank",
@@ -354,64 +354,20 @@
             ],
             "bindings": [
                 {
-                    "name": "Right stick",
-                    "id": "d20d4926-d7ef-4965-8806-9cf758d55c7a",
-                    "path": "2DVector(mode=2)",
+                    "name": "",
+                    "id": "44dee102-81e0-471c-8996-824038cd8bf2",
+                    "path": "<VirtualMouse>/position",
                     "interactions": "",
-                    "processors": "StickDeadzone",
-                    "groups": "",
+                    "processors": "",
+                    "groups": "Gamepad",
                     "action": "Cursor",
-                    "isComposite": true,
+                    "isComposite": false,
                     "isPartOfComposite": false
-                },
-                {
-                    "name": "up",
-                    "id": "bfd036fe-831f-45ea-a97a-b7cb3c214367",
-                    "path": "<Gamepad>/leftStick/up",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "Cursor",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "down",
-                    "id": "92edc978-36c8-487b-9bf4-f7b8f02cb547",
-                    "path": "<Gamepad>/leftStick/down",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "Cursor",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "left",
-                    "id": "d9b6034c-affa-42ea-b5c3-13e71c773e0e",
-                    "path": "<Gamepad>/leftStick/left",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "Cursor",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "right",
-                    "id": "b798940a-fd55-4d42-875b-128f15dc978b",
-                    "path": "<Gamepad>/leftStick/right",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Gamepad",
-                    "action": "Cursor",
-                    "isComposite": false,
-                    "isPartOfComposite": true
                 },
                 {
                     "name": "",
                     "id": "2ef0dba1-7b60-4127-99a6-5b31097451a0",
-                    "path": "<Gamepad>/buttonSouth",
+                    "path": "<VirtualMouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
@@ -430,6 +386,11 @@
                 {
                     "devicePath": "<Gamepad>",
                     "isOptional": false,
+                    "isOR": false
+                },
+                {
+                    "devicePath": "<VirtualMouse>",
+                    "isOptional": true,
                     "isOR": false
                 }
             ]

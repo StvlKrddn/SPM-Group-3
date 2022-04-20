@@ -37,14 +37,13 @@ public class TankState : MonoBehaviour
 
         // Subscribe to events
         EventHandler.Instance.RegisterListener<NewWaveEvent>(OnNewWave);
-        EventHandler.Instance.RegisterListener<GarageEvent>(OnEnterGarage);
     }
 
     
 
     void InitializeInputSystem()
     {
-        playerInput = GetComponent<PlayerInput>();
+        playerInput = transform.parent.GetComponent<PlayerInput>();
 
         playerID = playerInput.playerIndex;
     }
@@ -103,10 +102,5 @@ public class TankState : MonoBehaviour
     void OnNewWave(NewWaveEvent eventInfo)
     {
         currentHealth = health;
-    }
-
-    void OnEnterGarage(GarageEvent obj)
-    {
-        playerInput.SwitchCurrentActionMap("Builder");
     }
 }
