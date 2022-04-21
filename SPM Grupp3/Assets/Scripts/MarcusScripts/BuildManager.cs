@@ -34,6 +34,11 @@ public class BuildManager : MonoBehaviour
         towerToBuild = missileTowerPrefab;
     }
 
+    public void ChooseNeutral()
+    {
+        towerToBuild = null;
+    }
+
 /*    public GameObject GetTowerToBuild()
     {
         return towerToBuild;

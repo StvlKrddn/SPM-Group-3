@@ -32,6 +32,7 @@ public class TankController : MonoBehaviour
     [SerializeField] private GameObject bullet;
     [SerializeField] private Transform garage;
     [SerializeField] private GameManager gameManager;
+    [SerializeField] private BuildManager buildManager;
 
     // Component för att kunna aktivera menyn när fordonet triggar 
     [SerializeField] private GameObject buildView;
@@ -99,7 +100,7 @@ public class TankController : MonoBehaviour
         gameManager.OnNewWave += OnNewWave;
 
         // Kontrollerar att BuildView alltid är inaktiverad vid start på rond
-        BuildView.active = false;
+        buildView.SetActive(false);
 
         //Create isometric matrix
         isoMatrix = Matrix4x4.Rotate(Quaternion.Euler(0, 45, 0));
@@ -263,6 +264,7 @@ public class TankController : MonoBehaviour
         if (other.gameObject.CompareTag("Garage"))
         {
             buildView.SetActive(true);
+            Cursor.visible = true;
         }
     }
 
@@ -270,6 +272,8 @@ public class TankController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Garage"))
         {
+            buildManager.ChooseNeutral();
+            Cursor.visible = false;
             buildView.SetActive(false);
         }
     }
