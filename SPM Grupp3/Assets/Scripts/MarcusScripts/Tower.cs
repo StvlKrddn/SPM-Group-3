@@ -21,8 +21,6 @@ public class Tower : MonoBehaviour
     public GameObject tower;
     public LayerMask towers;
     public GameObject upgradeUI;
-
-    private GameObject placedUI;
     private Transform target;
     private bool clicked = false;
 

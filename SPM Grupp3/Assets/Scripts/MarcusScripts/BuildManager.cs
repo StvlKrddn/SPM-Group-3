@@ -40,8 +40,6 @@ public class BuildManager : MonoBehaviour
 
     public void InstantiateTower()
     {
-        /*       GameObject towerToBuild = TowerToBuild;*/
-        //if (gameManager.Money < towerToBuild)
         if (clickedArea == null)
         {
             return;
@@ -52,17 +50,5 @@ public class BuildManager : MonoBehaviour
         towerPlacement.SetStartColor();
         ClickedArea = null;
         TowerToBuild = null;
-        /*UI.SetActive(false);*/
     }
-
-    
-
-    /*    public GameObject GetTowerToBuild()
-        {
-            return towerToBuild;
-        }
-        public void SetTowerToBuild(GameObject tower)
-        {
-            towerToBuild = tower;
-        }*/
 }

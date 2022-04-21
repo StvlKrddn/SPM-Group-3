@@ -7,7 +7,6 @@ public class TowerPlacement : MonoBehaviour
 {
     public GameObject UI;
     public GameObject position;
-    public GameObject upgradeUI;
 /*    public GameObject placementClicked;*/
     public Color hoverColor;
     public GameManager gameManager;
@@ -41,7 +40,6 @@ public class TowerPlacement : MonoBehaviour
     {
         if (buildManager.ClickedArea != null)
         {
-            upgradeUI.SetActive(true);
             Debug.Log("Tower Already There = 100");
             return;
         }
