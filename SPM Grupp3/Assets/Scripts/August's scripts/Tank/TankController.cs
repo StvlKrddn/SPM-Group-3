@@ -34,7 +34,7 @@ public class TankController : MonoBehaviour
     [SerializeField] private GameManager gameManager;
 
     // Component för att kunna aktivera menyn när fordonet triggar 
-    [SerializeField] private GameObject BuildView;
+    [SerializeField] private GameObject buildView;
 
     // Components
     private Rigidbody rb;
@@ -262,7 +262,7 @@ public class TankController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Garage"))
         {
-            BuildView.active = true;
+            buildView.SetActive(true);
         }
     }
 
@@ -270,7 +270,7 @@ public class TankController : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Garage"))
         {
-            BuildView.active = false;
+            buildView.SetActive(false);
         }
     }
 
@@ -284,5 +284,4 @@ public class TankController : MonoBehaviour
     {
         allowedToMove = true;
     }
-
 }
