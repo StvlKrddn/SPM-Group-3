@@ -145,10 +145,11 @@ public class GameManager : MonoBehaviour
         UpdateResourcesUI();
     }
 
+    // Har enbart ändrat på texten metoden nedan
     private void UpdateResourcesUI()
     {
-        moneyUI.text = "Money: " + money;
-        materialUI.text = "Material: " + material;
+        moneyUI.text = "$" + money;
+        materialUI.text = "M" + material;
         waveUI.text = "Current Wave: " + currentWave;
         liveUI.text = "Lives: " + baseHealth;
     }
