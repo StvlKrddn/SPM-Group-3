@@ -20,8 +20,9 @@ public class EnemyController : MonoBehaviour
     public Transform bullet;
     public Transform material;
 
+    public GameObject hitByPoisonEffect;
     private float defaultSpeed;
-    public List<int> poisonTickTimers = new List<int>();
+    public List<float> poisonTickTimers = new List<float>();
 
 
     // Start is called before the first frame update
@@ -128,8 +129,10 @@ public class EnemyController : MonoBehaviour
         speed = defaultSpeed;
     }
 
-    public void HitByPoison(int ticks, int dps)
+    public void HitByPoison(float ticks, float dps)
     {
+        GameObject poisonEffect = Instantiate(hitByPoisonEffect, gameObject.transform);
+        Destroy(poisonEffect, ticks);
         if (poisonTickTimers.Count <= 0)
         {
             poisonTickTimers.Add(ticks);
@@ -137,7 +140,7 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    IEnumerator PoisonTick(int dps)
+    IEnumerator PoisonTick(float dps)
     {
         while (poisonTickTimers.Count > 0)
         {

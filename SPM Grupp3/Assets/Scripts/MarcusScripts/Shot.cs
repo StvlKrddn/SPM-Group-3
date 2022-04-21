@@ -8,12 +8,19 @@ public class Shot : MonoBehaviour
     public float shotSpeed = 1f;
     [SerializeField] private float shotDamage = 5000f;
     public GameObject hitEffect;
-    [SerializeField] private int poisonTicks = 5;
-    [SerializeField] private int poisonDamagePerTick = 25;
+    [SerializeField] private float poisonTicks = 5;
+    [SerializeField] private float poisonDamagePerTick = 25;
 
     [SerializeField] private float slowProc = 0.7f;
     [SerializeField] private float splashRadius = 1f;
     [SerializeField] private float splashDamage = 20f;
+
+    public float ShotDamage { get { return shotDamage; } set { shotDamage = value; } }
+    public float SlowProc { get { return slowProc; } set { slowProc = value; } }
+    public float SplashRadius { get { return splashRadius; } set { splashRadius = value; } }
+    public float SplashDamage { get { return splashDamage; } set { splashDamage = value; } }
+    public float PoisonTicks { get { return poisonTicks; } set { poisonTicks = value; } }
+    public float PoisonDamagePerTick { get { return poisonDamagePerTick; } set { poisonDamagePerTick = value; } }
 
     public void Seek(Transform _target)
     {
@@ -59,18 +66,18 @@ public class Shot : MonoBehaviour
         {
             case "PoisonTower":
                 shotDamage = 0f;
-                enemyTarget.HitByPoison(poisonTicks, poisonDamagePerTick);
+                enemyTarget.HitByPoison(PoisonTicks, PoisonDamagePerTick);
                 break;
             case "SlowTower":
                 shotDamage = 0f;
-                enemyTarget.HitBySlow(slowProc);
+                enemyTarget.HitBySlow(SlowProc);
                 break;
             case "MissileTower":
-                enemyTarget.HitBySplash(splashRadius, splashDamage);
-                enemyTarget.TakeDamage(shotDamage);
+                enemyTarget.HitBySplash(SplashRadius, SplashDamage);
+                enemyTarget.TakeDamage(ShotDamage);
                 break;
             default:
-                enemyTarget.TakeDamage(shotDamage);
+                enemyTarget.TakeDamage(ShotDamage);
                 break;
         }
             
