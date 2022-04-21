@@ -33,7 +33,7 @@ public class Health : MonoBehaviour
             {
                 currentHealth = maxHealth;
                 ModifyHealth(-1.0f);
-                tankController.MoveToGarage();
+                //tankController.MoveToGarage();
             }
 
             Destroy(enemyBullet);
