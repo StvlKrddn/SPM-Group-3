@@ -18,23 +18,17 @@ public class BuilderController : MonoBehaviour
 
     Mouse virtualMouse;
     PlayerInput playerInput;
-    InputAction stickAction;
-    InputAction acceptAction;
 
     Vector2 screenMiddle;
-    Vector2 stickInput;
-    bool acceptInput;
     bool previousMouseState;
 
     void Awake()
     {
         screenMiddle = new Vector2(Screen.width / 2, Screen.height / 2);
 
-        EventHandler.Instance.RegisterListener<EnterBuildModeEvent>(EnterBuildMode);
+        //EventHandler.Instance.RegisterListener<EnterBuildModeEvent>(EnterBuildMode);
 
         playerInput = transform.parent.GetComponent<PlayerInput>();
-        stickAction = playerInput.actions["Point"];
-        acceptAction = playerInput.actions["Click"];
 
         if (virtualMouse == null)
         {
@@ -57,6 +51,7 @@ public class BuilderController : MonoBehaviour
 
     private void OnEnable()
     {
+        cursorTransform.gameObject.SetActive(true);
         ResetPosition();
         InputSystem.onAfterUpdate += UpdateVirtualMouse;
     }
@@ -64,14 +59,19 @@ public class BuilderController : MonoBehaviour
     void OnDisable()
     {
         ResetPosition();
-        cursorTransform.gameObject.SetActive(false);
+        if (cursorTransform != null) cursorTransform.gameObject.SetActive(false);
         InputSystem.onAfterUpdate -= UpdateVirtualMouse;
         //EventHandler.Instance.UnregisterListener<GarageEvent>(EnterBuildMode);
     }
 
+    void OnDestroy()
+    {
+        InputSystem.RemoveDevice(InputSystem.GetDevice("VirtualMouse"));
+    }
+
     void ResetPosition()
     {
-        InputState.Change(virtualMouse, screenMiddle);
+        InputState.Change(virtualMouse.position, screenMiddle);
         UpdateCursorImage(screenMiddle);
     }
 
@@ -119,18 +119,15 @@ public class BuilderController : MonoBehaviour
     
     void UpdateCursorImage(Vector2 newPosition)
     {
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            rect: canvas.GetComponent<RectTransform>(), 
-            screenPoint: newPosition,
-            cam: canvas.GetComponent<Canvas>().renderMode == RenderMode.ScreenSpaceOverlay ? null : Camera.main, 
-            localPoint: out Vector2 anchoredPosition
-            );
-        cursorTransform.anchoredPosition = anchoredPosition;
-    }
-
-    void EnterBuildMode(EnterBuildModeEvent eventInfo)
-    {
-        ResetPosition();
-        cursorTransform.gameObject.SetActive(true);
+        if (cursorTransform != null)
+        {
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                rect: canvas.GetComponent<RectTransform>(), 
+                screenPoint: newPosition,
+                cam: canvas.GetComponent<Canvas>().renderMode == RenderMode.ScreenSpaceOverlay ? null : Camera.main, 
+                localPoint: out Vector2 anchoredPosition
+                );
+            cursorTransform.anchoredPosition = anchoredPosition;
+        }
     }
 }
