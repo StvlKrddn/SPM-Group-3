@@ -20,10 +20,9 @@ public class Tower : MonoBehaviour
     public GameObject radius;
     public GameObject tower;
     public LayerMask towers;
-    
+    public GameObject upgradeUI;
     private Transform target;
-
-
+    private bool clicked = false;
 
     private void OnDrawGizmosSelected()
     {
@@ -31,16 +30,23 @@ public class Tower : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, range);
     }
 
-    void UpgradeRange()
-    {
-        range++;
+    private void OnMouseDown()
+    {    
+        if (clicked == false)
+        {
+            radius.SetActive(true);
+            upgradeUI.SetActive(true);
+            /*placedUI = Instantiate(upgradeUI, gameObject.transform);*/
+            clicked = true;
+        }
+        else
+        {
+            radius.SetActive(false);
+            upgradeUI.SetActive(false);
+            /*Destroy(placedUI);*/
+            clicked = false;
+        }       
     }
-
-    void UpgradeFireRate()
-    {
-        fireRate++;
-    }
-
 
     void UpdateTarget()
     {
@@ -72,7 +78,6 @@ public class Tower : MonoBehaviour
     {
         radius.transform.localScale = new Vector3(range * 2f,0.01f,range * 2f);
         radius.SetActive(false);
-
         InvokeRepeating("UpdateTarget", 0f, 0.5f);
     }
 
