@@ -58,7 +58,7 @@ public class TankController : MonoBehaviour
     
     void InitializeInputSystem()
     {
-        PlayerInput playerInput = GetComponent<TankState>().PlayerInput;
+        PlayerInput playerInput = transform.parent.GetComponent<PlayerInput>();
 
         moveGamepadAction = playerInput.actions["Move"];
         aimAction = playerInput.actions["Aim"];

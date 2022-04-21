@@ -12,8 +12,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float material = 0f;
     [SerializeField] private float money = 350f;
     [SerializeField] private float victoryWave = 9f;
-    
+
     [Header("Enemies: ")]
+    [SerializeField] private bool spawnEnemies = true;
     [SerializeField] private Transform regularEnemy;
     [SerializeField] private float timeBetweenEnemy = 0.5f;
     [SerializeField] private Transform spawnPosition;
@@ -24,16 +25,20 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Text moneyUI;
     [SerializeField] private Text materialUI;
 
+    [Header("Player")]
+    [SerializeField] private PlayerMode startingMode;
+
     private int currentWave = 0;
     private bool waveOff = false;
     private float timer = 0;
 
     private int[] enemiesAmount = { 3, 3, 5, 5, 8 };
-    public int amountOfWaves;
+    private int amountOfWaves;
 
-    public Vector3[] theWaves;
+    private Vector3[] theWaves;
 
     public float Money { get { return money; } set { money = value; } }
+    public PlayerMode StartingMode { get { return startingMode; } }
 
     private void Start()
     {
@@ -42,16 +47,19 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if (timer >= timeBetweenWave)
+        if (spawnEnemies)
         {
-            StartCoroutine(SpawnWave());
-            timer = 0;
-            waveOff = true;
-        }
+            if (timer >= timeBetweenWave)
+            {
+                StartCoroutine(SpawnWave());
+                timer = 0;
+                waveOff = true;
+            }
 
-        if (waveOff == false)
-        {
-            timer += Time.deltaTime;
+            if (waveOff == false)
+            {
+                timer += Time.deltaTime;
+            }
         }
     }
 
@@ -145,10 +153,11 @@ public class GameManager : MonoBehaviour
         UpdateResourcesUI();
     }
 
+    // Har enbart ändrat på texten metoden nedan
     private void UpdateResourcesUI()
     {
-        moneyUI.text = "Money: " + money;
-        materialUI.text = "Material: " + material;
+        moneyUI.text = "$" + money;
+        materialUI.text = "M" + material;
         waveUI.text = "Current Wave: " + currentWave;
         liveUI.text = "Lives: " + baseHealth;
     }

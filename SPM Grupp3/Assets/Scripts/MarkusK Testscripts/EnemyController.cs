@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyController : MonoBehaviour
@@ -18,11 +20,16 @@ public class EnemyController : MonoBehaviour
     public Transform bullet;
     public Transform material;
 
+    public GameObject hitByPoisonEffect;
+    private float defaultSpeed;
+    public List<float> poisonTickTimers = new List<float>();
+
 
     // Start is called before the first frame update
 
     private void Awake()
     {
+        defaultSpeed = speed;
         gM = FindObjectOfType<GameManager>();
         //Change to right tank when done with tanks
         tank1 = FindObjectOfType<TankController>().gameObject;
@@ -92,6 +99,7 @@ public class EnemyController : MonoBehaviour
             BulletBehavior bullet = other.gameObject.GetComponent<BulletBehavior>();
             GameObject hitEffektInstance = Instantiate(hitEffect, transform.position, transform.rotation);
             TakeDamage(bullet.BulletDamage);
+            Destroy(hitEffektInstance, 1f);
         }
     }
 
@@ -111,4 +119,51 @@ public class EnemyController : MonoBehaviour
         Destroy(gameObject);
     }
 
+    public void HitBySlow(float slowProc)
+    {
+        speed *= slowProc;
+        Invoke("SlowDuration", 3f);
+    }
+
+    void SlowDuration()
+    {
+        speed = defaultSpeed;
+    }
+
+    public void HitByPoison(float ticks, float dps)
+    {
+        GameObject poisonEffect = Instantiate(hitByPoisonEffect, gameObject.transform);
+        Destroy(poisonEffect, ticks);
+        if (poisonTickTimers.Count <= 0)
+        {
+            poisonTickTimers.Add(ticks);
+            StartCoroutine(PoisonTick(dps));
+        }
+    }
+
+    IEnumerator PoisonTick(float dps)
+    {
+        while (poisonTickTimers.Count > 0)
+        {
+            for (int i = 0; i < poisonTickTimers.Count; i++)
+            {
+                poisonTickTimers[i]--;
+            }
+            TakeDamage(dps);
+            poisonTickTimers.RemoveAll(i => i == 0);
+            yield return new WaitForSeconds(0.75f);
+        }
+    }
+
+    public void HitBySplash(float radius, float splashDamage)
+    {
+        Collider[] colliders = Physics.OverlapSphere(transform.position, radius);
+        foreach (Collider c in colliders)
+        {
+            if (c.GetComponent<EnemyController>())
+            {
+                c.GetComponent<EnemyController>().TakeDamage(splashDamage);
+            }
+        }
+    }
 }

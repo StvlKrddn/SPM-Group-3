@@ -39,9 +39,11 @@ public class TankState : MonoBehaviour
         EventHandler.Instance.RegisterListener<NewWaveEvent>(OnNewWave);
     }
 
+    
+
     void InitializeInputSystem()
     {
-        playerInput = GetComponent<PlayerInput>();
+        playerInput = transform.parent.GetComponent<PlayerInput>();
 
         playerID = playerInput.playerIndex;
     }
@@ -66,10 +68,10 @@ public class TankState : MonoBehaviour
         transform.position = spawnPoint.position;
     }
 
-    void OnDestroy()
+    void OnDisable()
     {
         // Unsubscribe to events to avoid memory leaks
-        EventHandler.Instance.UnregisterListener<NewWaveEvent>(OnNewWave);
+        //EventHandler.Instance.UnregisterListener<NewWaveEvent>(OnNewWave);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -100,9 +102,5 @@ public class TankState : MonoBehaviour
     void OnNewWave(NewWaveEvent eventInfo)
     {
         currentHealth = health;
-        if (playerInput.currentActionMap == playerInput.actions.FindActionMap("Parked"))
-        {
-            playerInput.SwitchCurrentActionMap("Tank");
-        }
     }
 }

@@ -12,6 +12,7 @@ public class EventHandler : MonoBehaviour
     public static EventHandler Instance { 
         get 
         {
+            // "Lazy loading" to prevent Unity load order error
             if (instance == null)
             {
                 instance = FindObjectOfType<EventHandler>();
