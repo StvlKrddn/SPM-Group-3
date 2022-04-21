@@ -1,3 +1,6 @@
+// Används till att utnyttja livsystemet till pansarvagnar
+using System;
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,8 +13,9 @@ public class TankController : MonoBehaviour
     [Header("Movement properties")]
     [SerializeField] private float movementSpeed = 6f;
 
-    [Header("Health")]
-    [SerializeField] private float health = 50f;
+    // Flyttat attributen och mekaniken till en enklid script
+//    [Header("Health")]
+//    [SerializeField] private float health = 50f;
 
     [Header("Shooting properties")]
     [SerializeField] private float fireRate = 0.2f;
@@ -28,6 +32,9 @@ public class TankController : MonoBehaviour
     [SerializeField] private GameObject bullet;
     [SerializeField] private Transform garage;
     [SerializeField] private GameManager gameManager;
+
+    // Component för att kunna aktivera menyn när fordonet triggar 
+    [SerializeField] private GameObject BuildView;
 
     // Components
     private Rigidbody rb;
@@ -90,6 +97,9 @@ public class TankController : MonoBehaviour
         bulletSpread = Mathf.Clamp(bulletSpread, 0, 60);
 
         gameManager.OnNewWave += OnNewWave;
+
+        // Kontrollerar att BuildView alltid är inaktiverad vid start på rond
+        BuildView.active = false;
 
         //Create isometric matrix
         isoMatrix = Matrix4x4.Rotate(Quaternion.Euler(0, 45, 0));
@@ -179,7 +189,8 @@ public class TankController : MonoBehaviour
     Quaternion ComputeBulletSpread()
     {
         // Produce a random rotation within a certain radius
-        Vector3 randomDirection = bulletSpawner.forward + Random.insideUnitSphere * bulletSpread;
+        // Då System packet använder en annan Random kod förtydligas detta /Noah
+        Vector3 randomDirection = bulletSpawner.forward + UnityEngine.Random.insideUnitSphere * bulletSpread;
 
         // Prevent too much spread up and down
         randomDirection = new Vector3(Mathf.Clamp01(randomDirection.x), randomDirection.y, randomDirection.z);
@@ -229,22 +240,41 @@ public class TankController : MonoBehaviour
         return isoMatrix.MultiplyPoint3x4(vector);
     }
 
+    /* // Koden nedan har flyttats till Health-Script för mer specifik sortering
+        private void OnTriggerEnter(Collider other)
+        {
+                    if (other.gameObject.CompareTag("EnemyBullet"))
+                    {
+                        EnemyBullet enemyBullet = other.gameObject.GetComponent<EnemyBullet>();
+                        health -= enemyBullet.damage;
+                        if (health < 0)
+                        {
+                            print("Tank destroyed!");
+                            MoveToGarage();
+                        }
+                        Destroy(enemyBullet);
+                    }
+        }
+    */
+
+    // Aktivera BuildView för personliga BuildMode för spelaren 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("EnemyBullet"))
+        if (other.gameObject.CompareTag("Garage"))
         {
-            EnemyBullet enemyBullet = other.gameObject.GetComponent<EnemyBullet>();
-            health -= enemyBullet.damage;
-            if (health < 0)
-            {
-                print("Tank destroyed!");
-                MoveToGarage();
-            }
-            Destroy(enemyBullet);
+            BuildView.active = true;
         }
     }
 
-    void MoveToGarage()
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.CompareTag("Garage"))
+        {
+            BuildView.active = false;
+        }
+    }
+
+    public void MoveToGarage()
     {
         transform.position = garage.position;
         allowedToMove = false;
@@ -254,4 +284,5 @@ public class TankController : MonoBehaviour
     {
         allowedToMove = true;
     }
+
 }

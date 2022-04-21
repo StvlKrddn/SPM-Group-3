@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class GameMenu : MonoBehaviour
 {
-
+    [Header("Components")]
     [SerializeField] private GameObject escapePanel;
     [SerializeField] private GameObject closeMessage;
 

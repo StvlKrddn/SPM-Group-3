@@ -5,40 +5,46 @@ using UnityEngine;
 
 public class Health : MonoBehaviour
 {
-
+    [Header("Health")]
     [SerializeField] private float maxHealth = 50f;
-
     private float currentHealth;
+
+    [Header("Random components")]
+    [SerializeField] private Transform garage;
+    private TankController tankController;
 
     public event Action<float> OnHealthPctChanged = delegate { };
 
-    private void OnEnable()
-    {
+    private void Awake()
+    { 
         currentHealth = maxHealth;
-    }
-
-    public void ModifyHealth(float amount)
-    {
-        currentHealth += amount;
-
-        float currentHealthPct = (float)currentHealth / (float)maxHealth;
-        OnHealthPctChanged(currentHealthPct);
+        tankController = GetComponent<TankController>();
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("EnemyBullet"))
         {
-            ModifyHealth(other.gameObject.GetComponent<EnemyBullet>().GetDamage());
-        }
-    }
+            GameObject enemyBullet = other.gameObject;
 
-    // testing the Healthbar degeneration
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            ModifyHealth(-10);
+            ModifyHealth(enemyBullet.GetComponent<EnemyBullet>().damage);
+
+            if(currentHealth <= 0)
+            {
+                currentHealth = maxHealth;
+                ModifyHealth(-1.0f);
+                tankController.MoveToGarage();
+            }
+
+            Destroy(enemyBullet);
         }
+    }    
+    
+    public void ModifyHealth(float amount)
+    {
+        currentHealth -= amount;
+
+        float currentHealthPct = (float)currentHealth / (float)maxHealth;
+        OnHealthPctChanged(currentHealthPct);
     }
 }

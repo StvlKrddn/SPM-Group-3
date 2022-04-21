@@ -15,13 +15,24 @@ public class BuildManager : MonoBehaviour
         instance = this;
     }
 
+    [Header("Towers")] // Har enbart lagt till Header
     public GameObject cannonTowerPrefab;
     public GameObject missileTowerPrefab;
-
 
     private GameObject towerToBuild;
 
     public GameObject TowerToBuild { get { return towerToBuild; } set { towerToBuild = value; } }
+
+    // Har enkelt satt två metoder som bestämmer vilken prefab som ska väljas med knappar på PlayerView
+    public void ChooseCannon()
+    {
+        towerToBuild = cannonTowerPrefab;
+    }
+
+    public void ChooseMissile()
+    {
+        towerToBuild = missileTowerPrefab;
+    }
 
 /*    public GameObject GetTowerToBuild()
     {

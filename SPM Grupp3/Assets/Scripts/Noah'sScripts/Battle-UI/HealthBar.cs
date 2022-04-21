@@ -39,7 +39,7 @@ public class HealthBar : MonoBehaviour
     // Code to make health bars face towards the camera
     //private void LateUpdate()
     //{
-        //transform.LookAt(Camera.main.transform);
-        //transform.Rotate(0, 180, 0);
+    //transform.LookAt(Camera.main.transform);
+    //transform.Rotate(0, 180, 0);
     //}
 }
