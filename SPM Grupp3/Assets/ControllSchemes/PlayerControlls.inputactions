@@ -331,22 +331,31 @@
         },
         {
             "name": "Builder",
-            "id": "73290f25-c680-4f6d-a201-515879a1970a",
+            "id": "94d5e2d2-b6cc-4f46-bfd7-b4095dd30553",
             "actions": [
                 {
-                    "name": "Cursor",
-                    "type": "Value",
-                    "id": "2e153b61-b3a6-4215-8576-0008a6f5167d",
+                    "name": "Scroll",
+                    "type": "PassThrough",
+                    "id": "03b5c188-6ac2-4613-819c-2c5eb0dbd747",
                     "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": true
+                    "initialStateCheck": false
                 },
                 {
-                    "name": "Accept",
-                    "type": "Button",
-                    "id": "44493580-7a6e-4367-9cf5-fefd537afa1b",
+                    "name": "Click",
+                    "type": "PassThrough",
+                    "id": "71951e86-291b-48e1-bbf5-59894f89c2d4",
                     "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Point",
+                    "type": "PassThrough",
+                    "id": "662449be-322a-4254-9e38-080419571817",
+                    "expectedControlType": "Vector2",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -355,23 +364,34 @@
             "bindings": [
                 {
                     "name": "",
-                    "id": "44dee102-81e0-471c-8996-824038cd8bf2",
+                    "id": "207e0474-73bb-4c8a-b6c0-900d7f197dc2",
                     "path": "<VirtualMouse>/position",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Cursor",
+                    "action": "Point",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "2ef0dba1-7b60-4127-99a6-5b31097451a0",
+                    "id": "61b46aaa-cd12-4834-88b0-f9299d7b69a6",
                     "path": "<VirtualMouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Accept",
+                    "action": "Click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1a10efb5-3959-4ee3-922d-d66c84f04d9b",
+                    "path": "<VirtualMouse>/scroll",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Gamepad",
+                    "action": "Scroll",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

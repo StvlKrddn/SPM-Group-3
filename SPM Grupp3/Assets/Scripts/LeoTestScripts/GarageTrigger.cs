@@ -7,6 +7,11 @@ using UnityEngine.InputSystem;
 public class GarageTrigger : MonoBehaviour
 {
     private InputAction acceptAction;
+    
+    private void OnTriggerEnter(Collider other)
+    {
+        print("Enter Garage? (Press A)");
+    }
 
     private void OnTriggerStay(Collider other)
     {
@@ -15,7 +20,6 @@ public class GarageTrigger : MonoBehaviour
             TankState player = other.GetComponent<TankState>();
             acceptAction = player.PlayerInput.actions["Accept"];
 
-            print("Enter Garage? (Press A)");
             if (acceptAction.IsPressed())
             {
                 EventHandler.Instance.InvokeEvent(new PlayerSwitchEvent(
@@ -25,4 +29,5 @@ public class GarageTrigger : MonoBehaviour
             }
         }   
     }
+
 }

@@ -21,16 +21,20 @@ public class BuilderController : MonoBehaviour
     InputAction stickAction;
     InputAction acceptAction;
 
+    Vector2 screenMiddle;
+    Vector2 stickInput;
+    bool acceptInput;
     bool previousMouseState;
 
     void Awake()
     {
-        InputSystem.onAfterUpdate += UpdateVirtualMouse;
+        screenMiddle = new Vector2(Screen.width / 2, Screen.height / 2);
+
         EventHandler.Instance.RegisterListener<EnterBuildModeEvent>(EnterBuildMode);
 
         playerInput = transform.parent.GetComponent<PlayerInput>();
-        stickAction = playerInput.actions["Cursor"];
-        acceptAction = playerInput.actions["Accept"];
+        stickAction = playerInput.actions["Point"];
+        acceptAction = playerInput.actions["Click"];
 
         if (virtualMouse == null)
         {
@@ -51,10 +55,24 @@ public class BuilderController : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        ResetPosition();
+        InputSystem.onAfterUpdate += UpdateVirtualMouse;
+    }
+
     void OnDisable()
     {
+        ResetPosition();
+        cursorTransform.gameObject.SetActive(false);
         InputSystem.onAfterUpdate -= UpdateVirtualMouse;
         //EventHandler.Instance.UnregisterListener<GarageEvent>(EnterBuildMode);
+    }
+
+    void ResetPosition()
+    {
+        InputState.Change(virtualMouse, screenMiddle);
+        UpdateCursorImage(screenMiddle);
     }
 
     void UpdateVirtualMouse()
@@ -112,6 +130,7 @@ public class BuilderController : MonoBehaviour
 
     void EnterBuildMode(EnterBuildModeEvent eventInfo)
     {
+        ResetPosition();
         cursorTransform.gameObject.SetActive(true);
     }
 }
