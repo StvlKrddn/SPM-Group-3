@@ -7,6 +7,7 @@ public class HealthBar : MonoBehaviour
 {
     [SerializeField] private Image foregroundImage;
     [SerializeField] private float updateSpeedSeconds = 0.5f;
+    [SerializeField] private GameObject FollowPlayer;
 
     private void Awake()
     {
