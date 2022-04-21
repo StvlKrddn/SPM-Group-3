@@ -33,9 +33,9 @@ public class BuildManager : MonoBehaviour
     public GameObject TowerToBuild { get { return towerToBuild; } set { towerToBuild = value; } }
     public GameObject ClickedArea { get { return clickedArea; } set { clickedArea = value; } }
 
-    private void Start()
+    void OnDisable()
     {
-        
+        //EventHandler.Instance.UnregisterListener<GarageEvent>(EnterBuildMode);
     }
 
     public void InstantiateTower()

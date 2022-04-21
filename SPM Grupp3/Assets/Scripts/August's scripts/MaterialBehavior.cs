@@ -25,7 +25,7 @@ public class MaterialBehavior : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Tank"))
         {
             gameManager.AddMaterial(1);
             Destroy(gameObject);

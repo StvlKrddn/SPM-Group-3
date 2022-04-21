@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(TankController))]
-public class MachineGun : MonoBehaviour
+public class MachineGun : MonoBehaviour, ITankWeapon
 {
     [SerializeField] private float fireRate = 0.2f;
     [SerializeField] private float bulletSpread = 20f;
@@ -12,12 +12,14 @@ public class MachineGun : MonoBehaviour
     [SerializeField] private float bulletSpeed = 35f;
 
     [Header("Bullet prefab: ")]
-    [SerializeField] private GameObject bullet;
+    [SerializeField] private GameObject bulletPrefab;
 
-    Transform bulletSpawner;
-    Transform turretObject;
-    InputAction shootAction;
     TankState tank;
+    Transform bulletSpawner;
+    BulletBehavior bullet;
+    Transform turretObject;
+    GameObject spawnedBullet;
+    InputAction shootAction;
 
     bool allowedToShoot = true;
 
@@ -59,8 +61,8 @@ public class MachineGun : MonoBehaviour
     {
         Quaternion spreadDirection = ComputeBulletSpread();
 
-        GameObject spawnedBullet = Instantiate(
-            original: bullet,
+        spawnedBullet = Instantiate(
+            original: bulletPrefab,
             position: bulletSpawner.position,
             rotation: bulletSpawner.rotation * spreadDirection
             );
@@ -75,5 +77,20 @@ public class MachineGun : MonoBehaviour
         randomDirection = new Vector3(Mathf.Clamp01(randomDirection.x), randomDirection.y, randomDirection.z);
 
         return Quaternion.Euler(randomDirection);
+    }
+
+    public void UpgradeFirerate(float modifier)
+    {
+        fireRate += modifier;
+    }
+
+    public void UpgradeDamage(float modifier)
+    {
+        bullet.BulletDamage += modifier;
+    }
+
+    public void UpgradeRange(float modifier)
+    {
+        bullet.BulletRange += modifier;
     }
 }
