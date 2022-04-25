@@ -17,6 +17,7 @@ public class Upgrades : MonoBehaviour
     private Tower tower;
     private Shot shot;
     private BuildManager buildManager;
+    private Vector3 radiusUpdate;
 
     // Start is called before the first frame update
     void Awake()
@@ -25,7 +26,7 @@ public class Upgrades : MonoBehaviour
         placedTower = buildManager.placedTower;
         tower = placedTower.GetComponent<Tower>();
         shot = tower.transform.GetChild(0).GetComponent<Shot>();
-        gameObject.SetActive(false);
+        radiusUpdate = new Vector3(upgradeRangeAmount, 0, upgradeRangeAmount);
     }
 
     public void UpgradeDamage()
@@ -35,6 +36,7 @@ public class Upgrades : MonoBehaviour
     public void UpgradeRange()
     {
         tower.range += upgradeRangeAmount;
+        tower.radius.transform.localScale += radiusUpdate;
     }
 
     public void UpgradeFireRate()
