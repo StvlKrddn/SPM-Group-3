@@ -116,6 +116,8 @@ public class EnemyController : MonoBehaviour
     {
         gM.AddMoney(moneyDrop); // add money and spawn material
         Instantiate(material, transform.position, transform.rotation);
+        DieEvent dieEvent = new DieEvent("död", gameObject, null, null);
+        EventHandler.Instance.InvokeEvent(dieEvent);
         Destroy(gameObject);
     }
 

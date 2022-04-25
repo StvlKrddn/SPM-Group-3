@@ -17,6 +17,7 @@ public class WaveManager : MonoBehaviour
 
     public WaveInfo[] waves;
 
+    private int enemyCount;
     private int currentWave = 0;
     private int spawnRate = 0;
     public List<GameObject> currentWaveEnemies = new List<GameObject>();
@@ -43,6 +44,7 @@ public class WaveManager : MonoBehaviour
             Shuffle(subWaveEnemies);
             currentWaveEnemies.AddRange(subWaveEnemies);
         }
+        enemyCount = currentWaveEnemies.Count;
         spawnRate = wave.waveDuration / currentWaveEnemies.Count;
     }
 
@@ -63,17 +65,27 @@ public class WaveManager : MonoBehaviour
     {
         if (spawnEnemies)
         {
-        //    if (timer >= timeBetweenWave)
+            //    if (timer >= timeBetweenWave)
             {
                 //StartCoroutine(SpawnWave());
-//                timer = 0;
-  //              waveOff = true;
+                //                timer = 0;
+                //              waveOff = true;
             }
 
-    //        if (waveOff == false)
+            //        if (waveOff == false)
             {
-      //          timer += Time.deltaTime;
+                //          timer += Time.deltaTime;
             }
+        }
+    }
+
+    public void WaveUpdate()
+    {
+        enemyCount--;
+        if (enemyCount == 0)
+        {
+            //Next wave inc.
+            WaveConstructor(waves[currentWave]);
         }
     }
 
