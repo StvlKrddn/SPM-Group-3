@@ -8,7 +8,6 @@ public class WaveManager : MonoBehaviour
 {
     [Header("Enemies: ")]
     [SerializeField] private bool spawnEnemies = true;
-    [SerializeField] private Transform regularEnemy;
     [SerializeField] private List<GameObject> enemyTypes;
     [SerializeField] private float timeBetweenEnemy = 0.5f;
     [SerializeField] private Transform spawnPosition;
@@ -19,6 +18,7 @@ public class WaveManager : MonoBehaviour
     public WaveInfo[] waves;
 
     private int currentWave = 0;
+    private int spawnRate = 0;
     public List<GameObject> currentWaveEnemies = new List<GameObject>();
 
     private void Start()
@@ -43,6 +43,7 @@ public class WaveManager : MonoBehaviour
             Shuffle(subWaveEnemies);
             currentWaveEnemies.AddRange(subWaveEnemies);
         }
+        spawnRate = wave.waveDuration / currentWaveEnemies.Count;
     }
 
     void Shuffle(List<GameObject> list)
@@ -76,12 +77,14 @@ public class WaveManager : MonoBehaviour
         }
     }
 
-    IEnumerator SpawnEnemies(Transform enemyType, float count)
+    IEnumerator SpawnCurrentWave()
     {
-        for (int i = 0; i < count; i++)
+        for (int i = 0; i < currentWaveEnemies.Count; i++)
         {
-            Instantiate(enemyType, spawnPosition.position, spawnPosition.rotation); //Spawn enemy and wait for time between enemy
-            yield return new WaitForSeconds(timeBetweenEnemy);
+            GameObject g = null; 
+            g = Instantiate(currentWaveEnemies[i], spawnPosition.position, spawnPosition.rotation); //Spawn enemy and wait for time between enemy
+            g.SetActive(true);
+            yield return new WaitForSeconds(spawnRate);
         }
         yield return false;
     }
@@ -101,7 +104,7 @@ public class WaveManager : MonoBehaviour
 [Serializable]
 public struct WaveInfo
 {
-    public int spawnDuration;
+    public int waveDuration;
     public SubWave[] subWaves;
 }
 
