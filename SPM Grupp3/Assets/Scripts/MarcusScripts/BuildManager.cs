@@ -10,6 +10,7 @@ public class BuildManager : MonoBehaviour
     public static BuildManager instance;
     
     private GarageTrigger garageTrigger;
+    [SerializeField] private GameManager gM;
 
     private void Awake()
     {
@@ -29,6 +30,7 @@ public class BuildManager : MonoBehaviour
     private GameObject clickedArea;
     public GameObject placedTower;
     private TowerPlacement towerPlacement;
+    private Tower tower;
 
     public GameObject TowerToBuild { get { return towerToBuild; } set { towerToBuild = value; } }
     public GameObject ClickedArea { get { return clickedArea; } set { clickedArea = value; } }
@@ -40,15 +42,20 @@ public class BuildManager : MonoBehaviour
 
     public void InstantiateTower()
     {
+        tower = TowerToBuild.GetComponent<Tower>();
         if (clickedArea == null)
         {
             return;
         }
-        towerPlacement = clickedArea.GetComponent<TowerPlacement>();
-        placedTower = Instantiate(TowerToBuild, ClickedArea.transform.GetChild(0).transform.position, ClickedArea.transform.GetChild(0).transform.rotation);
-        towerPlacement.SetDoNotHover();
-        towerPlacement.SetStartColor();
-        ClickedArea = null;
-        TowerToBuild = null;
+        if (gM.spendResources(tower.cost, tower.materialCost))
+        {
+            towerPlacement = clickedArea.GetComponent<TowerPlacement>();
+            placedTower = Instantiate(TowerToBuild, ClickedArea.transform.GetChild(0).transform.position, ClickedArea.transform.GetChild(0).transform.rotation);
+            towerPlacement.SetDoNotHover();
+            towerPlacement.SetStartColor();
+            ClickedArea = null;
+            return;
+        }
+        print("Get away you are too poor!");
     }
 }

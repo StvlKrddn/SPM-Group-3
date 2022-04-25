@@ -13,30 +13,33 @@ public class TowerPlacement : MonoBehaviour
     private Renderer rend;
     private Color startColor;
     public bool clicked = false;
-/*    private GameObject placedTower;*/
-    
+    /*    private GameObject placedTower;*/
+    private Transform _selection;
 
     BuildManager buildManager;
     public Shop shop;
     private Shop test;
-    private bool hover = true;
+    private bool hover = false;
 
     // Start is called before the first frame update
     void Start()
     {
+        BuilderController buildControl = FindObjectOfType<BuilderController>();
         rend = GetComponent<Renderer>();
         startColor = rend.material.color;
         buildManager = BuildManager.instance;
         test = UI.transform.GetChild(0).gameObject.GetComponent<Shop>();
     }
 
+
+
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
-    private void OnMouseDown()
+    void SetAreaClicked()
     {
         if (buildManager.ClickedArea != null)
         {
@@ -48,22 +51,6 @@ public class TowerPlacement : MonoBehaviour
             buildManager.ClickedArea = gameObject;
             clicked = true;
         }
-
-
-        /*InstantiateTower();*/
-
-/*        if (UI.activeSelf)
-        {
-            buildManager.ClickedArea = null;
-            UI.SetActive(false);
-            clicked = false;
-        }
-        else
-        {
-            buildManager.ClickedArea = gameObject;
-            UI.SetActive(true);
-            clicked = true;
-        }*/
     }
 
     public void SetDoNotHover()
@@ -71,22 +58,18 @@ public class TowerPlacement : MonoBehaviour
         hover = false;
     }
 
-    private void OnMouseEnter()
+    public void HoverEffect(RaycastHit hit)
+    {
+
+    }
+
+    public void Hover()
     {
         if (hover)
         {
             rend.material.color = hoverColor;
         }
-          
-    }
-    private void OnMouseExit()
-    {
-        if (clicked != true)
-        {
-            rend.material.color = startColor;
-        }
-        
-    }
+    } 
 
     public void SetStartColor()
     {
