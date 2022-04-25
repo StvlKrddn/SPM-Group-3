@@ -10,6 +10,7 @@ public class Tower : MonoBehaviour
     public float fireRate = 1f;
     public float cost = 150f;
     private float fireCountdown = 0f;
+    public float materialCost;
 
     [Header("Unity Setup Fields")]
 
@@ -106,7 +107,7 @@ public class Tower : MonoBehaviour
 
         return hit;
     }
-    
+
     GameObject GetTower()
     {
         RaycastHit hit = CastRayFromCamera(towers);
@@ -134,7 +135,7 @@ public class Tower : MonoBehaviour
             fireCountdown -= Time.deltaTime;           
         }
 
-        if (Input.GetMouseButtonDown(0))
+/*        if (Input.GetMouseButtonDown(0))
         {
             GameObject towerHit = GetTower();
 
@@ -149,7 +150,7 @@ public class Tower : MonoBehaviour
                     radius.SetActive(false);
                 }
             }
-        }
+        }*/
     }
 
 }
