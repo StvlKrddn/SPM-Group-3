@@ -16,6 +16,7 @@ public class BuilderController : MonoBehaviour
     [SerializeField] private RectTransform cursorTransform;
     [SerializeField] private Transform canvas;
     [SerializeField] private LayerMask placeForTowerLayerMask;
+    [SerializeField] private LayerMask towerLayerMask;
     [SerializeField] private Color hoverColor;
     [SerializeField] private Color startColor;
 
@@ -28,6 +29,7 @@ public class BuilderController : MonoBehaviour
     private Vector2 newPosition;
     Vector2 screenMiddle;
     bool previousMouseState;
+    public bool clickTimer = true;
 
     void Awake()
     {
@@ -60,23 +62,16 @@ public class BuilderController : MonoBehaviour
     private void Update()
     {
         bool clicked = Gamepad.current.aButton.IsPressed();
-        
         if (clicked)
         {
-            RaycastHit hit = CastRayFromCamera(placeForTowerLayerMask);
-            GameObject objectHit = hit.collider.gameObject;
-
-            if (hit.collider != null && objectHit.CompareTag("PlaceForTower"))
+            if (clickTimer)
             {
-                if (buildManager.TowerToBuild != null)
-                {
-                    buildManager.ClickedArea = _selection.gameObject;
-                    buildManager.InstantiateTower();
-                }
-                
-            }
+                clickTimer = false;
+                ClickedPlacement();
+                ClickedTower();
+                Invoke("ChangeBackTimer", 0.5f);
+            }         
         }
-
     }
 
     private void OnEnable()
@@ -118,19 +113,6 @@ public class BuilderController : MonoBehaviour
 
         RaycastHit hit = CastRayFromCamera(placeForTowerLayerMask);
         Hover(hit);
-
-
-        /*GameObject towerPlace = GetTowerPlacement();*/
-/*
-        if (towerPlace != null)
-        {
-            TowerPlacement towerPlacement = towerPlace.GetComponent<TowerPlacement>();
-
-            if (towerPlacement != null)
-            {
-                towerPlacement.HoverEffect();
-            }
-        }*/
     }
 
 
@@ -161,6 +143,7 @@ public class BuilderController : MonoBehaviour
             InputState.Change(virtualMouse, mouseState);
             previousMouseState = isAcceptPressed;
             return true;
+           
         }
         return false;
     }
@@ -220,5 +203,51 @@ public class BuilderController : MonoBehaviour
         return hit.collider != null ? hit.collider.gameObject : null;
     }
 
+    void ClickedPlacement()
+    {
+        RaycastHit hit = CastRayFromCamera(placeForTowerLayerMask);
+        if (hit.collider != null)
+        {
+            GameObject placementHit = hit.collider.gameObject;
+            if (placementHit.CompareTag("PlaceForTower"))
+            {
+                if (buildManager.TowerToBuild != null)
+                {
+                    buildManager.ClickedArea = _selection.gameObject;
+                    buildManager.InstantiateTower();
+                }
+            }
+        }
+    }
+    void ClickedTower()
+    {
+        RaycastHit hit = CastRayFromCamera(towerLayerMask);
+        if (hit.collider != null)
+        {
+            GameObject towerHit = hit.collider.gameObject;
+            if (towerHit.CompareTag("Tower"))
+            {
+                Tower tower = towerHit.GetComponent<Tower>();
 
+                print("Amount of clicks: ");
+                if (tower.radius.activeInHierarchy)
+                {
+                    tower.radius.SetActive(false);
+                    tower.upgradeUI.SetActive(false);
+                        
+                }
+                else
+                {
+                    tower.radius.SetActive(true);
+                    tower.upgradeUI.SetActive(true);
+
+                } 
+            }
+        }
+    }
+
+    void ChangeBackTimer()
+    {
+        clickTimer = true;
+    }
 }
