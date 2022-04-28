@@ -33,7 +33,7 @@ public class BuilderController : MonoBehaviour
 
     void Awake()
     {
-        /*buildManager = BuildManager.instance;*/
+        
         screenMiddle = new Vector2(Screen.width / 2, Screen.height / 2);
 
         //EventHandler.Instance.RegisterListener<EnterBuildModeEvent>(EnterBuildMode);
@@ -219,13 +219,14 @@ public class BuilderController : MonoBehaviour
     }
 
     void ClickedPlacement()
-    {
+    {   
         RaycastHit hit = CastRayFromCamera(placeForTowerLayerMask);
         if (hit.collider != null)
         {
             GameObject placementHit = hit.collider.gameObject;
             if (placementHit.CompareTag("PlaceForTower"))
             {
+                buildManager = BuildManager.instance;
                 if (buildManager.TowerToBuild != null)
                 {
                     buildManager.ClickedArea = _selection.gameObject;
