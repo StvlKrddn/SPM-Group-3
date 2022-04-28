@@ -46,14 +46,17 @@ public class EnemyController : MonoBehaviour
     {
         shotTimer += Time.deltaTime;
 
+
         if (Vector3.Distance(transform.position, tank1.transform.position) <= 5f || Vector3.Distance(transform.position, tank2.transform.position) <= 5f)
         {
             if (shotTimer >= shotCD) // if tank is in range, shot the player
             {
                 ShotPlayer();
                 shotTimer = 0;
+
             }
         }
+     
         else
         {
             //WIP Enemy moves right direction
@@ -121,14 +124,25 @@ public class EnemyController : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public void HitBySlow(float slowProc)
+    public void HitBySlow(float slowProc, float radius)
     {
-        speed *= slowProc;
-        Invoke("SlowDuration", 3f);
+        Collider[] colliders = Physics.OverlapSphere(transform.position, radius);
+        foreach (Collider c in colliders)
+        {
+            if (c.GetComponent<EnemyController>())
+            {
+                EnemyController eC = c.GetComponent<EnemyController>();
+                eC.speed *= slowProc;
+                eC.Invoke("SlowDuration", 3f);
+            }
+        }
+
+/*        Invoke("SlowDuration", 3f);*/
     }
 
     void SlowDuration()
     {
+
         speed = defaultSpeed;
     }
 

@@ -19,10 +19,9 @@ public class BuilderController : MonoBehaviour
     [SerializeField] private LayerMask towerLayerMask;
     [SerializeField] private Color hoverColor;
     [SerializeField] private Color startColor;
-
-    private Renderer rend;
+    [SerializeField] private Camera camera;
     private Transform _selection;
-    public BuildManager buildManager;
+    private BuildManager buildManager;
 
     Mouse virtualMouse;
     PlayerInput playerInput;
@@ -134,10 +133,11 @@ public class BuilderController : MonoBehaviour
     bool CheckIfClicked()
     {
         bool isAcceptPressed = Gamepad.current.aButton.IsPressed();
-
+        
         // If the button is not already pressed
         if (previousMouseState != isAcceptPressed)
         {
+            print(isAcceptPressed + " " + previousMouseState);
             virtualMouse.CopyState(out MouseState mouseState);
             mouseState.WithButton(MouseButton.Left, isAcceptPressed);
             InputState.Change(virtualMouse, mouseState);
@@ -155,7 +155,7 @@ public class BuilderController : MonoBehaviour
             RectTransformUtility.ScreenPointToLocalPointInRectangle(
                 rect: canvas.GetComponent<RectTransform>(), 
                 screenPoint: newPosition,
-                cam: canvas.GetComponent<Canvas>().renderMode == RenderMode.ScreenSpaceOverlay ? null : Camera.main, 
+                cam: canvas.GetComponent<Canvas>().renderMode == RenderMode.ScreenSpaceOverlay ? null : camera, 
                 localPoint: out Vector2 anchoredPosition
                 );
             cursorTransform.anchoredPosition = anchoredPosition;
@@ -167,7 +167,7 @@ public class BuilderController : MonoBehaviour
         Vector3 mousePosition = newPosition;
 
         // Create a ray from camera to mouse position
-        Ray cameraRay = Camera.main.ScreenPointToRay(mousePosition);
+        Ray cameraRay = camera.ScreenPointToRay(mousePosition);
         Physics.Raycast(ray: cameraRay, hitInfo: out RaycastHit hit, maxDistance: Mathf.Infinity, layerMask: layerMask);
         
         
