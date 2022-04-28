@@ -29,6 +29,7 @@ public class BuilderController : MonoBehaviour
     private Vector2 newPosition;
     Vector2 screenMiddle;
     bool previousMouseState;
+    bool previousYState;
     public bool clickTimer = true;
 
     void Awake()
@@ -135,6 +136,8 @@ public class BuilderController : MonoBehaviour
     {
         bool isAcceptPressed = Gamepad.current.aButton.IsPressed();
 
+        
+        bool isYPressed = Gamepad.current.yButton.IsPressed();
         // If the button is not already pressed
         if (previousMouseState != isAcceptPressed)
         {
@@ -145,6 +148,17 @@ public class BuilderController : MonoBehaviour
             return true;
            
         }
+ //       print(isYPressed + " " + previousYState);
+        if(isYPressed != previousYState)
+        {
+            print("kommer den hit");
+            virtualMouse.CopyState(out MouseState mouseState);
+            mouseState.WithButton(MouseButton.Left, isYPressed);
+            InputState.Change(virtualMouse, mouseState);
+            previousYState = isYPressed;
+            return true;
+        }
+
         return false;
     }
     
