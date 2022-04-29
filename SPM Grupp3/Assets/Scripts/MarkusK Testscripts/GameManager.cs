@@ -71,7 +71,7 @@ public class GameManager : MonoBehaviour
     {
         moneyUI.text = ": " + money;
         materialUI.text = ": " + material;
-        waveUI.text = currentWave + "/" + victoryWave;
+        waveUI.text = currentWave + "/9";
     }
 
     public void AddMoney(float addMoney)
