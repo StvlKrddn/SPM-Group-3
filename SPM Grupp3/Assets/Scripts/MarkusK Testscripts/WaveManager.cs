@@ -40,7 +40,7 @@ public class WaveManager : MonoBehaviour
         currentWaveEnemies.Clear();
         foreach (SubWave subWave in wave.subWaves)
         {
-            List<GameObject> subWaveEnemies = new List<GameObject>();
+            List<GameObject> subWaveEnemies = new List<GameObject>(); //Goes through each subwave and shuffles it
             for (int i = 0; i < subWave.enemies.Length; i++)
             {
                 for (int j = 0; j < subWave.enemies[i].amount; j++)
@@ -49,7 +49,7 @@ public class WaveManager : MonoBehaviour
                 }
             }
             Shuffle(subWaveEnemies);
-            currentWaveEnemies.AddRange(subWaveEnemies);
+            currentWaveEnemies.AddRange(subWaveEnemies); //Then adds the shuffled subwave to the wave
         }
         enemyCount = currentWaveEnemies.Count;
         spawnRate = wave.waveDuration / currentWaveEnemies.Count;
@@ -58,7 +58,7 @@ public class WaveManager : MonoBehaviour
     void Shuffle(List<GameObject> list)
     {
         int n = list.Count;
-        while (n > 1)
+        while (n > 1) //Randomizes the list
         {
             n--;
             int k = UnityEngine.Random.Range(0, n + 1);
@@ -86,7 +86,7 @@ public class WaveManager : MonoBehaviour
             {
                 Debug.Log("Wave " + currentWave + " cleared");
                 FindObjectOfType<GameManager>().spawnEnemies = true;
-                StartWave(1);
+                StartWave(1); // Test row
                 //Activates the the button so the players can start next round 
             }
         }
