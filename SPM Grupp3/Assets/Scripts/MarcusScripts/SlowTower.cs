@@ -5,10 +5,10 @@ using UnityEngine;
 public class SlowTower : Tower
 {
     [SerializeField] private float slowProc = 0.7f;
-
-/*    [SerializeField] private GameObject shot;
-    [SerializeField] private Transform firePoint;
-    [SerializeField] private GameObject radius;*/
+    private float fireCountdown = 0f;
+    /*    [SerializeField] private GameObject shot;
+        [SerializeField] private Transform firePoint;
+        [SerializeField] private GameObject radius;*/
     public float SlowProc { get { return slowProc; } set { slowProc = value; } }
     // Start is called before the first frame update
     void Start()
@@ -22,25 +22,49 @@ public class SlowTower : Tower
     void Update()
     {
         LockOnTarget();
-        shot.GetComponent<Renderer>().enabled = false;
+        if (shot != null)
+        {
+            shot.GetComponent<Renderer>().enabled = false;
+        }
+        
 
         if (CanYouShoot())
         {
             Shoot();
-            EnemyController enemyTarget = target.gameObject.GetComponent<EnemyController>();
 
             if (bullet.CheckIfProjectileHit())
             {
-                TypeOfShot(enemyTarget);
+                HitTarget();
             }
 
         }
     }
+    public override void HitTarget()
+    {
+        EnemyController enemyTarget = target.GetComponent<EnemyController>();
+        /*GameObject effectInstance = Instantiate(onHitEffect, transform.position, transform.rotation);*/
+
+/*        Destroy(effectInstance, 1f);*/
+        TypeOfShot(enemyTarget);
+        Destroy(bullet.gameObject);
+    }
+
+    private bool CanYouShoot()
+    {
+        if (fireCountdown <= 0f)
+        {
+            fireCountdown = 1f / fireRate;
+            return true;
+        }
+        fireCountdown -= Time.deltaTime;
+        return false;
+    }
+
     protected override void TypeOfShot(EnemyController enemyTarget)
     {
         enemyTarget.HitBySlow(SlowProc, range);
     }
-    protected void Shoot()
+    private void Shoot()
     {
         GameObject bulletGO = Instantiate(shot, firePoint.position, firePoint.rotation);
         bulletGO.transform.parent = transform;

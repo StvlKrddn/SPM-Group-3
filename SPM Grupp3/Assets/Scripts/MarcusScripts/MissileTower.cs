@@ -6,10 +6,10 @@ public class MissileTower : Tower
 {
     [SerializeField] private float splashRadius = 1f;
     [SerializeField] private float splashDamage = 20f;
-
-/*    [SerializeField] private GameObject shot;
-    [SerializeField] private Transform firePoint;
-    [SerializeField] private GameObject radius;*/
+    private float fireCountdown = 0f;
+    /*    [SerializeField] private GameObject shot;
+        [SerializeField] private Transform firePoint;
+        [SerializeField] private GameObject radius;*/
     public float SplashRadius { get { return splashRadius; } set { splashRadius = value; } }
     public float SplashDamage { get { return splashDamage; } set { splashDamage = value; } }
     // Start is called before the first frame update
@@ -28,15 +28,37 @@ public class MissileTower : Tower
         if (CanYouShoot())
         {
             Shoot();
-            EnemyController enemyTarget = target.gameObject.GetComponent<EnemyController>();
+
 
             if (bullet.CheckIfProjectileHit())
             {
-                TypeOfShot(enemyTarget);
+                HitTarget();
             }
 
         }
     }
+
+    public override void HitTarget()
+    {
+        EnemyController enemyTarget = target.GetComponent<EnemyController>();
+        GameObject effectInstance = Instantiate(onHitEffect, transform.position, transform.rotation);
+
+        Destroy(effectInstance, 1f);
+        TypeOfShot(enemyTarget);
+        Destroy(gameObject);
+    }
+
+    private bool CanYouShoot()
+    {
+        if (fireCountdown <= 0f)
+        {
+            fireCountdown = 1f / fireRate;
+            return true;
+        }
+        fireCountdown -= Time.deltaTime;
+        return false;
+    }
+
     protected override void TypeOfShot(EnemyController enemyTarget)
     {
         enemyTarget.HitBySplash(SplashRadius, SplashDamage);

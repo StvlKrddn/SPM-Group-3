@@ -136,8 +136,6 @@ public class EnemyController : MonoBehaviour
                 eC.Invoke("SlowDuration", 3f);
             }
         }
-
-/*        Invoke("SlowDuration", 3f);*/
     }
 
     void SlowDuration()
