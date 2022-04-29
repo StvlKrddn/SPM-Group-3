@@ -15,15 +15,25 @@ public class BuilderController : MonoBehaviour
     [Space]
     [SerializeField] private RectTransform cursorTransform;
     [SerializeField] private Transform canvas;
+    [SerializeField] private LayerMask placeForTowerLayerMask;
+    [SerializeField] private LayerMask towerLayerMask;
+    [SerializeField] private Color hoverColor;
+    [SerializeField] private Color startColor;
+    [SerializeField] private Camera camera;
+    private Transform _selection;
+    private BuildManager buildManager;
 
     Mouse virtualMouse;
     PlayerInput playerInput;
-
+    private Vector2 newPosition;
     Vector2 screenMiddle;
     bool previousMouseState;
+    bool previousYState;
+    public bool clickTimer = true;
 
     void Awake()
     {
+        
         screenMiddle = new Vector2(Screen.width / 2, Screen.height / 2);
 
         //EventHandler.Instance.RegisterListener<EnterBuildModeEvent>(EnterBuildMode);
@@ -46,6 +56,21 @@ public class BuilderController : MonoBehaviour
         {
             Vector2 position = cursorTransform.anchoredPosition;
             InputState.Change(virtualMouse.position, position);
+        }
+    }
+
+    private void Update()
+    {
+        bool clicked = Gamepad.current.aButton.IsPressed();
+        if (clicked)
+        {
+            if (clickTimer)
+            {
+                clickTimer = false;
+                ClickedPlacement();
+                ClickedTower();
+                Invoke("ChangeBackTimer", 0.5f);
+            }         
         }
     }
 
@@ -82,9 +107,12 @@ public class BuilderController : MonoBehaviour
             return;
         }
 
-        Vector2 newPosition = MoveMouse();
+        newPosition = MoveMouse();
         UpdateCursorImage(newPosition);
         CheckIfClicked();
+
+        RaycastHit hit = CastRayFromCamera(placeForTowerLayerMask);
+        Hover(hit);
     }
 
 
@@ -103,18 +131,36 @@ public class BuilderController : MonoBehaviour
         return newPosition;
     }
 
-    void CheckIfClicked()
+    bool CheckIfClicked()
     {
         bool isAcceptPressed = Gamepad.current.aButton.IsPressed();
+        
 
+        
+        bool isYPressed = Gamepad.current.yButton.IsPressed();
         // If the button is not already pressed
         if (previousMouseState != isAcceptPressed)
         {
+            print(isAcceptPressed + " " + previousMouseState);
             virtualMouse.CopyState(out MouseState mouseState);
             mouseState.WithButton(MouseButton.Left, isAcceptPressed);
             InputState.Change(virtualMouse, mouseState);
             previousMouseState = isAcceptPressed;
+            return true;
+           
         }
+ //       print(isYPressed + " " + previousYState);
+        if(isYPressed != previousYState)
+        {
+            print("kommer den hit");
+            virtualMouse.CopyState(out MouseState mouseState);
+            mouseState.WithButton(MouseButton.Left, isYPressed);
+            InputState.Change(virtualMouse, mouseState);
+            previousYState = isYPressed;
+            return true;
+        }
+
+        return false;
     }
     
     void UpdateCursorImage(Vector2 newPosition)
@@ -124,10 +170,100 @@ public class BuilderController : MonoBehaviour
             RectTransformUtility.ScreenPointToLocalPointInRectangle(
                 rect: canvas.GetComponent<RectTransform>(), 
                 screenPoint: newPosition,
-                cam: canvas.GetComponent<Canvas>().renderMode == RenderMode.ScreenSpaceOverlay ? null : Camera.main, 
+                cam: canvas.GetComponent<Canvas>().renderMode == RenderMode.ScreenSpaceOverlay ? null : camera, 
                 localPoint: out Vector2 anchoredPosition
                 );
             cursorTransform.anchoredPosition = anchoredPosition;
         }
+    }
+    RaycastHit CastRayFromCamera(LayerMask layerMask)
+    {
+        // Get mouse position
+        Vector3 mousePosition = newPosition;
+
+        // Create a ray from camera to mouse position
+        Ray cameraRay = camera.ScreenPointToRay(mousePosition);
+        Physics.Raycast(ray: cameraRay, hitInfo: out RaycastHit hit, maxDistance: Mathf.Infinity, layerMask: layerMask);
+        
+        
+
+        return hit;
+    }
+
+    void Hover(RaycastHit hit)
+    {
+        if (_selection != null)
+        {
+            var selectionRenderer = _selection.GetComponent<Renderer>();
+            selectionRenderer.material.color = startColor;
+            _selection = null;
+        }
+
+        // Raycast along the ray and return the hit point
+        if (hit.collider != null)
+        {
+            var selection = hit.transform;
+            var selectionRenderer = selection.GetComponent<Renderer>();
+            if (selectionRenderer != null)
+            {
+                selectionRenderer.material.color = hoverColor;
+            }
+            _selection = selection;
+        }
+    }
+
+    GameObject GetTowerPlacement()
+    {
+        RaycastHit hit = CastRayFromCamera(placeForTowerLayerMask);
+        return hit.collider != null ? hit.collider.gameObject : null;
+    }
+
+    void ClickedPlacement()
+    {   
+        RaycastHit hit = CastRayFromCamera(placeForTowerLayerMask);
+        if (hit.collider != null)
+        {
+            GameObject placementHit = hit.collider.gameObject;
+            if (placementHit.CompareTag("PlaceForTower"))
+            {
+                buildManager = BuildManager.instance;
+                if (buildManager.TowerToBuild != null)
+                {
+                    buildManager.ClickedArea = _selection.gameObject;
+                    buildManager.InstantiateTower();
+                }
+            }
+        }
+    }
+    void ClickedTower()
+    {
+        RaycastHit hit = CastRayFromCamera(towerLayerMask);
+        if (hit.collider != null)
+        {
+            GameObject towerHit = hit.collider.gameObject;
+            if (towerHit.CompareTag("Tower"))
+            {
+                Tower tower = towerHit.GetComponent<Tower>();
+
+                print("Amount of clicks: ");
+                if (tower.radius.activeInHierarchy)
+                {
+                    tower.radius.SetActive(false);
+                    tower.upgradeUI.SetActive(false);
+                        
+                }
+                else
+                {
+                    tower.radius.SetActive(true);
+                    tower.upgradeUI.SetActive(true);
+
+                } 
+            }
+        }
+    }
+
+    void ChangeBackTimer()
+    {
+        clickTimer = true;
     }
 }

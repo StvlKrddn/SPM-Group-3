@@ -9,6 +9,7 @@ public class PlayerHandler : MonoBehaviour
 
     [SerializeField] GameObject tankMode;
     [SerializeField] GameObject buildMode;
+    [SerializeField] GameObject canvas;
 
     PlayerInput playerInput;
 
@@ -56,6 +57,8 @@ public class PlayerHandler : MonoBehaviour
 
             playerInput.SwitchCurrentActionMap("Builder");
 
+            canvas.SetActive(true);
+
             currentMode = PlayerMode.Build;
 
             print("Entered build mode");
@@ -78,6 +81,8 @@ public class PlayerHandler : MonoBehaviour
             playerInput.SwitchCurrentActionMap("Tank");
 
             currentMode = PlayerMode.Tank;
+
+            canvas.SetActive(false);
 
             print("Entered tank mode");
         }
