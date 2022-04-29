@@ -14,6 +14,8 @@ public class Shot : MonoBehaviour
     [SerializeField] private float slowProc = 0.7f;
     [SerializeField] private float splashRadius = 1f;
     [SerializeField] private float splashDamage = 20f;
+    [SerializeField] private GameObject ShotPrefab;
+    private Tower tower;
 
     public float ShotDamage { get { return shotDamage; } set { shotDamage = value; } }
     public float SlowProc { get { return slowProc; } set { slowProc = value; } }
@@ -22,8 +24,12 @@ public class Shot : MonoBehaviour
     public float PoisonTicks { get { return poisonTicks; } set { poisonTicks = value; } }
     public float PoisonDamagePerTick { get { return poisonDamagePerTick; } set { poisonDamagePerTick = value; } }
 
-    public void Seek(Transform _target)
+    private void Awake()
     {
+        tower = gameObject.GetComponentInParent<Tower>();
+    }
+    public void Seek(Transform _target)
+    {       
         target = _target;
     }
 
@@ -70,7 +76,7 @@ public class Shot : MonoBehaviour
                 break;
             case "SlowTower":
                 shotDamage = 0f;
-                enemyTarget.HitBySlow(SlowProc);
+                enemyTarget.HitBySlow(SlowProc, tower.range);
                 break;
             case "MissileTower":
                 enemyTarget.HitBySplash(SplashRadius, SplashDamage);

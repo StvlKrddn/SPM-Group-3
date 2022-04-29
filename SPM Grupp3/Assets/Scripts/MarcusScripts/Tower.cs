@@ -85,6 +85,7 @@ public class Tower : MonoBehaviour
     void Shoot()
     {
         GameObject bulletGO = Instantiate(shot, firePoint.position, firePoint.rotation);
+        bulletGO.transform.parent = transform;
         bulletGO.SetActive(true);
         Shot bullet = bulletGO.GetComponent<Shot>();
 
