@@ -8,8 +8,9 @@ public abstract class Tower : MonoBehaviour
     
     [SerializeField] protected float range = 15f;
     [SerializeField] protected float fireRate = 1f;
+
     public float cost = 150f;
-    [SerializeField] protected float fireCountdown = 0f;
+
     public float materialCost;
     [SerializeField] protected float shotDamage = 5000f;
 
@@ -20,6 +21,7 @@ public abstract class Tower : MonoBehaviour
     [SerializeField] protected GameObject shot;
     [SerializeField] protected Transform firePoint;
     [SerializeField] protected GameObject radius;
+    [SerializeField] protected GameObject onHitEffect;
 
     public GameObject tower;
     public LayerMask towers;
@@ -31,28 +33,19 @@ public abstract class Tower : MonoBehaviour
     protected Shot bullet;
 
 
+    protected abstract void TypeOfShot(EnemyController enemyTarget);
+    public abstract void HitTarget();
+
+    private void Start()
+    {
+        InvokeRepeating("UpdateTarget", 0f, 0.5f);
+    }
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, range);
     }
-    /*    private void OnMouseDown()
-        {    
-            if (clicked == false)
-            {
-                radius.SetActive(true);
-                upgradeUI.SetActive(true);
-                *//*placedUI = Instantiate(upgradeUI, gameObject.transform);*//*
-                clicked = true;
-            }
-            else
-            {
-                radius.SetActive(false);
-                upgradeUI.SetActive(false);
-                *//*Destroy(placedUI);*//*
-                clicked = false;
-            }       
-        }*/
 
     void UpdateTarget()
     {
@@ -94,41 +87,11 @@ public abstract class Tower : MonoBehaviour
     }
 
 
-    protected bool CanYouShoot()
-    {
-        if (fireCountdown <= 0f)
-        {          
-            fireCountdown = 1f / fireRate;
-            return true;
-        }
-        fireCountdown -= Time.deltaTime;
-        return false;
-    }
 
 
-    protected abstract void TypeOfShot(EnemyController enemyTarget);
+
+    
 
 
-    /*    RaycastHit CastRayFromCamera(LayerMask layerMask)
-        {
-            // Get mouse position
-            Vector3 mousePosition = Input.mousePosition;
-
-            // Create a ray from camera to mouse position
-            Ray cameraRay = Camera.main.ScreenPointToRay(mousePosition);
-
-            // Raycast along the ray and return the hit point
-            Physics.Raycast(ray: cameraRay, hitInfo: out RaycastHit hit, maxDistance: Mathf.Infinity, layerMask: layerMask);
-
-            return hit;
-        }*/
-
-    /*    GameObject GetTower()
-        {
-            RaycastHit hit = CastRayFromCamera(towers);
-
-            // If a tower was hit, return the tower
-            return hit.collider != null ? hit.collider.gameObject : null;
-        }*/
 
 }

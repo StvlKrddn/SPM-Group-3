@@ -6,10 +6,6 @@ public class Shot : MonoBehaviour
 {
     private Transform target;
     public float shotSpeed = 1f;
-
-    public GameObject hitEffect;
-
-
     private Tower tower;
     private Vector3 direction;
     private float distanceThisFrame;
@@ -38,7 +34,7 @@ public class Shot : MonoBehaviour
 
         if (CheckIfProjectileHit())
         {
-            HitTarget();
+            tower.HitTarget();
         }
 
         transform.Translate(direction.normalized * distanceThisFrame, Space.World);
@@ -53,15 +49,7 @@ public class Shot : MonoBehaviour
         return false;
     }
 
-    void HitTarget()
-    {
-        EnemyController enemyTarget = target.GetComponent<EnemyController>();
-        GameObject effectInstance = Instantiate(hitEffect, transform.position, transform.rotation);
-        Destroy(effectInstance, 1f);
-        
-/*        Destroy(target.gameObject);*/
-        Destroy(gameObject);
-    }
+
 
 
 }

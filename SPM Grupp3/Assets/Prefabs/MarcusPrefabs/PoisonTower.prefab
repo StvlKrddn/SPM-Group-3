@@ -95,29 +95,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03fe636263af1a8419298cc78240d39a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 15
-  fireRate: 1
-  cost: 150
-  fireCountdown: 0
-  materialCost: 0
-  enemyTag: Enemy
-  turnSpeed: 10
-  shot: {fileID: 0}
-  firePoint: {fileID: 0}
-  radius: {fileID: 0}
-  tower: {fileID: 0}
-  towers:
-    serializedVersion: 2
-    m_Bits: 0
-  upgradeUI: {fileID: 0}
   shotSpeed: 70
-  shotDamage: 50
-  hitEffect: {fileID: 5202362185975563897, guid: afc452a4019ab8b47ac2ea888849a086, type: 3}
-  poisonTicks: 5
-  poisonDamagePerTick: 25
-  slowProc: 0.7
-  splashRadius: 1
-  splashDamage: 20
 --- !u!1 &2543076756762422046
 GameObject:
   m_ObjectHideFlags: 0
@@ -211,18 +189,20 @@ MonoBehaviour:
   range: 15
   fireRate: 1
   cost: 150
-  fireCountdown: 0
   materialCost: 0
+  shotDamage: 5000
   enemyTag: Enemy
   turnSpeed: 10
   shot: {fileID: 2543076756507886336}
   firePoint: {fileID: 2543076756762422033}
   radius: {fileID: 2543076757610419390}
+  onHitEffect: {fileID: 6062907644201011195, guid: 0bdcc3aa4ab50af46ab88c1eeecdcf4a, type: 3}
   tower: {fileID: 2543076757521757243}
   towers:
     serializedVersion: 2
     m_Bits: 256
-  upgradeUI: {fileID: 0}
+  poisonTicks: 5
+  poisonDamagePerTick: 25
 --- !u!1 &2543076757610419390
 GameObject:
   m_ObjectHideFlags: 0
