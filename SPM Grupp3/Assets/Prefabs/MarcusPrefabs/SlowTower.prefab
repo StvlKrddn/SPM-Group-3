@@ -39,8 +39,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1661001488874270944}
-  - component: {fileID: 1661001488874270951}
   - component: {fileID: 3806152538368000115}
+  - component: {fileID: 5067175041666526826}
   m_Layer: 8
   m_Name: SlowTower
   m_TagString: Tower
@@ -65,32 +65,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1661001488874270951
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1661001488874270945}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a34a13e5f448c2644852c2ee71435b81, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  range: 12
-  fireRate: 1.2
-  cost: 250
-  materialCost: 10
-  enemyTag: Enemy
-  turnSpeed: 10
-  shot: {fileID: 1661001487857780698}
-  firePoint: {fileID: 1661001488551145419}
-  radius: {fileID: 1661001488928329828}
-  tower: {fileID: 1661001488874270945}
-  towers:
-    serializedVersion: 2
-    m_Bits: 256
-  upgradeUI: {fileID: 0}
 --- !u!65 &3806152538368000115
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -104,6 +78,33 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2.5300565, y: 1.9814675, z: 2.0818093}
   m_Center: {x: 0.15463352, y: 0.49073398, z: 0.0790056}
+--- !u!114 &5067175041666526826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1661001488874270945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7a7c7fd49d87b74f8e3404733e055d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  range: 15
+  fireRate: 1
+  cost: 150
+  fireCountdown: 0
+  materialCost: 0
+  enemyTag: Enemy
+  turnSpeed: 10
+  shot: {fileID: 1661001487857780698}
+  firePoint: {fileID: 1661001488551145419}
+  radius: {fileID: 1661001488928329828}
+  tower: {fileID: 1661001488874270945}
+  towers:
+    serializedVersion: 2
+    m_Bits: 256
+  upgradeUI: {fileID: 0}
 --- !u!1 &1661001488928329828
 GameObject:
   m_ObjectHideFlags: 0
