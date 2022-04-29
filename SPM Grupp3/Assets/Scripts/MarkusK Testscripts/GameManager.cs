@@ -16,7 +16,6 @@ public class GameManager : MonoBehaviour
 
     [Header("UI Elements: ")]
     [SerializeField] private Text waveUI;
-    [SerializeField] private Text liveUI;
     [SerializeField] private Text moneyUI;
     [SerializeField] private Text materialUI;
     [SerializeField] private Slider livesSlider;
@@ -72,8 +71,7 @@ public class GameManager : MonoBehaviour
     {
         moneyUI.text = ": " + money;
         materialUI.text = ": " + material;
-        waveUI.text = currentWave + "/9";
-        liveUI.text = "Lives: " + baseHealth;
+        waveUI.text = currentWave + "/" + victoryWave;
     }
 
     public void AddMoney(float addMoney)
