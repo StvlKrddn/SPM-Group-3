@@ -246,7 +246,7 @@ public class BuilderController : MonoBehaviour
                 Tower tower = towerHit.GetComponent<Tower>();
 
                 print("Amount of clicks: ");
-                if (tower.radius.activeInHierarchy)
+/*                if (tower.radius.activeInHierarchy)
                 {
                     tower.radius.SetActive(false);
                     tower.upgradeUI.SetActive(false);
@@ -257,7 +257,7 @@ public class BuilderController : MonoBehaviour
                     tower.radius.SetActive(true);
                     tower.upgradeUI.SetActive(true);
 
-                } 
+                } */
             }
         }
     }

@@ -39,8 +39,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1569145756733406198}
-  - component: {fileID: 1569145756733406199}
   - component: {fileID: 868895797247785900}
+  - component: {fileID: 8684089241741131458}
   m_Layer: 8
   m_Name: MissileTower
   m_TagString: Untagged
@@ -65,32 +65,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1569145756733406199
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1569145756733406200}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a34a13e5f448c2644852c2ee71435b81, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  range: 15
-  fireRate: 0.5
-  cost: 200
-  materialCost: 5
-  enemyTag: Enemy
-  turnSpeed: 10
-  shot: {fileID: 1569145757135069708}
-  firePoint: {fileID: 1569145758683705722}
-  radius: {fileID: 1569145758455605305}
-  tower: {fileID: 1569145756733406200}
-  towers:
-    serializedVersion: 2
-    m_Bits: 256
-  upgradeUI: {fileID: 0}
 --- !u!65 &868895797247785900
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -104,6 +78,33 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 2.5300565, y: 1.9814675, z: 2.0818093}
   m_Center: {x: 0.15463352, y: 0.49073398, z: 0.0790056}
+--- !u!114 &8684089241741131458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1569145756733406200}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8dfc2432f92b2b94ea4dcddc6c4491ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  range: 15
+  fireRate: 1
+  cost: 150
+  fireCountdown: 0
+  materialCost: 0
+  enemyTag: Enemy
+  turnSpeed: 10
+  shot: {fileID: 1569145757135069708}
+  firePoint: {fileID: 1569145758683705722}
+  radius: {fileID: 1569145758455605305}
+  tower: {fileID: 1569145756733406200}
+  towers:
+    serializedVersion: 2
+    m_Bits: 256
+  upgradeUI: {fileID: 0}
 --- !u!1 &1569145757135069708
 GameObject:
   m_ObjectHideFlags: 0
@@ -199,6 +200,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03fe636263af1a8419298cc78240d39a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  range: 15
+  fireRate: 1
+  cost: 150
+  fireCountdown: 0
+  materialCost: 0
+  enemyTag: Enemy
+  turnSpeed: 10
+  shot: {fileID: 0}
+  firePoint: {fileID: 0}
+  radius: {fileID: 0}
+  tower: {fileID: 0}
+  towers:
+    serializedVersion: 2
+    m_Bits: 0
+  upgradeUI: {fileID: 0}
   shotSpeed: 40
   shotDamage: 40
   hitEffect: {fileID: 5202362185975563897, guid: afc452a4019ab8b47ac2ea888849a086, type: 3}
