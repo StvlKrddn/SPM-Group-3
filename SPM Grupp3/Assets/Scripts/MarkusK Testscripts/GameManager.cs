@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Text liveUI;
     [SerializeField] private Text moneyUI;
     [SerializeField] private Text materialUI;
+    [SerializeField] private Slider livesSlider;
 
     [Header("Player")]
     [SerializeField] private PlayerMode startingMode;
@@ -42,6 +43,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        livesSlider.maxValue = baseHealth;
         UpdateResourcesUI();
     }
 
@@ -146,8 +148,11 @@ public class GameManager : MonoBehaviour
     public void TakeDamage(float damage)
     {
         baseHealth -= damage;
+        livesSlider.value -= damage;
         if (baseHealth <= 0)
         {
+            GameObject fillArea = livesSlider.transform.Find("Fill Area").gameObject;
+            fillArea.SetActive(false);
             Defeat();
         }
         UpdateResourcesUI();

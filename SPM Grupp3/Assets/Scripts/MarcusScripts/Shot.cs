@@ -14,6 +14,7 @@ public class Shot : MonoBehaviour
     [SerializeField] private float slowProc = 0.7f;
     [SerializeField] private float splashRadius = 1f;
     [SerializeField] private float splashDamage = 20f;
+    [SerializeField] private GameObject ShotPrefab;
     private Tower tower;
 
     public float ShotDamage { get { return shotDamage; } set { shotDamage = value; } }
@@ -67,7 +68,7 @@ public class Shot : MonoBehaviour
 
     void TypeOfShot(EnemyController enemyTarget)
     {
-        switch (tower.name)
+        switch (gameObject.tag)
         {
             case "PoisonTower":
                 shotDamage = 0f;
