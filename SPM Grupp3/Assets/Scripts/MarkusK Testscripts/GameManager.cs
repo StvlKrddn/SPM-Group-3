@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private PlayerMode startingMode;
 
     private int currentWave = 0;
-
+    private int victoryWave = 10;
     public float Money { get { return money; } set { money = value; } }
     public PlayerMode StartingMode { get { return startingMode; } }
 

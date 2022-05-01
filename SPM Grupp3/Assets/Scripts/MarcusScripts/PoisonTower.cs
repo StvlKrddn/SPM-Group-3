@@ -38,12 +38,15 @@ public class PoisonTower : Tower
     }
     public override void HitTarget()
     {
-        EnemyController enemyTarget = target.GetComponent<EnemyController>();
-        GameObject effectInstance = Instantiate(onHitEffect, transform.position, transform.rotation);
+        if (target != null)
+        {
+            EnemyController enemyTarget = target.GetComponent<EnemyController>();
+            GameObject effectInstance = Instantiate(onHitEffect, transform.position, transform.rotation);
 
-        Destroy(effectInstance, 1f);
-        TypeOfShot(enemyTarget);
-        Destroy(gameObject);
+            Destroy(effectInstance, 1f);
+            TypeOfShot(enemyTarget);
+            Destroy(gameObject);
+        }
     }
 
     private bool CanYouShoot()

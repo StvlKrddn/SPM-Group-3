@@ -43,7 +43,11 @@ public class BuildManager : MonoBehaviour
 
     public void InstantiateTower()
     {
-        tower = TowerToBuild.GetComponent<Tower>();
+        if (TowerToBuild != null)
+        {
+            tower = TowerToBuild.GetComponent<Tower>();
+        }
+        
         if (clickedArea == null)
         {
             return;
