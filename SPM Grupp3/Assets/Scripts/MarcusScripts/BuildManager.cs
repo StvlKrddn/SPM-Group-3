@@ -4,12 +4,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class BuildManager : MonoBehaviour
-{
-    [SerializeField] private Transform garage;
-    
-    public static BuildManager instance;
-    
-    private GarageTrigger garageTrigger;
+{    
+    public static BuildManager instance;    
     [SerializeField] private GameManager gM;
 
     private void Awake()

@@ -134,6 +134,7 @@ public class EnemyController : MonoBehaviour
                 EnemyController eC = c.GetComponent<EnemyController>();
                 eC.speed *= slowProc;
                 eC.Invoke("SlowDuration", 3f);
+
             }
         }
     }

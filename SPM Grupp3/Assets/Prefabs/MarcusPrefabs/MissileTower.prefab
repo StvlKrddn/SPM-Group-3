@@ -91,22 +91,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   range: 15
-  fireRate: 1
-  cost: 150
-  materialCost: 0
-  shotDamage: 5000
+  fireRate: 0.7
+  cost: 200
+  materialCost: 5
+  shotDamage: 70
   enemyTag: Enemy
   turnSpeed: 10
   shot: {fileID: 1569145757135069708}
   firePoint: {fileID: 1569145758683705722}
   radius: {fileID: 1569145758455605305}
-  onHitEffect: {fileID: 5202362185975563897, guid: afc452a4019ab8b47ac2ea888849a086, type: 3}
+  onHitEffect: {fileID: 6970288597742466642, guid: a61e722881e7d9d48b3435d574f938a1, type: 3}
   tower: {fileID: 1569145756733406200}
   towers:
     serializedVersion: 2
     m_Bits: 256
-  splashRadius: 1
+  splashRadius: 3
   splashDamage: 20
+  fireCountdown: 0
 --- !u!1 &1569145757135069708
 GameObject:
   m_ObjectHideFlags: 0

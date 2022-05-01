@@ -7,9 +7,7 @@ public class PoisonTower : Tower
     [SerializeField] private float poisonTicks = 5;
     [SerializeField] private float poisonDamagePerTick = 25;
     private float fireCountdown = 0f;
-    /*    [SerializeField] private GameObject shot;
-        [SerializeField] private Transform firePoint;
-        [SerializeField] private GameObject radius;*/
+
     public float PoisonTicks { get { return poisonTicks; } set { poisonTicks = value; } }
     public float PoisonDamagePerTick { get { return poisonDamagePerTick; } set { poisonDamagePerTick = value; } }
     // Start is called before the first frame update
@@ -41,11 +39,11 @@ public class PoisonTower : Tower
         if (target != null)
         {
             EnemyController enemyTarget = target.GetComponent<EnemyController>();
-            GameObject effectInstance = Instantiate(onHitEffect, transform.position, transform.rotation);
+/*            GameObject effectInstance = Instantiate(onHitEffect, transform.position, transform.rotation);
 
-            Destroy(effectInstance, 1f);
+            Destroy(effectInstance, 1f);*/
             TypeOfShot(enemyTarget);
-            Destroy(gameObject);
+            Destroy(bullet.gameObject);
         }
     }
 

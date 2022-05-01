@@ -23,12 +23,12 @@ public class GameMenu : MonoBehaviour
         // Ska ändras till Esc, Tab för tillfället för att visa att musen kan bli osynlig
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            if (!escapePanel.active)
+            if (!escapePanel.activeInHierarchy)
             {
                 Cursor.visible = true;
                 escapePanel.SetActive(true);
             }
-            else if(!closeMessage.active)
+            else if(!closeMessage.activeInHierarchy)
             {
                 Cursor.visible = !Cursor.visible;
                 escapePanel.SetActive(false);

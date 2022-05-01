@@ -44,11 +44,11 @@ public class SlowTower : Tower
         if (target != null)
         {
             EnemyController enemyTarget = target.GetComponent<EnemyController>();
-/*            GameObject effectInstance = Instantiate(onHitEffect, transform.position, transform.rotation);
+            GameObject effectInstance = Instantiate(onHitEffect, transform.position, transform.rotation);
 
-            Destroy(effectInstance, 1f);*/
+            Destroy(effectInstance, 1f);
             TypeOfShot(enemyTarget);
-            Destroy(gameObject);
+            Destroy(bullet.gameObject);
         }
     }
 

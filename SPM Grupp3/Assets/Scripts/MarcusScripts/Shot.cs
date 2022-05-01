@@ -32,11 +32,6 @@ public class Shot : MonoBehaviour
         distanceThisFrame = shotSpeed * Time.deltaTime;
         direction = target.position - transform.position;
 
-        if (CheckIfProjectileHit())
-        {
-            tower.HitTarget();
-        }
-
         transform.Translate(direction.normalized * distanceThisFrame, Space.World);
     }
 

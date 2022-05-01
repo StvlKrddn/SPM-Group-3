@@ -5,7 +5,8 @@ using UnityEngine;
 public class Shop : MonoBehaviour
 {
     BuildManager buildManager;
-
+    public GameManager gM;
+    private Tower tower;
 /*    private Tower tower;*/
 
 
@@ -13,12 +14,12 @@ public class Shop : MonoBehaviour
     void Start()
     {
         buildManager = BuildManager.instance;
-/*        tower = buildManager.TowerToBuild.GetComponent<Tower>();*/
     }
 
     public void PurchaseCannonTower()
     {
-        buildManager.TowerToBuild = buildManager.cannonTowerPrefab;
+
+        buildManager.TowerToBuild = buildManager.cannonTowerPrefab;     
         print(buildManager.TowerToBuild);
 /*        if (!gameManager.spendResources(tower.cost, 0))
         {

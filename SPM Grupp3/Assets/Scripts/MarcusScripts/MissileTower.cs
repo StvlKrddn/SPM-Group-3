@@ -6,7 +6,7 @@ public class MissileTower : Tower
 {
     [SerializeField] private float splashRadius = 1f;
     [SerializeField] private float splashDamage = 20f;
-    private float fireCountdown = 0f;
+    public float fireCountdown = 0f;
     /*    [SerializeField] private GameObject shot;
         [SerializeField] private Transform firePoint;
         [SerializeField] private GameObject radius;*/
@@ -25,16 +25,17 @@ public class MissileTower : Tower
     {
         LockOnTarget();
 
-        if (CanYouShoot())
+        if (target != null)
         {
-            Shoot();
-
-
-            if (bullet.CheckIfProjectileHit())
+            if (CanYouShoot())
             {
-                HitTarget();
-            }
+                Shoot();
 
+                if (bullet.CheckIfProjectileHit())
+                {
+                    HitTarget();
+                }
+            }
         }
     }
 
@@ -43,11 +44,11 @@ public class MissileTower : Tower
         if (target != null)
         {
             EnemyController enemyTarget = target.GetComponent<EnemyController>();
-            GameObject effectInstance = Instantiate(onHitEffect, transform.position, transform.rotation);
+            GameObject effectInstance = Instantiate(onHitEffect, bullet.gameObject.transform.position, bullet.gameObject.transform.rotation);
 
-            Destroy(effectInstance, 1f);
+            Destroy(effectInstance, 2f);
             TypeOfShot(enemyTarget);
-            Destroy(gameObject);
+            Destroy(bullet.gameObject);
         }
     }
 
@@ -55,6 +56,7 @@ public class MissileTower : Tower
     {
         if (fireCountdown <= 0f)
         {
+            print("True");
             fireCountdown = 1f / fireRate;
             return true;
         }

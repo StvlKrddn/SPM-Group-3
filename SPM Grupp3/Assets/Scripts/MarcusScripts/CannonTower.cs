@@ -4,23 +4,30 @@ using UnityEngine;
 
 public class CannonTower : Tower
 {
-    private float fireCountdown = 0f;
+    private float fireCountdown = 0.2f;
     // Start is called before the first frame update
     void Start()
     {
+        InvokeRepeating("UpdateTarget", 0f, 0.5f);
         radius.transform.localScale = new Vector3(range * 2f, 0.01f, range * 2f);
         radius.SetActive(false);
     }
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
         LockOnTarget();
 
-        if (CanYouShoot())
+        if (target != null)
         {
-            Shoot();
-            
+            if (CanYouShoot())
+            {
+                Shoot();
+            }
+        }
+
+        if (bullet != null)
+        {
             if (bullet.CheckIfProjectileHit())
             {
                 HitTarget();
@@ -43,11 +50,11 @@ public class CannonTower : Tower
         if (target != null)
         {
             EnemyController enemyTarget = target.GetComponent<EnemyController>();
-            GameObject effectInstance = Instantiate(onHitEffect, transform.position, transform.rotation);
+            GameObject effectInstance = Instantiate(onHitEffect, bullet.gameObject.transform.position, bullet.gameObject.transform.rotation);
 
             Destroy(effectInstance, 1f);
             TypeOfShot(enemyTarget);
-            Destroy(gameObject);
+            Destroy(bullet.gameObject);
         }
     }
 

@@ -18,7 +18,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3201376968240350045
 Transform:
   m_ObjectHideFlags: 0
@@ -49,7 +49,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3201376968240350041}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -95,15 +95,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03fe636263af1a8419298cc78240d39a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shotSpeed: 70
-  shotDamage: 50
-  hitEffect: {fileID: 5202362185975563897, guid: afc452a4019ab8b47ac2ea888849a086, type: 3}
-  poisonTicks: 5
-  poisonDamagePerTick: 25
-  slowProc: 0.7
-  splashRadius: 1
-  splashDamage: 20
-  ShotPrefab: {fileID: 3201376968240350041}
+  shotSpeed: 1
 --- !u!1 &8441150592824157901
 GameObject:
   m_ObjectHideFlags: 0

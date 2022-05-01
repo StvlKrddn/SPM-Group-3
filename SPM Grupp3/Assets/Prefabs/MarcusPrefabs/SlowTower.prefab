@@ -90,21 +90,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7a7c7fd49d87b74f8e3404733e055d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 15
+  range: 7
   fireRate: 1
-  cost: 150
-  fireCountdown: 0
-  materialCost: 0
+  cost: 250
+  materialCost: 10
+  shotDamage: 0
   enemyTag: Enemy
   turnSpeed: 10
-  shot: {fileID: 1661001487857780698}
+  shot: {fileID: 3201376968240350041, guid: 7e4902a1dd3b3484280a32e92534c4c7, type: 3}
   firePoint: {fileID: 1661001488551145419}
   radius: {fileID: 1661001488928329828}
+  onHitEffect: {fileID: 642787401388277777, guid: 3357ce08713e69546935a0aec49f6be9, type: 3}
   tower: {fileID: 1661001488874270945}
   towers:
     serializedVersion: 2
     m_Bits: 256
-  upgradeUI: {fileID: 0}
+  slowProc: 0.7
 --- !u!1 &1661001488928329828
 GameObject:
   m_ObjectHideFlags: 0
@@ -339,11 +340,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7e4902a1dd3b3484280a32e92534c4c7, type: 3}
---- !u!1 &1661001487857780698 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3201376968240350041, guid: 7e4902a1dd3b3484280a32e92534c4c7, type: 3}
-  m_PrefabInstance: {fileID: 4278564135668401283}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1661001487857780702 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3201376968240350045, guid: 7e4902a1dd3b3484280a32e92534c4c7, type: 3}

@@ -229,8 +229,13 @@ public class BuilderController : MonoBehaviour
         Vector3 placeVec = placement.position;
         Vector3 towerPlace = new Vector3(placeVec.x, placeVec.y + 0.5f, placeVec.z);
 
+/*        Tower tow = tower.GetComponent<Tower>();
+        GameObject radius = tower.transform.Find("Radius").gameObject;
+        radius.transform.localScale = new Vector3(tow.range * 2f, 0.01f, tow.range * 2f);*/
+        
         preTower = Instantiate(tower, towerPlace, placement.rotation);
         preTower.GetComponent<Renderer>().material.color = towerPreview;
+
     }
 
     void PreViewTower()

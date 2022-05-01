@@ -6,7 +6,7 @@ public abstract class Tower : MonoBehaviour
 {
     [Header("Attributes")]
     
-    [SerializeField] protected float range = 15f;
+    [SerializeField] public float range = 15f;
     [SerializeField] protected float fireRate = 1f;
 
     public float cost = 150f;
@@ -32,14 +32,8 @@ public abstract class Tower : MonoBehaviour
 
     protected Shot bullet;
 
-
     protected abstract void TypeOfShot(EnemyController enemyTarget);
     public abstract void HitTarget();
-
-    private void Start()
-    {
-        InvokeRepeating("UpdateTarget", 0f, 0.5f);
-    }
 
     private void OnDrawGizmosSelected()
     {
