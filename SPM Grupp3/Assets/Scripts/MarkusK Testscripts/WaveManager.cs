@@ -86,7 +86,7 @@ public class WaveManager : MonoBehaviour
             {
                 Debug.Log("Wave " + currentWave + " cleared");
                 FindObjectOfType<GameManager>().spawnEnemies = true;
-                StartWave(1); // Test row
+                StartWave(currentWave++); // Test row
                 //Activates the the button so the players can start next round 
             }
         }
