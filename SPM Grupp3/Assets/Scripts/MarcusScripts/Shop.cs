@@ -5,8 +5,8 @@ using UnityEngine;
 public class Shop : MonoBehaviour
 {
     BuildManager buildManager;
-    public TowerPlacement towerPlacement;
-    public GameManager gameManager;
+    public GameManager gM;
+    private Tower tower;
 /*    private Tower tower;*/
 
 
@@ -14,13 +14,13 @@ public class Shop : MonoBehaviour
     void Start()
     {
         buildManager = BuildManager.instance;
-/*        tower = buildManager.TowerToBuild.GetComponent<Tower>();*/
     }
 
     public void PurchaseCannonTower()
     {
-        buildManager.TowerToBuild = buildManager.cannonTowerPrefab;
 
+        buildManager.TowerToBuild = buildManager.cannonTowerPrefab;     
+        print(buildManager.TowerToBuild);
 /*        if (!gameManager.spendResources(tower.cost, 0))
         {
             towerPlacement.SetStartColor();
@@ -34,16 +34,16 @@ public class Shop : MonoBehaviour
     public void PurchaseMissileTower()
     {
         buildManager.TowerToBuild = buildManager.missileTowerPrefab;
+        print(buildManager.TowerToBuild);
 
+        /*       if (!gameManager.spendResources(tower.cost, 5) )
+                {
 
-/*       if (!gameManager.spendResources(tower.cost, 5) )
-        {
-            
-            towerPlacement.SetStartColor();
-            buildManager.ClickedArea = null;
-            buildManager.TowerToBuild = null;
-            return;
-        }*/
+                    towerPlacement.SetStartColor();
+                    buildManager.ClickedArea = null;
+                    buildManager.TowerToBuild = null;
+                    return;
+                }*/
 
 
     }
@@ -51,56 +51,19 @@ public class Shop : MonoBehaviour
     public void PurchaseSlowTower()
     {
         buildManager.TowerToBuild = buildManager.slowTowerPrefab;
-
-        towerPlacement = buildManager.ClickedArea.GetComponent<TowerPlacement>();
-
-        print(buildManager.TowerToBuild.GetComponent<Tower>().cost);
-        print(gameManager.Money);
-        if (buildManager.TowerToBuild.GetComponent<Tower>().cost > gameManager.Money)
-        {
-            towerPlacement.SetStartColor();
-            buildManager.ClickedArea = null;
-            buildManager.TowerToBuild = null;
-            return;
-        }
-
-
-        gameManager.spendResources(buildManager.TowerToBuild.GetComponent<Tower>().cost, 0);
-
-        print(buildManager.TowerToBuild.GetComponent<Tower>().cost);
-        print(gameManager.Money);
-
-        Debug.Log("Slow Tower");
-
-
-        buildManager.InstantiateTower();
+        print(buildManager.TowerToBuild);
+        /*        if (buildManager.TowerToBuild.GetComponent<Tower>().cost > gameManager.Money)
+                {
+                    towerPlacement.SetStartColor();
+                    buildManager.ClickedArea = null;
+                    buildManager.TowerToBuild = null;
+                    return;
+                }*/
     }
 
     public void PurchasePoisonTower()
     {
         buildManager.TowerToBuild = buildManager.poisonTowerPrefab;
-
-        towerPlacement = buildManager.ClickedArea.GetComponent<TowerPlacement>();
-
-        print(buildManager.TowerToBuild.GetComponent<Tower>().cost);
-        print(gameManager.Money);
-        if (buildManager.TowerToBuild.GetComponent<Tower>().cost > gameManager.Money)
-        {
-            towerPlacement.SetStartColor();
-            buildManager.ClickedArea = null;
-            buildManager.TowerToBuild = null;
-            return;
-        }
-
-
-        gameManager.spendResources(buildManager.TowerToBuild.GetComponent<Tower>().cost, 0);
-
-        print(buildManager.TowerToBuild.GetComponent<Tower>().cost);
-        print(gameManager.Money);
-
-        Debug.Log("Poison Tower");
-
-
-        buildManager.InstantiateTower();
+        print(buildManager.TowerToBuild);
     }
 }

@@ -7,147 +7,60 @@ public class GameManager : MonoBehaviour
 {
 
     [Header("Stats: ")]
-    [SerializeField] private float timeBetweenWave = 3f;
     [SerializeField] private float baseHealth = 100f;
     [SerializeField] private float material = 0f;
     [SerializeField] private float money = 350f;
-    [SerializeField] private float victoryWave = 9f;
 
     [Header("Enemies: ")]
-    [SerializeField] private bool spawnEnemies = true;
-    [SerializeField] private Transform regularEnemy;
-    [SerializeField] private float timeBetweenEnemy = 0.5f;
-    [SerializeField] private Transform spawnPosition;
+    [SerializeField] public bool spawnEnemies = true;
 
     [Header("UI Elements: ")]
     [SerializeField] private Text waveUI;
-    [SerializeField] private Text liveUI;
     [SerializeField] private Text moneyUI;
     [SerializeField] private Text materialUI;
+    [SerializeField] private Slider livesSlider;
 
     [Header("Player")]
     [SerializeField] private PlayerMode startingMode;
 
     private int currentWave = 0;
-    private bool waveOff = false;
-    private float timer = 0;
-
-    private int[] enemiesAmount = { 3, 3, 5, 5, 8 };
-    private int amountOfWaves;
-
-    private Vector3[] theWaves;
-
+    private int victoryWave = 10;
     public float Money { get { return money; } set { money = value; } }
     public PlayerMode StartingMode { get { return startingMode; } }
 
+
     private void Start()
     {
+        livesSlider.maxValue = baseHealth;
         UpdateResourcesUI();
     }
 
     void Update()
     {
-        if (spawnEnemies)
-        {
-            if (timer >= timeBetweenWave)
-            {
-                StartCoroutine(SpawnWave());
-                timer = 0;
-                waveOff = true;
-            }
-
-            if (waveOff == false)
-            {
-                timer += Time.deltaTime;
-            }
-        }
+        
     }
 
-    private IEnumerator SpawnWave()
+    private void SpawnWave()
     {
         currentWave++;
-        
         // Invoke new wave event
         EventHandler.Instance.InvokeEvent(new NewWaveEvent(
             description: "New wave started",
             currentWave: currentWave
             ));
 
-        if (currentWave > victoryWave) //Victory condition
-        {
-            Victory();
-            yield break;
-        }
-
-        //   for (int i = 0; i < theWaves[currentWave].Length; i++)
-        //   {
-        //       StartCoroutine(SpawnEnemies(regularEnemy, theWaves[currentWave][i]));
-        //   }
-
-
-        int waveLength = 0;
-        switch (currentWave) //Indivdually controls each lane spawns and length
-        {   
-            case 1:
-                waveLength = 5;
-                yield return new WaitForSeconds(3);
-                StartCoroutine(SpawnEnemies(regularEnemy, 6));
-                break;
-
-            case 2:
-                waveLength = 5;
-                StartCoroutine(SpawnEnemies(regularEnemy, 9));
-                break;
-            case 3:
-                waveLength = 10;
-                StartCoroutine(SpawnEnemies(regularEnemy, 12));
-                break;
-            case 4:
-                waveLength = 10;
-                StartCoroutine(SpawnEnemies(regularEnemy, 15));
-                break;
-            case 5:
-                waveLength = 12;
-                StartCoroutine(SpawnEnemies(regularEnemy, 15));
-                break;
-            case 6:
-                waveLength = 14;
-                StartCoroutine(SpawnEnemies(regularEnemy, 15));
-                break;
-            case 7:
-                waveLength = 16;
-                StartCoroutine(SpawnEnemies(regularEnemy, 18));
-                break;
-            case 8:
-                waveLength = 18;
-                StartCoroutine(SpawnEnemies(regularEnemy, 22));
-                break;
-            case 9:
-                waveLength = 20;
-                StartCoroutine(SpawnEnemies(regularEnemy, 26));
-                break;
-
-
-        }
-        yield return new WaitForSeconds(waveLength);
-        waveOff = false;
-    }
-
-    IEnumerator SpawnEnemies(Transform enemyType, float count)
-    {
-        for (int i = 0; i < count; i++)
-        {
-            Instantiate(enemyType, spawnPosition.position, spawnPosition.rotation); //Spawn enemy and wait for time between enemy
-            yield return new WaitForSeconds(timeBetweenEnemy);
-        }
-        yield return false;
+        spawnEnemies = false;
+        //Deactivate start button
     }
 
     public void TakeDamage(float damage)
     {
         baseHealth -= damage;
+        livesSlider.value -= damage;
         if (baseHealth <= 0)
         {
+            GameObject fillArea = livesSlider.transform.Find("Fill Area").gameObject;
+            fillArea.SetActive(false);
             Defeat();
         }
         UpdateResourcesUI();
@@ -156,10 +69,9 @@ public class GameManager : MonoBehaviour
     // Har enbart ändrat på texten metoden nedan
     private void UpdateResourcesUI()
     {
-        moneyUI.text = "$" + money;
-        materialUI.text = "M" + material;
-        waveUI.text = "Current Wave: " + currentWave;
-        liveUI.text = "Lives: " + baseHealth;
+        moneyUI.text = ": " + money;
+        materialUI.text = ": " + material;
+        waveUI.text = currentWave + "/" + victoryWave;
     }
 
     public void AddMoney(float addMoney)
@@ -174,7 +86,7 @@ public class GameManager : MonoBehaviour
         UpdateResourcesUI();
     }
 
-    public bool spendResources(float moneySpent, float materialSpent)
+    public bool spendResources(float moneySpent, float materialSpent) //Change to big S
     {
         if (moneySpent <= money && materialSpent <= material)
         {
@@ -185,12 +97,6 @@ public class GameManager : MonoBehaviour
         }
         //Show Error
         return false;
-    }
-
-
-    private void Victory()
-    {
-        Debug.Log("Victory");
     }
 
     private void Defeat()

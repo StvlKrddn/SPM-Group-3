@@ -4,16 +4,13 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class BuildManager : MonoBehaviour
-{
-    [SerializeField] private Transform garage;
-    
-    public static BuildManager instance;
-    
-    private GarageTrigger garageTrigger;
+{    
+    public static BuildManager instance;    
     [SerializeField] private GameManager gM;
 
     private void Awake()
     {
+        
         if (instance != null)
         {
             Debug.Log("More than one buildmanager");
@@ -42,7 +39,11 @@ public class BuildManager : MonoBehaviour
 
     public void InstantiateTower()
     {
-        tower = TowerToBuild.GetComponent<Tower>();
+        if (TowerToBuild != null)
+        {
+            tower = TowerToBuild.GetComponent<Tower>();
+        }
+        
         if (clickedArea == null)
         {
             return;
