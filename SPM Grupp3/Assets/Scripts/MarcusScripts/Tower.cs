@@ -2,51 +2,43 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Tower : MonoBehaviour
+public abstract class Tower : MonoBehaviour
 {
     [Header("Attributes")]
     
-    public float range = 15f;
-    public float fireRate = 1f;
+    [SerializeField] public float range = 15f;
+    [SerializeField] protected float fireRate = 1f;
+
     public float cost = 150f;
-    private float fireCountdown = 0f;
+
     public float materialCost;
+    [SerializeField] protected float shotDamage = 5000f;
 
     [Header("Unity Setup Fields")]
 
-    public string enemyTag = "Enemy";
-    public float turnSpeed = 10f;
-    public GameObject shot;
-    public Transform firePoint;
-    public GameObject radius;
+    [SerializeField] protected string enemyTag = "Enemy";
+    [SerializeField] protected float turnSpeed = 10f;
+    [SerializeField] protected GameObject shot;
+    [SerializeField] protected Transform firePoint;
+    [SerializeField] protected GameObject radius;
+    [SerializeField] protected GameObject onHitEffect;
+
     public GameObject tower;
     public LayerMask towers;
-    public GameObject upgradeUI;
-    private Transform target;
-    private bool clicked = false;
+/*    public GameObject upgradeUI;*/
+    protected Transform target;
+
+    protected float ShotDamage { get { return shotDamage; } set { shotDamage = value; } }
+
+    protected Shot bullet;
+
+    protected abstract void TypeOfShot(EnemyController enemyTarget);
+    public abstract void HitTarget();
 
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, range);
-    }
-
-    private void OnMouseDown()
-    {    
-        if (clicked == false)
-        {
-            radius.SetActive(true);
-            upgradeUI.SetActive(true);
-            /*placedUI = Instantiate(upgradeUI, gameObject.transform);*/
-            clicked = true;
-        }
-        else
-        {
-            radius.SetActive(false);
-            upgradeUI.SetActive(false);
-            /*Destroy(placedUI);*/
-            clicked = false;
-        }       
     }
 
     void UpdateTarget()
@@ -73,52 +65,9 @@ public class Tower : MonoBehaviour
         {
             target = null;
         }
-    } 
-    // Start is called before the first frame update
-    void Start()
-    {
-        radius.transform.localScale = new Vector3(range * 2f,0.01f,range * 2f);
-        radius.SetActive(false);
-        InvokeRepeating("UpdateTarget", 0f, 0.5f);
     }
-
-    void Shoot()
-    {
-        GameObject bulletGO = Instantiate(shot, firePoint.position, firePoint.rotation);
-        bulletGO.transform.parent = transform;
-        bulletGO.SetActive(true);
-        Shot bullet = bulletGO.GetComponent<Shot>();
-
-        if (bullet != null)
-        {
-            bullet.Seek(target);
-        }
-    }
-
-    RaycastHit CastRayFromCamera(LayerMask layerMask)
-    {
-        // Get mouse position
-        Vector3 mousePosition = Input.mousePosition;
-
-        // Create a ray from camera to mouse position
-        Ray cameraRay = Camera.main.ScreenPointToRay(mousePosition);
-
-        // Raycast along the ray and return the hit point
-        Physics.Raycast(ray: cameraRay, hitInfo: out RaycastHit hit, maxDistance: Mathf.Infinity, layerMask: layerMask);
-
-        return hit;
-    }
-
-    GameObject GetTower()
-    {
-        RaycastHit hit = CastRayFromCamera(towers);
-
-        // If a tower was hit, return the tower
-        return hit.collider != null ? hit.collider.gameObject : null;
-    }
-
-    // Update is called once per frame
-    void Update()
+    
+    protected void LockOnTarget()
     {
         if (target != null)
         {
@@ -127,31 +76,16 @@ public class Tower : MonoBehaviour
             Quaternion lookRotation = Quaternion.LookRotation(direction);
             Vector3 rotation = Quaternion.Lerp(transform.rotation, lookRotation, Time.deltaTime * turnSpeed).eulerAngles;
             transform.rotation = Quaternion.Euler(0f, rotation.y, 0f);
-
-            if (fireCountdown <= 0f)
-            {
-                Shoot();
-                fireCountdown = 1f / fireRate;
-            }
-            fireCountdown -= Time.deltaTime;           
+  
         }
-
-/*        if (Input.GetMouseButtonDown(0))
-        {
-            GameObject towerHit = GetTower();
-
-            if (towerHit != null && tower == towerHit.transform.parent)
-            {
-                if (radius.activeSelf)
-                {
-                    radius.SetActive(true);
-                }
-                else
-                {
-                    radius.SetActive(false);
-                }
-            }
-        }*/
     }
+
+
+
+
+
+    
+
+
 
 }
