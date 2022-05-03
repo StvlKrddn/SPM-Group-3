@@ -8,6 +8,7 @@ public class WaveManager : MonoBehaviour
 {
     [Header("Enemies: ")]
     [SerializeField] private Transform spawnPosition;
+    [SerializeField] private Text waveUI;
 
     public WaveInfo[] waves;
 
@@ -20,7 +21,7 @@ public class WaveManager : MonoBehaviour
 
     private void Awake()
     {
-        victoryWave = waves.Length - 1;
+        victoryWave = waves.Length;
     }
 
     private void Start()
@@ -33,6 +34,7 @@ public class WaveManager : MonoBehaviour
         this.currentWave = currentWave;
         WaveConstructor(waves[currentWave]);
         StartCoroutine(SpawnCurrentWave());
+        UpdateUI();
     }
 
     private void WaveConstructor(WaveInfo wave)
@@ -78,15 +80,16 @@ public class WaveManager : MonoBehaviour
         enemyCount--;
         if (enemyCount == 0)
         {
+            currentWave++;
             if (currentWave == victoryWave)
             {
                 Victory();
             }
             else
             {
-                Debug.Log("Wave " + currentWave + " cleared");
                 FindObjectOfType<GameManager>().spawnEnemies = true;
-                StartWave(currentWave++); // Test row
+                StartWave(currentWave); // Test row
+                Debug.Log("Wave " + currentWave + " cleared");
                 //Activates the the button so the players can start next round 
             }
         }
@@ -101,6 +104,11 @@ public class WaveManager : MonoBehaviour
             yield return new WaitForSeconds(spawnRate);
         }
         yield return false;
+    }
+
+    private void UpdateUI()
+    {
+        waveUI.text = (currentWave + 1) + "/" + victoryWave;
     }
 
     private void Victory()
