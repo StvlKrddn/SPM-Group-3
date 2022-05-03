@@ -153,7 +153,7 @@ Transform:
   m_GameObject: {fileID: 6433795423676665501}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -0.5, z: 0}
-  m_LocalScale: {x: 14, y: 0.01, z: 14}
+  m_LocalScale: {x: 16, y: 0.01, z: 16}
   m_Children: []
   m_Father: {fileID: 6433795423446804667}
   m_RootOrder: 0
@@ -216,8 +216,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6433795423722352153}
-  - component: {fileID: 6433795423722352158}
   - component: {fileID: 968486636170223753}
+  - component: {fileID: 7487424813000984790}
   m_Layer: 8
   m_Name: CannonTower
   m_TagString: Tower
@@ -242,32 +242,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6433795423722352158
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6433795423722352152}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a34a13e5f448c2644852c2ee71435b81, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  range: 7
-  fireRate: 1
-  cost: 150
-  materialCost: 0
-  enemyTag: Enemy
-  turnSpeed: 10
-  shot: {fileID: 6433795424722049315}
-  firePoint: {fileID: 6433795424573960498}
-  radius: {fileID: 6433795423676665501}
-  tower: {fileID: 6433795423722352152}
-  towers:
-    serializedVersion: 2
-    m_Bits: 256
-  upgradeUI: {fileID: 0}
 --- !u!65 &968486636170223753
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -281,6 +255,33 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.5807765, y: 1.7477463, z: 1.5585487}
   m_Center: {x: 0.010270029, y: 0.3738733, z: 0.017845392}
+--- !u!114 &7487424813000984790
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6433795423722352152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be6f1b9e84993ae41a1c787c62870dc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  range: 8
+  fireRate: 1.3
+  cost: 150
+  materialCost: 0
+  shotDamage: 52
+  enemyTag: Enemy
+  turnSpeed: 10
+  shot: {fileID: 6433795424722049315}
+  firePoint: {fileID: 6433795424573960498}
+  radius: {fileID: 6433795423676665501}
+  onHitEffect: {fileID: 5202362185975563897, guid: afc452a4019ab8b47ac2ea888849a086, type: 3}
+  tower: {fileID: 6433795423722352152}
+  towers:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!1 &6433795424573960509
 GameObject:
   m_ObjectHideFlags: 0
@@ -406,11 +407,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03fe636263af1a8419298cc78240d39a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shotSpeed: 70
-  shotDamage: 5000
-  hitEffect: {fileID: 5202362185975563897, guid: afc452a4019ab8b47ac2ea888849a086, type: 3}
-  poisonTicks: 5
-  poisonDamagePerTick: 25
-  slowProc: 0.7
-  splashRadius: 1
-  splashDamage: 20
+  shotSpeed: 1

@@ -32,8 +32,6 @@ public class ButtonMethodSelection : MonoBehaviour
 
     public void OnClick()
     {
-        print("denna metod kallas " + "ar det sant " + Gamepad.current.aButton.IsPressed());
-
         if(isAButtonPressed)
         {
             whichShopMethod.Invoke();
@@ -41,8 +39,6 @@ public class ButtonMethodSelection : MonoBehaviour
 
         if(isYButtonPressed)
         {
-            print("den ser om y klickad");
-
             canvasToDeactivate.SetActive(false);
             canvasToDisplay.SetActive(true);
         }
