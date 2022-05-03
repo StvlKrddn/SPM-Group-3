@@ -112,7 +112,7 @@ public abstract class EnemyController : MonoBehaviour
             if (c.GetComponent<EnemyController>())
             {
                 EnemyController eC = c.GetComponent<EnemyController>();
-                eC.speed *= slowProc;
+                eC.speed = slowProc;
                 eC.Invoke(nameof(SlowDuration), 3f);
             }
         }
@@ -124,9 +124,9 @@ public abstract class EnemyController : MonoBehaviour
         speed = defaultSpeed;
     }
 
-    public void HitByPoison(float ticks, float dps)
+    public void HitByPoison(float ticks, float dps, GameObject effect)
     {
-        GameObject poisonEffect = Instantiate(hitByPoisonEffect, gameObject.transform);
+        GameObject poisonEffect = Instantiate(effect, gameObject.transform);
         Destroy(poisonEffect, ticks);
         if (poisonTickTimers.Count <= 0)
         {
