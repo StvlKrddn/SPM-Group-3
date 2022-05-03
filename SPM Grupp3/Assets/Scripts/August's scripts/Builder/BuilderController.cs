@@ -186,8 +186,6 @@ public class BuilderController : MonoBehaviour
         Ray cameraRay = camera.ScreenPointToRay(mousePosition);
         Physics.Raycast(ray: cameraRay, hitInfo: out RaycastHit hit, maxDistance: Mathf.Infinity, layerMask: layerMask);
         
-        
-
         return hit;
     }
 

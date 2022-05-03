@@ -9,7 +9,7 @@ public class PlayerHandler : MonoBehaviour
 
     [SerializeField] GameObject tankMode;
     [SerializeField] GameObject buildMode;
-    [SerializeField] GameObject canvas;
+    [SerializeField] GameObject buildMenu;
 
     PlayerInput playerInput;
 
@@ -57,11 +57,9 @@ public class PlayerHandler : MonoBehaviour
 
             playerInput.SwitchCurrentActionMap("Builder");
 
-            canvas.transform.GetChild(1).gameObject.SetActive(true);
+            buildMenu.SetActive(true);
 
             currentMode = PlayerMode.Build;
-
-            print("Entered build mode");
         }
 
         // If in Build mode, switch to Tank
@@ -82,12 +80,12 @@ public class PlayerHandler : MonoBehaviour
 
             currentMode = PlayerMode.Tank;
 
-            canvas.transform.GetChild(1).gameObject.SetActive(false);
-
-            print("Entered tank mode");
+            buildMenu.SetActive(false);
         }
     }
 
+
+    // NOTE(August): Den här metoden bör ligga i ett UI script egentligen, men det finns inget passande just nu
     public void EnterTank()
     {
         EventHandler.Instance.InvokeEvent(new PlayerSwitchEvent(
