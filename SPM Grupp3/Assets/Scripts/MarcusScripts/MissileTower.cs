@@ -15,6 +15,8 @@ public class MissileTower : Tower
     // Start is called before the first frame update
     void Start()
     {
+        EventHandler.Instance.RegisterListener<TowerHitEvent>(HitTarget);
+        towerScript = this;
         radius.transform.localScale = new Vector3(range * 2f, 0.01f, range * 2f);
         radius.SetActive(false);
         InvokeRepeating("UpdateTarget", 0f, 0.5f);
@@ -23,6 +25,7 @@ public class MissileTower : Tower
     // Update is called once per frame
     void Update()
     {
+        
         LockOnTarget();
 
         if (target != null)
@@ -30,27 +33,35 @@ public class MissileTower : Tower
             if (CanYouShoot())
             {
                 Shoot();
-
-                if (bullet.CheckIfProjectileHit())
-                {
-                    HitTarget();
-                }
             }
         }
     }
 
-    public override void HitTarget()
+    public override void HitTarget(TowerHitEvent eventInfo)
     {
         if (target != null)
         {
-            EnemyController enemyTarget = target.GetComponent<EnemyController>();
-            GameObject effectInstance = Instantiate(onHitEffect, bullet.gameObject.transform.position, bullet.gameObject.transform.rotation);
+            EnemyController enemyTarget = eventInfo.enemyHit.GetComponent<EnemyController>();
+            GameObject effectInstance = Instantiate(eventInfo.hitEffect, enemyTarget.transform.position, enemyTarget.transform.rotation);
 
-            Destroy(effectInstance, 2f);
+            Destroy(effectInstance, 1f);
             TypeOfShot(enemyTarget);
-            Destroy(bullet.gameObject);
+            /*Destroy(bullet.gameObject, 2f);*/
         }
     }
+
+    /*    public override void HitTarget()
+        {
+            if (target != null)
+            {
+                EnemyController enemyTarget = target.GetComponent<EnemyController>();
+                GameObject effectInstance = Instantiate(onHitEffect, bullet.gameObject.transform.position, bullet.gameObject.transform.rotation);
+
+                Destroy(effectInstance, 2f);
+                TypeOfShot(enemyTarget);
+                Destroy(bullet.gameObject);
+            }
+        }*/
 
     private bool CanYouShoot()
     {
@@ -64,9 +75,11 @@ public class MissileTower : Tower
         return false;
     }
 
-    protected override void TypeOfShot(EnemyController enemyTarget)
+    public override void TypeOfShot(EnemyController enemyTarget)
     {
+        print("Running? mis");
         enemyTarget.HitBySplash(SplashRadius, SplashDamage);
+        enemyTarget.TakeDamage(shotDamage);
     }
     protected void Shoot()
     {

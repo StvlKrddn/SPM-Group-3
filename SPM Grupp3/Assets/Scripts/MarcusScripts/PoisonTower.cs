@@ -13,6 +13,8 @@ public class PoisonTower : Tower
     // Start is called before the first frame update
     void Start()
     {
+        EventHandler.Instance.RegisterListener<TowerHitEvent>(HitTarget);
+        towerScript = this;
         radius.transform.localScale = new Vector3(range * 2f, 0.01f, range * 2f);
         radius.SetActive(false);
         InvokeRepeating("UpdateTarget", 0f, 0.5f);
@@ -21,31 +23,39 @@ public class PoisonTower : Tower
     // Update is called once per frame
     void Update()
     {
+        
         LockOnTarget();
 
         if (CanYouShoot())
         {
             Shoot();
-
-            if (bullet.CheckIfProjectileHit())
-            {
-                HitTarget();
-            }
-
         }
     }
-    public override void HitTarget()
+
+    public override void HitTarget(TowerHitEvent eventInfo)
     {
         if (target != null)
         {
-            EnemyController enemyTarget = target.GetComponent<EnemyController>();
-/*            GameObject effectInstance = Instantiate(onHitEffect, transform.position, transform.rotation);
+            EnemyController enemyTarget = eventInfo.enemyHit.GetComponent<EnemyController>();
+            GameObject effectInstance = Instantiate(eventInfo.hitEffect, enemyTarget.transform.position, enemyTarget.transform.rotation);
 
-            Destroy(effectInstance, 1f);*/
+            Destroy(effectInstance, 1f);
             TypeOfShot(enemyTarget);
-            Destroy(bullet.gameObject);
+            /*Destroy(bullet.gameObject, 2f);*/
         }
     }
+    /*    public override void HitTarget()
+        {
+            if (target != null)
+            {
+                EnemyController enemyTarget = target.GetComponent<EnemyController>();
+    *//*            GameObject effectInstance = Instantiate(onHitEffect, transform.position, transform.rotation);
+
+                Destroy(effectInstance, 1f);*//*
+                TypeOfShot(enemyTarget);
+                Destroy(bullet.gameObject);
+            }
+        }*/
 
     private bool CanYouShoot()
     {
@@ -58,9 +68,10 @@ public class PoisonTower : Tower
         return false;
     }
 
-    protected override void TypeOfShot(EnemyController enemyTarget)
+    public override void TypeOfShot(EnemyController enemyTarget)
     {
-        enemyTarget.HitByPoison(PoisonTicks,PoisonDamagePerTick);
+        print("Running? pois");
+        enemyTarget.HitByPoison(PoisonTicks,PoisonDamagePerTick, onHitEffect);
     }
     protected void Shoot()
     {
