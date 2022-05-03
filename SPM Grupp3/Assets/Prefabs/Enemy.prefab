@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5940178821907547973}
   - component: {fileID: 5940178821907547972}
   - component: {fileID: 5940178821907547971}
-  - component: {fileID: 5940178821907547975}
+  - component: {fileID: 5961557097805868708}
   m_Layer: 7
   m_Name: Enemy
   m_TagString: Enemy
@@ -97,7 +97,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 2, z: 1}
   m_Center: {x: 0, y: 0.5, z: 0}
---- !u!114 &5940178821907547975
+--- !u!114 &5961557097805868708
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -106,16 +106,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 5940178821907547970}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 57547971186a87d42976304bb1cc566f, type: 3}
+  m_Script: {fileID: 11500000, guid: 2972d638bc5665943b947e47bfcf7e4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
+  speed: 5
   hp: 100
   hitEffect: {fileID: 5202362185975563897, guid: afc452a4019ab8b47ac2ea888849a086, type: 3}
-  bullet: {fileID: 7304705245191953964, guid: 8a28b8f1e0bbf7849953dbe29c51590a, type: 3}
+  damageBase: 10
+  moneyDrop: 10
+  materialDrop: 1
   material: {fileID: 2880112694638519676, guid: ad4ab04936b9afa45a48c743a72df55b, type: 3}
-  hitByPoisonEffect: {fileID: 6062907644201011195, guid: 0bdcc3aa4ab50af46ab88c1eeecdcf4a, type: 3}
-  poisonTickTimers: []
 --- !u!1 &5940178823432169950
 GameObject:
   m_ObjectHideFlags: 0
