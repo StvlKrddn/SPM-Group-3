@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(TankController))]
-public class MachineGun : MonoBehaviour, ITankWeapon
+[RequireComponent(typeof(TankState))]
+public class WeaponSlot : MonoBehaviour
 {
-    [SerializeField] private float fireRate = 0.2f;
-    [SerializeField] private float bulletSpread = 20f;
-    [SerializeField] private float bulletRange = 20f;
-    [SerializeField] private float bulletSpeed = 35f;
 
-    [Header("Bullet prefab: ")]
-    [SerializeField] private GameObject bulletPrefab;
+    [SerializeField] TankWeapon equippedWeapon;
+
+    private float fireRate;
+    private float spread;
+    private float range;
+    private float bulletSpeed;
+    private GameObject bulletPrefab;
 
     TankState tank;
     Transform bulletSpawner;
@@ -24,21 +25,34 @@ public class MachineGun : MonoBehaviour, ITankWeapon
     bool allowedToShoot = true;
 
     public float FireRate { get { return fireRate; } set { fireRate = value; } }
-    public float BulletSpread { get { return bulletSpread; } set { bulletSpread = value; } }
-    public float BulletRange { get { return bulletRange; } set { bulletRange = value; } }
+    public float BulletSpread { get { return spread; } set { spread = value; } }
+    public float BulletRange { get { return range; } set { range = value; } }
     public float BulletSpeed { get { return bulletSpeed; } set { bulletSpeed = value; } }
 
     void Start()
     {
+        if (equippedWeapon != null){
+            ConstructWeapon();
+        }
+        
         tank = GetComponent<TankState>();
 
-        bulletSpread = Mathf.Clamp(bulletSpread, 0, 50);
+        spread = Mathf.Clamp(spread, 0, 50);
 
         turretObject = transform.GetChild(0);
 
         bulletSpawner = turretObject.Find("BarrelEnd");
 
         shootAction = tank.PlayerInput.actions["Shoot"];
+    }
+
+    void ConstructWeapon()
+    {
+        fireRate = equippedWeapon.fireRate;
+        spread = equippedWeapon.spread;
+        range = equippedWeapon.range;
+        bulletSpeed = equippedWeapon.bulletSpeed;
+        bulletPrefab = equippedWeapon.bulletPrefab;
     }
 
     void Update()
@@ -71,7 +85,7 @@ public class MachineGun : MonoBehaviour, ITankWeapon
     Quaternion ComputeBulletSpread()
     {
         // Produce a random rotation within a certain radius
-        Vector3 randomDirection = bulletSpawner.forward + Random.insideUnitSphere * bulletSpread;
+        Vector3 randomDirection = bulletSpawner.forward + Random.insideUnitSphere * spread;
 
         // Prevent too much spread up and down
         randomDirection = new Vector3(Mathf.Clamp01(randomDirection.x), randomDirection.y, randomDirection.z);
