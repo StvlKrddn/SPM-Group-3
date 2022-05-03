@@ -306,7 +306,7 @@ MonoBehaviour:
   fireRate: 1.3
   cost: 150
   materialCost: 0
-  shotDamage: 52
+  shotDamage: 50
   enemyTag: Enemy
   turnSpeed: 10
   shot: {fileID: 3201376968240350041, guid: 7e4902a1dd3b3484280a32e92534c4c7, type: 3}
@@ -318,6 +318,13 @@ MonoBehaviour:
   towers:
     serializedVersion: 2
     m_Bits: 256
+  placedTowers:
+  - {fileID: 0}
+  - {fileID: 0}
+  upgradeDamageAmount: 5
+  upgradeRangeAmount: 1
+  upgradeFireRateAmount: 0.5
+  shootTwice: 0
 --- !u!1 &6433795424573960509
 GameObject:
   m_ObjectHideFlags: 0

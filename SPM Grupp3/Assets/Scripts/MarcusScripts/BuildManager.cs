@@ -52,6 +52,7 @@ public class BuildManager : MonoBehaviour
         {
             towerPlacement = clickedArea.GetComponent<TowerPlacement>();
             placedTower = Instantiate(TowerToBuild, ClickedArea.transform.GetChild(0).transform.position, ClickedArea.transform.GetChild(0).transform.rotation);
+            tower.placedTowers.Add(placedTower);
             towerPlacement.SetDoNotHover();
             towerPlacement.SetStartColor();
             ClickedArea = null;

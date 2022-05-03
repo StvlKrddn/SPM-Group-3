@@ -29,12 +29,18 @@ public abstract class Tower : MonoBehaviour
 /*    public GameObject upgradeUI;*/
     protected Transform target;
 
+    public List<GameObject> placedTowers = new List<GameObject>();
     protected float ShotDamage { get { return shotDamage; } set { shotDamage = value; } }
 
     protected Shot bullet;
 
     public abstract void TypeOfShot(EnemyController enemyTarget);
     public abstract void HitTarget(TowerHitEvent eventInfo);
+
+    public abstract void TowerLevel1();
+    public abstract void TowerLevel2();
+    public abstract void TowerLevel3();
+
     /*    public abstract void HitTarget();*/
 
     private void Start()
