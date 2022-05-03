@@ -28,6 +28,7 @@ public class BuildManager : MonoBehaviour
     public GameObject placedTower;
     private TowerPlacement towerPlacement;
     private Tower tower;
+    [SerializeField] private GameObject towerBase;
 
     public GameObject TowerToBuild { get { return towerToBuild; } set { towerToBuild = value; } }
     public GameObject ClickedArea { get { return clickedArea; } set { clickedArea = value; } }
@@ -51,6 +52,7 @@ public class BuildManager : MonoBehaviour
         if (gM.spendResources(tower.cost, tower.materialCost))
         {
             towerPlacement = clickedArea.GetComponent<TowerPlacement>();
+            Instantiate(towerBase, ClickedArea.transform.GetChild(0).transform.position, ClickedArea.transform.GetChild(0).transform.rotation);
             placedTower = Instantiate(TowerToBuild, ClickedArea.transform.GetChild(0).transform.position, ClickedArea.transform.GetChild(0).transform.rotation);
             tower.placedTowers.Add(placedTower);
             towerPlacement.SetDoNotHover();
