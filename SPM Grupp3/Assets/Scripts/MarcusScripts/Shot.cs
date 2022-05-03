@@ -13,7 +13,7 @@ public class Shot : MonoBehaviour
 
     private void Awake()
     {
-        tower = gameObject.GetComponentInParent<Tower>();
+        
     }
     public void Seek(Transform _target)
     {       
@@ -23,28 +23,33 @@ public class Shot : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (target == null)
+/*        if (target == null)
         {
             Destroy(gameObject);
             return;
-        }
-
-        distanceThisFrame = shotSpeed * Time.deltaTime;
-        direction = target.position - transform.position;
-
-        transform.Translate(direction.normalized * distanceThisFrame, Space.World);
-    }
-
-    public bool CheckIfProjectileHit()
-    {
-        if (direction.magnitude <= distanceThisFrame)
+        }*/
+        if (target != null)
         {
-            return true;
+            distanceThisFrame = shotSpeed * Time.deltaTime;
+            direction = target.position - transform.position;
+
+            transform.Translate(direction.normalized * distanceThisFrame, Space.World);
         }
-        return false;
+
     }
 
-
-
-
+    private void OnTriggerEnter(Collider other)
+    {
+        tower = gameObject.GetComponentInParent<Tower>();
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            EventHandler.Instance.InvokeEvent(new TowerHitEvent(
+                    description: "An enemy hit",
+                    towerGO: tower.gameObject,
+                    hitEffect: tower.onHitEffect,
+                    enemyHit: target.gameObject
+                    )) ;
+            Destroy(gameObject);
+        }
+    }
 }
