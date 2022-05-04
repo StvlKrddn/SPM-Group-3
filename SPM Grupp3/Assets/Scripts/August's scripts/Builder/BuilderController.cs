@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Users;
+using UnityEngine.UI;
 
 /*
  * This class is based on this YouTube tutorial: https://youtu.be/Y3WNwl1ObC8
@@ -11,32 +12,38 @@ public class BuilderController : MonoBehaviour
 {
     [SerializeField] private float cursorSpeed = 1000f;
     [Space]
-    [SerializeField] private RectTransform cursorTransform;
-    [SerializeField] private Transform canvas;
+    [SerializeField] private GameObject cursorPrefab;
     [SerializeField] private LayerMask placeForTowerLayerMask;
     [SerializeField] private LayerMask towerLayerMask;
     [SerializeField] private Color hoverColor;
     [SerializeField] private Color startColor;
     [SerializeField] private Color towerPreview;
-    [SerializeField] private Camera camera;
     private Transform _selection;
 
-    Mouse virtualMouse;
-    PlayerInput playerInput;
-    InputAction pointerAction;
+    private Camera mainCamera;
+    private Mouse virtualMouse;
+    private RectTransform cursorTransform;
+    private Transform canvas;
+    private PlayerInput playerInput;
+    private InputAction pointerAction;
     private Vector2 newPosition;
-    Vector2 screenMiddle;
-    bool previousMouseState;
-    bool previousYState;
-    public bool clickTimer = true;
+    private Vector2 screenMiddle;
+    private bool previousMouseState;
+    private bool previousYState;
     private GameObject preTower;
 
     void Awake()
     {
+        mainCamera = Camera.main;
+
+        canvas = mainCamera.transform.Find("Canvas");
 
         InitializeInputSystem();
-        
+
+        InitializeCursor();
+
         screenMiddle = new Vector2(Screen.width / 2, Screen.height / 2);
+
 
         if (virtualMouse == null)
         {
@@ -63,18 +70,22 @@ public class BuilderController : MonoBehaviour
         pointerAction = playerInput.actions["LeftStick"];
     }
 
+    void InitializeCursor()
+    {
+        GameObject cursor = Instantiate(cursorPrefab, canvas);
+        SetCursorColor(cursor);
+        cursorTransform = cursor.GetComponent<RectTransform>();
+    }
+
+    void SetCursorColor(GameObject cursor)
+    {
+        Image cursorImage = cursor.GetComponent<Image>();
+        cursorImage.color = playerInput.playerIndex == 0 ? Color.blue : Color.red;
+    }
+
     private void Update()
     {
-        bool clicked = Gamepad.current.aButton.IsPressed();
-        if (clicked)
-        {
-            if (clickTimer)
-            {
-                clickTimer = false;
-                
-                Invoke("ChangeBackTimer", 0.5f);
-            }         
-        }
+        
     }
 
     public void AcceptAction (InputAction.CallbackContext context)
@@ -162,7 +173,7 @@ public class BuilderController : MonoBehaviour
             RectTransformUtility.ScreenPointToLocalPointInRectangle(
                 rect: canvas.GetComponent<RectTransform>(), 
                 screenPoint: newPosition,
-                cam: canvas.GetComponent<Canvas>().renderMode == RenderMode.ScreenSpaceOverlay ? null : camera, 
+                cam: canvas.GetComponent<Canvas>().renderMode == RenderMode.ScreenSpaceOverlay ? null : mainCamera, 
                 localPoint: out Vector2 anchoredPosition
                 );
             cursorTransform.anchoredPosition = anchoredPosition;
@@ -174,7 +185,7 @@ public class BuilderController : MonoBehaviour
         Vector3 mousePosition = newPosition;
 
         // Create a ray from camera to mouse position
-        Ray cameraRay = camera.ScreenPointToRay(mousePosition);
+        Ray cameraRay = mainCamera.ScreenPointToRay(mousePosition);
         Physics.Raycast(ray: cameraRay, hitInfo: out RaycastHit hit, maxDistance: Mathf.Infinity, layerMask: layerMask);
         
         
@@ -282,10 +293,5 @@ public class BuilderController : MonoBehaviour
                 } */
             }
         }
-    }
-
-    void ChangeBackTimer()
-    {
-        clickTimer = true;
     }
 }

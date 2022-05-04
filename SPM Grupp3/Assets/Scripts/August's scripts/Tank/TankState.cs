@@ -51,14 +51,7 @@ public class TankState : MonoBehaviour
     void SetPlayerColor()
     {
         Renderer renderer = GetComponent<Renderer>();
-        if (playerID == 0)
-        {
-            renderer.material.color = Color.blue;
-        }
-        else
-        {
-            renderer.material.color = Color.red;
-        }
+        renderer.material.color = playerInput.playerIndex == 0 ? Color.blue : Color.red;
     }
 
     void FindGarage()
