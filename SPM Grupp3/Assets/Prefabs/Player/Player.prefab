@@ -44,8 +44,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cursorSpeed: 1000
-  cursorTransform: {fileID: 0}
+  cursorPrefab: {fileID: 2653820250195190920, guid: 2e70cc575af38ad488bf5330cf4b943d, type: 3}
   canvas: {fileID: 0}
+  placeForTowerLayerMask:
+    serializedVersion: 2
+    m_Bits: 1024
+  towerLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  hoverColor: {r: 0.3962264, g: 0.39024565, b: 0.39024565, a: 1}
+  startColor: {r: 1, g: 1, b: 1, a: 0}
+  towerPreview: {r: 0, g: 0, b: 0, a: 0}
+  camera: {fileID: 0}
 --- !u!1 &1555352807768005138
 GameObject:
   m_ObjectHideFlags: 0
@@ -93,7 +103,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Actions: {fileID: -944628639613478452, guid: 351c0499b2b84c649910748b49572abc, type: 3}
-  m_NotificationBehavior: 0
+  m_NotificationBehavior: 2
   m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
     m_PersistentCalls:
@@ -104,7 +114,75 @@ MonoBehaviour:
   m_ControlsChangedEvent:
     m_PersistentCalls:
       m_Calls: []
-  m_ActionEvents: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 7a8d6b6c-0a8a-4ce2-83f3-fb73cc249c13
+    m_ActionName: Tank/Move[/XInputControllerWindows/leftStick/up,/XInputControllerWindows/leftStick/down,/XInputControllerWindows/leftStick/left,/XInputControllerWindows/leftStick/right,/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: ad02b34a-b708-4620-8330-1dabce0c8c6d
+    m_ActionName: Tank/Shoot[/XInputControllerWindows/rightShoulder,/Keyboard/space]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 096a1c6b-5a8c-4dbf-8b50-f5827026ceb7
+    m_ActionName: Tank/Boost[/XInputControllerWindows/leftShoulder,/Keyboard/shift]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 9270b16b-15dc-4d8a-9da9-5fb1d9564cf5
+    m_ActionName: Tank/Aim[/XInputControllerWindows/rightStick/up,/XInputControllerWindows/rightStick/down,/XInputControllerWindows/rightStick/left,/XInputControllerWindows/rightStick/right,/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: ffeaff2e-a9d8-483e-9724-97b44ccc2b0a
+    m_ActionName: Tank/Accept[/XInputControllerWindows/buttonSouth]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 03b5c188-6ac2-4613-819c-2c5eb0dbd747
+    m_ActionName: Builder/Scroll
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 71951e86-291b-48e1-bbf5-59894f89c2d4
+    m_ActionName: Builder/Click
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 662449be-322a-4254-9e38-080419571817
+    m_ActionName: Builder/Point
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: a4a70be7-ac37-450b-99d5-407a8541437c
+    m_ActionName: Builder/LeftStick[/XInputControllerWindows/leftStick]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1555352807092885021}
+        m_TargetAssemblyTypeName: BuilderController, Assembly-CSharp
+        m_MethodName: AcceptAction
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 9d746912-391b-47da-8fb2-f8d36bfe1317
+    m_ActionName: Builder/Accept[/XInputControllerWindows/buttonSouth]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1555352807092885021}
+        m_TargetAssemblyTypeName: BuilderController, Assembly-CSharp
+        m_MethodName: InfoAction
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 2b10717e-e360-47c7-9d8a-93d8ff8d4926
+    m_ActionName: Builder/New action
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Gamepad
   m_DefaultActionMap: Tank
@@ -124,6 +202,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tankMode: {fileID: 8465387875451167577}
   buildMode: {fileID: 1555352807092885023}
+  canvas: {fileID: 0}
 --- !u!1 &2318579147647575783
 GameObject:
   m_ObjectHideFlags: 0
@@ -333,8 +412,8 @@ GameObject:
   - component: {fileID: 3047768985199286519}
   - component: {fileID: 8213204271390899286}
   - component: {fileID: 6116512940264111137}
+  - component: {fileID: 8961258511388597484}
   - component: {fileID: 8465387875451167576}
-  - component: {fileID: 8465387875451167591}
   m_Layer: 9
   m_Name: TankMode
   m_TagString: Tank
@@ -461,6 +540,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementSpeed: 6
+--- !u!114 &8961258511388597484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8465387875451167577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 237a84eb0b991ae40a4fca0700e865c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  equippedWeapon: {fileID: 11400000, guid: 9df75a23e4b34194887afee753057171, type: 2}
 --- !u!114 &8465387875451167576
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -476,20 +568,3 @@ MonoBehaviour:
   boostSpeedMultiplier: 4
   boostDuration: 1
   boostCooldownTime: 5
---- !u!114 &8465387875451167591
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8465387875451167577}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca6fa4d6a196ff74aa2a8ad37c68fe3c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fireRate: 0.2
-  bulletSpread: 20
-  bulletRange: 20
-  bulletSpeed: 35
-  bulletPrefab: {fileID: 0}
