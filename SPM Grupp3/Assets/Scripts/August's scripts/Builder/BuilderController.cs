@@ -24,7 +24,6 @@ public class BuilderController : MonoBehaviour
     Mouse virtualMouse;
     PlayerInput playerInput;
     InputAction pointerAction;
-    InputAction acceptAction;
     private Vector2 newPosition;
     Vector2 screenMiddle;
     bool previousMouseState;
@@ -79,6 +78,30 @@ public class BuilderController : MonoBehaviour
         }
     }
 
+    public void AcceptAction (InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            bool isPressed = context.performed;
+            virtualMouse.CopyState(out MouseState mouseState);
+            mouseState.WithButton(MouseButton.Left, isPressed);
+            InputState.Change(virtualMouse, mouseState);
+            previousMouseState = isPressed;
+        }
+    }
+
+    public void InfoAction (InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            bool isPressed = context.performed;
+            virtualMouse.CopyState(out MouseState mouseState);
+            mouseState.WithButton(MouseButton.Left, isPressed);
+            InputState.Change(virtualMouse, mouseState);
+            previousYState = isPressed;
+        }
+    }
+
     private void OnEnable()
     {
         cursorTransform.gameObject.SetActive(true);
@@ -113,7 +136,6 @@ public class BuilderController : MonoBehaviour
 
         newPosition = MoveMouse();
         UpdateCursorImage(newPosition);
-        CheckIfClicked();
 
         RaycastHit hit = CastRayFromCamera(placeForTowerLayerMask);
         Hover(hit);
@@ -122,7 +144,6 @@ public class BuilderController : MonoBehaviour
 
     Vector2 MoveMouse()
     {
-        //Vector2 cursorMovement = Gamepad.current.leftStick.ReadValue();
         Vector2 cursorMovement = pointerAction.ReadValue<Vector2>();
         cursorMovement *= cursorSpeed * Time.unscaledDeltaTime;
         Vector2 newPosition = virtualMouse.position.ReadValue() + cursorMovement;
@@ -134,36 +155,6 @@ public class BuilderController : MonoBehaviour
         InputState.Change(virtualMouse.delta, cursorMovement);
 
         return newPosition;
-    }
-
-    bool CheckIfClicked()
-    {
-        bool isAcceptPressed = Gamepad.current.aButton.IsPressed();
-        bool isYPressed = Gamepad.current.yButton.IsPressed();
-        
-        // If the button is not already pressed
-        if (previousMouseState != isAcceptPressed)
-        {
-            print(isAcceptPressed + " " + previousMouseState);
-            virtualMouse.CopyState(out MouseState mouseState);
-            mouseState.WithButton(MouseButton.Left, isAcceptPressed);
-            InputState.Change(virtualMouse, mouseState);
-            previousMouseState = isAcceptPressed;
-            return true;
-           
-        }
- //       print(isYPressed + " " + previousYState);
-        if(isYPressed != previousYState)
-        {
-            print("kommer den hit");
-            virtualMouse.CopyState(out MouseState mouseState);
-            mouseState.WithButton(MouseButton.Left, isYPressed);
-            InputState.Change(virtualMouse, mouseState);
-            previousYState = isYPressed;
-            return true;
-        }
-
-        return false;
     }
     
     void UpdateCursorImage(Vector2 newPosition)
