@@ -7,7 +7,8 @@ public class HealthBar : MonoBehaviour
 {
     [SerializeField] private Image foregroundImage;
     [SerializeField] private float updateSpeedSeconds = 0.5f;
-    [SerializeField] private GameObject FollowPlayer;
+    //[SerializeField] private GameObject FollowPlayer;
+    [SerializeField] private bool faceCamera = true;
 
     private void Awake()
     {
@@ -37,10 +38,14 @@ public class HealthBar : MonoBehaviour
         foregroundImage.fillAmount = pct;
     }
 
-    // Code to make health bars face towards the camera
-    //private void LateUpdate()
-    //{
-    //transform.LookAt(Camera.main.transform);
-    //transform.Rotate(0, 180, 0);
-    //}
+    
+    private void LateUpdate()
+    {
+        if (faceCamera)
+        {
+            transform.LookAt(Camera.main.transform);
+            transform.Rotate(0, 180, 0);
+        }
+        
+    }
 }
