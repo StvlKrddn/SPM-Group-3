@@ -43,6 +43,7 @@ public abstract class EnemyController : MonoBehaviour
     {
         //WIP Enemy moves right direction
         Vector3 direction = target.position - transform.position;
+        //gameObject.transform.LookAt(target);
         direction.Normalize();
         transform.Translate(speed * Time.deltaTime * direction);
         Debug.DrawRay(transform.position, direction * 100, Color.red);
