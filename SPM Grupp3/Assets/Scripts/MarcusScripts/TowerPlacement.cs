@@ -48,6 +48,7 @@ public class TowerPlacement : MonoBehaviour
         }
         else
         {
+            Debug.Log("weeee");
             buildManager.ClickedArea = gameObject;
             clicked = true;
         }

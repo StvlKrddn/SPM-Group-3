@@ -23,11 +23,11 @@ public class Shot : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-/*        if (target == null)
+        if (target == null)
         {
             Destroy(gameObject);
             return;
-        }*/
+        }
         if (target != null)
         {
             distanceThisFrame = shotSpeed * Time.deltaTime;
