@@ -21,19 +21,32 @@ public abstract class Tower : MonoBehaviour
     [SerializeField] protected GameObject shot;
     [SerializeField] protected Transform firePoint;
     [SerializeField] protected GameObject radius;
-    [SerializeField] protected GameObject onHitEffect;
+    public GameObject onHitEffect;
 
+    public Tower towerScript;
     public GameObject tower;
     public LayerMask towers;
 /*    public GameObject upgradeUI;*/
     protected Transform target;
 
+    public List<GameObject> placedTowers = new List<GameObject>();
     protected float ShotDamage { get { return shotDamage; } set { shotDamage = value; } }
 
     protected Shot bullet;
 
-    protected abstract void TypeOfShot(EnemyController enemyTarget);
-    public abstract void HitTarget();
+    public abstract void TypeOfShot(EnemyController enemyTarget);
+    public abstract void HitTarget(TowerHitEvent eventInfo);
+
+    public abstract void TowerLevel1();
+    public abstract void TowerLevel2();
+    public abstract void TowerLevel3();
+
+    /*    public abstract void HitTarget();*/
+
+    private void Start()
+    {
+        
+    }
 
     private void OnDrawGizmosSelected()
     {

@@ -13,6 +13,8 @@ public class SlowTower : Tower
     // Start is called before the first frame update
     void Start()
     {
+        EventHandler.Instance.RegisterListener<TowerHitEvent>(HitTarget);
+        towerScript = this;
         radius.transform.localScale = new Vector3(range * 2f, 0.01f, range * 2f);
         radius.SetActive(false);
         InvokeRepeating("UpdateTarget", 0f, 0.5f);
@@ -21,34 +23,32 @@ public class SlowTower : Tower
     // Update is called once per frame
     void Update()
     {
-        LockOnTarget();
-        if (shot != null)
-        {
-            shot.GetComponent<Renderer>().enabled = false;
-        }
         
-
-        if (CanYouShoot())
+        LockOnTarget();
+/*        if (shot != null)
         {
-            Shoot();
 
-            if (bullet.CheckIfProjectileHit())
+        }*/
+
+        if (target != null)
+        {
+            if (CanYouShoot())
             {
-                HitTarget();
+                Shoot();
             }
-
         }
     }
-    public override void HitTarget()
+
+    public override void HitTarget(TowerHitEvent eventInfo)
     {
         if (target != null)
         {
-            EnemyController enemyTarget = target.GetComponent<EnemyController>();
-            GameObject effectInstance = Instantiate(onHitEffect, transform.position, transform.rotation);
+            EnemyController enemyTarget = eventInfo.enemyHit.GetComponent<EnemyController>();
+            GameObject effectInstance = Instantiate(eventInfo.hitEffect, enemyTarget.transform.position, enemyTarget.transform.rotation);
 
             Destroy(effectInstance, 1f);
             TypeOfShot(enemyTarget);
-            Destroy(bullet.gameObject);
+            /*Destroy(bullet.gameObject, 2f);*/
         }
     }
 
@@ -63,9 +63,10 @@ public class SlowTower : Tower
         return false;
     }
 
-    protected override void TypeOfShot(EnemyController enemyTarget)
+    public override void TypeOfShot(EnemyController enemyTarget)
     {
-        enemyTarget.HitBySlow(SlowProc, range);
+        print("Running? slow");
+        enemyTarget.HitBySlow(SlowProc, 0f);
     }
     private void Shoot()
     {
@@ -74,9 +75,24 @@ public class SlowTower : Tower
         bulletGO.SetActive(true);
         bullet = bulletGO.GetComponent<Shot>();
 
+/*        GameObject effectInstance = Instantiate(onHitEffect, transform.position, transform.rotation);
+        Destroy(effectInstance, 1f);*/
         if (bullet != null)
         {
             bullet.Seek(target);
         }
+    }
+
+    public override void TowerLevel1()
+    {
+
+    }
+    public override void TowerLevel2()
+    {
+
+    }
+    public override void TowerLevel3()
+    {
+
     }
 }

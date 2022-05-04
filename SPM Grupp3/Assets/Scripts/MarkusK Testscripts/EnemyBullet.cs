@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyBullet : MonoBehaviour
 {
-    private float speed = 10f;
+    private float speed = 5f;
     private Transform target;
     public GameObject tank1;
     public GameObject tank2;
@@ -17,23 +17,33 @@ public class EnemyBullet : MonoBehaviour
     private void Awake()
     {
         //Change to right tank when done with tanks
-        tank1 = FindObjectOfType<TankController>().gameObject;
-        tank2 = FindObjectOfType<TankController>().gameObject;
     }
 
     void Start()
     {
         //Checks who is closer between tank1 and tank2
-        if (Vector3.Distance(transform.position, tank1.transform.position) < Vector3.Distance(transform.position, tank2.transform.position))
+        if (FindObjectOfType<TankController>())
         {
-            target = tank1.transform;
+            tank1 = FindObjectOfType<TankController>().gameObject; //Needs change 
+            tank2 = FindObjectOfType<TankController>().gameObject;
+            if (Vector3.Distance(transform.position, tank1.transform.position) < Vector3.Distance(transform.position, tank2.transform.position))
+            {
+                target = tank1.transform;
+            }
+            else
+            {
+                target = tank2.transform;
+            }
+
         }
         else
         {
-            target = tank2.transform;
+            target = FindObjectOfType<GarageTrigger>().gameObject.transform;
         }
         direction = target.position - transform.position; //Checks direction
         direction.Normalize();
+        direction.y = 0;
+        transform.LookAt(direction);
     }
 
 
@@ -41,7 +51,7 @@ public class EnemyBullet : MonoBehaviour
     void Update()
     {
         timer += Time.deltaTime;
-        transform.Translate(speed * Time.deltaTime * direction); //Bullet travels
+        transform.Translate(speed * Time.deltaTime * direction, Space.World); //Bullet travels
         if (timer >= bulletTime)
         {
             Destroy(gameObject);

@@ -7,6 +7,7 @@ public class MaterialBehavior : MonoBehaviour
 {
     [SerializeField] private float bobbingSpeed = 5f;
     [SerializeField] private float bobbingStrength = 0.2f;
+    [SerializeField] private float duration = 5f;
     private GameManager gameManager;
 
     private Vector3 originalPosition;
@@ -15,6 +16,7 @@ public class MaterialBehavior : MonoBehaviour
     {
         gameManager = FindObjectOfType<GameManager>();
         originalPosition = transform.position;
+        StartCoroutine(SelfDestruct());
     }
 
     void Update()
@@ -30,5 +32,12 @@ public class MaterialBehavior : MonoBehaviour
             gameManager.AddMaterial(1);
             Destroy(gameObject);
         }
+    }
+
+    private IEnumerator SelfDestruct()
+    {
+        yield return new WaitForSeconds(duration);
+        Destroy(gameObject);
+        yield return null;
     }
 }

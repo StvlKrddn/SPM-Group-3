@@ -3,80 +3,55 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyController : MonoBehaviour
+public abstract class EnemyController : MonoBehaviour
 {
-    [SerializeField] private float speed = 10f;
-    [SerializeField] private float hp = 100f;
+    public float speed = 10f;
+    public float hp = 100f;
     [SerializeField] private GameObject hitEffect;
-    private GameObject tank1;
-    private GameObject tank2;
     private GameManager gM;
     private Transform target;
     private int currIndex = 0;
-    private int damage = 10;
-    private int moneyDrop = 10;
-    private float shotTimer = 0f;
-    private float shotCD = 3f;
-    public Transform bullet;
+    public int damageBase = 10;
+    public int moneyDrop = 10;
+    public bool materialDrop = false;
     public Transform material;
 
-    public GameObject hitByPoisonEffect;
+    private GameObject hitByPoisonEffect;
     private float defaultSpeed;
-    public List<float> poisonTickTimers = new List<float>();
+    private List<float> poisonTickTimers = new List<float>();
 
 
     // Start is called before the first frame update
 
-    private void Awake()
+    protected virtual void Awake()
     {
         defaultSpeed = speed;
         gM = FindObjectOfType<GameManager>();
+        target = Waypoints.wayPoints[currIndex];
         //Change to right tank when done with tanks
-        tank1 = FindObjectOfType<TankController>().gameObject;
-        tank2 = tank1;
     }
 
-    void Start()
-    {
-        target = Waypoints.wayPoints[currIndex];
-    }
+    protected virtual void Start() {}
 
     // Update is called once per frame
-    void Update()
+    protected virtual void Update()
     {
-        shotTimer += Time.deltaTime;
+        MoveStep();   
+    }
 
-
-        if (Vector3.Distance(transform.position, tank1.transform.position) <= 5f || Vector3.Distance(transform.position, tank2.transform.position) <= 5f)
-        {
-            if (shotTimer >= shotCD) // if tank is in range, shot the player
-            {
-                ShotPlayer();
-                shotTimer = 0;
-
-            }
-        }
-     
-        else
-        {
-            //WIP Enemy moves right direction
-            Vector3 direction = target.position - transform.position;
-            direction.Normalize();
-            transform.Translate(speed * Time.deltaTime * direction);
-            Debug.DrawRay(transform.position, direction, Color.red);
-            //float angle = Mathf.Atan2(direction.y, direction.x) * 180 / Mathf.PI;
-        }
+    public void MoveStep()
+    {
+        //WIP Enemy moves right direction
+        Vector3 direction = target.position - transform.position;
+        direction.Normalize();
+        transform.Translate(speed * Time.deltaTime * direction);
+        Debug.DrawRay(transform.position, direction * 100, Color.red);
 
         if (Vector3.Distance(transform.position, target.position) <= 0.4f)
         {
             NextTarget();
         }
     }
-
-	private void ShotPlayer()
-	{
-        Instantiate(bullet, transform.position, transform.rotation);
-	}
 
 	private void NextTarget()
     {
@@ -91,7 +66,9 @@ public class EnemyController : MonoBehaviour
 
     private void EnemyDeathBase()
     {
-        gM.TakeDamage(damage);
+        gM.TakeDamage(damageBase);
+        DieEvent dieEvent = new DieEvent("död från bas", gameObject, null, null);
+        EventHandler.Instance.InvokeEvent(dieEvent);
         Destroy(gameObject);
     }
 
@@ -109,7 +86,7 @@ public class EnemyController : MonoBehaviour
     public void TakeDamage(float damage)
     {
         hp -= damage;
-        if (hp < 0)
+        if (hp <= 0)
         {
             EnemyDeath();
         }
@@ -118,7 +95,10 @@ public class EnemyController : MonoBehaviour
     private void EnemyDeath()
     {
         gM.AddMoney(moneyDrop); // add money and spawn material
-        Instantiate(material, transform.position, transform.rotation);
+        if (materialDrop == true)
+        {
+            Instantiate(material, transform.position, transform.rotation);
+        }
         DieEvent dieEvent = new DieEvent("död", gameObject, null, null);
         EventHandler.Instance.InvokeEvent(dieEvent);
         Destroy(gameObject);
@@ -132,22 +112,21 @@ public class EnemyController : MonoBehaviour
             if (c.GetComponent<EnemyController>())
             {
                 EnemyController eC = c.GetComponent<EnemyController>();
-                eC.speed *= slowProc;
-                eC.Invoke("SlowDuration", 3f);
-
+                eC.speed = slowProc;
+                eC.Invoke(nameof(SlowDuration), 3f);
             }
         }
     }
 
-    void SlowDuration()
+    private void SlowDuration()
     {
 
         speed = defaultSpeed;
     }
 
-    public void HitByPoison(float ticks, float dps)
+    public void HitByPoison(float ticks, float dps, GameObject effect)
     {
-        GameObject poisonEffect = Instantiate(hitByPoisonEffect, gameObject.transform);
+        GameObject poisonEffect = Instantiate(effect, gameObject.transform);
         Destroy(poisonEffect, ticks);
         if (poisonTickTimers.Count <= 0)
         {
@@ -156,7 +135,7 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    IEnumerator PoisonTick(float dps)
+    private IEnumerator PoisonTick(float dps)
     {
         while (poisonTickTimers.Count > 0)
         {
