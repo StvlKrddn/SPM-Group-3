@@ -71,8 +71,7 @@ public class BuilderController : MonoBehaviour
             if (clickTimer)
             {
                 clickTimer = false;
-                ClickedPlacement();
-                ClickedTower();
+                
                 Invoke("ChangeBackTimer", 0.5f);
             }         
         }
@@ -80,26 +79,25 @@ public class BuilderController : MonoBehaviour
 
     public void AcceptAction (InputAction.CallbackContext context)
     {
-        if (context.performed)
+        bool isPressed = context.performed;
+        virtualMouse.CopyState(out MouseState mouseState);
+        mouseState.WithButton(MouseButton.Left, isPressed);
+        InputState.Change(virtualMouse, mouseState);
+        if (isPressed)
         {
-            bool isPressed = context.performed;
-            virtualMouse.CopyState(out MouseState mouseState);
-            mouseState.WithButton(MouseButton.Left, isPressed);
-            InputState.Change(virtualMouse, mouseState);
-            previousMouseState = isPressed;
+            ClickedPlacement();
+            ClickedTower();
         }
+        previousMouseState = isPressed;
     }
 
     public void InfoAction (InputAction.CallbackContext context)
     {
-        if (context.performed)
-        {
-            bool isPressed = context.performed;
-            virtualMouse.CopyState(out MouseState mouseState);
-            mouseState.WithButton(MouseButton.Left, isPressed);
-            InputState.Change(virtualMouse, mouseState);
-            previousYState = isPressed;
-        }
+        bool isPressed = context.performed;
+        virtualMouse.CopyState(out MouseState mouseState);
+        mouseState.WithButton(MouseButton.Left, isPressed);
+        InputState.Change(virtualMouse, mouseState);
+        previousYState = isPressed;
     }
 
     private void OnEnable()
