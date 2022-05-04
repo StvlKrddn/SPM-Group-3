@@ -19,7 +19,9 @@ public abstract class EnemyController : MonoBehaviour
     private GameObject hitByPoisonEffect;
     private float defaultSpeed;
     private List<float> poisonTickTimers = new List<float>();
-
+    public bool spread = false;
+    private float amountOfTicks;
+    private float amountOfDps;
 
     // Start is called before the first frame update
 
@@ -106,18 +108,26 @@ public abstract class EnemyController : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public void HitBySlow(float slowProc, float radius)
+    public void HitBySlow(float slowProc, float radius, bool single)
     {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, radius);
-        foreach (Collider c in colliders)
+        if (single)
         {
-            if (c.GetComponent<EnemyController>())
-            {
-                EnemyController eC = c.GetComponent<EnemyController>();
-                eC.speed = slowProc;
-                eC.Invoke(nameof(SlowDuration), 3f);
-            }
+            speed = slowProc;
+            Invoke(nameof(SlowDuration), 3f);
         }
+        else
+        {
+            Collider[] colliders = Physics.OverlapSphere(transform.position, radius);
+            foreach (Collider c in colliders)
+            {
+                if (c.GetComponent<EnemyController>())
+                {
+                    EnemyController eC = c.GetComponent<EnemyController>();
+                    eC.speed = slowProc;
+                    eC.Invoke(nameof(SlowDuration), 3f);
+                }
+            }
+        }       
     }
 
     private void SlowDuration()
@@ -126,8 +136,25 @@ public abstract class EnemyController : MonoBehaviour
         speed = defaultSpeed;
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (spread)
+        {
+            if (collision.gameObject.CompareTag("Enemy"))
+            {
+                if (poisonTickTimers != null)
+                {
+                    EnemyController eC = collision.gameObject.GetComponent<EnemyController>();
+                    eC.HitByPoison(amountOfTicks, amountOfDps, hitByPoisonEffect);
+                }
+            }
+        }
+    }
+
     public void HitByPoison(float ticks, float dps, GameObject effect)
     {
+        amountOfTicks = ticks;
+        amountOfDps = dps;
         GameObject poisonEffect = Instantiate(effect, gameObject.transform);
         Destroy(poisonEffect, ticks);
         if (poisonTickTimers.Count <= 0)

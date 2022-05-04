@@ -5,11 +5,17 @@ using UnityEngine;
 public class SlowTower : Tower
 {
     [SerializeField] private float slowProc = 0.7f;
+    [SerializeField] private float slowRadius = 3f;
+    [SerializeField] private float upgradeAmountSlowProc;
+    [SerializeField] private float upgradeAmountSlowRadius;
     private float fireCountdown = 0f;
     /*    [SerializeField] private GameObject shot;
         [SerializeField] private Transform firePoint;
         [SerializeField] private GameObject radius;*/
     public float SlowProc { get { return slowProc; } set { slowProc = value; } }
+
+    private bool singleTarget = true;
+    private List<SlowTower> slowTowers = new List<SlowTower>();
     // Start is called before the first frame update
     void Start()
     {
@@ -66,7 +72,7 @@ public class SlowTower : Tower
     public override void TypeOfShot(EnemyController enemyTarget)
     {
         print("Running? slow");
-        enemyTarget.HitBySlow(SlowProc, 0f);
+        enemyTarget.HitBySlow(SlowProc, slowRadius, singleTarget);
     }
     private void Shoot()
     {
@@ -83,16 +89,45 @@ public class SlowTower : Tower
         }
     }
 
+    void CheckAllPlacedTowers()
+    {
+        foreach (GameObject gO in BuildManager.instance.towersPlaced)
+        {
+            if (gO.GetComponent<SlowTower>() != null)
+            {
+                slowTowers.Add(gO.GetComponent<SlowTower>());
+            }
+        }
+    }
+
     public override void TowerLevel1()
     {
-
+        CheckAllPlacedTowers();
+        foreach (SlowTower cT in slowTowers)
+        {
+            cT.singleTarget = false;
+        }
+        singleTarget = false;
+        slowTowers.Clear();
     }
     public override void TowerLevel2()
     {
-
+        CheckAllPlacedTowers();
+        foreach (SlowTower cT in slowTowers)
+        {
+            cT.slowRadius += upgradeAmountSlowRadius;
+        }
+        slowRadius += upgradeAmountSlowRadius;
+        slowTowers.Clear();
     }
     public override void TowerLevel3()
     {
-
+        CheckAllPlacedTowers();
+        foreach (SlowTower cT in slowTowers)
+        {
+            cT.slowProc -= upgradeAmountSlowProc;
+        }
+        slowProc -= upgradeAmountSlowProc;
+        slowTowers.Clear();
     }
 }

@@ -29,7 +29,7 @@ public abstract class Tower : MonoBehaviour
 /*    public GameObject upgradeUI;*/
     protected Transform target;
 
-    public List<GameObject> placedTowers = new List<GameObject>();
+
     protected float ShotDamage { get { return shotDamage; } set { shotDamage = value; } }
 
     protected Shot bullet;

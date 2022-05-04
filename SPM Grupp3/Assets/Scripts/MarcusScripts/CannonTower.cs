@@ -84,7 +84,7 @@ public class CannonTower : Tower
 
     void CheckAllPlacedTowers()
     {
-        foreach (GameObject gO in placedTowers)
+        foreach (GameObject gO in BuildManager.instance.towersPlaced)
         {
             if (gO.GetComponent<CannonTower>() != null)
             {
