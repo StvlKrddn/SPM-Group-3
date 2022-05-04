@@ -23,6 +23,8 @@ public class BuilderController : MonoBehaviour
 
     Mouse virtualMouse;
     PlayerInput playerInput;
+    InputAction pointerAction;
+    InputAction acceptAction;
     private Vector2 newPosition;
     Vector2 screenMiddle;
     bool previousMouseState;
@@ -32,10 +34,10 @@ public class BuilderController : MonoBehaviour
 
     void Awake()
     {
+
+        InitializeInputSystem();
         
         screenMiddle = new Vector2(Screen.width / 2, Screen.height / 2);
-
-        playerInput = transform.parent.GetComponent<PlayerInput>();
 
         if (virtualMouse == null)
         {
@@ -54,6 +56,12 @@ public class BuilderController : MonoBehaviour
             Vector2 position = cursorTransform.anchoredPosition;
             InputState.Change(virtualMouse.position, position);
         }
+    }
+
+    void InitializeInputSystem()
+    {
+        playerInput = transform.parent.GetComponent<PlayerInput>();
+        pointerAction = playerInput.actions["LeftStick"];
     }
 
     private void Update()
@@ -114,14 +122,13 @@ public class BuilderController : MonoBehaviour
 
     Vector2 MoveMouse()
     {
-        Vector2 cursorMovement = Gamepad.current.leftStick.ReadValue();
+        //Vector2 cursorMovement = Gamepad.current.leftStick.ReadValue();
+        Vector2 cursorMovement = pointerAction.ReadValue<Vector2>();
         cursorMovement *= cursorSpeed * Time.unscaledDeltaTime;
         Vector2 newPosition = virtualMouse.position.ReadValue() + cursorMovement;
 
         newPosition.x = Mathf.Clamp(newPosition.x, 0, Screen.width);
         newPosition.y = Mathf.Clamp(newPosition.y, 0, Screen.height);
-
-        
 
         InputState.Change(virtualMouse.position, newPosition);
         InputState.Change(virtualMouse.delta, cursorMovement);
@@ -132,10 +139,8 @@ public class BuilderController : MonoBehaviour
     bool CheckIfClicked()
     {
         bool isAcceptPressed = Gamepad.current.aButton.IsPressed();
-        
-
-        
         bool isYPressed = Gamepad.current.yButton.IsPressed();
+        
         // If the button is not already pressed
         if (previousMouseState != isAcceptPressed)
         {
