@@ -81,6 +81,7 @@ public class MachineGun : MonoBehaviour, ITankWeapon
 
     public void UpgradeFirerate(float modifier)
     {
+        //1
         fireRate += modifier;
     }
 
