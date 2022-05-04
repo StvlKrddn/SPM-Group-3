@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
@@ -36,8 +34,6 @@ public class BuilderController : MonoBehaviour
     {
         
         screenMiddle = new Vector2(Screen.width / 2, Screen.height / 2);
-
-        //EventHandler.Instance.RegisterListener<EnterBuildModeEvent>(EnterBuildMode);
 
         playerInput = transform.parent.GetComponent<PlayerInput>();
 
@@ -87,7 +83,6 @@ public class BuilderController : MonoBehaviour
         ResetPosition();
         if (cursorTransform != null) cursorTransform.gameObject.SetActive(false);
         InputSystem.onAfterUpdate -= UpdateVirtualMouse;
-        //EventHandler.Instance.UnregisterListener<GarageEvent>(EnterBuildMode);
     }
 
     void OnDestroy()
@@ -125,6 +120,8 @@ public class BuilderController : MonoBehaviour
 
         newPosition.x = Mathf.Clamp(newPosition.x, 0, Screen.width);
         newPosition.y = Mathf.Clamp(newPosition.y, 0, Screen.height);
+
+        
 
         InputState.Change(virtualMouse.position, newPosition);
         InputState.Change(virtualMouse.delta, cursorMovement);

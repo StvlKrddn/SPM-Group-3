@@ -7177,6 +7177,11 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!20 &573569323 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 8369802465785546123, guid: f38755517d96a124d80b16613eb953a3, type: 3}
+  m_PrefabInstance: {fileID: 646700779}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &574419213
 GameObject:
   m_ObjectHideFlags: 0
@@ -7774,6 +7779,11 @@ Transform:
   m_Father: {fileID: 6056684213254143230}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &617985713 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8491054143297974351, guid: f38755517d96a124d80b16613eb953a3, type: 3}
+  m_PrefabInstance: {fileID: 646700779}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &619306928
 GameObject:
   m_ObjectHideFlags: 0
@@ -8248,6 +8258,10 @@ PrefabInstance:
       value: GameManager
       objectReference: {fileID: 0}
     - target: {fileID: 5574963424639874967, guid: f38755517d96a124d80b16613eb953a3, type: 3}
+      propertyPath: waveUI
+      value: 
+      objectReference: {fileID: 1910661875}
+    - target: {fileID: 5574963424639874967, guid: f38755517d96a124d80b16613eb953a3, type: 3}
       propertyPath: spawnPosition
       value: 
       objectReference: {fileID: 2056127576}
@@ -8275,6 +8289,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: 0.000030517574
       objectReference: {fileID: 0}
+    - target: {fileID: 8198732718353628764, guid: f38755517d96a124d80b16613eb953a3, type: 3}
+      propertyPath: gM
+      value: 
+      objectReference: {fileID: 1762715507}
     - target: {fileID: 8920480108346656750, guid: f38755517d96a124d80b16613eb953a3, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
@@ -19314,7 +19332,11 @@ PrefabInstance:
     - target: {fileID: 1950758295527031529, guid: 213f3c390b78f8e48a0e0800817a65e6, type: 3}
       propertyPath: gM
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1762715507}
+    - target: {fileID: 1950758295527031529, guid: 213f3c390b78f8e48a0e0800817a65e6, type: 3}
+      propertyPath: towerBase
+      value: 
+      objectReference: {fileID: 9019748245944013588, guid: 4120c1f7b8f71e94aaf34696a5c7cadc, type: 3}
     - target: {fileID: 7535505671864968792, guid: 213f3c390b78f8e48a0e0800817a65e6, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -23527,6 +23549,17 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &1762715507 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5574963424639874961, guid: f38755517d96a124d80b16613eb953a3, type: 3}
+  m_PrefabInstance: {fileID: 646700779}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 865119aa34c06be41a3b49989bec82eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1762833480
 GameObject:
   m_ObjectHideFlags: 0
@@ -25272,6 +25305,17 @@ Transform:
   m_Father: {fileID: 6056684212360635363}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1910661875 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4136772120899846343, guid: f38755517d96a124d80b16613eb953a3, type: 3}
+  m_PrefabInstance: {fileID: 646700779}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1911425064
 GameObject:
   m_ObjectHideFlags: 0
@@ -28336,7 +28380,7 @@ PrefabInstance:
     - target: {fileID: 1555352807092885021, guid: 6364959b4060537488578e889cf8fbea, type: 3}
       propertyPath: camera
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 573569323}
     - target: {fileID: 1555352807092885021, guid: 6364959b4060537488578e889cf8fbea, type: 3}
       propertyPath: canvas
       value: 
@@ -28444,7 +28488,7 @@ PrefabInstance:
     - target: {fileID: 1555352807768005151, guid: 6364959b4060537488578e889cf8fbea, type: 3}
       propertyPath: canvas
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 617985713}
     - target: {fileID: 8465387875451167591, guid: 6364959b4060537488578e889cf8fbea, type: 3}
       propertyPath: m_Enabled
       value: 1
