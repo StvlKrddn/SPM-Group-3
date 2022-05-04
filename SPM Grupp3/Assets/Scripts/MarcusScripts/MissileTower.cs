@@ -6,12 +6,18 @@ public class MissileTower : Tower
 {
     [SerializeField] private float splashRadius = 1f;
     [SerializeField] private float splashDamage = 20f;
+    [SerializeField] private float amountUpgradeSplashRadius;
+    [SerializeField] private float amountUpgradeSplashDamage;
     public float fireCountdown = 0f;
     /*    [SerializeField] private GameObject shot;
         [SerializeField] private Transform firePoint;
         [SerializeField] private GameObject radius;*/
+
+    private List<MissileTower> missileTowers = new List<MissileTower>();
     public float SplashRadius { get { return splashRadius; } set { splashRadius = value; } }
     public float SplashDamage { get { return splashDamage; } set { splashDamage = value; } }
+    private float shotsFired = 0;
+    private bool thirdShot = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -78,11 +84,17 @@ public class MissileTower : Tower
     public override void TypeOfShot(EnemyController enemyTarget)
     {
         print("Running? mis");
+        if (thirdShot)
+        {
+            enemyTarget.HitBySplash(SplashRadius, SplashDamage * 2);
+            enemyTarget.TakeDamage(shotDamage * 2);
+        }
         enemyTarget.HitBySplash(SplashRadius, SplashDamage);
         enemyTarget.TakeDamage(shotDamage);
     }
     protected void Shoot()
     {
+        shotsFired++;
         GameObject bulletGO = Instantiate(shot, firePoint.position, firePoint.rotation);
         bulletGO.transform.parent = transform;
         bulletGO.SetActive(true);
@@ -93,16 +105,45 @@ public class MissileTower : Tower
             bullet.Seek(target);
         }
     }
+    void CheckAllPlacedTowers()
+    {
+        foreach (GameObject gO in BuildManager.instance.towersPlaced)
+        {
+            if (gO.GetComponent<MissileTower>() != null)
+            {
+                missileTowers.Add(gO.GetComponent<MissileTower>());
+            }
+        }
+    }
+
     public override void TowerLevel1()
     {
-
+        CheckAllPlacedTowers();
+        foreach (MissileTower mT in missileTowers)
+        {
+            mT.splashRadius += amountUpgradeSplashRadius;
+        }
+        splashRadius += amountUpgradeSplashRadius;
+        missileTowers.Clear();
     }
     public override void TowerLevel2()
     {
-
+        CheckAllPlacedTowers();
+        foreach (MissileTower mT in missileTowers)
+        {
+            mT.splashDamage += amountUpgradeSplashDamage;
+        }
+        splashDamage += amountUpgradeSplashDamage;
+        missileTowers.Clear();
     }
     public override void TowerLevel3()
     {
-
+        CheckAllPlacedTowers();
+        foreach (MissileTower mT in missileTowers)
+        {
+            mT.thirdShot = true;
+        }
+        thirdShot = true;
+        missileTowers.Clear();
     }
 }

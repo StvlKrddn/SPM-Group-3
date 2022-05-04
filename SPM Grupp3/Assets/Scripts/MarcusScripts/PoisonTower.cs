@@ -6,8 +6,13 @@ public class PoisonTower : Tower
 {
     [SerializeField] private float poisonTicks = 5;
     [SerializeField] private float poisonDamagePerTick = 25;
+    [SerializeField] private float upgradeAmountPoisonTicks = 5;
+    [SerializeField] private float upgradeAmountPoisonDamagePerTick = 25;
     private float fireCountdown = 0f;
 
+    private List<PoisonTower> poisonTowers = new List<PoisonTower>();
+
+    private bool poisonSpread = false;
     public float PoisonTicks { get { return poisonTicks; } set { poisonTicks = value; } }
     public float PoisonDamagePerTick { get { return poisonDamagePerTick; } set { poisonDamagePerTick = value; } }
     // Start is called before the first frame update
@@ -71,6 +76,10 @@ public class PoisonTower : Tower
     public override void TypeOfShot(EnemyController enemyTarget)
     {
         print("Running? pois");
+        if (poisonSpread)
+        {
+            enemyTarget.spread = true;
+        }
         enemyTarget.HitByPoison(PoisonTicks,PoisonDamagePerTick, onHitEffect);
     }
     protected void Shoot()
@@ -85,16 +94,46 @@ public class PoisonTower : Tower
             bullet.Seek(target);
         }
     }
+
+    void CheckAllPlacedTowers()
+    {
+        foreach (GameObject gO in BuildManager.instance.towersPlaced)
+        {
+            if (gO.GetComponent<PoisonTower>() != null)
+            {
+                poisonTowers.Add(gO.GetComponent<PoisonTower>());
+            }
+        }
+    }
+
     public override void TowerLevel1()
     {
-
+        CheckAllPlacedTowers();
+        foreach (PoisonTower pT in poisonTowers)
+        {
+            pT.poisonTicks += upgradeAmountPoisonTicks;
+        }
+        poisonTicks += upgradeAmountPoisonTicks;
+        poisonTowers.Clear();
     }
     public override void TowerLevel2()
     {
-
+        CheckAllPlacedTowers();
+        foreach (PoisonTower pT in poisonTowers)
+        {
+            pT.poisonDamagePerTick += upgradeAmountPoisonDamagePerTick;
+        }
+        poisonDamagePerTick += upgradeAmountPoisonDamagePerTick;
+        poisonTowers.Clear();
     }
     public override void TowerLevel3()
     {
-
+        CheckAllPlacedTowers();
+        foreach (PoisonTower pT in poisonTowers)
+        {
+            pT.poisonSpread = true;
+        }
+        poisonSpread = true;
+        poisonTowers.Clear();
     }
 }
