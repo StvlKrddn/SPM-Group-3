@@ -9,6 +9,8 @@ public class MaterialBehavior : MonoBehaviour
     [SerializeField] private float bobbingStrength = 0.2f;
     [SerializeField] private float duration = 5f;
     private GameManager gameManager;
+    private Rigidbody rb;
+    private bool landed = false;
 
     private Vector3 originalPosition;
 
@@ -16,10 +18,32 @@ public class MaterialBehavior : MonoBehaviour
     {
         gameManager = FindObjectOfType<GameManager>();
         originalPosition = transform.position;
+        rb = GetComponent<Rigidbody>();
+        Throw();
         StartCoroutine(SelfDestruct());
     }
 
     void Update()
+    {
+        if (landed == true)
+        {
+            Bobbing();
+        }
+        Invoke(nameof(Landed), 1.5f);
+    }
+
+    private void Landed()
+    {
+        landed = true;
+    }
+
+    private void Throw()
+    {
+        transform.position += transform.right * 20;
+        transform.position += transform.up * 10;
+    }
+
+    private void Bobbing()
     {
         // Bobbing animation
         transform.position = new Vector3(transform.position.x, originalPosition.y + Mathf.Sin(Time.time * bobbingSpeed) * bobbingStrength, transform.position.z);
@@ -34,7 +58,7 @@ public class MaterialBehavior : MonoBehaviour
         }
     }
 
-    private IEnumerator SelfDestruct()
+	private IEnumerator SelfDestruct()
     {
         yield return new WaitForSeconds(duration);
         Destroy(gameObject);

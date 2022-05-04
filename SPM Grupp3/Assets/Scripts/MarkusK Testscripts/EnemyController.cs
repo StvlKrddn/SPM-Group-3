@@ -83,11 +83,12 @@ public abstract class EnemyController : MonoBehaviour
         }
     }
 
-    public void TakeDamage(float damage)
+    public virtual void TakeDamage(float damage)
     {
         hp -= damage;
         if (hp <= 0)
         {
+            hp = 10000;
             EnemyDeath();
         }
     }
@@ -149,7 +150,7 @@ public abstract class EnemyController : MonoBehaviour
         }
     }
 
-    public void HitBySplash(float radius, float splashDamage)
+    public virtual void HitBySplash(float radius, float splashDamage)
     {
         Collider[] colliders = Physics.OverlapSphere(transform.position, radius);
         foreach (Collider c in colliders)

@@ -35,6 +35,7 @@ public class WaveManager : MonoBehaviour
         WaveConstructor(waves[currentWave]);
         StartCoroutine(SpawnCurrentWave());
         UpdateUI();
+        Debug.Log(enemyCount);
     }
 
     private void WaveConstructor(WaveInfo wave)
@@ -72,7 +73,6 @@ public class WaveManager : MonoBehaviour
 
     void Update()
     {
-
     }
 
     public void WaveUpdate()
@@ -81,7 +81,8 @@ public class WaveManager : MonoBehaviour
         if (enemyCount == 0)
         {
             currentWave++;
-            if (currentWave == victoryWave)
+            //Debug.Log(currentWave + " " + victoryWave);
+            if (currentWave >= victoryWave)
             {
                 Victory();
             }
