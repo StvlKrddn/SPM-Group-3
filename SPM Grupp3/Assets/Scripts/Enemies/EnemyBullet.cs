@@ -22,10 +22,10 @@ public class EnemyBullet : MonoBehaviour
     void Start()
     {
         //Checks who is closer between tank1 and tank2
-        if (FindObjectOfType<TankController>())
+        if (FindObjectOfType<TankState>())
         {
-            tank1 = FindObjectOfType<TankController>().gameObject; //Needs change 
-            tank2 = FindObjectOfType<TankController>().gameObject;
+            tank1 = FindObjectOfType<TankState>().gameObject; //Needs change 
+            tank2 = FindObjectOfType<TankState>().gameObject;
             if (Vector3.Distance(transform.position, tank1.transform.position) < Vector3.Distance(transform.position, tank2.transform.position))
             {
                 target = tank1.transform;
