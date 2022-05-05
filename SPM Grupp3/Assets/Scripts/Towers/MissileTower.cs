@@ -6,18 +6,34 @@ public class MissileTower : Tower
 {
     [SerializeField] private float splashRadius = 1f;
     [SerializeField] private float splashDamage = 20f;
+
+    [Header("Amount To Upgrade")]
     [SerializeField] private float amountUpgradeSplashRadius;
     [SerializeField] private float amountUpgradeSplashDamage;
-    public float fireCountdown = 0f;
-    /*    [SerializeField] private GameObject shot;
-        [SerializeField] private Transform firePoint;
-        [SerializeField] private GameObject radius;*/
 
+    [Header("ThirdShot Dubble Damage")]
+    [SerializeField] private bool thirdShot = false;
+
+    [Header("Upgrade Cost")]
+    [SerializeField] private float level1Cost;
+    [SerializeField] private float level2Cost;
+    [SerializeField] private float level3Cost;
+
+    [Header("Purchased Upgrades")]
+    [SerializeField] private bool level1UpgradePurchased = false;
+    [SerializeField] private bool level2UpgradePurchased = false;
+    [SerializeField] private bool level3UpgradePurchased = false;
+
+    private float fireCountdown = 0f;
+    private float shotsFired = 0;
     private List<MissileTower> missileTowers = new List<MissileTower>();
+
     public float SplashRadius { get { return splashRadius; } set { splashRadius = value; } }
     public float SplashDamage { get { return splashDamage; } set { splashDamage = value; } }
-    private float shotsFired = 0;
-    private bool thirdShot = false;
+
+
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -52,28 +68,13 @@ public class MissileTower : Tower
 
             Destroy(effectInstance, 1f);
             TypeOfShot(enemyTarget);
-            /*Destroy(bullet.gameObject, 2f);*/
         }
     }
-
-    /*    public override void HitTarget()
-        {
-            if (target != null)
-            {
-                EnemyController enemyTarget = target.GetComponent<EnemyController>();
-                GameObject effectInstance = Instantiate(onHitEffect, bullet.gameObject.transform.position, bullet.gameObject.transform.rotation);
-
-                Destroy(effectInstance, 2f);
-                TypeOfShot(enemyTarget);
-                Destroy(bullet.gameObject);
-            }
-        }*/
 
     private bool CanYouShoot()
     {
         if (fireCountdown <= 0f)
         {
-            print("True");
             fireCountdown = 1f / fireRate;
             return true;
         }
@@ -83,16 +84,15 @@ public class MissileTower : Tower
 
     public override void TypeOfShot(EnemyController enemyTarget)
     {
-        print("Running? mis");
         if (thirdShot && shotsFired % 3 == 0)
         {
             enemyTarget.HitBySplash(SplashRadius, SplashDamage * 2);
-            enemyTarget.TakeDamage(shotDamage * 2);
+            enemyTarget.TakeDamage(ShotDamage * 2);
         }
         else
         {
             enemyTarget.HitBySplash(SplashRadius, SplashDamage);
-            enemyTarget.TakeDamage(shotDamage);
+            enemyTarget.TakeDamage(ShotDamage);
         }
     }
     protected void Shoot()
@@ -121,32 +121,52 @@ public class MissileTower : Tower
 
     public override void TowerLevel1()
     {
-        CheckAllPlacedTowers();
-        foreach (MissileTower mT in missileTowers)
+        if (gM.SpendResources(level1Cost, 0f) && !level1UpgradePurchased)
         {
-            mT.splashRadius += amountUpgradeSplashRadius;
+            CheckAllPlacedTowers();
+            foreach (MissileTower mT in missileTowers)
+            {
+                mT.splashRadius += amountUpgradeSplashRadius;
+                mT.level1UpgradePurchased = true;
+                mT.missileTowers.Clear();
+            }
+            splashRadius += amountUpgradeSplashRadius;
+            missileTowers.Clear();
+            level1UpgradePurchased = true;
         }
-        splashRadius += amountUpgradeSplashRadius;
-        missileTowers.Clear();
     }
     public override void TowerLevel2()
     {
-        CheckAllPlacedTowers();
-        foreach (MissileTower mT in missileTowers)
+        if (gM.SpendResources(level2Cost, 0f) && !level2UpgradePurchased && level1UpgradePurchased)
         {
-            mT.splashDamage += amountUpgradeSplashDamage;
+            CheckAllPlacedTowers();
+            foreach (MissileTower mT in missileTowers)
+            {
+                mT.splashDamage += amountUpgradeSplashDamage;
+                mT.level2UpgradePurchased = true;
+                mT.missileTowers.Clear();
+            }
+            splashDamage += amountUpgradeSplashDamage;
+            missileTowers.Clear();
+            level2UpgradePurchased = true;
         }
-        splashDamage += amountUpgradeSplashDamage;
-        missileTowers.Clear();
+        
     }
     public override void TowerLevel3()
     {
-        CheckAllPlacedTowers();
-        foreach (MissileTower mT in missileTowers)
+        if (gM.SpendResources(level3Cost, 0f) && !level3UpgradePurchased && level2UpgradePurchased && level1UpgradePurchased)
         {
-            mT.thirdShot = true;
+            CheckAllPlacedTowers();
+            foreach (MissileTower mT in missileTowers)
+            {
+                mT.thirdShot = true;
+                mT.level3UpgradePurchased = true;
+                mT.missileTowers.Clear();
+            }
+            thirdShot = true;
+            missileTowers.Clear();
+            level3UpgradePurchased = true;
         }
-        thirdShot = true;
-        missileTowers.Clear();
+        
     }
 }

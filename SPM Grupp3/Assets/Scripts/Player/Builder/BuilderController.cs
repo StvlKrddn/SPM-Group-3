@@ -278,7 +278,6 @@ public class BuilderController : MonoBehaviour
             {
                 Tower tower = towerHit.GetComponent<Tower>();
 
-                print("Amount of clicks: ");
 /*                if (tower.radius.activeInHierarchy)
                 {
                     tower.radius.SetActive(false);
