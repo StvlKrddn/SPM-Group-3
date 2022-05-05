@@ -21,8 +21,11 @@ public class WaveEndSystem : MonoBehaviour
 
     void waveDone(WaveEndEvent waveEndEvent)
     {
-       // waveManager.StartWave(waveEndEvent.CurrentWave);
-
-        tutorial.waveEnded();
+        // waveManager.StartWave(waveEndEvent.CurrentWave);
+        if (tutorial != null)
+        {
+            tutorial.waveEnded();
+        }
+        
     }
 }

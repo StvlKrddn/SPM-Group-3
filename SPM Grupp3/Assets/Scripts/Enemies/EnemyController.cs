@@ -22,6 +22,7 @@ public abstract class EnemyController : MonoBehaviour
     public bool spread = false;
     private float amountOfTicks;
     private float amountOfDps;
+    private bool dead;
 
     // Start is called before the first frame update
 
@@ -89,9 +90,9 @@ public abstract class EnemyController : MonoBehaviour
     public virtual void TakeDamage(float damage)
     {
         hp -= damage;
-        if (hp <= 0)
+        if (hp <= 0 && dead == false)
         {
-            hp = 10000;
+            dead = true;
             EnemyDeath();
         }
     }
