@@ -67,7 +67,6 @@ public class GameManager : MonoBehaviour
         UpdateResourcesUI();
     }
 
-    // Har enbart �ndrat p� texten metoden nedan
     private void UpdateResourcesUI()
     {
         moneyUI.text = ": " + money;
