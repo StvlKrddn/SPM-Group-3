@@ -82,6 +82,7 @@ public class BuilderController : MonoBehaviour
         SetCursorColor(cursor);
         cursor.name = "Player " + (playerInput.playerIndex + 1) + " cursor";
         cursorTransform = cursor.GetComponent<RectTransform>();
+        cursorTransform.gameObject.SetActive(true);
     }
 
     void SetCursorColor(GameObject cursor)
