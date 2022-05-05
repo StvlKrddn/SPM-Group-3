@@ -30,7 +30,7 @@ public abstract class Tower : MonoBehaviour
     protected Transform target;
 
 
-    protected float ShotDamage { get { return shotDamage; } set { shotDamage = value; } }
+    public float ShotDamage { get { return shotDamage; } set { shotDamage = value; } }
 
     protected Shot bullet;
 
