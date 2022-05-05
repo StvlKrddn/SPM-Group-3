@@ -63,11 +63,12 @@ public class TutorialUI : MonoBehaviour
             }
         }
 
-
+        /*
         if(scriptToActivate.isWaveGoingOn)
         {
             print("är det en våg på gång " + scriptToActivate.isWaveGoingOn);
         }
+        */
         
     }
 
