@@ -6,15 +6,31 @@ public class PoisonTower : Tower
 {
     [SerializeField] private float poisonTicks = 5;
     [SerializeField] private float poisonDamagePerTick = 25;
+
+    [Header("Amount To Upgrade")]
     [SerializeField] private float upgradeAmountPoisonTicks = 5;
     [SerializeField] private float upgradeAmountPoisonDamagePerTick = 25;
-    private float fireCountdown = 0f;
 
+    [Header("Poison Spreading")]
+    [SerializeField] private bool poisonSpread = false;
+
+    [Header("Upgrade Cost")]
+    [SerializeField] private float level1Cost;
+    [SerializeField] private float level2Cost;
+    [SerializeField] private float level3Cost;
+
+    [Header("Purchased Upgrades")]
+    [SerializeField] private bool level1UpgradePurchased = false;
+    [SerializeField] private bool level2UpgradePurchased = false;
+    [SerializeField] private bool level3UpgradePurchased = false;
+
+    private float fireCountdown = 0f;
     private List<PoisonTower> poisonTowers = new List<PoisonTower>();
 
-    private bool poisonSpread = false;
     public float PoisonTicks { get { return poisonTicks; } set { poisonTicks = value; } }
     public float PoisonDamagePerTick { get { return poisonDamagePerTick; } set { poisonDamagePerTick = value; } }
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -75,7 +91,6 @@ public class PoisonTower : Tower
 
     public override void TypeOfShot(EnemyController enemyTarget)
     {
-        print("Running? pois");
         if (poisonSpread)
         {
             enemyTarget.spread = true;
@@ -108,32 +123,50 @@ public class PoisonTower : Tower
 
     public override void TowerLevel1()
     {
-        CheckAllPlacedTowers();
-        foreach (PoisonTower pT in poisonTowers)
+        if (gM.SpendResources(level1Cost, 0f) && !level1UpgradePurchased)
         {
-            pT.poisonTicks += upgradeAmountPoisonTicks;
+            CheckAllPlacedTowers();
+            foreach (PoisonTower pT in poisonTowers)
+            {
+                pT.poisonTicks += upgradeAmountPoisonTicks;
+                pT.poisonTowers.Clear();
+                pT.level1UpgradePurchased = true;
+            }
+            poisonTicks += upgradeAmountPoisonTicks;
+            poisonTowers.Clear();
+            level1UpgradePurchased = true;
         }
-        poisonTicks += upgradeAmountPoisonTicks;
-        poisonTowers.Clear();
     }
     public override void TowerLevel2()
     {
-        CheckAllPlacedTowers();
-        foreach (PoisonTower pT in poisonTowers)
+        if (gM.SpendResources(level2Cost, 0f) && !level2UpgradePurchased && level1UpgradePurchased)
         {
-            pT.poisonDamagePerTick += upgradeAmountPoisonDamagePerTick;
+            CheckAllPlacedTowers();
+            foreach (PoisonTower pT in poisonTowers)
+            {
+                pT.poisonDamagePerTick += upgradeAmountPoisonDamagePerTick;
+                pT.poisonTowers.Clear();
+                pT.level2UpgradePurchased = true;
+            }
+            poisonDamagePerTick += upgradeAmountPoisonDamagePerTick;
+            poisonTowers.Clear();
+            level2UpgradePurchased = true;
         }
-        poisonDamagePerTick += upgradeAmountPoisonDamagePerTick;
-        poisonTowers.Clear();
     }
     public override void TowerLevel3()
     {
-        CheckAllPlacedTowers();
-        foreach (PoisonTower pT in poisonTowers)
+        if (gM.SpendResources(level3Cost, 0f) && !level3UpgradePurchased && level2UpgradePurchased && level1UpgradePurchased)
         {
-            pT.poisonSpread = true;
+            CheckAllPlacedTowers();
+            foreach (PoisonTower pT in poisonTowers)
+            {
+                pT.poisonSpread = true;
+                pT.poisonTowers.Clear();
+                pT.level3UpgradePurchased = true;
+            }
+            poisonSpread = true;
+            poisonTowers.Clear();
+            level3UpgradePurchased = true;
         }
-        poisonSpread = true;
-        poisonTowers.Clear();
     }
 }
