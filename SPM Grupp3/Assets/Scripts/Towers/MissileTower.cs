@@ -169,4 +169,9 @@ public class MissileTower : Tower
         }
         
     }
+
+    public override void CheckLevels()
+    {
+
+    }
 }

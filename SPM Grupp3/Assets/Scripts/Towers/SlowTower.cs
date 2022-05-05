@@ -161,4 +161,8 @@ public class SlowTower : Tower
             level3UpgradePurchased = true;
         }
     }
+    public override void CheckLevels()
+    {
+
+    }
 }

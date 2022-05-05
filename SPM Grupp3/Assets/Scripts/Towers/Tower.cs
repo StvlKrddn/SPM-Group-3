@@ -35,6 +35,7 @@ public abstract class Tower : MonoBehaviour
 
     public abstract void TypeOfShot(EnemyController enemyTarget);
     public abstract void HitTarget(TowerHitEvent eventInfo);
+    public abstract void CheckLevels();
 
     public abstract void TowerLevel1();
     public abstract void TowerLevel2();
@@ -44,7 +45,7 @@ public abstract class Tower : MonoBehaviour
 
     private void Start()
     {
-        gM = FindObjectOfType<GameManager>();
+
     }
 
     private void OnDrawGizmosSelected()

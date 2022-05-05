@@ -240,8 +240,17 @@ public class BuilderController : MonoBehaviour
 
     void GhostTower(Transform selection, BuildManager buildManager)
     {
-        
-        GameObject tower = buildManager.TowerToBuild.transform.GetChild(1).gameObject;
+        int index = 1;
+        for (;  index < buildManager.TowerToBuild.transform.childCount; index++)
+        {
+            bool active = buildManager.TowerToBuild.transform.GetChild(index).gameObject.activeSelf;
+            if (active)
+            {
+                break;
+            }
+        }
+        GameObject tower = buildManager.TowerToBuild.transform.GetChild(index).gameObject;
+
         Transform placement = selection.GetChild(0).transform;
         Vector3 placeVec = placement.position;
         Vector3 towerPlace = new Vector3(placeVec.x, placeVec.y + 0.5f, placeVec.z);

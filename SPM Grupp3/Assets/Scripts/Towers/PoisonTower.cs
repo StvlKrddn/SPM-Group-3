@@ -169,4 +169,8 @@ public class PoisonTower : Tower
             level3UpgradePurchased = true;
         }
     }
+    public override void CheckLevels()
+    {
+
+    }
 }
