@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(TankController))]
+[RequireComponent(typeof(TankState))]
 public class BoostAbility : MonoBehaviour
 {
     // Inspector variables

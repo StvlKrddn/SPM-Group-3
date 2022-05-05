@@ -20,7 +20,7 @@ public class BulletBehavior : MonoBehaviour
     void Start()
     {
         // NOTE(August): Ändra från FindObjectOfType eftersom den körs varje gång en kula skjuts
-        tank = FindObjectOfType<TankController>().gameObject;
+        tank = FindObjectOfType<TankState>().gameObject;
         originalPosition = transform.position;
         bulletSpeed = tank.GetComponent<WeaponSlot>().BulletSpeed;
         range = tank.GetComponent<WeaponSlot>().BulletRange;
