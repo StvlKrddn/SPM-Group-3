@@ -12,7 +12,7 @@ public class PlayerHandler : MonoBehaviour
     GameObject tankMode;
     GameObject buildMode;
 
-    void Awake()
+    void Start()
     {
         canvas = Camera.main.transform.Find("Canvas").gameObject;
 
@@ -24,6 +24,7 @@ public class PlayerHandler : MonoBehaviour
         tankMode = transform.Find("TankMode").gameObject;
         buildMode = transform.Find("BuilderMode").gameObject;
 
+        // First mode set up
         if (currentMode == PlayerMode.Build)
         {
             // Disable Tank
@@ -31,6 +32,12 @@ public class PlayerHandler : MonoBehaviour
 
             // Enable Build
             buildMode.SetActive(true);
+
+            playerInput.SwitchCurrentActionMap("Builder");
+
+            canvas.transform.GetChild(1).gameObject.SetActive(true);
+
+            currentMode = PlayerMode.Build;
         }
 
         if (currentMode == PlayerMode.Tank)
@@ -40,6 +47,12 @@ public class PlayerHandler : MonoBehaviour
 
             // Enable Tank
             tankMode.SetActive(true);
+
+            playerInput.SwitchCurrentActionMap("Tank");
+
+            currentMode = PlayerMode.Tank;
+
+            canvas.transform.GetChild(1).gameObject.SetActive(false);
         }
     }
 

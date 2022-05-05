@@ -4262,6 +4262,23 @@ Transform:
   m_Father: {fileID: 6056684214046176527}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &355641746 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5574963424639874963, guid: f38755517d96a124d80b16613eb953a3, type: 3}
+  m_PrefabInstance: {fileID: 646700779}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &355641750
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 355641746}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f55e4939cbcf7fe4a8140b08f908ec3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &355716332
 GameObject:
   m_ObjectHideFlags: 0
@@ -5587,6 +5604,17 @@ Transform:
   m_Father: {fileID: 6056684214087194043}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &449358229 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1555352807092885021, guid: 6364959b4060537488578e889cf8fbea, type: 3}
+  m_PrefabInstance: {fileID: 1555352807705602247}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7444dc0139af8ed4392f38e24ee889d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &450555057
 GameObject:
   m_ObjectHideFlags: 0
@@ -8225,6 +8253,14 @@ PrefabInstance:
       propertyPath: m_PlayerPrefab
       value: 
       objectReference: {fileID: 1555352807768005138, guid: 6364959b4060537488578e889cf8fbea, type: 3}
+    - target: {fileID: 5574963424639874961, guid: f38755517d96a124d80b16613eb953a3, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5574963424639874961, guid: f38755517d96a124d80b16613eb953a3, type: 3}
+      propertyPath: spawnEnemies
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5574963424639874962, guid: f38755517d96a124d80b16613eb953a3, type: 3}
       propertyPath: m_RootOrder
       value: 7
@@ -8277,6 +8313,10 @@ PrefabInstance:
       propertyPath: waveUI
       value: 
       objectReference: {fileID: 1910661875}
+    - target: {fileID: 5574963424639874967, guid: f38755517d96a124d80b16613eb953a3, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5574963424639874967, guid: f38755517d96a124d80b16613eb953a3, type: 3}
       propertyPath: spawnPosition
       value: 
@@ -23575,7 +23615,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5574963424639874961, guid: f38755517d96a124d80b16613eb953a3, type: 3}
   m_PrefabInstance: {fileID: 646700779}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 355641746}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 865119aa34c06be41a3b49989bec82eb, type: 3}
@@ -28387,6 +28427,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1555352806990302223, guid: 6364959b4060537488578e889cf8fbea, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 573569323}
     - target: {fileID: 1555352807092885021, guid: 6364959b4060537488578e889cf8fbea, type: 3}
       propertyPath: camera
       value: 
@@ -28447,6 +28491,46 @@ PrefabInstance:
       propertyPath: m_UIInputModule
       value: 
       objectReference: {fileID: 978922529}
+    - target: {fileID: 1555352807768005137, guid: 6364959b4060537488578e889cf8fbea, type: 3}
+      propertyPath: m_ActionEvents.Array.size
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 1555352807768005137, guid: 6364959b4060537488578e889cf8fbea, type: 3}
+      propertyPath: m_ActionEvents.Array.data[11].m_ActionId
+      value: 90a81b1a-e697-41b8-ac23-908ec6c17bca
+      objectReference: {fileID: 0}
+    - target: {fileID: 1555352807768005137, guid: 6364959b4060537488578e889cf8fbea, type: 3}
+      propertyPath: m_ActionEvents.Array.data[11].m_ActionName
+      value: Builder/EnterTank[/DualShock4GamepadHID/buttonWest,/DualShock4GamepadHID1/buttonWest]
+      objectReference: {fileID: 0}
+    - target: {fileID: 1555352807768005137, guid: 6364959b4060537488578e889cf8fbea, type: 3}
+      propertyPath: m_ActionEvents.Array.data[11].m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1555352807768005137, guid: 6364959b4060537488578e889cf8fbea, type: 3}
+      propertyPath: m_ActionEvents.Array.data[11].m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1555352807768005137, guid: 6364959b4060537488578e889cf8fbea, type: 3}
+      propertyPath: m_ActionEvents.Array.data[11].m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 449358229}
+    - target: {fileID: 1555352807768005137, guid: 6364959b4060537488578e889cf8fbea, type: 3}
+      propertyPath: m_ActionEvents.Array.data[11].m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1555352807768005137, guid: 6364959b4060537488578e889cf8fbea, type: 3}
+      propertyPath: m_ActionEvents.Array.data[11].m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: EnterTank
+      objectReference: {fileID: 0}
+    - target: {fileID: 1555352807768005137, guid: 6364959b4060537488578e889cf8fbea, type: 3}
+      propertyPath: m_ActionEvents.Array.data[11].m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: BuilderController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1555352807768005137, guid: 6364959b4060537488578e889cf8fbea, type: 3}
+      propertyPath: m_ActionEvents.Array.data[11].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 1555352807768005138, guid: 6364959b4060537488578e889cf8fbea, type: 3}
       propertyPath: m_Name
       value: Player
@@ -28455,6 +28539,10 @@ PrefabInstance:
       propertyPath: canvas
       value: 
       objectReference: {fileID: 617985713}
+    - target: {fileID: 6116512940264111137, guid: 6364959b4060537488578e889cf8fbea, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6364959b4060537488578e889cf8fbea, type: 3}
 --- !u!1 &6056684212051085840

@@ -12,13 +12,12 @@ public class PlayerManager : MonoBehaviour
         playerManager = GetComponent<PlayerManager>();
     }
 
-    void Update()
-    {
-        
-    }
-
     public void OnPlayerJoined(PlayerInput newPlayer)
     {
         GameObject player = newPlayer.gameObject;
+        EventHandler.Instance.InvokeEvent(new PlayerJoinedEvent(
+            description: "A player joined the game",
+            newPlayerGO: player
+        ));
     }
 }
