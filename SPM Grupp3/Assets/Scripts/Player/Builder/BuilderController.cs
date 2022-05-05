@@ -39,12 +39,27 @@ public class BuilderController : MonoBehaviour
 
         canvas = mainCamera.transform.Find("Canvas");
 
-        InitializeInputSystem();
-
-        InitializeCursor();
-
         screenMiddle = new Vector2(Screen.width / 2, Screen.height / 2);
 
+        EventHandler.Instance.RegisterListener<EnterBuildModeEvent>(OnEnterBuildMode);
+    }
+    
+    private void OnEnterBuildMode(EnterBuildModeEvent eventInfo)
+    {
+        InitializeInputSystem(eventInfo.Player);
+        InitializeCursor();
+        InitializeVirtualMouse();
+        ResetPosition();
+    }
+
+    void InitializeInputSystem(GameObject player)
+    {
+        playerInput = player.GetComponent<PlayerInput>();
+        pointerAction = playerInput.actions["LeftStick"];
+    }
+
+    void InitializeVirtualMouse()
+    {
         if (virtualMouse == null)
         {
             virtualMouse = (Mouse)InputSystem.AddDevice("VirtualMouse");
@@ -62,18 +77,6 @@ public class BuilderController : MonoBehaviour
             Vector2 position = cursorTransform.anchoredPosition;
             InputState.Change(virtualMouse.position, position);
         }
-
-        EventHandler.Instance.RegisterListener<EnterBuildModeEvent>(OnEnterBuildMode);
-        EventHandler.Instance.RegisterListener<EnterTankModeEvent>(OnEnterTankMode);
-        EventHandler.Instance.RegisterListener<PlayerJoinedEvent>(OnPlayerJoined);
-
-        ResetPosition();
-    }
-
-    void InitializeInputSystem()
-    {
-        playerInput = transform.parent.GetComponent<PlayerInput>();
-        pointerAction = playerInput.actions["LeftStick"];
     }
 
     void InitializeCursor()
@@ -84,6 +87,7 @@ public class BuilderController : MonoBehaviour
         cursorTransform = cursor.GetComponent<RectTransform>();
         cursorTransform.gameObject.SetActive(true);
     }
+    
 
     void SetCursorColor(GameObject cursor)
     {
@@ -118,6 +122,8 @@ public class BuilderController : MonoBehaviour
     {
         if (context.performed)
         {
+            ResetPosition();
+            cursorTransform.gameObject.SetActive(false);
             EventHandler.Instance.InvokeEvent(new PlayerSwitchEvent(
                 description: "Player switched mode",
                 playerContainer: transform.parent.gameObject
@@ -130,23 +136,6 @@ public class BuilderController : MonoBehaviour
         InputSystem.onAfterUpdate += UpdateVirtualMouse;
     }
 
-    private void OnEnterBuildMode(EnterBuildModeEvent eventInfo)
-    {
-        ResetPosition();
-        cursorTransform.gameObject.SetActive(true);
-    }
-
-    private void OnEnterTankMode(EnterTankModeEvent eventInfo)
-    {
-        ResetPosition();
-        cursorTransform.gameObject.SetActive(false);
-    }
-
-    private void OnPlayerJoined(PlayerJoinedEvent eventInfo)
-    {
-        InitializeInputSystem();
-        InitializeCursor();
-    }
 
     void OnDisable()
     {

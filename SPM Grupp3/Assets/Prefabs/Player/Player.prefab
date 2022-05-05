@@ -181,6 +181,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 2b10717e-e360-47c7-9d8a-93d8ff8d4926
     m_ActionName: Builder/New action
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1555352807092885021}
+        m_TargetAssemblyTypeName: BuilderController, Assembly-CSharp
+        m_MethodName: EnterTank
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 90a81b1a-e697-41b8-ac23-908ec6c17bca
+    m_ActionName: Builder/EnterTank[/DualShock4GamepadHID/buttonWest,/DualShock4GamepadHID1/buttonWest]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Gamepad
   m_DefaultActionMap: Tank
@@ -406,7 +422,6 @@ GameObject:
   - component: {fileID: 6967612253366767061}
   - component: {fileID: 3047768985199286519}
   - component: {fileID: 8213204271390899286}
-  - component: {fileID: 6116512940264111137}
   - component: {fileID: 8961258511388597484}
   - component: {fileID: 8465387875451167576}
   - component: {fileID: 2030755986}
@@ -524,20 +539,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5e352f0ee73a704bab57be2702dc8d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 50
---- !u!114 &6116512940264111137
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8465387875451167577}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d4d7726a3fb1d504ab260bb51e3cc3c9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   movementSpeed: 6
+  health: 50
 --- !u!114 &8961258511388597484
 MonoBehaviour:
   m_ObjectHideFlags: 0
