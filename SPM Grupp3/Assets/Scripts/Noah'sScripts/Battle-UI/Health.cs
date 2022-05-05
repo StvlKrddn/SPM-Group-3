@@ -9,16 +9,11 @@ public class Health : MonoBehaviour
     [SerializeField] private float maxHealth = 50f;
     private float currentHealth;
 
-    [Header("Random components")]
-    [SerializeField] private Transform garage;
-    private TankController tankController;
-
     public event Action<float> OnHealthPctChanged = delegate { };
 
     private void Awake()
     { 
         currentHealth = maxHealth;
-        tankController = GetComponent<TankController>();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -33,13 +28,26 @@ public class Health : MonoBehaviour
             {
                 currentHealth = maxHealth;
                 ModifyHealth(-1.0f);
-                //tankController.MoveToGarage();
             }
-
-            Destroy(enemyBullet);
         }
-    }    
-    
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            //GameObject enemy = other.gameObject;
+
+            ModifyHealth(10);
+
+            if (currentHealth <= 0)
+            {
+                currentHealth = maxHealth;
+                ModifyHealth(-1.0f);
+            }
+        }
+    }
+
     public void ModifyHealth(float amount)
     {
         currentHealth -= amount;

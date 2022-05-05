@@ -7,18 +7,22 @@ public class PlayerHandler : MonoBehaviour
 {
     private PlayerMode currentMode;
 
-    [SerializeField] GameObject tankMode;
-    [SerializeField] GameObject buildMode;
-    [SerializeField] GameObject buildMenu;
-
+    GameObject canvas;
     PlayerInput playerInput;
+    GameObject tankMode;
+    GameObject buildMode;
 
     void Awake()
     {
+        canvas = Camera.main.transform.Find("Canvas").gameObject;
+
         EventHandler.Instance.RegisterListener<PlayerSwitchEvent>(OnPlayerSwitchMode);
         currentMode = FindObjectOfType<GameManager>().StartingMode;
 
         playerInput = GetComponent<PlayerInput>();
+
+        tankMode = transform.Find("TankMode").gameObject;
+        buildMode = transform.Find("BuilderMode").gameObject;
 
         if (currentMode == PlayerMode.Build)
         {
@@ -41,6 +45,8 @@ public class PlayerHandler : MonoBehaviour
 
     private void OnPlayerSwitchMode(PlayerSwitchEvent eventInfo)
     {
+        tankMode = eventInfo.PlayerContainer.transform.Find("TankMode").gameObject;
+        buildMode = eventInfo.PlayerContainer.transform.Find("BuilderMode").gameObject;
         // If in Tank mode, switch to Build
         if (currentMode == PlayerMode.Tank)
         {
@@ -57,9 +63,11 @@ public class PlayerHandler : MonoBehaviour
 
             playerInput.SwitchCurrentActionMap("Builder");
 
-            buildMenu.SetActive(true);
+            canvas.transform.GetChild(1).gameObject.SetActive(true);
 
             currentMode = PlayerMode.Build;
+
+            print("Entered build mode");
         }
 
         // If in Build mode, switch to Tank
@@ -80,12 +88,12 @@ public class PlayerHandler : MonoBehaviour
 
             currentMode = PlayerMode.Tank;
 
-            buildMenu.SetActive(false);
+            canvas.transform.GetChild(1).gameObject.SetActive(false);
+
+            print("Entered tank mode");
         }
     }
 
-
-    // NOTE(August): Den här metoden bör ligga i ett UI script egentligen, men det finns inget passande just nu
     public void EnterTank()
     {
         EventHandler.Instance.InvokeEvent(new PlayerSwitchEvent(

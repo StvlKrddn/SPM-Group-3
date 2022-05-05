@@ -17,8 +17,6 @@ public class TowerPlacement : MonoBehaviour
     private Transform _selection;
 
     BuildManager buildManager;
-    public Shop shop;
-    private Shop test;
     private bool hover = false;
 
     // Start is called before the first frame update
@@ -28,7 +26,6 @@ public class TowerPlacement : MonoBehaviour
         rend = GetComponent<Renderer>();
         startColor = rend.material.color;
         buildManager = BuildManager.instance;
-        test = UI.transform.GetChild(0).gameObject.GetComponent<Shop>();
     }
 
 
@@ -48,6 +45,7 @@ public class TowerPlacement : MonoBehaviour
         }
         else
         {
+            Debug.Log("weeee");
             buildManager.ClickedArea = gameObject;
             clicked = true;
         }

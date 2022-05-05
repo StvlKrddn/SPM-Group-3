@@ -7,11 +7,6 @@ public class EnemyArcher : EnemyController
     public float timer = 3;
     public int cd = 5;
     public GameObject shot;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
     // Update is called once per frame
     protected override void Update()
