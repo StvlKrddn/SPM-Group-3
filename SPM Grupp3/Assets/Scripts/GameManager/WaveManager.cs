@@ -26,7 +26,7 @@ public class WaveManager : MonoBehaviour
 
     private void Start()
     {
-        StartWave(0);
+      //  StartWave(0);
     }
 
     public void StartWave(int currentWave)
@@ -35,7 +35,7 @@ public class WaveManager : MonoBehaviour
         WaveConstructor(waves[currentWave]);
         StartCoroutine(SpawnCurrentWave());
         UpdateUI();
-        Debug.Log(enemyCount);
+ //       Debug.Log(enemyCount);
     }
 
     private void WaveConstructor(WaveInfo wave)
@@ -89,8 +89,14 @@ public class WaveManager : MonoBehaviour
             else
             {
                 FindObjectOfType<GameManager>().spawnEnemies = true;
-                StartWave(currentWave); // Test row
+            //    StartWave(currentWave); // Test row
                 Debug.Log("Wave " + currentWave + " cleared");
+
+                EventHandler.Instance.InvokeEvent(new WaveEndEvent(
+                description: "wave ended"
+
+                )) ;
+
                 //Activates the the button so the players can start next round 
             }
         }

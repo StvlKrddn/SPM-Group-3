@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(TankController))]
+[RequireComponent(typeof(TankState))]
 public class BoostAbility : MonoBehaviour
 {
     // Inspector variables
@@ -12,7 +12,6 @@ public class BoostAbility : MonoBehaviour
     [SerializeField] private float boostCooldownTime = 5f;
 
     InputAction boostAction;
-    TankController tankController;
     TankState tankState;
 
     float speedBeforeBoost;
@@ -27,10 +26,9 @@ public class BoostAbility : MonoBehaviour
 
     void Start()
     {
-        tankController = GetComponent<TankController>();
         tankState = GetComponent<TankState>();
 
-        speedBeforeBoost = tankController.StandardSpeed;
+        speedBeforeBoost = tankState.StandardSpeed;
         boostAction = tankState.PlayerInput.actions["Boost"];
     }
 
@@ -54,12 +52,12 @@ public class BoostAbility : MonoBehaviour
             boostTimer -= Time.deltaTime;
 
             // Multiply movement speed
-            tankController.StandardSpeed = Mathf.Lerp(tankController.StandardSpeed, speedBeforeBoost * boostSpeedMultiplier, Time.deltaTime * boostAccelerationTimeMultiplier);
+            tankState.StandardSpeed = Mathf.Lerp(tankState.StandardSpeed, speedBeforeBoost * boostSpeedMultiplier, Time.deltaTime * boostAccelerationTimeMultiplier);
         }
         else
         {
             // Reset movement speed
-            tankController.StandardSpeed = Mathf.Lerp(tankController.StandardSpeed, speedBeforeBoost, Time.deltaTime * boostAccelerationTimeMultiplier);
+            tankState.StandardSpeed = Mathf.Lerp(tankState.StandardSpeed, speedBeforeBoost, Time.deltaTime * boostAccelerationTimeMultiplier);
         }
     }
 

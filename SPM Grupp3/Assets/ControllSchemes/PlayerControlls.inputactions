@@ -55,7 +55,7 @@
                 {
                     "name": "",
                     "id": "010eff8a-f8d5-4f0d-8efb-40a4f0f4ee06",
-                    "path": "<Gamepad>/rightShoulder",
+                    "path": "<Gamepad>/rightTrigger",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
@@ -77,7 +77,7 @@
                 {
                     "name": "",
                     "id": "15499b64-5baa-43fb-bf84-a6b310930c95",
-                    "path": "<Gamepad>/leftShoulder",
+                    "path": "<Gamepad>/leftTrigger",
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
@@ -386,6 +386,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "EnterTank",
+                    "type": "Button",
+                    "id": "90a81b1a-e697-41b8-ac23-908ec6c17bca",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -452,6 +461,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Info",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9edc723f-ea4b-46f7-bf0c-c489547d95c3",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "EnterTank",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

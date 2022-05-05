@@ -26,25 +26,40 @@ public class BuilderController : MonoBehaviour
     private Transform canvas;
     private PlayerInput playerInput;
     private InputAction pointerAction;
+    private InputAction enterTankAction;
     private Vector2 newPosition;
     private Vector2 screenMiddle;
     private bool previousMouseState;
     private bool previousYState;
     private GameObject preTower;
 
-    void Awake()
+    void Start()
     {
         mainCamera = Camera.main;
 
         canvas = mainCamera.transform.Find("Canvas");
 
-        InitializeInputSystem();
-
-        InitializeCursor();
-
         screenMiddle = new Vector2(Screen.width / 2, Screen.height / 2);
 
+        EventHandler.Instance.RegisterListener<EnterBuildModeEvent>(OnEnterBuildMode);
+    }
+    
+    private void OnEnterBuildMode(EnterBuildModeEvent eventInfo)
+    {
+        InitializeInputSystem(eventInfo.Player);
+        InitializeCursor();
+        InitializeVirtualMouse();
+        ResetPosition();
+    }
 
+    void InitializeInputSystem(GameObject player)
+    {
+        playerInput = player.GetComponent<PlayerInput>();
+        pointerAction = playerInput.actions["LeftStick"];
+    }
+
+    void InitializeVirtualMouse()
+    {
         if (virtualMouse == null)
         {
             virtualMouse = (Mouse)InputSystem.AddDevice("VirtualMouse");
@@ -64,28 +79,20 @@ public class BuilderController : MonoBehaviour
         }
     }
 
-    void InitializeInputSystem()
-    {
-        playerInput = transform.parent.GetComponent<PlayerInput>();
-        pointerAction = playerInput.actions["LeftStick"];
-    }
-
     void InitializeCursor()
     {
         GameObject cursor = Instantiate(cursorPrefab, canvas);
         SetCursorColor(cursor);
+        cursor.name = "Player " + (playerInput.playerIndex + 1) + " cursor";
         cursorTransform = cursor.GetComponent<RectTransform>();
+        cursorTransform.gameObject.SetActive(true);
     }
+    
 
     void SetCursorColor(GameObject cursor)
     {
         Image cursorImage = cursor.GetComponent<Image>();
         cursorImage.color = playerInput.playerIndex == 0 ? Color.blue : Color.red;
-    }
-
-    private void Update()
-    {
-        
     }
 
     public void AcceptAction (InputAction.CallbackContext context)
@@ -111,17 +118,27 @@ public class BuilderController : MonoBehaviour
         previousYState = isPressed;
     }
 
+    public void EnterTank(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            ResetPosition();
+            cursorTransform.gameObject.SetActive(false);
+            EventHandler.Instance.InvokeEvent(new PlayerSwitchEvent(
+                description: "Player switched mode",
+                playerContainer: transform.parent.gameObject
+            ));
+        }
+    }
+
     private void OnEnable()
     {
-        cursorTransform.gameObject.SetActive(true);
-        ResetPosition();
         InputSystem.onAfterUpdate += UpdateVirtualMouse;
     }
 
+
     void OnDisable()
     {
-        ResetPosition();
-        if (cursorTransform != null) cursorTransform.gameObject.SetActive(false);
         InputSystem.onAfterUpdate -= UpdateVirtualMouse;
     }
 
@@ -188,8 +205,6 @@ public class BuilderController : MonoBehaviour
         Ray cameraRay = mainCamera.ScreenPointToRay(mousePosition);
         Physics.Raycast(ray: cameraRay, hitInfo: out RaycastHit hit, maxDistance: Mathf.Infinity, layerMask: layerMask);
         
-        
-
         return hit;
     }
 
