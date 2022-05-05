@@ -30,6 +30,40 @@ public class Health : MonoBehaviour
                 ModifyHealth(-1.0f);
             }
         }
+
+        if (other.gameObject.CompareTag("Bullet"))
+        {
+            if (gameObject.CompareTag("Tank"))
+            {
+                return;
+            }
+            GameObject towerBullet = other.gameObject;
+            Tower tower = towerBullet.GetComponent<Shot>().getTowerShotCameFrom();
+
+            ModifyHealth(tower.ShotDamage);
+
+            if (currentHealth <= 0)
+            {
+                currentHealth = maxHealth;
+                ModifyHealth(-1.0f);
+            }
+        }
+        if (other.gameObject.CompareTag("PlayerShots"))
+        {
+            if (gameObject.CompareTag("Tank"))
+            {
+                return;
+            }
+            GameObject playerBullet = other.gameObject;
+
+            ModifyHealth(playerBullet.GetComponent<BulletBehavior>().BulletDamage);
+
+            if (currentHealth <= 0)
+            {
+                currentHealth = maxHealth;
+                ModifyHealth(-1.0f);
+            }
+        }
     }
 
     private void OnCollisionEnter(Collision other)
@@ -46,6 +80,7 @@ public class Health : MonoBehaviour
                 ModifyHealth(-1.0f);
             }
         }
+
     }
 
     public void ModifyHealth(float amount)

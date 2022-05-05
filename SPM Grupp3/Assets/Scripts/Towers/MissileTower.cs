@@ -84,13 +84,16 @@ public class MissileTower : Tower
     public override void TypeOfShot(EnemyController enemyTarget)
     {
         print("Running? mis");
-        if (thirdShot)
+        if (thirdShot && shotsFired % 3 == 0)
         {
             enemyTarget.HitBySplash(SplashRadius, SplashDamage * 2);
             enemyTarget.TakeDamage(shotDamage * 2);
         }
-        enemyTarget.HitBySplash(SplashRadius, SplashDamage);
-        enemyTarget.TakeDamage(shotDamage);
+        else
+        {
+            enemyTarget.HitBySplash(SplashRadius, SplashDamage);
+            enemyTarget.TakeDamage(shotDamage);
+        }
     }
     protected void Shoot()
     {

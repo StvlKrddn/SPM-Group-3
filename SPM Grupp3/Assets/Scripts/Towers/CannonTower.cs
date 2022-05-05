@@ -30,13 +30,18 @@ public class CannonTower : Tower
             if (CanYouShoot())
             {
                 Shoot();
-/*                if (shootTwice)
+                if (shootTwice)
                 {
-                    Shoot();
-                }*/
+                    Invoke(nameof(DubbelShot), 0.1f);
+                }
             }
 
         }
+    }
+
+    void DubbelShot()
+    {
+        Shoot();
     }
 
     public override void HitTarget(TowerHitEvent eventInfo)
