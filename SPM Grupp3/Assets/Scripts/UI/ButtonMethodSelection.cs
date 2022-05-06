@@ -49,7 +49,10 @@ public class ButtonMethodSelection : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        isAButtonPressed = Gamepad.current.aButton.IsPressed();
-        isYButtonPressed = Gamepad.current.yButton.IsPressed();
+        if (Gamepad.current != null)
+        {
+            isAButtonPressed = Gamepad.current.aButton.IsPressed();
+            isYButtonPressed = Gamepad.current.yButton.IsPressed(); 
+        }
     }
 }
