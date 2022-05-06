@@ -122,6 +122,10 @@ public class BuilderController : MonoBehaviour
     {
         if (context.performed)
         {
+            BuildManager.instance.TowerToBuild = null;
+            Destroy(preTower);
+            Renderer selectionRenderer = _selection.GetComponent<Renderer>();
+            selectionRenderer.material.color = startColor;
             ResetPosition();
             cursorTransform.gameObject.SetActive(false);
             EventHandler.Instance.InvokeEvent(new PlayerSwitchEvent(
