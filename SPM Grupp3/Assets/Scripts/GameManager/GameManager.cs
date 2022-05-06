@@ -36,9 +36,7 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {   
-        
-
-        if(Gamepad.current.xButton.isPressed && spawnEnemies )
+        if(Gamepad.current != null && Gamepad.current.xButton.isPressed && spawnEnemies)
         {
             SpawnWave();
         }
