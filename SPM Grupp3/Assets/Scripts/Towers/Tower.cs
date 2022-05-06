@@ -4,15 +4,7 @@ using UnityEngine;
 
 public abstract class Tower : MonoBehaviour
 {
-    [Header("Attributes")]
-    
-    [SerializeField] public float range = 15f;
-    [SerializeField] protected float fireRate = 1f;
 
-    public float cost = 150f;
-
-    public float materialCost;
-    [SerializeField] protected float shotDamage = 5000f;
 
     [Header("Unity Setup Fields")]
 
@@ -22,20 +14,28 @@ public abstract class Tower : MonoBehaviour
     [SerializeField] protected Transform firePoint;
     [SerializeField] protected GameObject radius;
     public GameObject onHitEffect;
-
+    
     public Tower towerScript;
     public GameObject tower;
-    public LayerMask towers;
-/*    public GameObject upgradeUI;*/
-    protected Transform target;
 
+    [Header("BaseStats")]
+
+    [SerializeField] protected float range = 15f;
+    [SerializeField] protected float fireRate = 1f;
+    [SerializeField] private float shotDamage = 5000f;
+    public float cost = 150f;
+    public float materialCost;
+    
 
     public float ShotDamage { get { return shotDamage; } set { shotDamage = value; } }
 
+    protected Transform target;
+    protected GameManager gM;
     protected Shot bullet;
 
     public abstract void TypeOfShot(EnemyController enemyTarget);
     public abstract void HitTarget(TowerHitEvent eventInfo);
+    public abstract void CheckLevels();
 
     public abstract void TowerLevel1();
     public abstract void TowerLevel2();
@@ -45,7 +45,7 @@ public abstract class Tower : MonoBehaviour
 
     private void Start()
     {
-        
+
     }
 
     private void OnDrawGizmosSelected()

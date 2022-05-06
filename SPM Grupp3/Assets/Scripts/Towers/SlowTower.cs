@@ -6,16 +6,29 @@ public class SlowTower : Tower
 {
     [SerializeField] private float slowProc = 0.7f;
     [SerializeField] private float slowRadius = 3f;
+
+    [Header("Amount To Upgrade")]
     [SerializeField] private float upgradeAmountSlowProc;
     [SerializeField] private float upgradeAmountSlowRadius;
-    private float fireCountdown = 0f;
-    /*    [SerializeField] private GameObject shot;
-        [SerializeField] private Transform firePoint;
-        [SerializeField] private GameObject radius;*/
-    public float SlowProc { get { return slowProc; } set { slowProc = value; } }
 
+    [Header("Upgrade Cost")]
+    [SerializeField] private float level1Cost;
+    [SerializeField] private float level2Cost;
+    [SerializeField] private float level3Cost;
+
+    [Header("Purchased Upgrades")]
+    [SerializeField] private bool level1UpgradePurchased = false;
+    [SerializeField] private bool level2UpgradePurchased = false;
+    [SerializeField] private bool level3UpgradePurchased = false;
+
+    private float fireCountdown = 0f;
     private bool singleTarget = true;
     private List<SlowTower> slowTowers = new List<SlowTower>();
+
+    public float SlowProc { get { return slowProc; } set { slowProc = value; } }
+
+    
+
     // Start is called before the first frame update
     void Start()
     {
@@ -71,7 +84,6 @@ public class SlowTower : Tower
 
     public override void TypeOfShot(EnemyController enemyTarget)
     {
-        print("Running? slow");
         enemyTarget.HitBySlow(SlowProc, slowRadius, singleTarget);
     }
     private void Shoot()
@@ -102,32 +114,55 @@ public class SlowTower : Tower
 
     public override void TowerLevel1()
     {
-        CheckAllPlacedTowers();
-        foreach (SlowTower cT in slowTowers)
+        if (gM.SpendResources(level1Cost,0f) && !level1UpgradePurchased)
         {
-            cT.singleTarget = false;
+            CheckAllPlacedTowers();
+            foreach (SlowTower sT in slowTowers)
+            {
+                sT.singleTarget = false;
+                sT.slowTowers.Clear();
+                sT.level1UpgradePurchased = true;
+            }
+            singleTarget = false;
+            slowTowers.Clear();
+            level1UpgradePurchased = true;
         }
-        singleTarget = false;
-        slowTowers.Clear();
+        
     }
     public override void TowerLevel2()
     {
-        CheckAllPlacedTowers();
-        foreach (SlowTower cT in slowTowers)
+        if (gM.SpendResources(level2Cost, 0f) && !level2UpgradePurchased && level1UpgradePurchased)
         {
-            cT.slowRadius += upgradeAmountSlowRadius;
+            CheckAllPlacedTowers();
+            foreach (SlowTower sT in slowTowers)
+            {
+                sT.slowRadius += upgradeAmountSlowRadius;
+                sT.slowTowers.Clear();
+                sT.level2UpgradePurchased = true;
+            }
+            slowRadius += upgradeAmountSlowRadius;
+            slowTowers.Clear();
+            level2UpgradePurchased = true;
         }
-        slowRadius += upgradeAmountSlowRadius;
-        slowTowers.Clear();
     }
     public override void TowerLevel3()
     {
-        CheckAllPlacedTowers();
-        foreach (SlowTower cT in slowTowers)
+        if (gM.SpendResources(level3Cost, 0f) && !level3UpgradePurchased && level2UpgradePurchased && level1UpgradePurchased)
         {
-            cT.slowProc -= upgradeAmountSlowProc;
+            CheckAllPlacedTowers();
+            foreach (SlowTower sT in slowTowers)
+            {
+                sT.slowProc -= upgradeAmountSlowProc;
+                sT.slowTowers.Clear();
+                sT.level3UpgradePurchased = true;
+            }
+            slowProc -= upgradeAmountSlowProc;
+            slowTowers.Clear();
+            level3UpgradePurchased = true;
         }
-        slowProc -= upgradeAmountSlowProc;
-        slowTowers.Clear();
+    }
+    public override void CheckLevels()
+    {
+
     }
 }

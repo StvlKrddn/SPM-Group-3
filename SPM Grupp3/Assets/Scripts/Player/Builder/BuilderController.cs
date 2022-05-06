@@ -37,14 +37,29 @@ public class BuilderController : MonoBehaviour
     {
         mainCamera = Camera.main;
 
-        canvas = mainCamera.transform.Find("Canvas");
-
-        InitializeInputSystem();
-
-        InitializeCursor();
+        canvas = mainCamera.transform.Find("CanvasV2");
 
         screenMiddle = new Vector2(Screen.width / 2, Screen.height / 2);
 
+        EventHandler.Instance.RegisterListener<EnterBuildModeEvent>(OnEnterBuildMode);
+    }
+    
+    private void OnEnterBuildMode(EnterBuildModeEvent eventInfo)
+    {
+        InitializeInputSystem(eventInfo.Player);
+        InitializeCursor();
+        InitializeVirtualMouse();
+        ResetPosition();
+    }
+
+    void InitializeInputSystem(GameObject player)
+    {
+        playerInput = player.GetComponent<PlayerInput>();
+        pointerAction = playerInput.actions["LeftStick"];
+    }
+
+    void InitializeVirtualMouse()
+    {
         if (virtualMouse == null)
         {
             virtualMouse = (Mouse)InputSystem.AddDevice("VirtualMouse");
@@ -62,18 +77,6 @@ public class BuilderController : MonoBehaviour
             Vector2 position = cursorTransform.anchoredPosition;
             InputState.Change(virtualMouse.position, position);
         }
-
-        EventHandler.Instance.RegisterListener<EnterBuildModeEvent>(OnEnterBuildMode);
-        EventHandler.Instance.RegisterListener<EnterTankModeEvent>(OnEnterTankMode);
-        EventHandler.Instance.RegisterListener<PlayerJoinedEvent>(OnPlayerJoined);
-
-        ResetPosition();
-    }
-
-    void InitializeInputSystem()
-    {
-        playerInput = transform.parent.GetComponent<PlayerInput>();
-        pointerAction = playerInput.actions["LeftStick"];
     }
 
     void InitializeCursor()
@@ -82,7 +85,9 @@ public class BuilderController : MonoBehaviour
         SetCursorColor(cursor);
         cursor.name = "Player " + (playerInput.playerIndex + 1) + " cursor";
         cursorTransform = cursor.GetComponent<RectTransform>();
+        cursorTransform.gameObject.SetActive(true);
     }
+    
 
     void SetCursorColor(GameObject cursor)
     {
@@ -117,6 +122,12 @@ public class BuilderController : MonoBehaviour
     {
         if (context.performed)
         {
+            BuildManager.instance.TowerToBuild = null;
+            Destroy(preTower);
+            Renderer selectionRenderer = _selection.GetComponent<Renderer>();
+            selectionRenderer.material.color = startColor;
+            ResetPosition();
+            cursorTransform.gameObject.SetActive(false);
             EventHandler.Instance.InvokeEvent(new PlayerSwitchEvent(
                 description: "Player switched mode",
                 playerContainer: transform.parent.gameObject
@@ -129,23 +140,6 @@ public class BuilderController : MonoBehaviour
         InputSystem.onAfterUpdate += UpdateVirtualMouse;
     }
 
-    private void OnEnterBuildMode(EnterBuildModeEvent eventInfo)
-    {
-        ResetPosition();
-        cursorTransform.gameObject.SetActive(true);
-    }
-
-    private void OnEnterTankMode(EnterTankModeEvent eventInfo)
-    {
-        ResetPosition();
-        cursorTransform.gameObject.SetActive(false);
-    }
-
-    private void OnPlayerJoined(PlayerJoinedEvent eventInfo)
-    {
-        InitializeInputSystem();
-        InitializeCursor();
-    }
 
     void OnDisable()
     {
@@ -250,8 +244,17 @@ public class BuilderController : MonoBehaviour
 
     void GhostTower(Transform selection, BuildManager buildManager)
     {
-        
-        GameObject tower = buildManager.TowerToBuild.transform.GetChild(1).gameObject;
+        int index = 1;
+        for (;  index < buildManager.TowerToBuild.transform.childCount; index++)
+        {
+            bool active = buildManager.TowerToBuild.transform.GetChild(index).gameObject.activeSelf;
+            if (active)
+            {
+                break;
+            }
+        }
+        GameObject tower = buildManager.TowerToBuild.transform.GetChild(index).gameObject;
+
         Transform placement = selection.GetChild(0).transform;
         Vector3 placeVec = placement.position;
         Vector3 towerPlace = new Vector3(placeVec.x, placeVec.y + 0.5f, placeVec.z);
@@ -303,7 +306,6 @@ public class BuilderController : MonoBehaviour
             {
                 Tower tower = towerHit.GetComponent<Tower>();
 
-                print("Amount of clicks: ");
 /*                if (tower.radius.activeInHierarchy)
                 {
                     tower.radius.SetActive(false);

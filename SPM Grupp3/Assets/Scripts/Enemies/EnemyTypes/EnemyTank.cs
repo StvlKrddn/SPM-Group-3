@@ -4,11 +4,16 @@ using UnityEngine;
 
 public class EnemyTank : EnemyController
 {
-	public int armor;
-
+	public float armor;
+	/*
 	public override void TakeDamage(float damage)
 	{
 		damage -= armor;
-		base.TakeDamage(damage);
+		Debug.Log(damage);
+		if (damage > 0)
+		{
+			base.TakeDamage(damage);
+		}
 	}
+	*/
 }
