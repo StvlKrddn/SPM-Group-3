@@ -4,17 +4,14 @@ using UnityEngine;
 
 public class Shot : MonoBehaviour
 {
-    private Transform target;
+    [Header("Speed of the bullet")]
     public float shotSpeed = 1f;
+
+    private Transform target;
     private Tower tower;
     private Vector3 direction;
     private float distanceThisFrame;
 
-
-    private void Awake()
-    {
-        
-    }
     public void Seek(Transform _target)
     {       
         target = _target;

@@ -4,15 +4,34 @@ using UnityEngine;
 
 public class CannonTower : Tower
 {
-    private float fireCountdown = 0.2f;
+    [Header("Amount To Upgrade")]
     [SerializeField] private float upgradeDamageAmount;
     [SerializeField] private float upgradeRangeAmount;
     [SerializeField] private float upgradeFireRateAmount;
+
+    [Header("DubbelShot")]
     [SerializeField] private bool shootTwice = false;
+
+    [Header("Upgrade Cost")]
+    [SerializeField] private float level1Cost;
+    [SerializeField] private float level2Cost;
+    [SerializeField] private float level3Cost;
+
+    [Header("Visual Upgrades")]
+    public Mesh cannonLevel2;
+
+    private float fireCountdown = 0f;
     private List<CannonTower> cannonTowers;
+
+    private TowerUpgradeCotroller tUC;
+
+
     // Start is called before the first frame update
     void Start()
     {
+
+        print("start");
+        CheckLevels();
         EventHandler.Instance.RegisterListener<TowerHitEvent>(HitTarget);
         InvokeRepeating("UpdateTarget", 0f, 0.5f);
         radius.transform.localScale = new Vector3(range * 2f, 0.01f, range * 2f);
@@ -46,7 +65,6 @@ public class CannonTower : Tower
 
     public override void HitTarget(TowerHitEvent eventInfo)
     {
-        print("Hello");
         if (target != null)
         {
             EnemyController enemyTarget = eventInfo.enemyHit.GetComponent<EnemyController>();
@@ -72,7 +90,7 @@ public class CannonTower : Tower
 
     public override void TypeOfShot(EnemyController enemyTarget)
     {
-        enemyTarget.TakeDamage(shotDamage);
+        enemyTarget.TakeDamage(ShotDamage);
     }
     protected void Shoot()
     {
@@ -100,32 +118,101 @@ public class CannonTower : Tower
 
     public override void TowerLevel1()
     {
-        CheckAllPlacedTowers();
-        foreach (CannonTower cT in cannonTowers)
+        gM = FindObjectOfType<GameManager>();
+        tUC = TowerUpgradeCotroller.instance;
+
+        if ((gM.SpendResources(level1Cost,0f) && tUC.GetUpgradesPurchased(this) == 0) || tUC.GetUpgradesPurchased(this) > 2)
         {
-            cT.fireRate += upgradeFireRateAmount;
-        }
-        fireRate += upgradeFireRateAmount;
-        cannonTowers.Clear();
+            CheckAllPlacedTowers();
+            tUC.IncreaseUpgradesPurchased(this);
+            foreach (CannonTower cT in cannonTowers)
+            {
+                FireRate(cT);         
+            }
+
+            cannonTowers.Clear();
+        }      
     }
+
+    void FireRate(CannonTower cT)
+    {
+        cT.fireRate += upgradeFireRateAmount;
+    }
+
     public override void TowerLevel2()
     {
-        CheckAllPlacedTowers();
-        foreach (CannonTower cT in cannonTowers)
+        gM = FindObjectOfType<GameManager>();
+        tUC = TowerUpgradeCotroller.instance;
+
+        if (gM.SpendResources(level2Cost, 0f) && tUC.GetUpgradesPurchased(this) == 1)
         {
-            cT.shotDamage = upgradeDamageAmount;
+
+            CheckAllPlacedTowers();
+            tUC.IncreaseUpgradesPurchased(this);
+            foreach (CannonTower cT in cannonTowers)
+            {
+
+                damageAndVisualUpgrade(cT);
+            }
+
+            cannonTowers.Clear();
         }
-        shotDamage = upgradeDamageAmount;
-        cannonTowers.Clear();
     }
+
+    void damageAndVisualUpgrade(CannonTower cT)
+    {
+        cT.ShotDamage = upgradeDamageAmount;
+
+        GameObject towerUpgradeVisual1 = cT.gameObject.transform.GetChild(1).gameObject;
+        GameObject towerUpgradeVisual2 = cT.gameObject.transform.GetChild(2).gameObject;
+
+        towerUpgradeVisual1.SetActive(false);
+        towerUpgradeVisual2.SetActive(true);
+    }
+
     public override void TowerLevel3()
     {
-        CheckAllPlacedTowers();
-        foreach (CannonTower cT in cannonTowers)
+        gM = FindObjectOfType<GameManager>();
+        tUC = TowerUpgradeCotroller.instance;
+
+        if (gM.SpendResources(level3Cost, 0f) && tUC.GetUpgradesPurchased(this) == 2)
         {
-            cT.shootTwice = true;
+            tUC.IncreaseUpgradesPurchased(this);
+            CheckAllPlacedTowers();
+            foreach (CannonTower cT in cannonTowers)
+            {
+                DubbleShotUpgrade(cT);
+            }
+            cannonTowers.Clear();
+        }     
+    }
+
+    void DubbleShotUpgrade(CannonTower cT)
+    {
+        cT.shootTwice = true;
+    }
+
+    public override void CheckLevels()
+    {
+        tUC = TowerUpgradeCotroller.instance;
+        print(tUC.GetUpgradesPurchased(this));
+
+        if (tUC.GetUpgradesPurchased(this) > 0)
+        {
+            print("running FR");
+            FireRate(this);
+            if (tUC.GetUpgradesPurchased(this) > 1)
+            {
+                print("running DMG Vis");
+                damageAndVisualUpgrade(this);
+                if (tUC.GetUpgradesPurchased(this) > 2)
+                {
+                    print("running DS");
+                    DubbleShotUpgrade(this);
+                }
+            }
         }
-        shootTwice = true;
-        cannonTowers.Clear();
+        
+        
     }
 }

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5940178821907547972}
   - component: {fileID: 5940178821907547971}
   - component: {fileID: 4427821086028280597}
-  - component: {fileID: 6276768553970136824}
+  - component: {fileID: 1951268493036743933}
   m_Layer: 7
   m_Name: EnemyTank
   m_TagString: Enemy
@@ -33,7 +33,7 @@ Transform:
   m_LocalScale: {x: 3, y: 5, z: 3}
   m_Children:
   - {fileID: 5940178823432169951}
-  - {fileID: 8025091232112598065}
+  - {fileID: 6629384526532772}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -112,15 +112,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 3
-  hp: 500
+  hp: 1200
   hitEffect: {fileID: 5202362185975563897, guid: afc452a4019ab8b47ac2ea888849a086, type: 3}
   damageBase: 10
   moneyDrop: 50
   materialDrop: 1
   material: {fileID: 2880112694638519676, guid: ad4ab04936b9afa45a48c743a72df55b, type: 3}
   spread: 0
-  armor: 10
---- !u!114 &6276768553970136824
+  armor: 50
+--- !u!114 &1951268493036743933
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -132,7 +132,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f2e4d9832fb14845b2f95ca7b6aeb21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 500
+  maxHealth: 1200
 --- !u!1 &5940178823432169950
 GameObject:
   m_ObjectHideFlags: 0
@@ -228,13 +228,17 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!1001 &1231735625483782316
+--- !u!1001 &9102150404623516729
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 5940178821907547974}
     m_Modifications:
+    - target: {fileID: 15003163187659497, guid: 6c76fb6c527c1db4d85a2e5af6aab512, type: 3}
+      propertyPath: updateSpeedSeconds
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 9099198633358382237, guid: 6c76fb6c527c1db4d85a2e5af6aab512, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -277,7 +281,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9099198633358382237, guid: 6c76fb6c527c1db4d85a2e5af6aab512, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.0025
+      value: 0.005
       objectReference: {fileID: 0}
     - target: {fileID: 9099198633358382237, guid: 6c76fb6c527c1db4d85a2e5af6aab512, type: 3}
       propertyPath: m_LocalScale.z
@@ -313,7 +317,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9099198633358382237, guid: 6c76fb6c527c1db4d85a2e5af6aab512, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -0.05
+      value: 0.42
       objectReference: {fileID: 0}
     - target: {fileID: 9099198633358382237, guid: 6c76fb6c527c1db4d85a2e5af6aab512, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -335,10 +339,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: HealthBar_Enemy
       objectReference: {fileID: 0}
+    - target: {fileID: 9099198633358382243, guid: 6c76fb6c527c1db4d85a2e5af6aab512, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6c76fb6c527c1db4d85a2e5af6aab512, type: 3}
---- !u!224 &8025091232112598065 stripped
+--- !u!224 &6629384526532772 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 9099198633358382237, guid: 6c76fb6c527c1db4d85a2e5af6aab512, type: 3}
-  m_PrefabInstance: {fileID: 1231735625483782316}
+  m_PrefabInstance: {fileID: 9102150404623516729}
   m_PrefabAsset: {fileID: 0}

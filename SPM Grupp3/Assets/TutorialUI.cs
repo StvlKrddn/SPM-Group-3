@@ -17,6 +17,7 @@ public class TutorialUI : MonoBehaviour
 
     private List<GameObject> listOfAllTiles = new List<GameObject>();
 
+   // public GameManager gM; 
 
     public WaveManager scriptToActivate;
     public GameObject uiToActivate;
@@ -24,6 +25,10 @@ public class TutorialUI : MonoBehaviour
     private bool firstEventActivated = false;
     private bool firstEventNotStarted = true;
 
+
+    private int whichWave = 0;
+
+    public GameObject FirstWaveActivation; 
     
 
     // Start is called before the first frame update
@@ -60,6 +65,11 @@ public class TutorialUI : MonoBehaviour
                 scriptToActivate.enabled = true;
                 uiToActivate.SetActive(true);
                 firstEventNotStarted = false;
+
+                EventHandler.Instance.InvokeEvent(new NewWaveEvent(
+        description: "New wave started",
+        currentWave: 0
+        ));
             }
         }
 
@@ -72,9 +82,32 @@ public class TutorialUI : MonoBehaviour
         
     }
 
+    public void waveEnded()
+    {
+        Debug.Log("waven slutade");
+        switch (whichWave)
+        {
+            case 0:
 
+                FirstWaveActivation.SetActive(true);
+                break;
+            case 1:
+
+
+                break;
+            case 2:
+
+
+                break;
+        }
+    }
     public void activateFirstEvent()
     {
-        firstEventActivated = true; 
+        firstEventActivated = true;
+
+
+
+
+
     }
 }

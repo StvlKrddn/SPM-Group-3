@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 using System;
+using UnityEngine.InputSystem; 
 
 public class GameManager : MonoBehaviour
 {
@@ -22,7 +23,7 @@ public class GameManager : MonoBehaviour
     [Header("Player")]
     [SerializeField] private PlayerMode startingMode;
 
-    private int currentWave = 0;
+    private int currentWave = -1;
     public float Money { get { return money; } set { money = value; } }
     public PlayerMode StartingMode { get { return startingMode; } }
 
@@ -34,8 +35,8 @@ public class GameManager : MonoBehaviour
     }
 
     void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.K))
+    {   
+        if(Gamepad.current != null && Gamepad.current.xButton.isPressed && spawnEnemies)
         {
             SpawnWave();
         }
