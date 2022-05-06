@@ -40,7 +40,6 @@ public class TowerUpgradeCotroller : MonoBehaviour
         {
             if (upgradeList[i].tower == t)
             {
-                print(upgradeList[i].upgradesPurchased);
                 return upgradeList[i].upgradesPurchased;
             }
         }

@@ -115,11 +115,11 @@ MonoBehaviour:
   hp: 500
   hitEffect: {fileID: 5202362185975563897, guid: afc452a4019ab8b47ac2ea888849a086, type: 3}
   damageBase: 10
-  moneyDrop: 50
+  moneyDrop: 75
   materialDrop: 1
   material: {fileID: 2880112694638519676, guid: ad4ab04936b9afa45a48c743a72df55b, type: 3}
   spread: 0
-  armor: 10
+  armor: 50
 --- !u!114 &1951268493036743933
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -338,6 +338,10 @@ PrefabInstance:
     - target: {fileID: 9099198633358382241, guid: 6c76fb6c527c1db4d85a2e5af6aab512, type: 3}
       propertyPath: m_Name
       value: HealthBar_Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 9099198633358382243, guid: 6c76fb6c527c1db4d85a2e5af6aab512, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6c76fb6c527c1db4d85a2e5af6aab512, type: 3}

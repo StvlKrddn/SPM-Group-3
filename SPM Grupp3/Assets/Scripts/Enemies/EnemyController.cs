@@ -22,7 +22,7 @@ public abstract class EnemyController : MonoBehaviour
     public bool spread = false;
     private float amountOfTicks;
     private float amountOfDps;
-    private bool dead;
+    private bool dead = false;
 
     // Start is called before the first frame update
 
@@ -97,7 +97,7 @@ public abstract class EnemyController : MonoBehaviour
         }
     }
 
-    private void EnemyDeath()
+    public void EnemyDeath()
     {
         gM.AddMoney(moneyDrop); // add money and spawn material
         if (materialDrop == true)

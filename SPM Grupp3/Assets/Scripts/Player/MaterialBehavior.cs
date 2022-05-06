@@ -39,7 +39,7 @@ public class MaterialBehavior : MonoBehaviour
 
     private void Throw()
     {
-        transform.position += transform.right * 20;
+        transform.position += transform.right * 15;
         transform.position += transform.up * 10;
     }
 
