@@ -29,7 +29,6 @@ public class CannonTower : Tower
     // Start is called before the first frame update
     void Start()
     {
-        print("start");
         CheckLevels();
         EventHandler.Instance.RegisterListener<TowerHitEvent>(HitTarget);
         InvokeRepeating("UpdateTarget", 0f, 0.5f);

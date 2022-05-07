@@ -34,34 +34,25 @@ public class BuilderController : MonoBehaviour
     private bool previousYState;
     private GameObject preTower;
     private bool clicked = false;
+    private GameObject buildMenu;
     private GameObject infoView;
     private GameObject medium;
 
     void Start()
     {
+        screenMiddle = new Vector2(Screen.width / 2, Screen.height / 2);
+
         mainCamera = Camera.main;
         canvas = mainCamera.transform.Find("CanvasV2");
-        infoView = GameObject.Find("InfoViews");
-        medium = GameObject.Find("Medium");
+        buildMenu = canvas.Find("Build_UI").gameObject;
+        infoView = buildMenu.transform.Find("InfoViews").gameObject;
+        medium = buildMenu.transform.Find("Medium").gameObject;
 
         InitializeInputSystem();
         InitializeCursor();
         InitializeVirtualMouse();
-        ResetPosition();
 
-        screenMiddle = new Vector2(Screen.width / 2, Screen.height / 2);
-
-        EventHandler.Instance.RegisterListener<EnterBuildModeEvent>(OnEnterBuildMode);
-    }
-    
-    private void OnEnterBuildMode(EnterBuildModeEvent eventInfo)
-    {
-        if (eventInfo.Player == gameObject)
-        {
-            print("Activating cursor");
-            ResetPosition();
-            cursorTransform.gameObject.SetActive(true);
-        }
+        ResetCursorPosition();
     }
 
     void InitializeInputSystem()
@@ -145,8 +136,6 @@ public class BuilderController : MonoBehaviour
         if (context.performed)
         {
             Deselect();
-            medium.SetActive(true);
-            
             for (int i = 0; i < infoView.transform.childCount; i++)
             {
                 infoView.transform.GetChild(i).gameObject.SetActive(false);
@@ -159,10 +148,7 @@ public class BuilderController : MonoBehaviour
         if (context.performed)
         {
             Deselect();
-            medium.SetActive(true);
-
-            ResetPosition();
-            cursorTransform.gameObject.SetActive(false);
+            ResetCursorPosition();
             EventHandler.Instance.InvokeEvent(new PlayerSwitchEvent(
                 description: "Player switched mode",
                 playerContainer: transform.parent.gameObject
@@ -173,23 +159,36 @@ public class BuilderController : MonoBehaviour
     private void Deselect()
     {
         BuildManager.instance.TowerToBuild = null;
-            Destroy(preTower);
-            if (_selection.GetComponent<Renderer>())
-            {
-                Renderer selectionRenderer = _selection.GetComponent<Renderer>();
-                selectionRenderer.material.color = startColor;
-            }
+        Destroy(preTower);
+        if (_selection != null)
+        {
+            Renderer selectionRenderer = _selection.GetComponent<Renderer>();
+            selectionRenderer.material.color = startColor;
+        }
+        medium.SetActive(true);
     }
 
     private void OnEnable()
     {
         InputSystem.onAfterUpdate += UpdateVirtualMouse;
+        if (cursorTransform != null)
+        {
+            print("Activating cursor");
+            ResetCursorPosition();
+            cursorTransform.gameObject.SetActive(true);
+        }
     }
 
 
     void OnDisable()
     {
         InputSystem.onAfterUpdate -= UpdateVirtualMouse;
+        if (cursorTransform != null)
+        {
+            print("Deactivating cursor");
+            ResetCursorPosition();
+            cursorTransform.gameObject.SetActive(false);
+        }
     }
 
     void OnDestroy()
@@ -200,7 +199,7 @@ public class BuilderController : MonoBehaviour
         }
     }
 
-    void ResetPosition()
+    void ResetCursorPosition()
     {
         InputState.Change(virtualMouse.position, screenMiddle);
         UpdateCursorImage(screenMiddle);
@@ -208,7 +207,7 @@ public class BuilderController : MonoBehaviour
 
     void UpdateVirtualMouse()
     {
-        if (virtualMouse == null || Gamepad.current == null)
+        if (virtualMouse == null)
         {
             return;
         }
