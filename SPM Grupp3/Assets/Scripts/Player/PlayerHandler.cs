@@ -6,17 +6,15 @@ using UnityEngine.InputSystem;
 public class PlayerHandler : MonoBehaviour
 {
     private PlayerMode currentMode;
-
-    GameObject canvas;
-    PlayerInput playerInput;
-    GameObject tankMode;
-    GameObject buildMode;
+    private GameObject canvas;
+    private PlayerInput playerInput;
+    private GameObject tankMode;
+    private GameObject buildMode;
 
     void Start()
     {
         canvas = Camera.main.transform.Find("Canvas").gameObject;
 
-        EventHandler.Instance.RegisterListener<PlayerSwitchEvent>(OnPlayerSwitchMode);
         currentMode = FindObjectOfType<GameManager>().StartingMode;
 
         playerInput = GetComponent<PlayerInput>();
@@ -39,51 +37,49 @@ public class PlayerHandler : MonoBehaviour
     void EnterTankMode()
     {
         // Disable Build
-            buildMode.SetActive(false);
+        buildMode.SetActive(false);
 
-            // Enable Tank
-            tankMode.SetActive(true);
+        // Enable Tank
+        tankMode.SetActive(true);
 
-            EventHandler.Instance.InvokeEvent(new EnterTankModeEvent(
-                description: "Player entered new mode",
-                playerContainer: gameObject
-                ));
+        EventHandler.Instance.InvokeEvent(new EnterTankModeEvent(
+            description: "Player entered new mode",
+            playerContainer: gameObject
+            ));
 
-            playerInput.SwitchCurrentActionMap("Tank");
+        playerInput.SwitchCurrentActionMap("Tank");
 
-            currentMode = PlayerMode.Tank;
+        currentMode = PlayerMode.Tank;
 
-            canvas.transform.GetChild(1).gameObject.SetActive(false);
+        canvas.transform.GetChild(1).gameObject.SetActive(false);
 
-            print("Entered tank mode");
+        print("Entered tank mode");
     }
 
     void EnterBuildMode()
     {
         // Disable Tank
-            tankMode.SetActive(false);
+        tankMode.SetActive(false);
 
-            // Enable Build
-            buildMode.SetActive(true);
+        // Enable Build
+        buildMode.SetActive(true);
 
-            EventHandler.Instance.InvokeEvent(new EnterBuildModeEvent(
-                description: "Player entered new mode",
-                player: gameObject
-                ));
+        EventHandler.Instance.InvokeEvent(new EnterBuildModeEvent(
+            description: "Player entered new mode",
+            player: gameObject
+            ));
 
-            playerInput.SwitchCurrentActionMap("Builder");
+        playerInput.SwitchCurrentActionMap("Builder");
 
-            canvas.transform.GetChild(1).gameObject.SetActive(true);
+        canvas.transform.GetChild(1).gameObject.SetActive(true);
 
-            currentMode = PlayerMode.Build;
+        currentMode = PlayerMode.Build;
 
-            print("Entered build mode");
+        print("Entered build mode");
     }
 
-    private void OnPlayerSwitchMode(PlayerSwitchEvent eventInfo)
+    public void SwitchMode()
     {
-        tankMode = eventInfo.PlayerContainer.transform.Find("TankMode").gameObject;
-        buildMode = eventInfo.PlayerContainer.transform.Find("BuilderMode").gameObject;
         // If in Tank mode, switch to Build
         if (currentMode == PlayerMode.Tank)
         {

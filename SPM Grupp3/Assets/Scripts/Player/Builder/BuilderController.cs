@@ -144,7 +144,10 @@ public class BuilderController : MonoBehaviour
 
     void OnDestroy()
     {
-        InputSystem.RemoveDevice(InputSystem.GetDevice("VirtualMouse"));
+        if (virtualMouse != null)
+        {
+            InputSystem.RemoveDevice(InputSystem.GetDevice("VirtualMouse"));
+        }
     }
 
     void ResetPosition()
