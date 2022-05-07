@@ -42,7 +42,7 @@ public class BuilderController : MonoBehaviour
     {
         mainCamera = Camera.main;
         canvas = mainCamera.transform.Find("CanvasV2");
-        infoView = GameObject.Find("InfoView");
+        infoView = GameObject.Find("InfoViews");
         medium = GameObject.Find("Medium");
 
         screenMiddle = new Vector2(Screen.width / 2, Screen.height / 2);
