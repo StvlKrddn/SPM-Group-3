@@ -12,6 +12,8 @@ public class WaveManager : MonoBehaviour
 
     public WaveInfo[] waves;
 
+    [Header("Wave Clear UI: ")]
+    [SerializeField] private GameObject waveClear;
     private int enemyCount;
 
     private int currentWave;
@@ -22,6 +24,7 @@ public class WaveManager : MonoBehaviour
     private void Awake()
     {
         victoryWave = waves.Length;
+        waveClear.SetActive(false);
     }
 
     private void Start()
@@ -31,6 +34,7 @@ public class WaveManager : MonoBehaviour
 
     public void StartWave(int currentWave)
     {
+        waveClear.SetActive(false);
         this.currentWave = currentWave;
         WaveConstructor(waves[currentWave]);
         StartCoroutine(SpawnCurrentWave());
@@ -81,6 +85,7 @@ public class WaveManager : MonoBehaviour
         if (enemyCount == 0)
         {
             currentWave++;
+            
             //Debug.Log(currentWave + " " + victoryWave);
             if (currentWave >= victoryWave)
             {
@@ -88,6 +93,8 @@ public class WaveManager : MonoBehaviour
             }
             else
             {
+                waveClear.SetActive(true);
+
                 FindObjectOfType<GameManager>().spawnEnemies = true;
             //    StartWave(currentWave); // Test row
                 Debug.Log("Wave " + currentWave + " cleared");
