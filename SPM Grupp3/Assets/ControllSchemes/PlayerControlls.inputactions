@@ -42,9 +42,9 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Accept",
+                    "name": "EnterGarage",
                     "type": "Button",
-                    "id": "ffeaff2e-a9d8-483e-9724-97b44ccc2b0a",
+                    "id": "e1ee2602-c6d1-4cdf-bae3-f0d1db4217e2",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -318,12 +318,12 @@
                 },
                 {
                     "name": "",
-                    "id": "ae66045a-c6b9-4b9b-8e0a-f5b0ee1ae28f",
-                    "path": "<Gamepad>/buttonSouth",
+                    "id": "457c2f96-81fe-40e4-b5bc-61ac91558367",
+                    "path": "<Gamepad>/buttonWest",
                     "interactions": "",
                     "processors": "",
-                    "groups": "Gamepad",
-                    "action": "Accept",
+                    "groups": "",
+                    "action": "EnterGarage",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -373,6 +373,15 @@
                     "name": "Accept",
                     "type": "Button",
                     "id": "9d746912-391b-47da-8fb2-f8d36bfe1317",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Back",
+                    "type": "Button",
+                    "id": "9c7f03c7-9945-45e2-9321-567afc48681e",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -467,11 +476,22 @@
                 {
                     "name": "",
                     "id": "9edc723f-ea4b-46f7-bf0c-c489547d95c3",
-                    "path": "<Gamepad>/buttonEast",
+                    "path": "<Gamepad>/buttonWest",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "EnterTank",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7bd37772-0b93-4c3b-a934-3adae1ece1ea",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Back",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -28,7 +28,6 @@ public class BuilderController : MonoBehaviour
     private Transform canvas;
     private PlayerInput playerInput;
     private InputAction pointerAction;
-    private InputAction enterTankAction;
     private Vector2 newPosition;
     private Vector2 screenMiddle;
     private bool previousMouseState;
@@ -45,6 +44,11 @@ public class BuilderController : MonoBehaviour
         infoView = GameObject.Find("InfoViews");
         medium = GameObject.Find("Medium");
 
+        InitializeInputSystem();
+        InitializeCursor();
+        InitializeVirtualMouse();
+        ResetPosition();
+
         screenMiddle = new Vector2(Screen.width / 2, Screen.height / 2);
 
         EventHandler.Instance.RegisterListener<EnterBuildModeEvent>(OnEnterBuildMode);
@@ -52,16 +56,27 @@ public class BuilderController : MonoBehaviour
     
     private void OnEnterBuildMode(EnterBuildModeEvent eventInfo)
     {
-        InitializeInputSystem(eventInfo.Player);
-        InitializeCursor();
-        InitializeVirtualMouse();
-        ResetPosition();
+        if (eventInfo.Player == gameObject)
+        {
+            print("Activating cursor");
+            ResetPosition();
+            cursorTransform.gameObject.SetActive(true);
+        }
     }
 
-    void InitializeInputSystem(GameObject player)
+    void InitializeInputSystem()
     {
-        playerInput = player.GetComponent<PlayerInput>();
+        playerInput = GetComponentInParent<PlayerInput>();
         pointerAction = playerInput.actions["LeftStick"];
+    }
+
+    void InitializeCursor()
+    {
+        GameObject cursor = Instantiate(cursorPrefab, canvas);
+        SetCursorColor(cursor);
+        cursor.name = "Player " + (playerInput.playerIndex + 1) + " cursor";
+        cursorTransform = cursor.GetComponent<RectTransform>();
+        cursorTransform.gameObject.SetActive(true);
     }
 
     void InitializeVirtualMouse()
@@ -84,16 +99,6 @@ public class BuilderController : MonoBehaviour
             InputState.Change(virtualMouse.position, position);
         }
     }
-
-    void InitializeCursor()
-    {
-        GameObject cursor = Instantiate(cursorPrefab, canvas);
-        SetCursorColor(cursor);
-        cursor.name = "Player " + (playerInput.playerIndex + 1) + " cursor";
-        cursorTransform = cursor.GetComponent<RectTransform>();
-        cursorTransform.gameObject.SetActive(true);
-    }
-    
 
     void SetCursorColor(GameObject cursor)
     {
@@ -135,16 +140,27 @@ public class BuilderController : MonoBehaviour
         previousYState = isPressed;
     }
 
+    public void BackAction (InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            Deselect();
+            medium.SetActive(true);
+            
+            for (int i = 0; i < infoView.transform.childCount; i++)
+            {
+                infoView.transform.GetChild(i).gameObject.SetActive(false);
+            }
+        }
+    }
+
     public void EnterTank(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
+            Deselect();
             medium.SetActive(true);
 
-            BuildManager.instance.TowerToBuild = null;
-            Destroy(preTower);
-            Renderer selectionRenderer = _selection.GetComponent<Renderer>();
-            selectionRenderer.material.color = startColor;
             ResetPosition();
             cursorTransform.gameObject.SetActive(false);
             EventHandler.Instance.InvokeEvent(new PlayerSwitchEvent(
@@ -152,6 +168,17 @@ public class BuilderController : MonoBehaviour
                 playerContainer: transform.parent.gameObject
             ));
         }
+    }
+
+    private void Deselect()
+    {
+        BuildManager.instance.TowerToBuild = null;
+            Destroy(preTower);
+            if (_selection.GetComponent<Renderer>())
+            {
+                Renderer selectionRenderer = _selection.GetComponent<Renderer>();
+                selectionRenderer.material.color = startColor;
+            }
     }
 
     private void OnEnable()
@@ -184,21 +211,6 @@ public class BuilderController : MonoBehaviour
         if (virtualMouse == null || Gamepad.current == null)
         {
             return;
-        }
-
-        //Denna borde antagligen flyttas
-        if (Gamepad.current.bButton.isPressed)
-        {
-            BuildManager.instance.TowerToBuild = null;
-            Destroy(preTower);
-            Renderer selectionRenderer = _selection.GetComponent<Renderer>();
-            selectionRenderer.material.color = startColor;
-            medium.SetActive(true);
-            
-            for (int i = 0; i < infoView.transform.childCount; i++)
-            {
-                infoView.transform.GetChild(i).gameObject.SetActive(false);
-            }
         }
 
         newPosition = MoveMouse();

@@ -9,10 +9,4 @@ public class CursorHandler : MonoBehaviour
     {
         
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

@@ -27,8 +27,7 @@ public class PlayerHandler : MonoBehaviour
         {
             EnterBuildMode();
         }
-
-        if (currentMode == PlayerMode.Tank)
+        else
         {
             EnterTankMode();
         }
@@ -43,15 +42,13 @@ public class PlayerHandler : MonoBehaviour
         tankMode.SetActive(true);
 
         EventHandler.Instance.InvokeEvent(new EnterTankModeEvent(
-            description: "Player entered new mode",
+            description: "Player entered tank mode",
             playerContainer: gameObject
             ));
 
         playerInput.SwitchCurrentActionMap("Tank");
 
         currentMode = PlayerMode.Tank;
-
-        canvas.transform.GetChild(1).gameObject.SetActive(false);
 
         print("Entered tank mode");
     }
@@ -65,13 +62,11 @@ public class PlayerHandler : MonoBehaviour
         buildMode.SetActive(true);
 
         EventHandler.Instance.InvokeEvent(new EnterBuildModeEvent(
-            description: "Player entered new mode",
+            description: "Player entered build mode",
             player: gameObject
             ));
 
         playerInput.SwitchCurrentActionMap("Builder");
-
-        canvas.transform.GetChild(1).gameObject.SetActive(true);
 
         currentMode = PlayerMode.Build;
 

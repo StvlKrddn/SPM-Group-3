@@ -51,6 +51,9 @@ MonoBehaviour:
   towerLayerMask:
     serializedVersion: 2
     m_Bits: 256
+  ghostTower:
+    serializedVersion: 2
+    m_Bits: 0
   hoverColor: {r: 0.3962264, g: 0.39024565, b: 0.39024565, a: 1}
   startColor: {r: 1, g: 1, b: 1, a: 0}
   towerPreview: {r: 1, g: 1, b: 1, a: 0.3529412}
@@ -131,10 +134,6 @@ MonoBehaviour:
     m_ActionName: Tank/Aim[/XInputControllerWindows/rightStick/up,/XInputControllerWindows/rightStick/down,/XInputControllerWindows/rightStick/left,/XInputControllerWindows/rightStick/right,/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: ffeaff2e-a9d8-483e-9724-97b44ccc2b0a
-    m_ActionName: Tank/Accept[/XInputControllerWindows/buttonSouth]
-  - m_PersistentCalls:
-      m_Calls: []
     m_ActionId: 03b5c188-6ac2-4613-819c-2c5eb0dbd747
     m_ActionName: Builder/Scroll
   - m_PersistentCalls:
@@ -197,6 +196,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 90a81b1a-e697-41b8-ac23-908ec6c17bca
     m_ActionName: Builder/EnterTank[/DualShock4GamepadHID/buttonWest,/DualShock4GamepadHID1/buttonWest]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8666166063914807923, guid: 67c7f518bfe77d84f92c226ba90ee0d2, type: 3}
+        m_TargetAssemblyTypeName: BuilderController, Assembly-CSharp
+        m_MethodName: BackAction
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 9c7f03c7-9945-45e2-9321-567afc48681e
+    m_ActionName: Builder/Back[/DualShock4GamepadHID/buttonEast,/DualShock4GamepadHID1/buttonEast]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Gamepad
   m_DefaultActionMap: Tank

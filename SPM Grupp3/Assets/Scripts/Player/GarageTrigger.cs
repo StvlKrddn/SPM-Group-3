@@ -10,15 +10,15 @@ public class GarageTrigger : MonoBehaviour
     
     private void OnTriggerEnter(Collider other)
     {
-        print("Enter Garage? (Press A)");
+        print("Enter Garage? (Press X)");
     }
 
     private void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("Tank"))
         {
-            TankState player = other.GetComponent<TankState>();
-            acceptAction = player.PlayerInput.actions["Accept"];
+            PlayerInput playerInput = other.GetComponentInParent<PlayerInput>();
+            acceptAction = playerInput.actions["EnterGarage"];
 
             if (acceptAction.IsPressed())
             {

@@ -101,7 +101,7 @@ public class TankState : MonoBehaviour
 
     void FindGarage()
     {
-        garage = GameObject.Find("Garage_low Variant").transform;
+        garage = GameObject.Find("Garage").transform;
         spawnPoint = garage.Find("PlayerSpawn");
         transform.position = spawnPoint.position;
     }

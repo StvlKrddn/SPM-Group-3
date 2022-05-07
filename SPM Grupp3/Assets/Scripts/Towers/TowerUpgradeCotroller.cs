@@ -21,7 +21,7 @@ public class TowerUpgradeCotroller : MonoBehaviour
     public static TowerUpgradeCotroller instance;
     public Tower[] towerTypes;
     public List<UpgradesPurchased> upgradeList = new List<UpgradesPurchased>();
-    public GameObject[] upgradeUIs;
+    public GameObject[] upgradeUIElements;
     private GameObject uiGameobject;
     [SerializeField] private GameObject buildMenuUI;
 
@@ -36,7 +36,7 @@ public class TowerUpgradeCotroller : MonoBehaviour
 
         for (int i = 0; i < towerTypes.Length; i++)
         {
-            UpgradesPurchased U = new UpgradesPurchased(towerTypes[i], 0, upgradeUIs[i]);
+            UpgradesPurchased U = new UpgradesPurchased(towerTypes[i], 0, upgradeUIElements[i]);
             upgradeList.Add(U);
         }           
     }

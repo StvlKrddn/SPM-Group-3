@@ -11903,6 +11903,7 @@ GameObject:
   - component: {fileID: 5574963424639874962}
   - component: {fileID: 5574963424639874961}
   - component: {fileID: 5574963424639874967}
+  - component: {fileID: 2570363305664917266}
   - component: {fileID: 5574963424639874960}
   m_Layer: 0
   m_Name: GameManager
@@ -12050,6 +12051,18 @@ MonoBehaviour:
       - enemyPrefab: {fileID: 5940178821907547970, guid: 3da10c386b23dcd4fb83590a6b67370e, type: 3}
         amount: 5
   currentWaveEnemies: []
+--- !u!114 &2570363305664917266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5574963424639874963}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f55e4939cbcf7fe4a8140b08f908ec3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &5574963424639874960
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12057,7 +12070,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5574963424639874963}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 621567455fd1c4ceb811cc8a00b6a1a5, type: 3}
   m_Name: 
@@ -12084,7 +12097,7 @@ MonoBehaviour:
       m_SingletonActionBindings: []
       m_Flags: 0
     m_Reference: {fileID: 0}
-  m_PlayerPrefab: {fileID: 7281666120820181771, guid: 241e5146e51d1324db7d8d626fdc52c7, type: 3}
+  m_PlayerPrefab: {fileID: 1555352807768005138, guid: 6364959b4060537488578e889cf8fbea, type: 3}
   m_SplitScreen: 0
   m_MaintainAspectRatioInSplitScreen: 0
   m_FixedNumberOfSplitScreens: -1

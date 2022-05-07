@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(PlayerInputManager))]
 public class PlayerManager : MonoBehaviour
 {
+    [SerializeField] private GameObject cursorPrefab;
     private PlayerInputManager playerManager;
     private GameObject playerPrefab;
 
@@ -14,11 +15,19 @@ public class PlayerManager : MonoBehaviour
         EventHandler.Instance.RegisterListener<PlayerSwitchEvent>(SwitchPlayerMode);
         playerManager = GetComponent<PlayerInputManager>();
         playerPrefab = playerManager.playerPrefab;
+        if (playerManager.playerCount == 0)
+        {
+            Instantiate(playerPrefab);
+        }
     }
 
     public void OnPlayerJoined(PlayerInput newPlayer)
     {
+        print("New player joined the game");
+        
         GameObject player = newPlayer.gameObject;
+
+        Instantiate(cursorPrefab, Camera.main.transform.Find("CanvasV2"));
 
         EventHandler.Instance.InvokeEvent(new PlayerJoinedEvent(
             description: "A player joined the game",
