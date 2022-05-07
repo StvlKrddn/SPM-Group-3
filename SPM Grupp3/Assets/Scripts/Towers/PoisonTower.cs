@@ -110,6 +110,20 @@ public class PoisonTower : Tower
         }
     }
 
+    public override void ShowUpgradeUI(GameObject medium, GameObject infoView)
+    {    
+        if (infoView.transform.GetChild(2).gameObject.activeInHierarchy)
+        {
+            infoView.transform.GetChild(2).gameObject.SetActive(false);
+            medium.SetActive(true);
+        }
+        else
+        {
+            infoView.transform.GetChild(2).gameObject.SetActive(true);
+            medium.SetActive(false);
+        }
+    }
+
     void CheckAllPlacedTowers()
     {
         foreach (GameObject gO in BuildManager.instance.towersPlaced)
@@ -126,6 +140,7 @@ public class PoisonTower : Tower
         if (gM.SpendResources(level1Cost, 0f) && !level1UpgradePurchased)
         {
             CheckAllPlacedTowers();
+
             foreach (PoisonTower pT in poisonTowers)
             {
                 pT.poisonTicks += upgradeAmountPoisonTicks;

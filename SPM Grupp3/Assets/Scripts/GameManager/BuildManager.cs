@@ -31,8 +31,9 @@ public class BuildManager : MonoBehaviour
     [SerializeField] private GameObject towerBase;
 
 
-    public List<GameObject> towersPlaced = new List<GameObject>(); 
+    public List<GameObject> towersPlaced = new List<GameObject>();
 
+    public TowerPlacement TowerPlacement { get { return towerPlacement; } set { towerPlacement = value; } }
     public GameObject TowerToBuild { get { return towerToBuild; } set { towerToBuild = value; } }
     public GameObject ClickedArea { get { return clickedArea; } set { clickedArea = value; } }
 
@@ -57,6 +58,15 @@ public class BuildManager : MonoBehaviour
         {
             return;
         }
+
+        foreach (GameObject towerPlaced in towersPlaced)
+        {
+            if (towerPlaced == clickedArea)
+            {
+                return;
+            }
+        }
+
         if (gM.SpendResources(tower.cost, tower.materialCost))
         {
             towerPlacement = clickedArea.GetComponent<TowerPlacement>();
@@ -64,8 +74,6 @@ public class BuildManager : MonoBehaviour
             placedTower = Instantiate(TowerToBuild, ClickedArea.transform.GetChild(0).transform.position, ClickedArea.transform.GetChild(0).transform.rotation);
 /*            placedTower.GetComponent<Tower>().CheckLevels();*/
             towersPlaced.Add(placedTower);
-            towerPlacement.SetDoNotHover();
-            towerPlacement.SetStartColor();
             ClickedArea = null;
             return;
         }
