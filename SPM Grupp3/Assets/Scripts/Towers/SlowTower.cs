@@ -101,6 +101,20 @@ public class SlowTower : Tower
         }
     }
 
+    public override void ShowUpgradeUI(GameObject medium, GameObject infoView)
+    {
+        if (infoView.transform.GetChild(3).gameObject.activeInHierarchy)
+        {
+            infoView.transform.GetChild(3).gameObject.SetActive(false);
+            medium.SetActive(true);
+        }
+        else
+        {
+            infoView.transform.GetChild(3).gameObject.SetActive(true);
+            medium.SetActive(false);
+        }
+    }
+
     void CheckAllPlacedTowers()
     {
         foreach (GameObject gO in BuildManager.instance.towersPlaced)

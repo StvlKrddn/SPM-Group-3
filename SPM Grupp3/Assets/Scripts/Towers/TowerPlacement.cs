@@ -36,7 +36,7 @@ public class TowerPlacement : MonoBehaviour
 
     }
 
-    void SetAreaClicked()
+    public void SetAreaClicked()
     {
         if (buildManager.ClickedArea != null)
         {

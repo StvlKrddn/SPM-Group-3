@@ -21,7 +21,7 @@ public class CannonTower : Tower
     public Mesh cannonLevel2;
 
     private float fireCountdown = 0f;
-    private List<CannonTower> cannonTowers;
+    private List<CannonTower> cannonTowers = new List<CannonTower>();
 
     private TowerUpgradeCotroller tUC;
 
@@ -29,7 +29,6 @@ public class CannonTower : Tower
     // Start is called before the first frame update
     void Start()
     {
-
         print("start");
         CheckLevels();
         EventHandler.Instance.RegisterListener<TowerHitEvent>(HitTarget);
@@ -102,6 +101,20 @@ public class CannonTower : Tower
         if (bullet != null)
         {
             bullet.Seek(target);
+        }
+    }
+
+    public override void ShowUpgradeUI(GameObject medium, GameObject infoView)
+    {
+        if (infoView.transform.GetChild(0).gameObject.activeInHierarchy)
+        {
+            infoView.transform.GetChild(0).gameObject.SetActive(false);
+            medium.SetActive(true);
+        }
+        else
+        {
+            infoView.transform.GetChild(0).gameObject.SetActive(true);
+            medium.SetActive(false);
         }
     }
 

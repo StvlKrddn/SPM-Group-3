@@ -17,15 +17,16 @@ public abstract class Tower : MonoBehaviour
     
     public Tower towerScript;
     public GameObject tower;
+    public GameObject upgradeUI;
+    public GameObject buildUI;
 
     [Header("BaseStats")]
 
-    [SerializeField] protected float range = 15f;
+    public float range = 15f;
     [SerializeField] protected float fireRate = 1f;
     [SerializeField] private float shotDamage = 5000f;
     public float cost = 150f;
     public float materialCost;
-    
 
     public float ShotDamage { get { return shotDamage; } set { shotDamage = value; } }
 
@@ -35,6 +36,7 @@ public abstract class Tower : MonoBehaviour
 
     public abstract void TypeOfShot(EnemyController enemyTarget);
     public abstract void HitTarget(TowerHitEvent eventInfo);
+    public abstract void ShowUpgradeUI(GameObject medium, GameObject infoView);
     public abstract void CheckLevels();
 
     public abstract void TowerLevel1();
