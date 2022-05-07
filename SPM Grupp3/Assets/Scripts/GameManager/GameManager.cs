@@ -16,8 +16,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] public bool spawnEnemies = true;
 
     [Header("UI Elements: ")]
-    [SerializeField] private Text moneyUI;
-    [SerializeField] private Text materialUI;
+    [SerializeField] private Text moneyCounterUI;
+    [SerializeField] private Text moneyChangerUI;
+    [SerializeField] private Text materialCounterUI;
+    [SerializeField] private Text materialChangerUI;
     [SerializeField] private Slider livesSlider;
 
     [Header("Player")]
@@ -31,6 +33,11 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         livesSlider.maxValue = baseHealth;
+        materialChangerUI.text = "0";
+        materialChangerUI.color = Color.gray;
+
+        moneyChangerUI.text = "0";
+        moneyChangerUI.color = Color.gray;
         UpdateResourcesUI();
     }
 
@@ -70,18 +77,24 @@ public class GameManager : MonoBehaviour
 
     private void UpdateResourcesUI()
     {
-        moneyUI.text = ": " + money;
-        materialUI.text = ": " + material;
+        moneyCounterUI.text = ": " + money;
+        materialCounterUI.text = ": " + material;
     }
 
     public void AddMoney(float addMoney)
     {
+        moneyChangerUI.color = Color.green;
+        moneyChangerUI.text = "+" + addMoney;
+
         money += addMoney;
         UpdateResourcesUI();
     }
 
     public void AddMaterial(float addMaterial)
     {
+        materialChangerUI.color = Color.green;
+        materialChangerUI.text = "+" + addMaterial;
+
         material += addMaterial;
         UpdateResourcesUI();
     }
@@ -91,7 +104,22 @@ public class GameManager : MonoBehaviour
         if (moneySpent <= money && materialSpent <= material)
         {
             money -= moneySpent;
+            moneyChangerUI.color = Color.red;
+            moneyChangerUI.text = "-" + moneySpent;
+
             material -= materialSpent;
+            if (materialSpent > 0) 
+            {
+                materialChangerUI.color = Color.red;
+                materialChangerUI.text = "-" + materialSpent;
+            }
+            else
+            {
+                materialChangerUI.color = Color.gray;
+                materialChangerUI.text = "0";
+            }
+                
+
             UpdateResourcesUI();
             return true;
         }
