@@ -108,6 +108,21 @@ public class MissileTower : Tower
             bullet.Seek(target);
         }
     }
+    public override void ShowUpgradeUI(GameObject medium, GameObject infoView)
+    {
+        if (infoView.transform.GetChild(1).gameObject.activeInHierarchy)
+        {
+            infoView.transform.GetChild(1).gameObject.SetActive(false);
+
+            medium.SetActive(true);
+        }
+        else
+        {
+            infoView.transform.GetChild(1).gameObject.SetActive(true);
+            medium.SetActive(false);
+        }
+    }
+
     void CheckAllPlacedTowers()
     {
         foreach (GameObject gO in BuildManager.instance.towersPlaced)
