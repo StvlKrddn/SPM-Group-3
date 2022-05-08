@@ -103,14 +103,14 @@ public class SlowTower : Tower
 
     public override void ShowUpgradeUI(GameObject medium, GameObject infoView)
     {
-        if (infoView.transform.GetChild(3).gameObject.activeInHierarchy)
+        if (infoView.transform.GetChild(1).gameObject.activeInHierarchy)
         {
-            infoView.transform.GetChild(3).gameObject.SetActive(false);
+            infoView.transform.GetChild(1).gameObject.SetActive(false);
             medium.SetActive(true);
         }
         else
         {
-            infoView.transform.GetChild(3).gameObject.SetActive(true);
+            infoView.transform.GetChild(1).gameObject.SetActive(true);
             medium.SetActive(false);
         }
     }

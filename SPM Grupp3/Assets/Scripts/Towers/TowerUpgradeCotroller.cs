@@ -18,10 +18,7 @@ public class TowerUpgradeCotroller : MonoBehaviour
 {
     public static TowerUpgradeCotroller instance;
     public List<UpgradesPurchased> upgradeList = new List<UpgradesPurchased>();
-    public GameObject[] upgradeUIElements;
-    private GameObject uiGameobject;
-    [SerializeField] private GameObject buildMenuUI;
-    public GameObject[] upgradeUIs;
+
 
     // Start is called before the first frame update
     void Start()
@@ -32,11 +29,11 @@ public class TowerUpgradeCotroller : MonoBehaviour
         }
         instance = this;
 
-        for (int i = 0; i < towerTypes.Length; i++)
+/*        for (int i = 0; i < upgradeList.Count; i++)
         {
-            UpgradesPurchased U = new UpgradesPurchased(towerTypes[i], 0, upgradeUIElements[i]);
+            UpgradesPurchased U = new UpgradesPurchased(towerTypes[i], 0);
             upgradeList.Add(U);
-        }           
+        } */          
     }
 
     public void PlaceTowerInUpgradeList(Tower t)

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Rotate : MonoBehaviour
 {
-    [SerializeField] private float start = 90f;
+    [SerializeField] private float start = 0f;
     [SerializeField] private float from;
     [SerializeField] private float to;
     // Start is called before the first frame update
@@ -20,9 +20,9 @@ public class Rotate : MonoBehaviour
 
         Quaternion rot = Quaternion.Euler(0f, start, 0f);
         gameObject.transform.rotation = rot;
-        if (start == 270f)
+        if (start == 360)
         {
-            start = 90f;
+            start = 0;
         }
     }
 }
