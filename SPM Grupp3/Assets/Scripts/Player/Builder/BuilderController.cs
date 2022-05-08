@@ -45,11 +45,7 @@ public class BuilderController : MonoBehaviour
 
         mainCamera = Camera.main;
         canvas = mainCamera.transform.Find("Canvas");
-<<<<<<< HEAD
-        buildMenu = canvas.Find("BuildMenu").gameObject;
-=======
         buildMenu = canvas.Find("Build_UI").gameObject;
->>>>>>> main
         infoView = buildMenu.transform.Find("InfoViews").gameObject;
         towerPanel = buildMenu.transform.Find("TowerPanel").gameObject;
 

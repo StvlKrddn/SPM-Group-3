@@ -18,14 +18,7 @@ public class TowerUpgradeCotroller : MonoBehaviour
 {
     public static TowerUpgradeCotroller instance;
     public List<UpgradesPurchased> upgradeList = new List<UpgradesPurchased>();
-<<<<<<< HEAD
-    public GameObject[] upgradeUIElements;
-    private GameObject uiGameobject;
-    [SerializeField] private GameObject buildMenuUI;
-    public GameObject[] upgradeUIs;
-=======
 
->>>>>>> main
 
     // Start is called before the first frame update
     void Start()
