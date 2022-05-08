@@ -30,9 +30,6 @@ public class BuildManager : MonoBehaviour
     private Tower tower;
     [SerializeField] private GameObject towerBase;
 
-
-
-
     public TowerPlacement TowerPlacement { get { return towerPlacement; } set { towerPlacement = value; } }
     public GameObject TowerToBuild { get { return towerToBuild; } set { towerToBuild = value; } }
     public GameObject ClickedArea { get { return clickedArea; } set { clickedArea = value; } }

@@ -17,19 +17,11 @@ public class ButtonMethodSelection : MonoBehaviour
     public GameObject canvasToDisplay;
     public GameObject canvasToDeactivate;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     void Awake()
     {
         if (whichShopMethod == null)
             whichShopMethod = new UnityEvent();
     }
-
-    
 
     public void OnClick()
     {
@@ -45,7 +37,6 @@ public class ButtonMethodSelection : MonoBehaviour
         }
         
     }
-
 
     // Update is called once per frame
     void Update()

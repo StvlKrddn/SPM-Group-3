@@ -21,9 +21,9 @@ public class BuilderController : MonoBehaviour
     [SerializeField] private Color hoverColor;
     [SerializeField] private Color startColor;
     [SerializeField] private Color towerPreview;
-    [SerializeField] private BuildManager buildManager;
-    private Transform _selection;
 
+    private Transform _selection;
+    private BuildManager buildManager;
     private Camera mainCamera;
     private Mouse virtualMouse;
     private RectTransform cursorTransform;
@@ -42,13 +42,15 @@ public class BuilderController : MonoBehaviour
 
     void Start()
     {
-        //screenMiddle = new Vector2(Screen.width / 2, Screen.height / 2);
+        screenMiddle = new Vector2(Screen.width / 2, Screen.height / 2);
 
         mainCamera = Camera.main;
         canvas = mainCamera.transform.Find("Canvas");
-        buildMenu = canvas.Find("BuildPanel").gameObject;
+        buildMenu = canvas.Find("Build_UI").gameObject;
         infoView = buildMenu.transform.Find("InfoViews").gameObject;
         towerPanel = buildMenu.transform.Find("TowerPanel").gameObject;
+        buildManager = GetComponentInParent<BuildManager>();
+
 
         InitializeInputSystem();
         InitializeCursor();
@@ -107,21 +109,14 @@ public class BuilderController : MonoBehaviour
         InputState.Change(virtualMouse, mouseState);
         if (isPressed)
         {
-            if (!clicked)
-            {
-                ClickedPlacement();
-                ClickedTower();
-                clicked = true;
-                Invoke(nameof(ClickDelay), 0.1f);
-            }
-
+            ClickedPlacement();
+            ClickedTower();
+            EventHandler.Instance.InvokeEvent(new UIClickedEvent(
+                description: "Accept Button clicked",
+                clicker: transform.parent.gameObject
+            ));
         }
         previousMouseState = isPressed;
-    }
-    
-    private void ClickDelay()
-    {
-        clicked = false;
     }
 
     public void InfoAction (InputAction.CallbackContext context)
@@ -130,6 +125,13 @@ public class BuilderController : MonoBehaviour
         virtualMouse.CopyState(out MouseState mouseState);
         mouseState.WithButton(MouseButton.Left, isPressed);
         InputState.Change(virtualMouse, mouseState);
+        if (isPressed)
+        {
+            EventHandler.Instance.InvokeEvent(new UIClickedEvent(
+                description: "Info Button clicked",
+                clicker: transform.parent.gameObject
+            ));
+        }
         previousYState = isPressed;
     }
 
@@ -203,8 +205,8 @@ public class BuilderController : MonoBehaviour
 
     void ResetCursorPosition()
     {
-        InputState.Change(virtualMouse.position, canvas.position);
-        UpdateCursorImage(canvas.position);
+        InputState.Change(virtualMouse.position, screenMiddle);
+        UpdateCursorImage(screenMiddle);
     }
 
     void UpdateVirtualMouse()
