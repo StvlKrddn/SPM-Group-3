@@ -42,9 +42,14 @@ public class BuilderController : MonoBehaviour
     {
         screenMiddle = new Vector2(Screen.width / 2, Screen.height / 2);
 
+
         mainCamera = Camera.main;
         canvas = mainCamera.transform.Find("Canvas");
+<<<<<<< HEAD
         buildMenu = canvas.Find("BuildMenu").gameObject;
+=======
+        buildMenu = canvas.Find("Build_UI").gameObject;
+>>>>>>> main
         infoView = buildMenu.transform.Find("InfoViews").gameObject;
         towerPanel = buildMenu.transform.Find("TowerPanel").gameObject;
 
@@ -176,6 +181,7 @@ public class BuilderController : MonoBehaviour
             print("Activating cursor");
             ResetCursorPosition();
             cursorTransform.gameObject.SetActive(true);
+            towerPanel.SetActive(true);
         }
     }
 
@@ -188,6 +194,7 @@ public class BuilderController : MonoBehaviour
             print("Deactivating cursor");
             ResetCursorPosition();
             cursorTransform.gameObject.SetActive(false);
+            towerPanel.SetActive(false);
         }
     }
 
