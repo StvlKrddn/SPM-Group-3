@@ -7,23 +7,21 @@ public class UpgradesPurchased
 {
     public Tower tower;
     public int upgradesPurchased;
-    public GameObject upgradeUIGameObject;
 
-    public UpgradesPurchased(Tower t, int uP, GameObject uUIGO)
+    public UpgradesPurchased(Tower t, int uP)
     {
         tower = t;
         upgradesPurchased = uP;
-        upgradeUIGameObject = uUIGO;
     }
 }
 public class TowerUpgradeCotroller : MonoBehaviour
 {
     public static TowerUpgradeCotroller instance;
-    public Tower[] towerTypes;
     public List<UpgradesPurchased> upgradeList = new List<UpgradesPurchased>();
     public GameObject[] upgradeUIElements;
     private GameObject uiGameobject;
     [SerializeField] private GameObject buildMenuUI;
+    public GameObject[] upgradeUIs;
 
     // Start is called before the first frame update
     void Start()
@@ -41,17 +39,10 @@ public class TowerUpgradeCotroller : MonoBehaviour
         }           
     }
 
-    public GameObject GetUpgradesUI(Tower t)
+    public void PlaceTowerInUpgradeList(Tower t)
     {
-        for (int i = 0; i < upgradeList.Count; i++)
-        {
-            if (upgradeList[i].tower == t)
-            {
-                print(upgradeList[i].upgradeUIGameObject);
-                return upgradeList[i].upgradeUIGameObject;
-            }
-        }
-        return null;
+        UpgradesPurchased U = new UpgradesPurchased(t, 0);
+        upgradeList.Add(U);
     }
 
     public int GetUpgradesPurchased(Tower t)
@@ -66,27 +57,15 @@ public class TowerUpgradeCotroller : MonoBehaviour
         return 0;
     }
     public void IncreaseUpgradesPurchased(Tower t)
-    {
-        
+    {       
         for (int i = 0; i < upgradeList.Count; i++)
         {
             if (upgradeList[i].tower == t)
             {
                 upgradeList[i].upgradesPurchased++;
+                print(upgradeList[i].upgradesPurchased);
             }
         }
-    }
-
-    public void ShowUpgradeUI(Tower t)
-    {
-        if (uiGameobject != null)
-        {
-            uiGameobject.SetActive(false);
-        }
-        uiGameobject = GetUpgradesUI(t);
-
-        uiGameobject.SetActive(true);
-        buildMenuUI.SetActive(false);
     }
 
     // Update is called once per frame

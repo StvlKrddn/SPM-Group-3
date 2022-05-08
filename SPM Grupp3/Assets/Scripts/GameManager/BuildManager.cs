@@ -75,6 +75,9 @@ public class BuildManager : MonoBehaviour
 /*            placedTower.GetComponent<Tower>().CheckLevels();*/
             towersPlaced.Add(placedTower);
             ClickedArea = null;
+
+            TowerUpgradeCotroller.instance.PlaceTowerInUpgradeList(placedTower.GetComponent<Tower>());
+
             return;
         }
         print("Get away you are too poor!");
