@@ -40,8 +40,7 @@ public class BuilderController : MonoBehaviour
 
     void Start()
     {
-        screenMiddle = new Vector2(Screen.width / 2, Screen.height / 2);
-
+        //screenMiddle = new Vector2(Screen.width / 2, Screen.height / 2);
 
         mainCamera = Camera.main;
         canvas = mainCamera.transform.Find("Canvas");
@@ -64,7 +63,7 @@ public class BuilderController : MonoBehaviour
 
     void InitializeCursor()
     {
-        GameObject cursor = Instantiate(cursorPrefab, canvas);
+        GameObject cursor = Instantiate(cursorPrefab, canvas.position, canvas.transform.rotation, canvas);
         SetCursorColor(cursor);
         cursor.name = "Player " + (playerInput.playerIndex + 1) + " cursor";
         cursorTransform = cursor.GetComponent<RectTransform>();
@@ -174,7 +173,6 @@ public class BuilderController : MonoBehaviour
         InputSystem.onAfterUpdate += UpdateVirtualMouse;
         if (cursorTransform != null)
         {
-            print("Activating cursor");
             ResetCursorPosition();
             cursorTransform.gameObject.SetActive(true);
             towerPanel.SetActive(true);
@@ -187,7 +185,6 @@ public class BuilderController : MonoBehaviour
         InputSystem.onAfterUpdate -= UpdateVirtualMouse;
         if (cursorTransform != null)
         {
-            print("Deactivating cursor");
             ResetCursorPosition();
             cursorTransform.gameObject.SetActive(false);
             towerPanel.SetActive(false);
@@ -204,8 +201,8 @@ public class BuilderController : MonoBehaviour
 
     void ResetCursorPosition()
     {
-        InputState.Change(virtualMouse.position, screenMiddle);
-        UpdateCursorImage(screenMiddle);
+        InputState.Change(virtualMouse.position, canvas.position);
+        UpdateCursorImage(canvas.position);
     }
 
     void UpdateVirtualMouse()
