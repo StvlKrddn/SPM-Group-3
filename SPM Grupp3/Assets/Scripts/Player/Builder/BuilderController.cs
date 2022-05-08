@@ -49,8 +49,8 @@ public class BuilderController : MonoBehaviour
         buildMenu = canvas.Find("Build_UI").gameObject;
         infoView = buildMenu.transform.Find("InfoViews").gameObject;
         towerPanel = buildMenu.transform.Find("TowerPanel").gameObject;
-        buildManager = GetComponentInParent<BuildManager>();
 
+        buildManager = GetComponentInParent<BuildManager>();
 
         InitializeInputSystem();
         InitializeCursor();
@@ -112,7 +112,7 @@ public class BuilderController : MonoBehaviour
             ClickedPlacement();
             ClickedTower();
             EventHandler.Instance.InvokeEvent(new UIClickedEvent(
-                description: "Accept Button clicked",
+                description: "Accept button clicked",
                 clicker: transform.parent.gameObject
             ));
         }
@@ -125,14 +125,14 @@ public class BuilderController : MonoBehaviour
         virtualMouse.CopyState(out MouseState mouseState);
         mouseState.WithButton(MouseButton.Left, isPressed);
         InputState.Change(virtualMouse, mouseState);
+        previousYState = isPressed;
         if (isPressed)
         {
             EventHandler.Instance.InvokeEvent(new UIClickedEvent(
-                description: "Info Button clicked",
+                description: "Info button clicked",
                 clicker: transform.parent.gameObject
             ));
         }
-        previousYState = isPressed;
     }
 
     public void BackAction (InputAction.CallbackContext context)
@@ -183,7 +183,6 @@ public class BuilderController : MonoBehaviour
         }
     }
 
-
     void OnDisable()
     {
         InputSystem.onAfterUpdate -= UpdateVirtualMouse;
@@ -221,11 +220,8 @@ public class BuilderController : MonoBehaviour
 
         RaycastHit hit = CastRayFromCamera(placeForTowerLayerMask);
 
-
         Hover(hit);
-    
     }
-
 
     Vector2 MoveMouse()
     {
