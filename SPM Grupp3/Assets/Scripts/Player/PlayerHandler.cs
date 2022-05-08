@@ -21,8 +21,7 @@ public class PlayerHandler : MonoBehaviour
 
         playerInput = GetComponent<PlayerInput>();
 
-        GameObject eventSystem = GameObject.Find("EventSystem");
-        playerInput.uiInputModule = eventSystem.GetComponent<InputSystemUIInputModule>();
+        playerInput.uiInputModule = GetComponent<InputSystemUIInputModule>();
 
         tankMode = transform.Find("TankMode").gameObject;
         buildMode = transform.Find("BuilderMode").gameObject;
