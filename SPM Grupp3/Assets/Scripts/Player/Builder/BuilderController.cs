@@ -36,7 +36,7 @@ public class BuilderController : MonoBehaviour
     private bool clicked = false;
     private GameObject buildMenu;
     private GameObject infoView;
-    private GameObject medium;
+    private GameObject towerPanel;
 
     void Start()
     {
@@ -44,9 +44,9 @@ public class BuilderController : MonoBehaviour
 
         mainCamera = Camera.main;
         canvas = mainCamera.transform.Find("CanvasV2");
-        buildMenu = canvas.Find("Build_UI").gameObject;
+        buildMenu = canvas.Find("BuildMenu").gameObject;
         infoView = buildMenu.transform.Find("InfoViews").gameObject;
-        medium = buildMenu.transform.Find("Medium").gameObject;
+        towerPanel = buildMenu.transform.Find("TowerPanel").gameObject;
 
         InitializeInputSystem();
         InitializeCursor();
@@ -165,7 +165,7 @@ public class BuilderController : MonoBehaviour
             Renderer selectionRenderer = _selection.GetComponent<Renderer>();
             selectionRenderer.material.color = startColor;
         }
-        medium.SetActive(true);
+        towerPanel.SetActive(true);
     }
 
     private void OnEnable()
@@ -360,7 +360,7 @@ public class BuilderController : MonoBehaviour
                 {
                     Tower tower = towerHit.GetComponent<Tower>();
                     
-                    tower.ShowUpgradeUI(medium, infoView);
+                    tower.ShowUpgradeUI(towerPanel, infoView);
                 }
                 
 
