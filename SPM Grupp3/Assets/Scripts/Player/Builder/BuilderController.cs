@@ -17,9 +17,11 @@ public class BuilderController : MonoBehaviour
     [SerializeField] private LayerMask placeForTowerLayerMask;
     [SerializeField] private LayerMask towerLayerMask;
     [SerializeField] private LayerMask ghostTower;
+    [SerializeField] private LayerMask uiLayer;
     [SerializeField] private Color hoverColor;
     [SerializeField] private Color startColor;
     [SerializeField] private Color towerPreview;
+    [SerializeField] private BuildManager buildManager;
     private Transform _selection;
 
     private Camera mainCamera;
@@ -45,7 +47,7 @@ public class BuilderController : MonoBehaviour
 
         mainCamera = Camera.main;
         canvas = mainCamera.transform.Find("Canvas");
-        buildMenu = canvas.Find("Build_UI").gameObject;
+        buildMenu = canvas.Find("BuildPanel").gameObject;
         infoView = buildMenu.transform.Find("InfoViews").gameObject;
         towerPanel = buildMenu.transform.Find("TowerPanel").gameObject;
 
@@ -159,7 +161,7 @@ public class BuilderController : MonoBehaviour
 
     private void Deselect()
     {
-        BuildManager.instance.TowerToBuild = null;
+        buildManager.TowerToBuild = null;
         Destroy(preTower);
         if (_selection != null)
         {
@@ -219,7 +221,10 @@ public class BuilderController : MonoBehaviour
         UpdateCursorImage(newPosition);
 
         RaycastHit hit = CastRayFromCamera(placeForTowerLayerMask);
+
+
         Hover(hit);
+    
     }
 
 
@@ -282,7 +287,7 @@ public class BuilderController : MonoBehaviour
             {
                 selectionRenderer.material.color = hoverColor;
 
-                BuildManager buildManager = BuildManager.instance;
+
                 if (buildManager.TowerToBuild != null)
                 {
                     RaycastHit hitTower = CastRayFromCamera(towerLayerMask);
@@ -337,7 +342,6 @@ public class BuilderController : MonoBehaviour
             GameObject placementHit = hit.collider.gameObject;
             if (placementHit.CompareTag("PlaceForTower"))
             {
-                BuildManager buildManager = BuildManager.instance;
                 if (buildManager.TowerToBuild != null)
                 {
                     RaycastHit hitTower = CastRayFromCamera(towerLayerMask);

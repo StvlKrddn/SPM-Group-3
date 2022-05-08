@@ -53,10 +53,14 @@ MonoBehaviour:
     m_Bits: 256
   ghostTower:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
+  uiLayer:
+    serializedVersion: 2
+    m_Bits: 32
   hoverColor: {r: 0.3962264, g: 0.39024565, b: 0.39024565, a: 1}
   startColor: {r: 1, g: 1, b: 1, a: 0}
   towerPreview: {r: 1, g: 1, b: 1, a: 0.3529412}
+  buildManager: {fileID: -261402878187306693}
 --- !u!1 &1555352807768005138
 GameObject:
   m_ObjectHideFlags: 0
@@ -68,6 +72,7 @@ GameObject:
   - component: {fileID: 1555352807768005136}
   - component: {fileID: 1555352807768005137}
   - component: {fileID: 1555352807768005151}
+  - component: {fileID: -261402878187306693}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -212,6 +217,10 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 9c7f03c7-9945-45e2-9321-567afc48681e
     m_ActionName: Builder/Back[/DualShock4GamepadHID/buttonEast,/DualShock4GamepadHID1/buttonEast]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: e1ee2602-c6d1-4cdf-bae3-f0d1db4217e2
+    m_ActionName: Tank/EnterGarage[/DualShock4GamepadHID/buttonWest]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Gamepad
   m_DefaultActionMap: Tank
@@ -229,6 +238,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b44984da848d06f4892f37e3b13b6b4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-261402878187306693
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1555352807768005138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18eb668e42af8844aa9c38faf9e99c4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cannonTowerPrefab: {fileID: 6433795423722352152, guid: 68579fcbab6a99e48b46d993172d7375, type: 3}
+  missileTowerPrefab: {fileID: 1569145756733406200, guid: 8db8e4de29b5cfd40a36f898ebbf9484, type: 3}
+  slowTowerPrefab: {fileID: 1661001488874270945, guid: 4f36542fa09612e4c83491bc006bb2dc, type: 3}
+  poisonTowerPrefab: {fileID: 2543076757521757243, guid: abc73b631ed83e14a9e7579ad5e01754, type: 3}
+  placedTower: {fileID: 0}
+  towerBase: {fileID: 2174401872598505377, guid: 817bbf2c1e71fe34fa83e102cf6b3623, type: 3}
 --- !u!1 &2318579147647575783
 GameObject:
   m_ObjectHideFlags: 0

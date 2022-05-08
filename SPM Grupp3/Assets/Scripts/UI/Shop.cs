@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class Shop : MonoBehaviour
 {
-    BuildManager buildManager;
+    [SerializeField] BuildManager buildManager;
     public GameManager gM;
     private Tower tower;
     /*    private Tower tower;*/
@@ -17,7 +17,6 @@ public class Shop : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        buildManager = BuildManager.instance;
         moneyCostUI.color = Color.gray;
         moneyCostUI.text = "0";
         materialCostUI.color = Color.gray;
