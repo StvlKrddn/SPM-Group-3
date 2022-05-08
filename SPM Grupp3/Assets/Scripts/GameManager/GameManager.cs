@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Text materialCounterUI;
     [SerializeField] private Text materialChangerUI;
     [SerializeField] private Slider livesSlider;
+    [SerializeField] private Color colorGain;
 
     [Header("Player")]
     [SerializeField] private PlayerMode startingMode;
@@ -83,7 +84,7 @@ public class GameManager : MonoBehaviour
 
     public void AddMoney(float addMoney)
     {
-        moneyChangerUI.color = Color.green;
+        moneyChangerUI.color = colorGain;
         moneyChangerUI.text = "+" + addMoney;
 
         money += addMoney;
@@ -92,7 +93,7 @@ public class GameManager : MonoBehaviour
 
     public void AddMaterial(float addMaterial)
     {
-        materialChangerUI.color = Color.green;
+        materialChangerUI.color = colorGain;
         materialChangerUI.text = "+" + addMaterial;
 
         material += addMaterial;
