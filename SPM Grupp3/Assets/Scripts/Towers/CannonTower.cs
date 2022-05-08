@@ -23,12 +23,12 @@ public class CannonTower : Tower
     private float fireCountdown = 0f;
     private List<CannonTower> cannonTowers = new List<CannonTower>();
 
-    private TowerUpgradeCotroller tUC;
+
 
 
     // Start is called before the first frame update
     void Start()
-    {
+    {       
         CheckLevels();
         EventHandler.Instance.RegisterListener<TowerHitEvent>(HitTarget);
         InvokeRepeating("UpdateTarget", 0f, 0.5f);
@@ -119,7 +119,7 @@ public class CannonTower : Tower
 
     void CheckAllPlacedTowers()
     {
-        foreach (GameObject gO in BuildManager.instance.towersPlaced)
+        foreach (GameObject gO in gM.towersPlaced)
         {
             if (gO.GetComponent<CannonTower>() != null)
             {
@@ -130,7 +130,7 @@ public class CannonTower : Tower
 
     public override void TowerLevel1()
     {
-        gM = FindObjectOfType<GameManager>();
+
         tUC = TowerUpgradeCotroller.instance;
 
         if ((gM.SpendResources(level1Cost,0f) && tUC.GetUpgradesPurchased(this) == 0))
@@ -156,7 +156,6 @@ public class CannonTower : Tower
 
     public override void TowerLevel2()
     {
-        gM = FindObjectOfType<GameManager>();
         tUC = TowerUpgradeCotroller.instance;
 
         if (gM.SpendResources(level2Cost, 0f) && tUC.GetUpgradesPurchased(this) == 1)
@@ -188,7 +187,6 @@ public class CannonTower : Tower
 
     public override void TowerLevel3()
     {
-        gM = FindObjectOfType<GameManager>();
         tUC = TowerUpgradeCotroller.instance;
 
         if (gM.SpendResources(level3Cost, 0f) && tUC.GetUpgradesPurchased(this) == 2)

@@ -13,8 +13,9 @@ public abstract class Tower : MonoBehaviour
     [SerializeField] protected GameObject shot;
     [SerializeField] protected Transform firePoint;
     [SerializeField] protected GameObject radius;
+    protected GameManager gM;
     public GameObject onHitEffect;
-    
+    protected TowerUpgradeCotroller tUC;
     public Tower towerScript;
     public GameObject tower;
     public GameObject upgradeUI;
@@ -31,7 +32,7 @@ public abstract class Tower : MonoBehaviour
     public float ShotDamage { get { return shotDamage; } set { shotDamage = value; } }
 
     protected Transform target;
-    protected GameManager gM;
+
     protected Shot bullet;
 
     public abstract void TypeOfShot(EnemyController enemyTarget);
@@ -47,6 +48,7 @@ public abstract class Tower : MonoBehaviour
 
     private void Start()
     {
+        gM = FindObjectOfType<GameManager>();
 
     }
 
