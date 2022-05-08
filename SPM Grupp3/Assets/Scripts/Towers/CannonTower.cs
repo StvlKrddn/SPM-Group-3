@@ -134,12 +134,15 @@ public class CannonTower : Tower
         gM = FindObjectOfType<GameManager>();
         tUC = TowerUpgradeCotroller.instance;
 
-        if ((gM.SpendResources(level1Cost,0f) && tUC.GetUpgradesPurchased(this) == 0) || tUC.GetUpgradesPurchased(this) > 2)
+        if ((gM.SpendResources(level1Cost,0f) && tUC.GetUpgradesPurchased(this) == 0))
         {
+            print(tUC.GetUpgradesPurchased(this));
             CheckAllPlacedTowers();
             tUC.IncreaseUpgradesPurchased(this);
+            print(tUC.GetUpgradesPurchased(this));
             foreach (CannonTower cT in cannonTowers)
             {
+                print(cT.gameObject);
                 FireRate(cT);         
             }
 
@@ -159,12 +162,13 @@ public class CannonTower : Tower
 
         if (gM.SpendResources(level2Cost, 0f) && tUC.GetUpgradesPurchased(this) == 1)
         {
-
+            print(tUC.GetUpgradesPurchased(this));
             CheckAllPlacedTowers();
             tUC.IncreaseUpgradesPurchased(this);
+            print(tUC.GetUpgradesPurchased(this));
             foreach (CannonTower cT in cannonTowers)
             {
-
+                print(cT.gameObject);
                 damageAndVisualUpgrade(cT);
             }
 
