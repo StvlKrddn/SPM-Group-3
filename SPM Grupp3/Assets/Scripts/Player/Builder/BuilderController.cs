@@ -43,7 +43,7 @@ public class BuilderController : MonoBehaviour
         screenMiddle = new Vector2(Screen.width / 2, Screen.height / 2);
 
         mainCamera = Camera.main;
-        canvas = mainCamera.transform.Find("CanvasV2");
+        canvas = mainCamera.transform.Find("Canvas");
         buildMenu = canvas.Find("BuildMenu").gameObject;
         infoView = buildMenu.transform.Find("InfoViews").gameObject;
         towerPanel = buildMenu.transform.Find("TowerPanel").gameObject;
