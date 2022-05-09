@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
 
 public class PlayerHandler : MonoBehaviour
 {
@@ -18,6 +20,8 @@ public class PlayerHandler : MonoBehaviour
         currentMode = FindObjectOfType<GameManager>().StartingMode;
 
         playerInput = GetComponent<PlayerInput>();
+
+        playerInput.uiInputModule = GetComponent<InputSystemUIInputModule>();
 
         tankMode = transform.Find("TankMode").gameObject;
         buildMode = transform.Find("BuilderMode").gameObject;
@@ -50,7 +54,7 @@ public class PlayerHandler : MonoBehaviour
 
         currentMode = PlayerMode.Tank;
 
-        print("Entered tank mode");
+        //print("Entered tank mode");
     }
 
     void EnterBuildMode()
@@ -70,7 +74,7 @@ public class PlayerHandler : MonoBehaviour
 
         currentMode = PlayerMode.Build;
 
-        print("Entered build mode");
+        //print("Entered build mode");
     }
 
     public void SwitchMode()

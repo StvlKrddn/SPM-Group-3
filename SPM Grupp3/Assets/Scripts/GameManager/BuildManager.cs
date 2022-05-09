@@ -5,16 +5,16 @@ using UnityEngine.InputSystem;
 
 public class BuildManager : MonoBehaviour
 {    
-    public static BuildManager instance;    
+/*    public static BuildManager instance; */   
 
     private void Awake()
     {
         
-        if (instance != null)
+/*        if (instance != null)
         {
             Debug.Log("More than one buildmanager");
         }
-        instance = this;
+        instance = this;*/
     }
 
     public GameObject cannonTowerPrefab;
@@ -29,9 +29,6 @@ public class BuildManager : MonoBehaviour
     private TowerPlacement towerPlacement;
     private Tower tower;
     [SerializeField] private GameObject towerBase;
-
-
-    public List<GameObject> towersPlaced = new List<GameObject>();
 
     public TowerPlacement TowerPlacement { get { return towerPlacement; } set { towerPlacement = value; } }
     public GameObject TowerToBuild { get { return towerToBuild; } set { towerToBuild = value; } }
@@ -59,7 +56,7 @@ public class BuildManager : MonoBehaviour
             return;
         }
 
-        foreach (GameObject towerPlaced in towersPlaced)
+        foreach (GameObject towerPlaced in gM.towersPlaced)
         {
             if (towerPlaced == clickedArea)
             {
@@ -73,10 +70,11 @@ public class BuildManager : MonoBehaviour
             Instantiate(towerBase, ClickedArea.transform.GetChild(0).transform.position, ClickedArea.transform.GetChild(0).transform.rotation);
             placedTower = Instantiate(TowerToBuild, ClickedArea.transform.GetChild(0).transform.position, ClickedArea.transform.GetChild(0).transform.rotation);
 /*            placedTower.GetComponent<Tower>().CheckLevels();*/
-            towersPlaced.Add(placedTower);
+
             ClickedArea = null;
 
             TowerUpgradeCotroller.instance.PlaceTowerInUpgradeList(placedTower.GetComponent<Tower>());
+            gM.AddPlacedTower(placedTower);
 
             return;
         }

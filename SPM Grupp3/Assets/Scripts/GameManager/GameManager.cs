@@ -2,7 +2,8 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 using System;
-using UnityEngine.InputSystem; 
+using UnityEngine.InputSystem;
+using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
@@ -29,6 +30,9 @@ public class GameManager : MonoBehaviour
 
     [Header("Player")]
     [SerializeField] private PlayerMode startingMode;
+
+    [Header("Other")]
+    public List<GameObject> towersPlaced = new List<GameObject>();
 
     private int currentWave = -1;
     public float Money { get { return money; } set { money = value; } }
@@ -129,6 +133,11 @@ public class GameManager : MonoBehaviour
         }
         //Show Error
         return false;
+    }
+
+    public void AddPlacedTower(GameObject tower)
+    {
+        towersPlaced.Add(tower); 
     }
 
     private void Defeat()
