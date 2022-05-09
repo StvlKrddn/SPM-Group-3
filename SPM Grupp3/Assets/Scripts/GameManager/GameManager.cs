@@ -102,7 +102,7 @@ public class GameManager : MonoBehaviour
         moneyChangerUI.color = colorGain;
         moneyChangerUI.text = "+" + addMoney;
 
-        Instantiate(moneyChangerUI, moneyUI.transform);
+        //Instantiate(moneyChangerUI, moneyUI.transform);
 
         money += addMoney;
         UpdateResourcesUI();
@@ -113,7 +113,7 @@ public class GameManager : MonoBehaviour
         materialChangerUI.color = colorGain;
         materialChangerUI.text = "+" + addMaterial;
 
-        Instantiate(materialChangerUI, materialUI.transform);
+        //Instantiate(materialChangerUI, materialUI.transform);
 
         material += addMaterial;
         UpdateResourcesUI();
@@ -127,7 +127,7 @@ public class GameManager : MonoBehaviour
             moneyChangerUI.color = Color.red;
             moneyChangerUI.text = "-" + moneySpent;
 
-            Instantiate(moneyChangerUI, moneyUI.transform);
+            //Instantiate(moneyChangerUI, moneyUI.transform);
 
             material -= materialSpent;
             if (materialSpent > 0) 
@@ -135,7 +135,7 @@ public class GameManager : MonoBehaviour
                 materialChangerUI.color = Color.red;
                 materialChangerUI.text = "-" + materialSpent;
 
-                Instantiate(materialChangerUI, moneyUI.transform);
+                //Instantiate(materialChangerUI, moneyUI.transform);
             }
                
 

@@ -37,6 +37,12 @@ public class BoostAbility : MonoBehaviour
         Boost();
     }
 
+    private void OnEnable() 
+    {
+        // Skapar ett exploit där spelaren kan gå in och ut ur Garaget för att få tillbaka sin boost direkt men who cares :)
+        allowedToBoost = true;
+    }
+
     void Boost()
     {
         if (boostAction.IsPressed() && allowedToBoost)
