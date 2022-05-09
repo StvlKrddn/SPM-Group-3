@@ -53,7 +53,10 @@ MonoBehaviour:
     m_Bits: 256
   ghostTower:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 4096
+  uiLayer:
+    serializedVersion: 2
+    m_Bits: 32
   hoverColor: {r: 0.3962264, g: 0.39024565, b: 0.39024565, a: 1}
   startColor: {r: 1, g: 1, b: 1, a: 0}
   towerPreview: {r: 1, g: 1, b: 1, a: 0.3529412}
@@ -68,6 +71,9 @@ GameObject:
   - component: {fileID: 1555352807768005136}
   - component: {fileID: 1555352807768005137}
   - component: {fileID: 1555352807768005151}
+  - component: {fileID: -261402878187306693}
+  - component: {fileID: 2139105061749222950}
+  - component: {fileID: 2885400533230114248}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -105,7 +111,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Actions: {fileID: -944628639613478452, guid: 351c0499b2b84c649910748b49572abc, type: 3}
   m_NotificationBehavior: 2
-  m_UIInputModule: {fileID: 0}
+  m_UIInputModule: {fileID: 2885400533230114248}
   m_DeviceLostEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -198,7 +204,7 @@ MonoBehaviour:
     m_ActionName: Builder/EnterTank[/DualShock4GamepadHID/buttonWest,/DualShock4GamepadHID1/buttonWest]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8666166063914807923, guid: 67c7f518bfe77d84f92c226ba90ee0d2, type: 3}
+      - m_Target: {fileID: 1555352807092885021}
         m_TargetAssemblyTypeName: BuilderController, Assembly-CSharp
         m_MethodName: BackAction
         m_Mode: 0
@@ -212,6 +218,10 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 9c7f03c7-9945-45e2-9321-567afc48681e
     m_ActionName: Builder/Back[/DualShock4GamepadHID/buttonEast,/DualShock4GamepadHID1/buttonEast]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: e1ee2602-c6d1-4cdf-bae3-f0d1db4217e2
+    m_ActionName: Tank/EnterGarage[/DualShock4GamepadHID/buttonWest]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Gamepad
   m_DefaultActionMap: Tank
@@ -229,6 +239,68 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b44984da848d06f4892f37e3b13b6b4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-261402878187306693
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1555352807768005138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18eb668e42af8844aa9c38faf9e99c4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cannonTowerPrefab: {fileID: 6433795423722352152, guid: 68579fcbab6a99e48b46d993172d7375, type: 3}
+  missileTowerPrefab: {fileID: 1569145756733406200, guid: 8db8e4de29b5cfd40a36f898ebbf9484, type: 3}
+  slowTowerPrefab: {fileID: 1661001488874270945, guid: 4f36542fa09612e4c83491bc006bb2dc, type: 3}
+  poisonTowerPrefab: {fileID: 2543076757521757243, guid: abc73b631ed83e14a9e7579ad5e01754, type: 3}
+  placedTower: {fileID: 0}
+  towerBase: {fileID: 9019748245944013588, guid: 4120c1f7b8f71e94aaf34696a5c7cadc, type: 3}
+--- !u!114 &2139105061749222950
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1555352807768005138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b16c6f78230fa4964a222622d8aae332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_FirstSelected: {fileID: 0}
+  m_sendNavigationEvents: 1
+  m_DragThreshold: 10
+  m_PlayerRoot: {fileID: 0}
+--- !u!114 &2885400533230114248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1555352807768005138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01614664b831546d2ae94a42149d80ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_MoveRepeatDelay: 0.5
+  m_MoveRepeatRate: 0.1
+  m_XRTrackingOrigin: {fileID: 0}
+  m_ActionsAsset: {fileID: -944628639613478452, guid: 351c0499b2b84c649910748b49572abc, type: 3}
+  m_PointAction: {fileID: -8113715173509063206, guid: 351c0499b2b84c649910748b49572abc, type: 3}
+  m_MoveAction: {fileID: 0}
+  m_SubmitAction: {fileID: 0}
+  m_CancelAction: {fileID: 0}
+  m_LeftClickAction: {fileID: -569677231619898763, guid: 351c0499b2b84c649910748b49572abc, type: 3}
+  m_MiddleClickAction: {fileID: 0}
+  m_RightClickAction: {fileID: 0}
+  m_ScrollWheelAction: {fileID: 8726895724979654006, guid: 351c0499b2b84c649910748b49572abc, type: 3}
+  m_TrackedDevicePositionAction: {fileID: 0}
+  m_TrackedDeviceOrientationAction: {fileID: 0}
+  m_DeselectOnBackgroundClick: 1
+  m_PointerBehavior: 0
 --- !u!1 &2318579147647575783
 GameObject:
   m_ObjectHideFlags: 0

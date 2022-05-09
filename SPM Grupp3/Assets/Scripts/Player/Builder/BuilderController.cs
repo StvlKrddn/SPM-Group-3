@@ -17,11 +17,13 @@ public class BuilderController : MonoBehaviour
     [SerializeField] private LayerMask placeForTowerLayerMask;
     [SerializeField] private LayerMask towerLayerMask;
     [SerializeField] private LayerMask ghostTower;
+    [SerializeField] private LayerMask uiLayer;
     [SerializeField] private Color hoverColor;
     [SerializeField] private Color startColor;
     [SerializeField] private Color towerPreview;
-    private Transform _selection;
 
+    private Transform _selection;
+    private BuildManager buildManager;
     private Camera mainCamera;
     private Mouse virtualMouse;
     private RectTransform cursorTransform;
@@ -42,12 +44,13 @@ public class BuilderController : MonoBehaviour
     {
         screenMiddle = new Vector2(Screen.width / 2, Screen.height / 2);
 
-
         mainCamera = Camera.main;
         canvas = mainCamera.transform.Find("Canvas");
         buildMenu = canvas.Find("Build_UI").gameObject;
         infoView = buildMenu.transform.Find("InfoViews").gameObject;
         towerPanel = buildMenu.transform.Find("TowerPanel").gameObject;
+
+        buildManager = GetComponentInParent<BuildManager>();
 
         InitializeInputSystem();
         InitializeCursor();
@@ -64,7 +67,7 @@ public class BuilderController : MonoBehaviour
 
     void InitializeCursor()
     {
-        GameObject cursor = Instantiate(cursorPrefab, canvas);
+        GameObject cursor = Instantiate(cursorPrefab, canvas.position, canvas.transform.rotation, canvas);
         SetCursorColor(cursor);
         cursor.name = "Player " + (playerInput.playerIndex + 1) + " cursor";
         cursorTransform = cursor.GetComponent<RectTransform>();
@@ -106,21 +109,14 @@ public class BuilderController : MonoBehaviour
         InputState.Change(virtualMouse, mouseState);
         if (isPressed)
         {
-            if (!clicked)
-            {
-                ClickedPlacement();
-                ClickedTower();
-                clicked = true;
-                Invoke(nameof(ClickDelay), 0.1f);
-            }
-
+            ClickedPlacement();
+            ClickedTower();
+            EventHandler.Instance.InvokeEvent(new UIClickedEvent(
+                description: "Accept button clicked",
+                clicker: transform.parent.gameObject
+            ));
         }
         previousMouseState = isPressed;
-    }
-    
-    private void ClickDelay()
-    {
-        clicked = false;
     }
 
     public void InfoAction (InputAction.CallbackContext context)
@@ -130,6 +126,13 @@ public class BuilderController : MonoBehaviour
         mouseState.WithButton(MouseButton.Left, isPressed);
         InputState.Change(virtualMouse, mouseState);
         previousYState = isPressed;
+        if (isPressed)
+        {
+            EventHandler.Instance.InvokeEvent(new UIClickedEvent(
+                description: "Info button clicked",
+                clicker: transform.parent.gameObject
+            ));
+        }
     }
 
     public void BackAction (InputAction.CallbackContext context)
@@ -159,7 +162,7 @@ public class BuilderController : MonoBehaviour
 
     private void Deselect()
     {
-        BuildManager.instance.TowerToBuild = null;
+        buildManager.TowerToBuild = null;
         Destroy(preTower);
         if (_selection != null)
         {
@@ -174,20 +177,17 @@ public class BuilderController : MonoBehaviour
         InputSystem.onAfterUpdate += UpdateVirtualMouse;
         if (cursorTransform != null)
         {
-            print("Activating cursor");
             ResetCursorPosition();
             cursorTransform.gameObject.SetActive(true);
             towerPanel.SetActive(true);
         }
     }
 
-
     void OnDisable()
     {
         InputSystem.onAfterUpdate -= UpdateVirtualMouse;
         if (cursorTransform != null)
         {
-            print("Deactivating cursor");
             ResetCursorPosition();
             cursorTransform.gameObject.SetActive(false);
             towerPanel.SetActive(false);
@@ -219,9 +219,9 @@ public class BuilderController : MonoBehaviour
         UpdateCursorImage(newPosition);
 
         RaycastHit hit = CastRayFromCamera(placeForTowerLayerMask);
+
         Hover(hit);
     }
-
 
     Vector2 MoveMouse()
     {
@@ -282,7 +282,7 @@ public class BuilderController : MonoBehaviour
             {
                 selectionRenderer.material.color = hoverColor;
 
-                BuildManager buildManager = BuildManager.instance;
+
                 if (buildManager.TowerToBuild != null)
                 {
                     RaycastHit hitTower = CastRayFromCamera(towerLayerMask);
@@ -337,7 +337,6 @@ public class BuilderController : MonoBehaviour
             GameObject placementHit = hit.collider.gameObject;
             if (placementHit.CompareTag("PlaceForTower"))
             {
-                BuildManager buildManager = BuildManager.instance;
                 if (buildManager.TowerToBuild != null)
                 {
                     RaycastHit hitTower = CastRayFromCamera(towerLayerMask);

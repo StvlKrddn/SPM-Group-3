@@ -27,8 +27,6 @@ public class PlayerManager : MonoBehaviour
         
         GameObject player = newPlayer.gameObject;
 
-        Instantiate(cursorPrefab, Camera.main.transform.Find("CanvasV2"));
-
         EventHandler.Instance.InvokeEvent(new PlayerJoinedEvent(
             description: "A player joined the game",
             newPlayerGO: player

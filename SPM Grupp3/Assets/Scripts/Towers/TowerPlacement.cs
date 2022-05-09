@@ -16,7 +16,7 @@ public class TowerPlacement : MonoBehaviour
     /*    private GameObject placedTower;*/
     private Transform _selection;
 
-    BuildManager buildManager;
+/*    BuildManager buildManager;*/
     private bool hover = false;
 
     // Start is called before the first frame update
@@ -25,7 +25,7 @@ public class TowerPlacement : MonoBehaviour
         BuilderController buildControl = FindObjectOfType<BuilderController>();
         rend = GetComponent<Renderer>();
         startColor = rend.material.color;
-        buildManager = BuildManager.instance;
+/*        buildManager = BuildManager.instance;*/
     }
 
 
@@ -36,7 +36,7 @@ public class TowerPlacement : MonoBehaviour
 
     }
 
-    public void SetAreaClicked()
+/*    public void SetAreaClicked()
     {
         if (buildManager.ClickedArea != null)
         {
@@ -49,7 +49,7 @@ public class TowerPlacement : MonoBehaviour
             buildManager.ClickedArea = gameObject;
             clicked = true;
         }
-    }
+    }*/
 
     public void SetDoNotHover()
     {

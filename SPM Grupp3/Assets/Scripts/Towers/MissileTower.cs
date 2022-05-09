@@ -125,7 +125,7 @@ public class MissileTower : Tower
 
     void CheckAllPlacedTowers()
     {
-        foreach (GameObject gO in BuildManager.instance.towersPlaced)
+        foreach (GameObject gO in gM.towersPlaced)
         {
             if (gO.GetComponent<MissileTower>() != null)
             {
