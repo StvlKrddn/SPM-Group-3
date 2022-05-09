@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Rotate : MonoBehaviour
 {
-    [SerializeField] private float start = 0f;
-    [SerializeField] private float from;
-    [SerializeField] private float to;
+    private float start = 0f;
+    private float from = 0;
+    private float to = 360;
     // Start is called before the first frame update
     void Start()
     {

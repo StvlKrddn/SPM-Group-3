@@ -43,14 +43,17 @@ public class PoisonTower : Tower
 
     // Update is called once per frame
     void Update()
-    {
-        
+    {      
         LockOnTarget();
 
-        if (CanYouShoot())
+        if (target != null)
         {
-            Shoot();
+            if (CanYouShoot())
+            {
+                Shoot();
+            }
         }
+        
     }
 
     public override void HitTarget(TowerHitEvent eventInfo)
@@ -62,21 +65,8 @@ public class PoisonTower : Tower
 
             Destroy(effectInstance, 1f);
             TypeOfShot(enemyTarget);
-            /*Destroy(bullet.gameObject, 2f);*/
         }
     }
-    /*    public override void HitTarget()
-        {
-            if (target != null)
-            {
-                EnemyController enemyTarget = target.GetComponent<EnemyController>();
-    *//*            GameObject effectInstance = Instantiate(onHitEffect, transform.position, transform.rotation);
-
-                Destroy(effectInstance, 1f);*//*
-                TypeOfShot(enemyTarget);
-                Destroy(bullet.gameObject);
-            }
-        }*/
 
     private bool CanYouShoot()
     {
@@ -97,6 +87,7 @@ public class PoisonTower : Tower
         }
         enemyTarget.HitByPoison(PoisonTicks,PoisonDamagePerTick, onHitEffect);
     }
+
     protected void Shoot()
     {
         GameObject bulletGO = Instantiate(shot, firePoint.position, firePoint.rotation);
@@ -112,80 +103,46 @@ public class PoisonTower : Tower
 
     public override void ShowUpgradeUI(GameObject medium, GameObject infoView)
     {    
-        if (infoView.transform.GetChild(2).gameObject.activeInHierarchy)
+        if (infoView.transform.GetChild(3).gameObject.activeInHierarchy)
         {
-            infoView.transform.GetChild(2).gameObject.SetActive(false);
+            infoView.transform.GetChild(3).gameObject.SetActive(false);
             medium.SetActive(true);
         }
         else
         {
-            infoView.transform.GetChild(2).gameObject.SetActive(true);
+            infoView.transform.GetChild(3).gameObject.SetActive(true);
             medium.SetActive(false);
-        }
-    }
-
-    void CheckAllPlacedTowers()
-    {
-        foreach (GameObject gO in gM.towersPlaced)
-        {
-            if (gO.GetComponent<PoisonTower>() != null)
-            {
-                poisonTowers.Add(gO.GetComponent<PoisonTower>());
-            }
         }
     }
 
     public override void TowerLevel1()
     {
+        base.TowerLevel1();
         if (gM.SpendResources(level1Cost, 0f) && !level1UpgradePurchased)
         {
-            CheckAllPlacedTowers();
-
-            foreach (PoisonTower pT in poisonTowers)
-            {
-                pT.poisonTicks += upgradeAmountPoisonTicks;
-                pT.poisonTowers.Clear();
-                pT.level1UpgradePurchased = true;
-            }
-            poisonTicks += upgradeAmountPoisonTicks;
-            poisonTowers.Clear();
-            level1UpgradePurchased = true;
+            tUC.IncreaseUpgradesPurchased();
+            PoisonTower pT = tUC.ClickedTower.GetComponent<PoisonTower>();            
+            pT.poisonTicks += upgradeAmountPoisonTicks;                
         }
     }
     public override void TowerLevel2()
     {
+        base.TowerLevel2();
         if (gM.SpendResources(level2Cost, 0f) && !level2UpgradePurchased && level1UpgradePurchased)
         {
-            CheckAllPlacedTowers();
-            foreach (PoisonTower pT in poisonTowers)
-            {
-                pT.poisonDamagePerTick += upgradeAmountPoisonDamagePerTick;
-                pT.poisonTowers.Clear();
-                pT.level2UpgradePurchased = true;
-            }
-            poisonDamagePerTick += upgradeAmountPoisonDamagePerTick;
-            poisonTowers.Clear();
-            level2UpgradePurchased = true;
+            tUC.IncreaseUpgradesPurchased();
+            PoisonTower pT = tUC.ClickedTower.GetComponent<PoisonTower>();          
+            pT.poisonDamagePerTick += upgradeAmountPoisonDamagePerTick;               
         }
     }
     public override void TowerLevel3()
     {
+        base.TowerLevel3();
         if (gM.SpendResources(level3Cost, 0f) && !level3UpgradePurchased && level2UpgradePurchased && level1UpgradePurchased)
         {
-            CheckAllPlacedTowers();
-            foreach (PoisonTower pT in poisonTowers)
-            {
-                pT.poisonSpread = true;
-                pT.poisonTowers.Clear();
-                pT.level3UpgradePurchased = true;
-            }
-            poisonSpread = true;
-            poisonTowers.Clear();
-            level3UpgradePurchased = true;
+            tUC.IncreaseUpgradesPurchased();
+            PoisonTower pT = tUC.ClickedTower.GetComponent<PoisonTower>();
+            pT.poisonSpread = true;               
         }
-    }
-    public override void CheckLevels()
-    {
-
     }
 }
