@@ -23,6 +23,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Slider livesSlider;
     [SerializeField] private Color colorGain;
 
+    [Header("Spawner UI Elements: ")]
+    [SerializeField] private GameObject materialUI;
+    [SerializeField] private GameObject moneyUI;
+
     [Header("Player")]
     [SerializeField] private PlayerMode startingMode;
 
@@ -87,6 +91,8 @@ public class GameManager : MonoBehaviour
         moneyChangerUI.color = colorGain;
         moneyChangerUI.text = "+" + addMoney;
 
+        Instantiate(moneyChangerUI, moneyUI.transform);
+
         money += addMoney;
         UpdateResourcesUI();
     }
@@ -95,6 +101,8 @@ public class GameManager : MonoBehaviour
     {
         materialChangerUI.color = colorGain;
         materialChangerUI.text = "+" + addMaterial;
+
+        Instantiate(moneyChangerUI, materialUI.transform);
 
         material += addMaterial;
         UpdateResourcesUI();
@@ -108,6 +116,8 @@ public class GameManager : MonoBehaviour
             moneyChangerUI.color = Color.red;
             moneyChangerUI.text = "-" + moneySpent;
 
+            Instantiate(moneyChangerUI, materialUI.transform);
+
             material -= materialSpent;
             if (materialSpent > 0) 
             {
@@ -119,7 +129,8 @@ public class GameManager : MonoBehaviour
                 materialChangerUI.color = Color.gray;
                 materialChangerUI.text = "0";
             }
-                
+
+            Instantiate(materialChangerUI, materialUI.transform);
 
             UpdateResourcesUI();
             return true;
