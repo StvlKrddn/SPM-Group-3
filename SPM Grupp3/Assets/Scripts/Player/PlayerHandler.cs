@@ -52,6 +52,8 @@ public class PlayerHandler : MonoBehaviour
 
         playerInput.SwitchCurrentActionMap("Tank");
 
+        //canvas.transform.Find("Build_UI").gameObject.SetActive(false);
+
         currentMode = PlayerMode.Tank;
 
         //print("Entered tank mode");
@@ -71,6 +73,8 @@ public class PlayerHandler : MonoBehaviour
             ));
 
         playerInput.SwitchCurrentActionMap("Builder");
+
+        //canvas.transform.Find("Build_UI").gameObject.SetActive(true);
 
         currentMode = PlayerMode.Build;
 

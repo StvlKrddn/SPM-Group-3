@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1555352807092885023}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.336, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1555352807768005136}
@@ -59,7 +59,7 @@ MonoBehaviour:
     m_Bits: 32
   hoverColor: {r: 0.3962264, g: 0.39024565, b: 0.39024565, a: 1}
   startColor: {r: 1, g: 1, b: 1, a: 0}
-  towerPreview: {r: 1, g: 1, b: 1, a: 0.3529412}
+  towerPreview: {r: 1, g: 1, b: 1, a: 0.38431373}
 --- !u!1 &1555352807768005138
 GameObject:
   m_ObjectHideFlags: 0
@@ -111,7 +111,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Actions: {fileID: -944628639613478452, guid: 351c0499b2b84c649910748b49572abc, type: 3}
   m_NotificationBehavior: 2
-  m_UIInputModule: {fileID: 2885400533230114248}
+  m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -172,9 +172,9 @@ MonoBehaviour:
     m_ActionName: Builder/Accept[/XInputControllerWindows/buttonSouth]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1555352807092885021}
-        m_TargetAssemblyTypeName: BuilderController, Assembly-CSharp
-        m_MethodName: InfoAction
+      - m_Target: {fileID: 1555352807768005151}
+        m_TargetAssemblyTypeName: PlayerHandler, Assembly-CSharp
+        m_MethodName: StartWave
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -222,7 +222,23 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: e1ee2602-c6d1-4cdf-bae3-f0d1db4217e2
     m_ActionName: Tank/EnterGarage[/DualShock4GamepadHID/buttonWest]
-  m_NeverAutoSwitchControlSchemes: 0
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1555352807768005151}
+        m_TargetAssemblyTypeName: PlayerHandler, Assembly-CSharp
+        m_MethodName: StartWave
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 53365927-6c8f-42dc-94b5-0dcee894e958
+    m_ActionName: Tank/StartWave
+  m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: Gamepad
   m_DefaultActionMap: Tank
   m_SplitScreenIndex: -1
