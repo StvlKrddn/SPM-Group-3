@@ -24,6 +24,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Slider livesSlider;
     [SerializeField] private Color colorGain;
 
+    [Header("Spanwer for UI Elements")]
+    [SerializeField] private GameObject moneyUI;
+    [SerializeField] private GameObject materialUI;
+
     [Header("Player")]
     [SerializeField] private PlayerMode startingMode;
 
@@ -38,11 +42,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         livesSlider.maxValue = baseHealth;
-        materialChangerUI.text = "0";
-        materialChangerUI.color = Color.gray;
 
-        moneyChangerUI.text = "0";
-        moneyChangerUI.color = Color.gray;
         UpdateResourcesUI();
     }
 
@@ -91,6 +91,8 @@ public class GameManager : MonoBehaviour
         moneyChangerUI.color = colorGain;
         moneyChangerUI.text = "+" + addMoney;
 
+        Instantiate(moneyChangerUI, moneyUI.transform);
+
         money += addMoney;
         UpdateResourcesUI();
     }
@@ -99,6 +101,8 @@ public class GameManager : MonoBehaviour
     {
         materialChangerUI.color = colorGain;
         materialChangerUI.text = "+" + addMaterial;
+
+        Instantiate(materialChangerUI, materialUI.transform);
 
         material += addMaterial;
         UpdateResourcesUI();
@@ -112,18 +116,17 @@ public class GameManager : MonoBehaviour
             moneyChangerUI.color = Color.red;
             moneyChangerUI.text = "-" + moneySpent;
 
+            Instantiate(moneyChangerUI, moneyUI.transform);
+
             material -= materialSpent;
             if (materialSpent > 0) 
             {
                 materialChangerUI.color = Color.red;
                 materialChangerUI.text = "-" + materialSpent;
+
+                Instantiate(materialChangerUI, moneyUI.transform);
             }
-            else
-            {
-                materialChangerUI.color = Color.gray;
-                materialChangerUI.text = "0";
-            }
-                
+               
 
             UpdateResourcesUI();
             return true;
