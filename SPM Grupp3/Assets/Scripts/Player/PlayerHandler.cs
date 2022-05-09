@@ -90,4 +90,15 @@ public class PlayerHandler : MonoBehaviour
             EnterTankMode();
         }
     }
+
+    public void StartWave (InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            EventHandler.Instance.InvokeEvent(new StartWaveEvent(
+                description: "Player started new wave",
+                invoker: gameObject
+            ));
+        }
+    }
 }
