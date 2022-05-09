@@ -46,8 +46,7 @@ public class MissileTower : Tower
 
     // Update is called once per frame
     void Update()
-    {
-        
+    {       
         LockOnTarget();
 
         if (target != null)
@@ -123,70 +122,35 @@ public class MissileTower : Tower
         }
     }
 
-    void CheckAllPlacedTowers()
-    {
-        foreach (GameObject gO in gM.towersPlaced)
-        {
-            if (gO.GetComponent<MissileTower>() != null)
-            {
-                missileTowers.Add(gO.GetComponent<MissileTower>());
-            }
-        }
-    }
-
     public override void TowerLevel1()
     {
-        if (gM.SpendResources(level1Cost, 0f) && !level1UpgradePurchased)
+        base.TowerLevel1();
+        if (gM.SpendResources(level1Cost, 0f) && tUC.GetUpgradesPurchased() == 0)
         {
-            CheckAllPlacedTowers();
-            foreach (MissileTower mT in missileTowers)
-            {
-                mT.splashRadius += amountUpgradeSplashRadius;
-                mT.level1UpgradePurchased = true;
-                mT.missileTowers.Clear();
-            }
-            splashRadius += amountUpgradeSplashRadius;
-            missileTowers.Clear();
-            level1UpgradePurchased = true;
+            tUC.IncreaseUpgradesPurchased();
+            MissileTower mT = tUC.ClickedTower.GetComponent<MissileTower>();
+            mT.splashRadius += amountUpgradeSplashRadius;
         }
     }
     public override void TowerLevel2()
     {
-        if (gM.SpendResources(level2Cost, 0f) && !level2UpgradePurchased && level1UpgradePurchased)
+        base.TowerLevel2();
+        if (gM.SpendResources(level2Cost, 0f) && tUC.GetUpgradesPurchased() == 1)
         {
-            CheckAllPlacedTowers();
-            foreach (MissileTower mT in missileTowers)
-            {
-                mT.splashDamage += amountUpgradeSplashDamage;
-                mT.level2UpgradePurchased = true;
-                mT.missileTowers.Clear();
-            }
-            splashDamage += amountUpgradeSplashDamage;
-            missileTowers.Clear();
-            level2UpgradePurchased = true;
+            tUC.IncreaseUpgradesPurchased();
+            MissileTower mT = tUC.ClickedTower.GetComponent<MissileTower>();
+            mT.splashDamage += amountUpgradeSplashDamage;
         }
         
     }
     public override void TowerLevel3()
     {
-        if (gM.SpendResources(level3Cost, 0f) && !level3UpgradePurchased && level2UpgradePurchased && level1UpgradePurchased)
+        base.TowerLevel3();
+        if (gM.SpendResources(level3Cost, 0f) && tUC.GetUpgradesPurchased() == 2)
         {
-            CheckAllPlacedTowers();
-            foreach (MissileTower mT in missileTowers)
-            {
-                mT.thirdShot = true;
-                mT.level3UpgradePurchased = true;
-                mT.missileTowers.Clear();
-            }
-            thirdShot = true;
-            missileTowers.Clear();
-            level3UpgradePurchased = true;
+            tUC.IncreaseUpgradesPurchased();
+            MissileTower mT = tUC.ClickedTower.GetComponent<MissileTower>();
+            mT.thirdShot = true;
         }
-        
-    }
-
-    public override void CheckLevels()
-    {
-
     }
 }

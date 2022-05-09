@@ -4,8 +4,6 @@ using UnityEngine;
 
 public abstract class Tower : MonoBehaviour
 {
-
-
     [Header("Unity Setup Fields")]
 
     [SerializeField] protected string enemyTag = "Enemy";
@@ -38,18 +36,32 @@ public abstract class Tower : MonoBehaviour
     public abstract void TypeOfShot(EnemyController enemyTarget);
     public abstract void HitTarget(TowerHitEvent eventInfo);
     public abstract void ShowUpgradeUI(GameObject medium, GameObject infoView);
-    public abstract void CheckLevels();
+    /*    public abstract void CheckLevels();*/
 
-    public abstract void TowerLevel1();
-    public abstract void TowerLevel2();
-    public abstract void TowerLevel3();
+    public virtual void TowerLevel1()
+    {
+        gM = FindObjectOfType<GameManager>();
+        tUC = TowerUpgradeCotroller.instance;
+    }
+    public virtual void TowerLevel2()
+    {
+        gM = FindObjectOfType<GameManager>();
+        tUC = TowerUpgradeCotroller.instance;
+    }
+    public virtual void TowerLevel3()
+    {
+        gM = FindObjectOfType<GameManager>();
+        tUC = TowerUpgradeCotroller.instance;
+    }
+
+
+
 
     /*    public abstract void HitTarget();*/
 
     private void Start()
     {
-        gM = FindObjectOfType<GameManager>();
-
+        
     }
 
     private void OnDrawGizmosSelected()

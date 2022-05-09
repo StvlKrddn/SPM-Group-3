@@ -35,7 +35,6 @@ public class BuilderController : MonoBehaviour
     private bool previousMouseState;
     private bool previousYState;
     private GameObject preTower;
-    private bool clicked = false;
     private GameObject buildMenu;
     private GameObject infoView;
     private GameObject towerPanel;
@@ -344,6 +343,7 @@ public class BuilderController : MonoBehaviour
                     {
                         buildManager.ClickedArea = _selection.gameObject;
                         buildManager.InstantiateTower();
+                        
                     }
 
                 }
@@ -356,13 +356,15 @@ public class BuilderController : MonoBehaviour
         if (hit.collider != null)
         {
             GameObject towerHit = hit.collider.gameObject;
-            if (towerHit.CompareTag("Tower"))
-            {
+/*            if (towerHit.CompareTag("Tower"))
+            {*/
                 if (towerHit != null && preTower == null)
                 {
                     Tower tower = towerHit.GetComponent<Tower>();
                     
                     tower.ShowUpgradeUI(towerPanel, infoView);
+                    EventHandler.Instance.InvokeEvent(new TowerClickedEvent("Tower Is clicked", tower.gameObject));
+                    print("Tower of type: " + tower + " Is clicked");
                 }
                 
 
@@ -379,6 +381,6 @@ public class BuilderController : MonoBehaviour
 
                 } */
             }
-        }
+        /*}*/
     }
 }
