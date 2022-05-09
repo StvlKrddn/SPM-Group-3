@@ -38,17 +38,28 @@ public class GameManager : MonoBehaviour
     public float Money { get { return money; } set { money = value; } }
     public PlayerMode StartingMode { get { return startingMode; } }
 
-
     private void Start()
     {
         livesSlider.maxValue = baseHealth;
 
         UpdateResourcesUI();
+
+        EventHandler.Instance.RegisterListener<StartWaveEvent>(OnStartWave);
     }
 
     void Update()
-    {   
+    {  
+        /*
         if(Gamepad.current != null && Gamepad.current.xButton.isPressed && spawnEnemies)
+        {
+            SpawnWave();
+        }
+        */
+    }
+
+    private void OnStartWave(StartWaveEvent eventInfo)
+    {
+        if (spawnEnemies)
         {
             SpawnWave();
         }

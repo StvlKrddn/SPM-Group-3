@@ -119,22 +119,6 @@ public class BuilderController : MonoBehaviour
         previousMouseState = isPressed;
     }
 
-    public void InfoAction (InputAction.CallbackContext context)
-    {
-        bool isPressed = context.performed;
-        virtualMouse.CopyState(out MouseState mouseState);
-        mouseState.WithButton(MouseButton.Left, isPressed);
-        InputState.Change(virtualMouse, mouseState);
-        previousYState = isPressed;
-        if (isPressed)
-        {
-            EventHandler.Instance.InvokeEvent(new UIClickedEvent(
-                description: "Info button clicked",
-                clicker: transform.parent.gameObject
-            ));
-        }
-    }
-
     public void BackAction (InputAction.CallbackContext context)
     {
         if (context.performed)

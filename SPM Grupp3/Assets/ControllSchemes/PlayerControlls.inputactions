@@ -49,6 +49,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "StartWave",
+                    "type": "Button",
+                    "id": "53365927-6c8f-42dc-94b5-0dcee894e958",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -319,11 +328,22 @@
                 {
                     "name": "",
                     "id": "457c2f96-81fe-40e4-b5bc-61ac91558367",
-                    "path": "<Gamepad>/buttonWest",
+                    "path": "<Gamepad>/buttonNorth",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "EnterGarage",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f1472045-c140-41ca-85d0-e5c30a3d1c5e",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "StartWave",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -388,7 +408,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Info",
+                    "name": "StartWave",
                     "type": "Button",
                     "id": "2b10717e-e360-47c7-9d8a-93d8ff8d4926",
                     "expectedControlType": "Button",
@@ -465,18 +485,18 @@
                 {
                     "name": "",
                     "id": "2fa4a512-c92b-44c0-8dc8-8b18fa221d3f",
-                    "path": "<Gamepad>/buttonNorth",
+                    "path": "<Gamepad>/buttonWest",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Info",
+                    "action": "StartWave",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "9edc723f-ea4b-46f7-bf0c-c489547d95c3",
-                    "path": "<Gamepad>/buttonWest",
+                    "path": "<Gamepad>/buttonNorth",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
