@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class MaterialBehavior : MonoBehaviour
 {
@@ -11,14 +12,24 @@ public class MaterialBehavior : MonoBehaviour
     private GameManager gameManager;
     private Rigidbody rb;
     private bool landed = false;
+	private Vector3 direction;
 
-    private Vector3 originalPosition;
+	float x;
+	float z;
+
+
+	private Vector3 originalPosition;
 
     void Start()
     {
         gameManager = FindObjectOfType<GameManager>();
         rb = GetComponent<Rigidbody>();
-        Throw();
+		direction = Random.insideUnitSphere.normalized;
+		while ((x < 0.15f && x > -0.15f) || (z < 0.15f && z > -0.15f))
+		{
+			x = Random.Range(-0.30f, 0.30f);
+			z = Random.Range(-0.17f, 0.17f);
+		}
     }
 
     void Update()
@@ -43,8 +54,11 @@ public class MaterialBehavior : MonoBehaviour
 
     private void Throw()
     {
-        transform.position += transform.right * 7 * Time.deltaTime;
-        transform.position += transform.up * 7 * Time.deltaTime;
+		//transform.eulerAngles(transform.position.x, transform.position.y + randomQuaternion.y, transform.position.z);
+		Debug.Log(x + " | " + z);
+		transform.Translate(transform.position * x * Time.smoothDeltaTime);
+		transform.Translate(transform.position * z * Time.smoothDeltaTime);
+		transform.Translate(transform.up * 5 * Time.smoothDeltaTime);
     }
 
     private void Bobbing()
@@ -55,7 +69,7 @@ public class MaterialBehavior : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-		if (landed != true && other.gameObject.CompareTag("PlaceForTower"))
+		if (landed != true && (other.gameObject.CompareTag("PlaceForTower") || other.gameObject.CompareTag("Road")))
 		{
 			Landed();
 		}
