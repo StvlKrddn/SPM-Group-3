@@ -11810,11 +11810,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 778478423427622797, guid: f38755517d96a124d80b16613eb953a3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -73.7
       objectReference: {fileID: 0}
     - target: {fileID: 778478423427622797, guid: f38755517d96a124d80b16613eb953a3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 60.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 778478423427622797, guid: f38755517d96a124d80b16613eb953a3, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -73.7
       objectReference: {fileID: 0}
     - target: {fileID: 845250195770483577, guid: f38755517d96a124d80b16613eb953a3, type: 3}
       propertyPath: m_AnchorMax.x
@@ -11942,7 +11946,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2950098244099825816, guid: f38755517d96a124d80b16613eb953a3, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -180
+      value: -180.00006
       objectReference: {fileID: 0}
     - target: {fileID: 3065117789269652229, guid: f38755517d96a124d80b16613eb953a3, type: 3}
       propertyPath: m_Name
@@ -12675,6 +12679,10 @@ PrefabInstance:
     - target: {fileID: 8342675602515903961, guid: f38755517d96a124d80b16613eb953a3, type: 3}
       propertyPath: m_Name
       value: MoneyChanger
+      objectReference: {fileID: 0}
+    - target: {fileID: 8369802465785546123, guid: f38755517d96a124d80b16613eb953a3, type: 3}
+      propertyPath: far clip plane
+      value: 200
       objectReference: {fileID: 0}
     - target: {fileID: 8369802465785546123, guid: f38755517d96a124d80b16613eb953a3, type: 3}
       propertyPath: m_CullingMask.m_Bits
@@ -78694,9 +78702,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07cb99ef5993823478610b661b76d181, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  start: 0
-  from: 0
-  to: 0
 --- !u!1 &1312122553
 GameObject:
   m_ObjectHideFlags: 0
@@ -97702,9 +97707,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07cb99ef5993823478610b661b76d181, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  start: 90
-  from: 0
-  to: 360
 --- !u!1 &1637984093
 GameObject:
   m_ObjectHideFlags: 0

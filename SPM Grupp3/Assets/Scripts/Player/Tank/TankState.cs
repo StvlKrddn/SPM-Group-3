@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(Health))]
 public class TankState : MonoBehaviour
 {
     // Inspector variables
     [SerializeField] private float movementSpeed = 6f;
+    [SerializeField] private float health = 50f;
 
     // Components
     Rigidbody rb;
@@ -23,11 +25,11 @@ public class TankState : MonoBehaviour
     float standardSpeed;
     Matrix4x4 isoMatrix;
 
-    [SerializeField] private float health = 50f;
 
     Transform spawnPoint;
     Transform garage;
     PlayerInput playerInput;
+    PlayerHandler playerHandler;
 
     float currentHealth;
     float playerID;
@@ -36,7 +38,6 @@ public class TankState : MonoBehaviour
     public float StandardSpeed { 
         get 
         { 
-            // Shady code until i figure out a fix
             if (standardSpeed == 0)
             {
                 standardSpeed = movementSpeed;
@@ -45,13 +46,14 @@ public class TankState : MonoBehaviour
         } 
         set { standardSpeed = value; } 
     }
+    public float Health { get { return health; } }
 
     public PlayerInput PlayerInput { 
         get 
         {
             if (playerInput == null)
             {
-                playerInput = GetComponent<PlayerInput>();
+                playerInput = GetComponentInParent<PlayerInput>();
             }
             return playerInput; 
         } 
@@ -71,6 +73,8 @@ public class TankState : MonoBehaviour
 
         rb = GetComponent<Rigidbody>();
 
+        playerHandler = GetComponentInParent<PlayerHandler>();
+
         turretObject = transform.GetChild(0);
         
         aimSpeed = standardSpeed * 5;
@@ -80,12 +84,12 @@ public class TankState : MonoBehaviour
         /* Explanation of isometric translation can be found here: https://youtu.be/8ZxVBCvJDWk */
 
         // Subscribe to events
-        EventHandler.Instance.RegisterListener<NewWaveEvent>(OnNewWave);
+        EventHandler.Instance.RegisterListener<WaveEndEvent>(OnWaveEnd);
     }
 
     void InitializeInputSystem()
     {
-        playerInput = transform.parent.GetComponent<PlayerInput>();
+        playerInput = GetComponentInParent<PlayerInput>();
 
         playerID = playerInput.playerIndex;
 
@@ -161,26 +165,42 @@ public class TankState : MonoBehaviour
             EnemyBullet enemyBullet = other.gameObject.GetComponent<EnemyBullet>();
             TakeDamage(enemyBullet.damage);
         }
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            EnemyController enemy = other.gameObject.GetComponent<EnemyController>();
+            TakeDamage(enemy.MeleeDamage);
+        }
     }
 
-    void TakeDamage(float damage)
+    public void TakeDamage(float damage)
     {
-        print("Taking damage");
         currentHealth -= damage;
-        if (currentHealth < 0)
+        print("Taking damage. Current health: " + currentHealth);
+        if (currentHealth <= 0)
         {
-            print("Tank destroyed!");
             DestroyTank();
         }
     }
 
     void DestroyTank()
     {
+        print("Tank destroyed!");
         transform.position = spawnPoint.position;
+        playerHandler.Destroyed = true;
+        EventHandler.Instance.InvokeEvent(new PlayerSwitchEvent(
+            description: "Player switching mode",
+            playerContainer: transform.parent.gameObject
+        ));
     }
 
-    void OnNewWave(NewWaveEvent eventInfo)
+    void OnWaveEnd(WaveEndEvent eventInfo)
     {
+        RepairTank();
+    }
+
+    public void RepairTank()
+    {
+        playerHandler.Destroyed = false;
         currentHealth = health;
     }
 }

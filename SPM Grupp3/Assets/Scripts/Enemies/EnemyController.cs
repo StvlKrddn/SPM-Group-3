@@ -6,8 +6,9 @@ using UnityEngine;
 public abstract class EnemyController : MonoBehaviour
 {
     public float speed = 10f;
-    public float hp = 100f;
+    [SerializeField] private float health = 100f;
     [SerializeField] private GameObject hitEffect;
+    [SerializeField] private float meleeDamage;
     private GameManager gM;
     private Transform target;
     private int currIndex = 0;
@@ -23,12 +24,17 @@ public abstract class EnemyController : MonoBehaviour
     private float amountOfTicks;
     private float amountOfDps;
     private bool dead = false;
+    private float currentHealth;
+
+    public float MeleeDamage { get { return meleeDamage; } set { meleeDamage = value; } }
+    public float Health { get { return health; } }
 
     // Start is called before the first frame update
 
     protected virtual void Awake()
     {
         defaultSpeed = speed;
+        currentHealth = health;
         gM = FindObjectOfType<GameManager>();
         target = Waypoints.wayPoints[currIndex];
         //Change to right tank when done with tanks
@@ -76,7 +82,7 @@ public abstract class EnemyController : MonoBehaviour
         Destroy(gameObject);
     }
 
-    private void OnTriggerEnter(Collider other)
+    /*private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("PlayerShots"))
         {
@@ -85,12 +91,12 @@ public abstract class EnemyController : MonoBehaviour
             TakeDamage(bullet.BulletDamage);
             Destroy(hitEffektInstance, 1f);
         }
-    }
+    }*/
 
     public virtual void TakeDamage(float damage)
     {
-        hp -= damage;
-        if (hp <= 0 && dead == false)
+        currentHealth -= damage;
+        if (currentHealth <= 0 && dead == false)
         {
             dead = true;
             EnemyDeath();

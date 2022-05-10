@@ -12,9 +12,14 @@ public class PlayerHandler : MonoBehaviour
     private PlayerInput playerInput;
     private GameObject tankMode;
     private GameObject buildMode;
+    private bool destroyed;
+
+    public bool Destroyed { get { return destroyed; } set { destroyed = value; } }
 
     void Start()
     {
+        destroyed = false;
+
         canvas = Camera.main.transform.Find("Canvas").gameObject;
 
         currentMode = FindObjectOfType<GameManager>().StartingMode;
@@ -31,7 +36,7 @@ public class PlayerHandler : MonoBehaviour
         {
             EnterBuildMode();
         }
-        else
+        else if (currentMode == PlayerMode.Tank)
         {
             EnterTankMode();
         }
@@ -51,6 +56,8 @@ public class PlayerHandler : MonoBehaviour
             ));
 
         playerInput.SwitchCurrentActionMap("Tank");
+
+        GetComponentInChildren<Health>().ResetHealth();
 
         //canvas.transform.Find("Build_UI").gameObject.SetActive(false);
 
@@ -89,9 +96,14 @@ public class PlayerHandler : MonoBehaviour
             EnterBuildMode();
         }
         // If in Build mode, switch to Tank
-        else
+        else if (currentMode == PlayerMode.Build && !destroyed)
         {
             EnterTankMode();
+        }
+
+        if (destroyed)
+        {
+            print("Your tank is destroyed! Repair it or wait until next wave");
         }
     }
 
