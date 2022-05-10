@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public class TankState : MonoBehaviour
 {
     // Inspector variables
-    [SerializeField] private float movementSpeed = 6f;
+    public float movementSpeed = 6f;
 
     // Components
     Rigidbody rb;
@@ -15,6 +15,7 @@ public class TankState : MonoBehaviour
     // Input components
     InputAction moveGamepadAction;
     InputAction aimAction;
+    InputAction abilityAction;
 
     // Instance variables
     Vector2 gamepadInputVector;
@@ -31,6 +32,9 @@ public class TankState : MonoBehaviour
 
     float currentHealth;
     float playerID;
+    public static TankUpgradeTree tankUpgradeTreeOne;
+    public static TankUpgradeTree tankUpgradeTreeTwo;
+
 
     // Getters and Setters
     public float StandardSpeed { 
@@ -75,6 +79,11 @@ public class TankState : MonoBehaviour
         
         aimSpeed = standardSpeed * 5;
 
+        if (GetComponent<TankUpgradeTree>())
+        {
+            tankUpgradeTreeOne = GetComponent<TankUpgradeTree>();
+        }
+
         //Create isometric matrix
         isoMatrix = Matrix4x4.Rotate(Quaternion.Euler(0, 45, 0));
         /* Explanation of isometric translation can be found here: https://youtu.be/8ZxVBCvJDWk */
@@ -91,6 +100,8 @@ public class TankState : MonoBehaviour
 
         moveGamepadAction = playerInput.actions["Move"];
         aimAction = playerInput.actions["Aim"];
+        abilityAction = playerInput.actions["Ability"];
+        abilityAction.performed += AbilityCast;
     }
 
     void SetPlayerColor()
@@ -160,6 +171,14 @@ public class TankState : MonoBehaviour
         {
             EnemyBullet enemyBullet = other.gameObject.GetComponent<EnemyBullet>();
             TakeDamage(enemyBullet.damage);
+        }
+    }
+
+    private void AbilityCast(InputAction.CallbackContext context)
+    {
+        if (tankUpgradeTreeOne != null)
+        {
+            tankUpgradeTreeOne.Ability();
         }
     }
 

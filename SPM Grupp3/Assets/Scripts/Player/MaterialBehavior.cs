@@ -17,30 +17,34 @@ public class MaterialBehavior : MonoBehaviour
     void Start()
     {
         gameManager = FindObjectOfType<GameManager>();
-        originalPosition = transform.position;
         rb = GetComponent<Rigidbody>();
         Throw();
-        StartCoroutine(SelfDestruct());
     }
 
     void Update()
     {
-        if (landed == true)
-        {
-            Bobbing();
-        }
-        Invoke(nameof(Landed), 1.5f);
+		if (landed == true)
+		{
+			Bobbing();
+		}
+		else
+		{
+			Throw();
+		}
     }
 
     private void Landed()
     {
+        originalPosition = transform.position;
+		originalPosition.y += 1;
         landed = true;
-    }
+		StartCoroutine(SelfDestruct());
+	}
 
     private void Throw()
     {
-        transform.position += transform.right * 10;
-        transform.position += transform.up * 10;
+        transform.position += transform.right * 7 * Time.deltaTime;
+        transform.position += transform.up * 7 * Time.deltaTime;
     }
 
     private void Bobbing()
@@ -51,7 +55,11 @@ public class MaterialBehavior : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Tank"))
+		if (landed != true && other.gameObject.CompareTag("PlaceForTower"))
+		{
+			Landed();
+		}
+		if (other.gameObject.CompareTag("Tank"))
         {
             gameManager.AddMaterial(1);
             Destroy(gameObject);

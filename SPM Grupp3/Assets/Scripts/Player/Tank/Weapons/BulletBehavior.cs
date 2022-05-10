@@ -13,6 +13,7 @@ public class BulletBehavior : MonoBehaviour
     float range;
     
     Vector3 originalPosition;
+    private int penetrationCount = 3;
     
     public float BulletDamage { get { return bulletDamage; } set { bulletDamage = value; } }
     public float BulletRange { get { return range; } set { range = value; } }
@@ -42,9 +43,16 @@ public class BulletBehavior : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!penetrating && other.CompareTag("Enemy"))
+        if (other.CompareTag("Enemy"))
         {
-            Destroy(gameObject, 0.01f);
+            if (penetrating == true && penetrationCount > 0)
+            {
+                penetrationCount--;
+            }
+            else
+            {
+                Destroy(gameObject, 0.01f);
+            }
         }
     }
 }
