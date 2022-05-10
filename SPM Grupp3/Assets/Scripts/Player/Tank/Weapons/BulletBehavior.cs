@@ -5,7 +5,7 @@ using UnityEngine;
 public class BulletBehavior : MonoBehaviour
 {
     [SerializeField] private float bulletDamage;
-    [SerializeField] private bool penetrating;
+    public bool penetrating;
     
     GameObject tank;
 
@@ -51,7 +51,7 @@ public class BulletBehavior : MonoBehaviour
             }
             else
             {
-                Destroy(gameObject, 0.01f);
+				Destroy(gameObject, 0.01f);
             }
         }
     }

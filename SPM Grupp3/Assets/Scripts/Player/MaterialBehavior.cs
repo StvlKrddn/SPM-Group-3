@@ -54,8 +54,6 @@ public class MaterialBehavior : MonoBehaviour
 
     private void Throw()
     {
-		//transform.eulerAngles(transform.position.x, transform.position.y + randomQuaternion.y, transform.position.z);
-		Debug.Log(x + " | " + z);
 		transform.Translate(transform.position * x * Time.smoothDeltaTime);
 		transform.Translate(transform.position * z * Time.smoothDeltaTime);
 		transform.Translate(transform.up * 5 * Time.smoothDeltaTime);

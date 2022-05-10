@@ -27,14 +27,14 @@ public abstract class TankUpgradeTree : MonoBehaviour
     [SerializeField] protected bool abilityReady;
 
 
-    private void Start()
+    protected void Start()
 	{
 		tankState = GetComponent<TankState>();
         weapon = GetComponent<WeaponSlot>();
         gameManager = FindObjectOfType<GameManager>(); 
 	}
 
-    protected virtual bool UpgradeOne()
+    public virtual bool UpgradeOne()
     {
         if (currentUpgrade == 0 && gameManager.SpendResources(upgradeOneMoney, upgradeOneMaterial))
         {
@@ -44,7 +44,7 @@ public abstract class TankUpgradeTree : MonoBehaviour
         return false;
     }
 
-    protected virtual bool UpgradeTwo()
+    public virtual bool UpgradeTwo()
     {
         if (currentUpgrade == 1 && gameManager.SpendResources(upgradeTwoMoney, upgradeTwoMaterial))
         {
@@ -55,7 +55,7 @@ public abstract class TankUpgradeTree : MonoBehaviour
         return false;
     }
 
-    protected virtual bool UpgradeThree()
+    public virtual bool UpgradeThree()
     {
         if (currentUpgrade == 2 && gameManager.SpendResources(upgradeThreeMoney, upgradeThreeMaterial))
         {
@@ -80,6 +80,7 @@ public abstract class TankUpgradeTree : MonoBehaviour
     protected IEnumerator ResetAbility()
     {
         yield return new WaitForSeconds(abilityCD);
+		Debug.Log("We back");
         abilityReady = true;
     }
 

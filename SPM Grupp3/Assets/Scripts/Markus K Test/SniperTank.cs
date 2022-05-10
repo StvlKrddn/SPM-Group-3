@@ -4,25 +4,20 @@ using UnityEngine;
 
 public class SniperTank : TankUpgradeTree
 {
-	private int fireRateDivide = 2;
+	private int rangeIncrease = 5;
+	private int fireRateMultiply = 2;
 	private int damageIncrease = 25;
 
-	protected override bool UpgradeOne()
+	public override bool UpgradeOne()
 	{
 		if (base.UpgradeOne())
 		{
-			weapon.FireRate /= fireRateDivide;
-			weapon.UpgradeDamage(damageIncrease);
+			weapon.MakeSniper(rangeIncrease, fireRateMultiply, damageIncrease);
 			return true;
 		}
 		return false;
 	}
-	protected override bool UpgradeTwo()
-	{
-		throw new System.NotImplementedException();
-	}
-
-	protected override bool UpgradeThree()
+	public override bool UpgradeTwo()
 	{
 		throw new System.NotImplementedException();
 	}

@@ -14,7 +14,7 @@ public class WeaponSlot : MonoBehaviour
     private float range;
     private float bulletSpeed;
     private bool penetrating;
-    private GameObject bulletPrefab;
+	private GameObject bulletPrefab;
 
     TankState tank;
     Transform bulletSpawner;
@@ -55,6 +55,7 @@ public class WeaponSlot : MonoBehaviour
         penetrating = equippedWeapon.penetrating;
         bulletSpeed = equippedWeapon.bulletSpeed;
         bulletPrefab = equippedWeapon.bulletPrefab;
+		bullet = bulletPrefab.GetComponent<BulletBehavior>();
     }
 
     void Update()
@@ -96,9 +97,8 @@ public class WeaponSlot : MonoBehaviour
     }
 
     public void UpgradeFirerate(float modifier)
-    {
-        //1
-        fireRate += modifier;
+	{
+        fireRate /= modifier;
     }
 
     public void UpgradeDamage(float modifier)
@@ -106,13 +106,11 @@ public class WeaponSlot : MonoBehaviour
         bullet.BulletDamage += modifier;
     }
 
-    public void UpgradeRange(float modifier)
-    {
-        bullet.BulletRange += modifier;
-    }
-
-    public void UpgradePenetration()
-    {
-        penetrating = true;
-    }
+	public void MakeSniper(float range, float fireRateMultiply, float damageIncrease)
+	{
+		fireRate *= fireRateMultiply;
+		bullet.BulletDamage += damageIncrease;
+        bullet.BulletRange += range;
+        bullet.penetrating = true; 
+	}
 }

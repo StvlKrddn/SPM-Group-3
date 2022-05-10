@@ -81,6 +81,7 @@ public class TankState : MonoBehaviour
 
         if (GetComponent<TankUpgradeTree>())
         {
+			Debug.Log("JA");
             tankUpgradeTreeOne = GetComponent<TankUpgradeTree>();
         }
 
@@ -176,9 +177,11 @@ public class TankState : MonoBehaviour
 
     private void AbilityCast(InputAction.CallbackContext context)
     {
+		Debug.Log("adsfa");
         if (tankUpgradeTreeOne != null)
         {
-            tankUpgradeTreeOne.Ability();
+			tankUpgradeTreeOne.UpgradeOne();
+            //tankUpgradeTreeOne.Ability();
         }
     }
 

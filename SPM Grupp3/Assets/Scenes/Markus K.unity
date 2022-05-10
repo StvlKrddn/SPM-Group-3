@@ -6201,6 +6201,14 @@ PrefabInstance:
       propertyPath: bulletPrefab
       value: 
       objectReference: {fileID: 5158456270458876578, guid: 4707a546d434868449fa096e9615cfc2, type: 3}
+    - target: {fileID: 8961258511388597484, guid: 6364959b4060537488578e889cf8fbea, type: 3}
+      propertyPath: bulletPrefab
+      value: 
+      objectReference: {fileID: 5158456270458876578, guid: 4707a546d434868449fa096e9615cfc2, type: 3}
+    - target: {fileID: 8961258511388597484, guid: 6364959b4060537488578e889cf8fbea, type: 3}
+      propertyPath: equippedWeapon
+      value: 
+      objectReference: {fileID: 11400000, guid: 9df75a23e4b34194887afee753057171, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6364959b4060537488578e889cf8fbea, type: 3}
 --- !u!1 &79039641
@@ -12256,6 +12264,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MaterialCostText
       objectReference: {fileID: 0}
+    - target: {fileID: 4476359196686602889, guid: f38755517d96a124d80b16613eb953a3, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4484458447042674582, guid: f38755517d96a124d80b16613eb953a3, type: 3}
       propertyPath: m_Name
       value: MoneyCost
@@ -12483,11 +12495,11 @@ PrefabInstance:
     - target: {fileID: 5574963424639874961, guid: f38755517d96a124d80b16613eb953a3, type: 3}
       propertyPath: moneyUI
       value: 
-      objectReference: {fileID: 170392083}
+      objectReference: {fileID: 0}
     - target: {fileID: 5574963424639874961, guid: f38755517d96a124d80b16613eb953a3, type: 3}
       propertyPath: materialUI
       value: 
-      objectReference: {fileID: 170392082}
+      objectReference: {fileID: 0}
     - target: {fileID: 5574963424639874961, guid: f38755517d96a124d80b16613eb953a3, type: 3}
       propertyPath: colorGain.a
       value: 1
@@ -12594,6 +12606,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5574963426677161182, guid: f38755517d96a124d80b16613eb953a3, type: 3}
       propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5600586238588015409, guid: f38755517d96a124d80b16613eb953a3, type: 3}
+      propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5642244605116146430, guid: f38755517d96a124d80b16613eb953a3, type: 3}
@@ -19992,10 +20008,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 291801986}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84ddc4bc03d97b24d8474d6ac61bd62d, type: 3}
+  m_Script: {fileID: 11500000, guid: 632fe7ad3c3e30c4bb9ea28f7c45a7ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentUpgrade: 3
+  currentUpgrade: 0
   upgradeOneMoney: 0
   upgradeOneMaterial: 0
   upgradeTwoMoney: 0
@@ -20003,9 +20019,8 @@ MonoBehaviour:
   movementSpeedIncrease: 0
   upgradeThreeMoney: 0
   upgradeThreeMaterial: 0
-  abilityCD: 5
-  abilityReady: 1
-  grenade: {fileID: 1372596116698524053, guid: 15019bdd4ebaddf45afd94d688f08fb9, type: 3}
+  abilityCD: 0
+  abilityReady: 0
 --- !u!1 &292236276
 GameObject:
   m_ObjectHideFlags: 0
@@ -78858,9 +78873,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07cb99ef5993823478610b661b76d181, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  start: 0
-  from: 0
-  to: 0
 --- !u!1 &1312122553
 GameObject:
   m_ObjectHideFlags: 0
@@ -97866,9 +97878,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 07cb99ef5993823478610b661b76d181, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  start: 90
-  from: 0
-  to: 360
 --- !u!1 &1637984093
 GameObject:
   m_ObjectHideFlags: 0
