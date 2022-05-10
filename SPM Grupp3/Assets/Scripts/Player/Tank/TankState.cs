@@ -32,7 +32,9 @@ public class TankState : MonoBehaviour
 
     float currentHealth;
     float playerID;
-    private TankUpgradeTree tankUpgradeTree;
+    public static TankUpgradeTree tankUpgradeTreeOne;
+    public static TankUpgradeTree tankUpgradeTreeTwo;
+
 
     // Getters and Setters
     public float StandardSpeed { 
@@ -79,7 +81,7 @@ public class TankState : MonoBehaviour
 
         if (GetComponent<TankUpgradeTree>())
         {
-            tankUpgradeTree = GetComponent<TankUpgradeTree>();
+            tankUpgradeTreeOne = GetComponent<TankUpgradeTree>();
         }
 
         //Create isometric matrix
@@ -174,9 +176,9 @@ public class TankState : MonoBehaviour
 
     private void AbilityCast(InputAction.CallbackContext context)
     {
-        if (tankUpgradeTree != null)
+        if (tankUpgradeTreeOne != null)
         {
-            //tankUpgradeTree.Ability();
+            tankUpgradeTreeOne.Ability();
         }
     }
 

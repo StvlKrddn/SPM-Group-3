@@ -4,45 +4,38 @@ using UnityEngine;
 
 public class FireTank : TankUpgradeTree
 {
-	private int fireRateIncrease = 2;
+	[SerializeField] private int fireRateIncrease = 2;
 	[SerializeField] private GameObject grenade;
 
-	protected override void UpgradeOne()
+	protected override bool UpgradeOne()
 	{
-		if (currentUpgrade == 0 && gameManager.SpendResources(upgradeOneMoney, upgradeOneMaterial))
+		if (base.UpgradeOne())
 		{
-			currentUpgrade++;
 			weapon.FireRate *= fireRateIncrease;
+			return true;
 		}
+		return false;
 	}
-	protected override void UpgradeTwo()
+	protected override bool UpgradeTwo()
 	{
-		if (currentUpgrade == 1 && gameManager.SpendResources(upgradeTwoMoney, upgradeTwoMaterial))
+		if (base.UpgradeTwo())
 		{
-			currentUpgrade++;
-			tankState.movementSpeed += movementSpeedIncrease;
 			//Eldkastare
+			return true;
 		}
+		return false;
+			
 	}
 
-	protected override void UpgradeThree()
+	public override bool Ability()
 	{
-		if (currentUpgrade == 2 && gameManager.SpendResources(upgradeThreeMoney, upgradeThreeMaterial))
+		if (base.Ability())
 		{
-			currentUpgrade++;
+			GameObject grenadeTemp = Instantiate(grenade, transform.position, transform.rotation, null);
+			grenadeTemp.transform.parent = null;
+			return true;
 		}
+		return false;
 	}
 
-	public override void Ability()
-	{
-		if (currentUpgrade >= 3)
-		{
-			abilityReady = false;
-			Instantiate(grenade, tankState.gameObject.transform);
-			StartCoroutine(ResetAbility());
-		}
-		//Ability not unlocked
-	}
-
-	
 }

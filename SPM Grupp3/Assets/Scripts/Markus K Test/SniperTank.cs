@@ -4,35 +4,32 @@ using UnityEngine;
 
 public class SniperTank : TankUpgradeTree
 {
+	private int fireRateDivide = 2;
+	private int damageIncrease = 25;
 
-	// Start is called before the first frame update
-	void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-	protected override void UpgradeOne()
+	protected override bool UpgradeOne()
 	{
-		throw new System.NotImplementedException();
+		if (base.UpgradeOne())
+		{
+			weapon.FireRate /= fireRateDivide;
+			weapon.UpgradeDamage(damageIncrease);
+			return true;
+		}
+		return false;
 	}
-	protected override void UpgradeTwo()
+	protected override bool UpgradeTwo()
 	{
 		throw new System.NotImplementedException();
 	}
 
-	protected override void UpgradeThree()
+	protected override bool UpgradeThree()
 	{
 		throw new System.NotImplementedException();
 	}
 
-	public override void Ability()
+	public override bool Ability()
 	{
-
+		throw new System.NotImplementedException();
 	}
 
 }
