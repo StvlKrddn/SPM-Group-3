@@ -13,6 +13,7 @@ public class WeaponSlot : MonoBehaviour
     private float spread;
     private float range;
     private float bulletSpeed;
+    private bool penetrating;
     private GameObject bulletPrefab;
 
     TankState tank;
@@ -51,6 +52,7 @@ public class WeaponSlot : MonoBehaviour
         fireRate = equippedWeapon.fireRate;
         spread = equippedWeapon.spread;
         range = equippedWeapon.range;
+        penetrating = equippedWeapon.penetrating;
         bulletSpeed = equippedWeapon.bulletSpeed;
         bulletPrefab = equippedWeapon.bulletPrefab;
     }
@@ -107,5 +109,10 @@ public class WeaponSlot : MonoBehaviour
     public void UpgradeRange(float modifier)
     {
         bullet.BulletRange += modifier;
+    }
+
+    public void UpgradePenetration()
+    {
+        penetrating = true;
     }
 }

@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(Health))]
 public class TankState : MonoBehaviour
 {
     // Inspector variables
     [SerializeField] private float movementSpeed = 6f;
+    [SerializeField] private float health = 50f;
 
     // Components
     Rigidbody rb;
@@ -15,6 +17,7 @@ public class TankState : MonoBehaviour
     // Input components
     InputAction moveGamepadAction;
     InputAction aimAction;
+    InputAction abilityAction;
 
     // Instance variables
     Vector2 gamepadInputVector;
@@ -23,20 +26,21 @@ public class TankState : MonoBehaviour
     float standardSpeed;
     Matrix4x4 isoMatrix;
 
-    [SerializeField] private float health = 50f;
-
     Transform spawnPoint;
     Transform garage;
     PlayerInput playerInput;
+    PlayerHandler playerHandler;
 
     float currentHealth;
     float playerID;
+    public static TankUpgradeTree tankUpgradeTreeOne;
+    public static TankUpgradeTree tankUpgradeTreeTwo;
+
 
     // Getters and Setters
     public float StandardSpeed { 
         get 
         { 
-            // Shady code until i figure out a fix
             if (standardSpeed == 0)
             {
                 standardSpeed = movementSpeed;
@@ -45,13 +49,14 @@ public class TankState : MonoBehaviour
         } 
         set { standardSpeed = value; } 
     }
+    public float Health { get { return health; } }
 
     public PlayerInput PlayerInput { 
         get 
         {
             if (playerInput == null)
             {
-                playerInput = GetComponent<PlayerInput>();
+                playerInput = GetComponentInParent<PlayerInput>();
             }
             return playerInput; 
         } 
@@ -71,26 +76,35 @@ public class TankState : MonoBehaviour
 
         rb = GetComponent<Rigidbody>();
 
+        playerHandler = GetComponentInParent<PlayerHandler>();
+
         turretObject = transform.GetChild(0);
         
         aimSpeed = standardSpeed * 5;
+
+        if (GetComponent<TankUpgradeTree>())
+        {
+            tankUpgradeTreeOne = GetComponent<TankUpgradeTree>();
+        }
 
         //Create isometric matrix
         isoMatrix = Matrix4x4.Rotate(Quaternion.Euler(0, 45, 0));
         /* Explanation of isometric translation can be found here: https://youtu.be/8ZxVBCvJDWk */
 
         // Subscribe to events
-        EventHandler.Instance.RegisterListener<NewWaveEvent>(OnNewWave);
+        EventHandler.Instance.RegisterListener<WaveEndEvent>(OnWaveEnd);
     }
 
     void InitializeInputSystem()
     {
-        playerInput = transform.parent.GetComponent<PlayerInput>();
+        playerInput = GetComponentInParent<PlayerInput>();
 
         playerID = playerInput.playerIndex;
 
         moveGamepadAction = playerInput.actions["Move"];
         aimAction = playerInput.actions["Aim"];
+        abilityAction = playerInput.actions["Ability"];
+        abilityAction.performed += AbilityCast;
     }
 
     void SetPlayerColor()
@@ -161,26 +175,49 @@ public class TankState : MonoBehaviour
             EnemyBullet enemyBullet = other.gameObject.GetComponent<EnemyBullet>();
             TakeDamage(enemyBullet.damage);
         }
+        if (other.gameObject.CompareTag("Enemy"))
+        {
+            EnemyController enemy = other.gameObject.GetComponent<EnemyController>();
+            TakeDamage(enemy.MeleeDamage);
+        }
     }
 
-    void TakeDamage(float damage)
+    private void AbilityCast(InputAction.CallbackContext context)
     {
-        print("Taking damage");
-        currentHealth -= damage;
-        if (currentHealth < 0)
+        if (tankUpgradeTreeOne != null)
         {
-            print("Tank destroyed!");
+            tankUpgradeTreeOne.Ability();
+        }
+    }
+
+    public void TakeDamage(float damage)
+    {
+        currentHealth -= damage;
+        if (currentHealth <= 0)
+        {
             DestroyTank();
         }
     }
 
     void DestroyTank()
     {
+        print("Tank destroyed!");
         transform.position = spawnPoint.position;
+        playerHandler.Destroyed = true;
+        EventHandler.Instance.InvokeEvent(new PlayerSwitchEvent(
+            description: "Player switching mode",
+            playerContainer: transform.parent.gameObject
+        ));
     }
 
-    void OnNewWave(NewWaveEvent eventInfo)
+    void OnWaveEnd(WaveEndEvent eventInfo)
     {
+        RepairTank();
+    }
+
+    public void RepairTank()
+    {
+        playerHandler.Destroyed = false;
         currentHealth = health;
     }
 }

@@ -66,18 +66,18 @@ public class BuildManager : MonoBehaviour
 
         if (gM.SpendResources(tower.cost, tower.materialCost))
         {
-            towerPlacement = clickedArea.GetComponent<TowerPlacement>();
+/*            towerPlacement = clickedArea.GetComponent<TowerPlacement>();*/
             Instantiate(towerBase, ClickedArea.transform.GetChild(0).transform.position, ClickedArea.transform.GetChild(0).transform.rotation);
             placedTower = Instantiate(TowerToBuild, ClickedArea.transform.GetChild(0).transform.position, ClickedArea.transform.GetChild(0).transform.rotation);
-/*            placedTower.GetComponent<Tower>().CheckLevels();*/
 
             ClickedArea = null;
 
-            TowerUpgradeCotroller.instance.PlaceTowerInUpgradeList(placedTower.GetComponent<Tower>());
+            TowerUpgradeCotroller.instance.PlaceTowerInUpgradeList(placedTower);
             gM.AddPlacedTower(placedTower);
 
             return;
         }
+        
         print("Get away you are too poor!");
     }
 }

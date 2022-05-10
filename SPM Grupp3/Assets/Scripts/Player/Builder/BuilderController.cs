@@ -35,7 +35,6 @@ public class BuilderController : MonoBehaviour
     private bool previousMouseState;
     private bool previousYState;
     private GameObject preTower;
-    private bool clicked = false;
     private GameObject buildMenu;
     private GameObject infoView;
     private GameObject towerPanel;
@@ -119,22 +118,6 @@ public class BuilderController : MonoBehaviour
         previousMouseState = isPressed;
     }
 
-    public void InfoAction (InputAction.CallbackContext context)
-    {
-        bool isPressed = context.performed;
-        virtualMouse.CopyState(out MouseState mouseState);
-        mouseState.WithButton(MouseButton.Left, isPressed);
-        InputState.Change(virtualMouse, mouseState);
-        previousYState = isPressed;
-        if (isPressed)
-        {
-            EventHandler.Instance.InvokeEvent(new UIClickedEvent(
-                description: "Info button clicked",
-                clicker: transform.parent.gameObject
-            ));
-        }
-    }
-
     public void BackAction (InputAction.CallbackContext context)
     {
         if (context.performed)
@@ -152,7 +135,6 @@ public class BuilderController : MonoBehaviour
         if (context.performed)
         {
             Deselect();
-            ResetCursorPosition();
             EventHandler.Instance.InvokeEvent(new PlayerSwitchEvent(
                 description: "Player switched mode",
                 playerContainer: transform.parent.gameObject
@@ -344,6 +326,7 @@ public class BuilderController : MonoBehaviour
                     {
                         buildManager.ClickedArea = _selection.gameObject;
                         buildManager.InstantiateTower();
+                        
                     }
 
                 }
@@ -356,13 +339,15 @@ public class BuilderController : MonoBehaviour
         if (hit.collider != null)
         {
             GameObject towerHit = hit.collider.gameObject;
-            if (towerHit.CompareTag("Tower"))
-            {
+/*            if (towerHit.CompareTag("Tower"))
+            {*/
                 if (towerHit != null && preTower == null)
                 {
                     Tower tower = towerHit.GetComponent<Tower>();
                     
                     tower.ShowUpgradeUI(towerPanel, infoView);
+                    EventHandler.Instance.InvokeEvent(new TowerClickedEvent("Tower Is clicked", tower.gameObject));
+                    print("Tower of type: " + tower + " Is clicked");
                 }
                 
 
@@ -379,6 +364,6 @@ public class BuilderController : MonoBehaviour
 
                 } */
             }
-        }
+        /*}*/
     }
 }

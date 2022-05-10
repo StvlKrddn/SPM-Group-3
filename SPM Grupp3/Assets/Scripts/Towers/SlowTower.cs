@@ -103,80 +103,47 @@ public class SlowTower : Tower
 
     public override void ShowUpgradeUI(GameObject medium, GameObject infoView)
     {
-        if (infoView.transform.GetChild(1).gameObject.activeInHierarchy)
+        if (infoView.transform.GetChild(2).gameObject.activeInHierarchy)
         {
-            infoView.transform.GetChild(1).gameObject.SetActive(false);
+            infoView.transform.GetChild(2).gameObject.SetActive(false);
             medium.SetActive(true);
         }
         else
         {
-            infoView.transform.GetChild(1).gameObject.SetActive(true);
+            infoView.transform.GetChild(2).gameObject.SetActive(true);
             medium.SetActive(false);
-        }
-    }
-
-    void CheckAllPlacedTowers()
-    {
-        foreach (GameObject gO in gM.towersPlaced)
-        {
-            if (gO.GetComponent<SlowTower>() != null)
-            {
-                slowTowers.Add(gO.GetComponent<SlowTower>());
-            }
         }
     }
 
     public override void TowerLevel1()
     {
+        base.TowerLevel1();
         if (gM.SpendResources(level1Cost,0f) && !level1UpgradePurchased)
         {
-            CheckAllPlacedTowers();
-            foreach (SlowTower sT in slowTowers)
-            {
-                sT.singleTarget = false;
-                sT.slowTowers.Clear();
-                sT.level1UpgradePurchased = true;
-            }
-            singleTarget = false;
-            slowTowers.Clear();
-            level1UpgradePurchased = true;
-        }
-        
+            tUC.IncreaseUpgradesPurchased();
+            SlowTower sT = tUC.ClickedTower.GetComponent<SlowTower>();           
+            sT.singleTarget = false;              
+        }        
     }
     public override void TowerLevel2()
     {
+        base.TowerLevel2();
         if (gM.SpendResources(level2Cost, 0f) && !level2UpgradePurchased && level1UpgradePurchased)
         {
-            CheckAllPlacedTowers();
-            foreach (SlowTower sT in slowTowers)
-            {
-                sT.slowRadius += upgradeAmountSlowRadius;
-                sT.slowTowers.Clear();
-                sT.level2UpgradePurchased = true;
-            }
-            slowRadius += upgradeAmountSlowRadius;
-            slowTowers.Clear();
-            level2UpgradePurchased = true;
+            tUC.IncreaseUpgradesPurchased();
+            SlowTower sT = tUC.ClickedTower.GetComponent<SlowTower>();
+            sT.slowRadius += upgradeAmountSlowRadius;
         }
     }
     public override void TowerLevel3()
     {
+        base.TowerLevel3();
         if (gM.SpendResources(level3Cost, 0f) && !level3UpgradePurchased && level2UpgradePurchased && level1UpgradePurchased)
         {
-            CheckAllPlacedTowers();
-            foreach (SlowTower sT in slowTowers)
-            {
-                sT.slowProc -= upgradeAmountSlowProc;
-                sT.slowTowers.Clear();
-                sT.level3UpgradePurchased = true;
-            }
-            slowProc -= upgradeAmountSlowProc;
-            slowTowers.Clear();
-            level3UpgradePurchased = true;
+            tUC.IncreaseUpgradesPurchased();
+            SlowTower sT = tUC.ClickedTower.GetComponent<SlowTower>();
+            sT.slowProc -= upgradeAmountSlowProc;
         }
     }
-    public override void CheckLevels()
-    {
 
-    }
 }

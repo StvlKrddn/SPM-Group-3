@@ -5,10 +5,10 @@ using UnityEngine;
 
 public class UpgradesPurchased
 {
-    public Tower tower;
+    public GameObject tower;
     public int upgradesPurchased;
 
-    public UpgradesPurchased(Tower t, int uP)
+    public UpgradesPurchased(GameObject t, int uP)
     {
         tower = t;
         upgradesPurchased = uP;
@@ -18,7 +18,9 @@ public class TowerUpgradeCotroller : MonoBehaviour
 {
     public static TowerUpgradeCotroller instance;
     public List<UpgradesPurchased> upgradeList = new List<UpgradesPurchased>();
+    private GameObject clickedTower;
 
+    public GameObject ClickedTower { get { return clickedTower; } set { clickedTower = value; } }
 
     // Start is called before the first frame update
     void Start()
@@ -29,38 +31,39 @@ public class TowerUpgradeCotroller : MonoBehaviour
         }
         instance = this;
 
-/*        for (int i = 0; i < upgradeList.Count; i++)
-        {
-            UpgradesPurchased U = new UpgradesPurchased(towerTypes[i], 0);
-            upgradeList.Add(U);
-        } */          
+        EventHandler.Instance.RegisterListener<TowerClickedEvent>(GetTowerClicked);
     }
 
-    public void PlaceTowerInUpgradeList(Tower t)
+    public void GetTowerClicked(TowerClickedEvent eventInfo)
     {
-        UpgradesPurchased U = new UpgradesPurchased(t, 0);
-        upgradeList.Add(U);
+        clickedTower = eventInfo.towerClicked;
     }
 
-    public int GetUpgradesPurchased(Tower t)
+    public void PlaceTowerInUpgradeList(GameObject placedTower)
+    {
+        UpgradesPurchased U = new UpgradesPurchased(placedTower, 0);
+        upgradeList.Add(U);
+        
+    }
+
+    public int GetUpgradesPurchased()
     {
         for (int i = 0; i < upgradeList.Count; i++)
         {
-            if (upgradeList[i].tower == t)
+            if (upgradeList[i].tower.Equals(clickedTower))
             {
                 return upgradeList[i].upgradesPurchased;
             }
         }
         return 0;
     }
-    public void IncreaseUpgradesPurchased(Tower t)
-    {       
+    public void IncreaseUpgradesPurchased()
+    {        
         for (int i = 0; i < upgradeList.Count; i++)
         {
-            if (upgradeList[i].tower == t)
+            if (upgradeList[i].tower == clickedTower)
             {
                 upgradeList[i].upgradesPurchased++;
-                print(upgradeList[i].upgradesPurchased);
             }
         }
     }
