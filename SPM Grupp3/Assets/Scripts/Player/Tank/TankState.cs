@@ -26,7 +26,6 @@ public class TankState : MonoBehaviour
     float standardSpeed;
     Matrix4x4 isoMatrix;
 
-
     Transform spawnPoint;
     Transform garage;
     PlayerInput playerInput;
@@ -191,10 +190,9 @@ public class TankState : MonoBehaviour
         }
     }
 
-    void TakeDamage(float damage)
+    public void TakeDamage(float damage)
     {
         currentHealth -= damage;
-        print("Taking damage. Current health: " + currentHealth);
         if (currentHealth <= 0)
         {
             DestroyTank();

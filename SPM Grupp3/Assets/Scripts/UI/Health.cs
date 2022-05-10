@@ -6,7 +6,7 @@ using UnityEngine;
 public class Health : MonoBehaviour
 {
     [Header("Health")]
-    [SerializeField] private float maxHealth = 50f;
+    private float maxHealth;
     private float currentHealth;
 
     private TankState player;
@@ -19,13 +19,14 @@ public class Health : MonoBehaviour
         if (gameObject.GetComponent<TankState>())
         {
             player = GetComponent<TankState>();
-            currentHealth = player.Health;
+            maxHealth = player.Health;
         }
         else if (gameObject.GetComponent<EnemyController>())
         {
             enemy = GetComponent<EnemyController>();
-            currentHealth = enemy.Health;
+            maxHealth = enemy.Health;
         }
+        currentHealth = maxHealth;
     }
 
     private void OnTriggerEnter(Collider other)

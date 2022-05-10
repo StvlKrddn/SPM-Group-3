@@ -49,7 +49,7 @@ public abstract class TankUpgradeTree : MonoBehaviour
         if (currentUpgrade == 1 && gameManager.SpendResources(upgradeTwoMoney, upgradeTwoMaterial))
         {
             currentUpgrade = 2;
-            tankState.movementSpeed += movementSpeedIncrease;
+            tankState.StandardSpeed += movementSpeedIncrease;
             return true;
         }
         return false;
