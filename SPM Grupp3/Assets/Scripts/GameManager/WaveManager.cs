@@ -101,7 +101,6 @@ public class WaveManager : MonoBehaviour
         gameManager.EnemiesKilled++;
         if (enemyCount == 0)
         {
-            currentWave++;
             
             if (currentWave >= victoryWave)
             {

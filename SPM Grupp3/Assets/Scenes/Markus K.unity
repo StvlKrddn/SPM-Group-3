@@ -5982,6 +5982,10 @@ PrefabInstance:
       propertyPath: lengthInSec
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1555352806990302222, guid: 6364959b4060537488578e889cf8fbea, type: 3}
+      propertyPath: slider
+      value: 
+      objectReference: {fileID: 170392081}
     - target: {fileID: 1555352807768005136, guid: 6364959b4060537488578e889cf8fbea, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -12412,6 +12416,10 @@ PrefabInstance:
       propertyPath: spawnPosition
       value: 
       objectReference: {fileID: 1628288155}
+    - target: {fileID: 5574963424639874967, guid: f38755517d96a124d80b16613eb953a3, type: 3}
+      propertyPath: enemyContainer
+      value: 
+      objectReference: {fileID: 1599281698}
     - target: {fileID: 5574963424639874967, guid: f38755517d96a124d80b16613eb953a3, type: 3}
       propertyPath: waves.Array.data[1].subWaves.Array.data[0].enemies.Array.data[0].amount
       value: 5
@@ -94757,6 +94765,36 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1598730607}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1599281698
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1599281699}
+  m_Layer: 0
+  m_Name: EnemyContainer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1599281699
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1599281698}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 24.029762, y: -18.513, z: 17.721228}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1928127784}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1599323459
 GameObject:
   m_ObjectHideFlags: 0
@@ -114849,6 +114887,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1927536093}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1928127784 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5574963424639874962, guid: f38755517d96a124d80b16613eb953a3, type: 3}
+  m_PrefabInstance: {fileID: 170392080}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1929725858
 GameObject:
   m_ObjectHideFlags: 0

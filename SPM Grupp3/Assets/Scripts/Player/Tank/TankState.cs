@@ -175,14 +175,18 @@ public class TankState : MonoBehaviour
             EnemyBullet enemyBullet = other.gameObject.GetComponent<EnemyBullet>();
             TakeDamage(enemyBullet.damage);
         }
-        if (other.gameObject.CompareTag("Enemy"))
-        {
-            EnemyController enemy = other.gameObject.GetComponent<EnemyController>();
-            TakeDamage(enemy.MeleeDamage);
-        }
     }
 
-    private void Ability()
+	private void OnCollisionEnter(Collision collision)
+	{
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            EnemyController enemy = collision.gameObject.GetComponent<EnemyController>();
+            TakeDamage(enemy.MeleeDamage);
+        }
+	}
+
+	private void Ability()
     {
         if (tankUpgradeTree != null)
         {
