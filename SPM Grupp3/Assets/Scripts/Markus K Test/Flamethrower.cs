@@ -7,7 +7,7 @@ using UnityEngine.ParticleSystemJobs;
 public class Flamethrower : MonoBehaviour
 {
     private CapsuleCollider capsuleCollider;
-    private int fireDamage = 40;
+    private int fireDamage = 50;
     private TankState state;
     private PlayerInput playerInput;
     private InputAction fireAction;
