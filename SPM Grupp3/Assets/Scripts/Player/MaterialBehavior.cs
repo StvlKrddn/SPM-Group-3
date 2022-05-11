@@ -22,7 +22,7 @@ public class MaterialBehavior : MonoBehaviour
 
     void Start()
     {
-        gameManager = FindObjectOfType<GameManager>();
+        gameManager = GameManager.Instance;
         rb = GetComponent<Rigidbody>();
 		direction = Random.insideUnitSphere.normalized;
 		while ((x < 0.15f && x > -0.15f) || (z < 0.15f && z > -0.15f))
@@ -55,7 +55,6 @@ public class MaterialBehavior : MonoBehaviour
     private void Throw()
     {
 		//transform.eulerAngles(transform.position.x, transform.position.y + randomQuaternion.y, transform.position.z);
-		Debug.Log(x + " | " + z);
 		transform.Translate(transform.position * x * Time.smoothDeltaTime);
 		transform.Translate(transform.position * z * Time.smoothDeltaTime);
 		transform.Translate(transform.up * 5 * Time.smoothDeltaTime);

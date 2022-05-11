@@ -125,7 +125,7 @@ public class GameManager : MonoBehaviour
         //Instantiate(moneyChangerUI, moneyUI.transform);
 
         money += addMoney;
-        moneyCollected++;
+        moneyCollected += (int) addMoney;
         UpdateResourcesUI();
     }
 
@@ -137,7 +137,7 @@ public class GameManager : MonoBehaviour
         //Instantiate(materialChangerUI, materialUI.transform);
 
         material += addMaterial;
-        materialCollected++;
+        materialCollected += (int) addMaterial;
         UpdateResourcesUI();
     }
 
@@ -189,18 +189,18 @@ public class GameManager : MonoBehaviour
         UpdateResourcesUI();
     }
 
-    public void Victory(int kills)
+    public void Victory()
     {
         Debug.Log("Victory");
         print("Money collected: " + moneyCollected);
         print("Material collected: " + materialCollected);
-        print("Enemies killed: " + kills);
+        print("Enemies killed: " + enemiesKilled);
 
         EventHandler.Instance.InvokeEvent(new VictoryEvent(
             description: "Victory",
             money: (int) moneyCollected,
             material: (int) materialCollected,
-            enemiesKilled: kills,
+            enemiesKilled: enemiesKilled,
             towersBuilt: 0
         ));
     }

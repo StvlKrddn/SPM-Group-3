@@ -22,7 +22,7 @@ public class PlayerHandler : MonoBehaviour
 
         canvas = Camera.main.transform.Find("Canvas").gameObject;
 
-        currentMode = FindObjectOfType<GameManager>().StartingMode;
+        currentMode = GameManager.Instance.StartingMode;
 
         playerInput = GetComponent<PlayerInput>();
 

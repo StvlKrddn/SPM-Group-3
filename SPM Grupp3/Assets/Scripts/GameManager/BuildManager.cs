@@ -36,7 +36,7 @@ public class BuildManager : MonoBehaviour
 
     private void Start()
     {
-        gM = FindObjectOfType<GameManager>();
+        gM = GameManager.Instance;
     }
 
     void OnDisable()

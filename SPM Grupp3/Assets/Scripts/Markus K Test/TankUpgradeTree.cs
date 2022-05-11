@@ -31,7 +31,7 @@ public abstract class TankUpgradeTree : MonoBehaviour
 	{
 		tankState = GetComponent<TankState>();
         weapon = GetComponent<WeaponSlot>();
-        gameManager = FindObjectOfType<GameManager>(); 
+        gameManager = GameManager.Instance; 
 	}
 
     protected virtual bool UpgradeOne()

@@ -15,8 +15,7 @@ public class WaveManager : MonoBehaviour
     [Header("Wave Clear UI: ")]
     [SerializeField] private GameObject waveClear;
     private int enemyCount;
-    private int kills;
-
+    private GameManager gM;
     private int currentWave;
     private int victoryWave;
     private int spawnRate = 0;
@@ -26,6 +25,7 @@ public class WaveManager : MonoBehaviour
     {
         victoryWave = waves.Length;
         waveClear.SetActive(false);
+        gM = GameManager.Instance;
     }
 
     private void Start()
@@ -83,20 +83,20 @@ public class WaveManager : MonoBehaviour
     public void WaveUpdate()
     {
         enemyCount--;
-        GameManager.Instance.EnemiesKilled++;
+        gM.EnemiesKilled++;
         if (enemyCount == 0)
         {
             currentWave++;
             
             if (currentWave >= victoryWave)
             {
-                GameManager.Instance.Victory(kills);
+                gM.Victory();
             }
             else
             {
                 waveClear.SetActive(true);
 
-                FindObjectOfType<GameManager>().spawnEnemies = true;
+                gM.spawnEnemies = true;
                 Debug.Log("Wave " + currentWave + " cleared");
 
                 EventHandler.Instance.InvokeEvent(new WaveEndEvent(
