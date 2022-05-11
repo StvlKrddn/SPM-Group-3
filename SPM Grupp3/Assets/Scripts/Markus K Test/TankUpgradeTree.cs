@@ -17,17 +17,17 @@ public abstract class TankUpgradeTree : MonoBehaviour
     [Header("Upgrade 2: ")]
     [SerializeField] protected int upgradeTwoMoney;
     [SerializeField] protected int upgradeTwoMaterial;
-    [SerializeField] protected int movementSpeedIncrease;
+    [SerializeField] protected int movementSpeedIncrease = 25;
 
     [Header("Upgrade 3: ")]
     [SerializeField] protected int upgradeThreeMoney;
     [SerializeField] protected int upgradeThreeMaterial;
 
+    [Header("Individual: ")]
     [SerializeField] protected float abilityCD;
     [SerializeField] protected bool abilityReady;
 
-
-    protected void Start()
+    protected virtual void Start()
 	{
 		tankState = GetComponent<TankState>();
         weapon = GetComponent<WeaponSlot>();
@@ -49,7 +49,7 @@ public abstract class TankUpgradeTree : MonoBehaviour
         if (currentUpgrade == 1 && gameManager.SpendResources(upgradeTwoMoney, upgradeTwoMaterial))
         {
             currentUpgrade = 2;
-            tankState.movementSpeed += movementSpeedIncrease;
+            tankState.IncreaseSpeed(movementSpeedIncrease);
             return true;
         }
         return false;
@@ -70,6 +70,7 @@ public abstract class TankUpgradeTree : MonoBehaviour
     {
         if (currentUpgrade == 3 && abilityReady == true)
         {
+            Debug.Log("Kastar cool spell");
             abilityReady = false;
             StartCoroutine(ResetAbility());
             return true;

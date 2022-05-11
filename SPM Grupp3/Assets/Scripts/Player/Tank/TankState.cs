@@ -32,8 +32,9 @@ public class TankState : MonoBehaviour
 
     float currentHealth;
     float playerID;
-    public static TankUpgradeTree tankUpgradeTreeOne;
-    public static TankUpgradeTree tankUpgradeTreeTwo;
+    private TankUpgradeTree tankUpgradeTree;
+    [SerializeField] private TankUpgradeTree tankUpgradeTreeOne;
+    [SerializeField] private TankUpgradeTree tankUpgradeTreeTwo;
 
 
     // Getters and Setters
@@ -65,7 +66,7 @@ public class TankState : MonoBehaviour
     {
         InitializeInputSystem();
 
-        SetPlayerColor();
+        SetPlayerDiffrence();
 
         FindGarage();
 
@@ -78,12 +79,6 @@ public class TankState : MonoBehaviour
         turretObject = transform.GetChild(0);
         
         aimSpeed = standardSpeed * 5;
-
-        if (GetComponent<TankUpgradeTree>())
-        {
-			Debug.Log("JA");
-            tankUpgradeTreeOne = GetComponent<TankUpgradeTree>();
-        }
 
         //Create isometric matrix
         isoMatrix = Matrix4x4.Rotate(Quaternion.Euler(0, 45, 0));
@@ -102,13 +97,13 @@ public class TankState : MonoBehaviour
         moveGamepadAction = playerInput.actions["Move"];
         aimAction = playerInput.actions["Aim"];
         abilityAction = playerInput.actions["Ability"];
-        abilityAction.performed += AbilityCast;
     }
 
-    void SetPlayerColor()
+    void SetPlayerDiffrence()
     {
         Renderer renderer = GetComponent<Renderer>();
         renderer.material.color = playerInput.playerIndex == 0 ? Color.blue : Color.red;
+        tankUpgradeTree = playerInput.playerIndex == 0 ? tankUpgradeTreeOne : tankUpgradeTreeTwo;
     }
 
     void FindGarage()
@@ -122,7 +117,11 @@ public class TankState : MonoBehaviour
         gamepadInputVector = moveGamepadAction.ReadValue<Vector2>();
         aimInputVector = aimAction.ReadValue<Vector2>();
 
-        RotateTurret(); 
+        RotateTurret();
+        if (abilityAction.triggered)
+        {
+            Ability();
+        }
     }
 
     void FixedUpdate()
@@ -175,13 +174,18 @@ public class TankState : MonoBehaviour
         }
     }
 
-    private void AbilityCast(InputAction.CallbackContext context)
+    private void Ability()
     {
-		Debug.Log("adsfa");
-        if (tankUpgradeTreeOne != null)
+        if (tankUpgradeTree != null)
         {
-			tankUpgradeTreeOne.UpgradeOne();
-            //tankUpgradeTreeOne.Ability();
+            tankUpgradeTree.Ability();
+            tankUpgradeTree.UpgradeThree();
+            tankUpgradeTree.UpgradeTwo();
+            tankUpgradeTree.UpgradeOne();
+        }
+        else
+        {
+            Debug.Log(":(");
         }
     }
 
@@ -204,5 +208,11 @@ public class TankState : MonoBehaviour
     void OnNewWave(NewWaveEvent eventInfo)
     {
         currentHealth = health;
+    }
+
+    public void IncreaseSpeed(float speedIncrease)
+    {
+        standardSpeed += speedIncrease;
+        GetComponent<BoostAbility>().ChangeSpeed();
     }
 }

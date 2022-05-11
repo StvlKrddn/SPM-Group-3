@@ -6193,6 +6193,18 @@ PrefabInstance:
       propertyPath: m_PresetInfoIsWorld
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8213204271390899286, guid: 6364959b4060537488578e889cf8fbea, type: 3}
+      propertyPath: health
+      value: 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 8213204271390899286, guid: 6364959b4060537488578e889cf8fbea, type: 3}
+      propertyPath: tankUpgradeTreeOne
+      value: 
+      objectReference: {fileID: 291801988}
+    - target: {fileID: 8213204271390899286, guid: 6364959b4060537488578e889cf8fbea, type: 3}
+      propertyPath: tankUpgradeTreeTwo
+      value: 
+      objectReference: {fileID: 291801997}
     - target: {fileID: 8465387875451167591, guid: 6364959b4060537488578e889cf8fbea, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -6209,7 +6221,9 @@ PrefabInstance:
       propertyPath: equippedWeapon
       value: 
       objectReference: {fileID: 11400000, guid: 9df75a23e4b34194887afee753057171, type: 2}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7735187666239158057, guid: 6364959b4060537488578e889cf8fbea, type: 3}
+    - {fileID: 7332012417089875685, guid: 6364959b4060537488578e889cf8fbea, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 6364959b4060537488578e889cf8fbea, type: 3}
 --- !u!1 &79039641
 GameObject:
@@ -20016,11 +20030,39 @@ MonoBehaviour:
   upgradeOneMaterial: 0
   upgradeTwoMoney: 0
   upgradeTwoMaterial: 0
-  movementSpeedIncrease: 0
+  movementSpeedIncrease: 6
   upgradeThreeMoney: 0
   upgradeThreeMaterial: 0
   abilityCD: 0
   abilityReady: 0
+  rangeIncrease: 5
+  fireRateMultiply: 3
+  damageIncrease: 50
+  sniperAbility: {fileID: 5158456270458876578, guid: 96e8ed1d1989e8f448a69b5c76916339, type: 3}
+--- !u!114 &291801997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 291801986}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84ddc4bc03d97b24d8474d6ac61bd62d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentUpgrade: 0
+  upgradeOneMoney: 0
+  upgradeOneMaterial: 0
+  upgradeTwoMoney: 0
+  upgradeTwoMaterial: 0
+  movementSpeedIncrease: 25
+  upgradeThreeMoney: 0
+  upgradeThreeMaterial: 0
+  abilityCD: 0
+  abilityReady: 0
+  fireRateMultiply: 2
+  grenade: {fileID: 1372596116698524053, guid: 15019bdd4ebaddf45afd94d688f08fb9, type: 3}
 --- !u!1 &292236276
 GameObject:
   m_ObjectHideFlags: 0

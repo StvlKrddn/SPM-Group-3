@@ -4,14 +4,17 @@ using UnityEngine;
 
 public class SniperTank : TankUpgradeTree
 {
-	private int rangeIncrease = 5;
-	private int fireRateMultiply = 2;
-	private int damageIncrease = 25;
+	[SerializeField] private int rangeIncrease = 5;
+	[SerializeField] private int fireRateMultiply = 3;
+	[SerializeField] private int damageIncrease = 50;
+	[SerializeField] private GameObject sniperAbility;
+
 
 	public override bool UpgradeOne()
 	{
 		if (base.UpgradeOne())
 		{
+			
 			weapon.MakeSniper(rangeIncrease, fireRateMultiply, damageIncrease);
 			return true;
 		}
@@ -19,12 +22,24 @@ public class SniperTank : TankUpgradeTree
 	}
 	public override bool UpgradeTwo()
 	{
-		throw new System.NotImplementedException();
+		if (base.UpgradeTwo())
+		{
+			
+			weapon.MaxRange();
+			return true;
+		}
+		return false;
 	}
 
 	public override bool Ability()
 	{
-		throw new System.NotImplementedException();
+		if (base.Ability())
+		{
+			Debug.Log("JAA");
+			Instantiate(sniperAbility, weapon.bulletSpawner.position, weapon.bulletSpawner.rotation);	
+			return true;
+		}
+		return false;
 	}
 
 }

@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 6671652756378997623}
   - component: {fileID: 5251513164533592096}
   - component: {fileID: 1517886363431165350}
-  - component: {fileID: 3074052266550796674}
+  - component: {fileID: 367582727046285982}
   m_Layer: 0
-  m_Name: MachineGunBullet
+  m_Name: SniperAbility
   m_TagString: PlayerShots
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: f851cc81bb5bdd440b6d72b4a0a3a538, type: 2}
+  - {fileID: 2100000, guid: 5ab3e2fd6d5c00048949c0d0cebfbb45, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -113,7 +113,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 18, y: 18.000008, z: 54.00001}
   m_Center: {x: 0, y: 0, z: 0.0000019073486}
---- !u!114 &3074052266550796674
+--- !u!114 &367582727046285982
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -122,7 +122,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5158456270458876578}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e84f3ff3177c4574ebb2bb20f4a57556, type: 3}
+  m_Script: {fileID: 11500000, guid: 3bdafffd40ba6d94e957d2f29d7b12f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 25
