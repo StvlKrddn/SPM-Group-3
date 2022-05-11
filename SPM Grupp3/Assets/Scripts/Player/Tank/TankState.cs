@@ -191,10 +191,6 @@ public class TankState : MonoBehaviour
             tankUpgradeTree.UpgradeTwo();
             tankUpgradeTree.UpgradeOne();
         }
-        else
-        {
-            Debug.Log(":(");
-        }
     }
 
     public void TakeDamage(float damage)
