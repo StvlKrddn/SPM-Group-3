@@ -5,10 +5,12 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewWeapon", menuName = "Tank/Weapon", order = 1)]
 public class TankWeapon : ScriptableObject
 {
+    public float damage = 25;
     public float fireRate = 0.2f;
     public float spread = 20f;
     public float range = 20f;
     public float bulletSpeed = 35f;
+    public bool penetrating = false;
 
     [Header("Bullet prefab: ")]
     public GameObject bulletPrefab;

@@ -15,16 +15,17 @@ public class WaveManager : MonoBehaviour
     [Header("Wave Clear UI: ")]
     [SerializeField] private GameObject waveClear;
     private int enemyCount;
-
+    private GameManager gM;
     private int currentWave;
     private int victoryWave;
     private int spawnRate = 0;
-    public List<GameObject> currentWaveEnemies = new List<GameObject>();
+    private List<GameObject> currentWaveEnemies = new List<GameObject>();
 
     private void Awake()
     {
         victoryWave = waves.Length;
         waveClear.SetActive(false);
+        gM = GameManager.Instance;
     }
 
     private void Start()
@@ -82,27 +83,25 @@ public class WaveManager : MonoBehaviour
     public void WaveUpdate()
     {
         enemyCount--;
+        gM.EnemiesKilled++;
         if (enemyCount == 0)
         {
             currentWave++;
             
-            //Debug.Log(currentWave + " " + victoryWave);
             if (currentWave >= victoryWave)
             {
-                Victory();
+                gM.Victory();
             }
             else
             {
                 waveClear.SetActive(true);
 
-                FindObjectOfType<GameManager>().spawnEnemies = true;
-            //    StartWave(currentWave); // Test row
+                gM.spawnEnemies = true;
                 Debug.Log("Wave " + currentWave + " cleared");
 
                 EventHandler.Instance.InvokeEvent(new WaveEndEvent(
-                description: "wave ended"
-
-                )) ;
+                    description: "wave ended"
+                ));
 
                 //Activates the the button so the players can start next round 
             }
@@ -123,11 +122,6 @@ public class WaveManager : MonoBehaviour
     private void UpdateUI()
     {
         waveUI.text = (currentWave + 1) + "/" + victoryWave;
-    }
-
-    private void Victory()
-    {
-        Debug.Log("Victory");
     }
 }
 

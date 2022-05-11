@@ -17,13 +17,13 @@ public class EnemySpecialFire : EnemyController
         base.TakeDamage(damage);
     }
 
-	public override void HitBySplash(float radius, float splashDamage)
+	public override void HitByFire(float damage)
 	{
         if (iceShieldOn == true)
         {
             iceShield.SetActive(false);
             iceShieldOn = false;
         }
-		base.HitBySplash(radius, splashDamage);
+		base.HitByFire(damage);
 	}
 }

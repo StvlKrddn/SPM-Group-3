@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1555352807092885023}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.336, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1555352807768005136}
@@ -59,7 +59,7 @@ MonoBehaviour:
     m_Bits: 32
   hoverColor: {r: 0.3962264, g: 0.39024565, b: 0.39024565, a: 1}
   startColor: {r: 1, g: 1, b: 1, a: 0}
-  towerPreview: {r: 1, g: 1, b: 1, a: 0.3529412}
+  towerPreview: {r: 1, g: 1, b: 1, a: 0.38431373}
 --- !u!1 &1555352807768005138
 GameObject:
   m_ObjectHideFlags: 0
@@ -111,7 +111,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Actions: {fileID: -944628639613478452, guid: 351c0499b2b84c649910748b49572abc, type: 3}
   m_NotificationBehavior: 2
-  m_UIInputModule: {fileID: 2885400533230114248}
+  m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -172,9 +172,9 @@ MonoBehaviour:
     m_ActionName: Builder/Accept[/XInputControllerWindows/buttonSouth]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1555352807092885021}
-        m_TargetAssemblyTypeName: BuilderController, Assembly-CSharp
-        m_MethodName: InfoAction
+      - m_Target: {fileID: 1555352807768005151}
+        m_TargetAssemblyTypeName: PlayerHandler, Assembly-CSharp
+        m_MethodName: StartWave
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -222,7 +222,27 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: e1ee2602-c6d1-4cdf-bae3-f0d1db4217e2
     m_ActionName: Tank/EnterGarage[/DualShock4GamepadHID/buttonWest]
-  m_NeverAutoSwitchControlSchemes: 0
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1555352807768005151}
+        m_TargetAssemblyTypeName: PlayerHandler, Assembly-CSharp
+        m_MethodName: StartWave
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 53365927-6c8f-42dc-94b5-0dcee894e958
+    m_ActionName: Tank/StartWave
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 4f31857e-5c5a-450c-ac60-d3248c9885c6
+    m_ActionName: Tank/Ability[/XInputControllerWindows/rightShoulder,/XInputControllerWindows1/rightShoulder,/XInputControllerWindows/select,/XInputControllerWindows1/select]
+  m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: Gamepad
   m_DefaultActionMap: Tank
   m_SplitScreenIndex: -1
@@ -512,6 +532,8 @@ GameObject:
   - component: {fileID: 8961258511388597484}
   - component: {fileID: 8465387875451167576}
   - component: {fileID: 2030755986}
+  - component: {fileID: 7735187666239158057}
+  - component: {fileID: 7332012417089875685}
   m_Layer: 9
   m_Name: TankMode
   m_TagString: Tank
@@ -627,6 +649,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementSpeed: 6
   health: 50
+  tankUpgradeTreeOne: {fileID: 7735187666239158057}
+  tankUpgradeTreeTwo: {fileID: 7332012417089875685}
 --- !u!114 &8961258511388597484
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -640,6 +664,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   equippedWeapon: {fileID: 11400000, guid: 9df75a23e4b34194887afee753057171, type: 2}
+  fireRate: 0
+  spread: 0
+  range: 0
+  bulletSpeed: 0
+  penetrating: 0
+  damage: 0
+  bulletSpawner: {fileID: 0}
 --- !u!114 &8465387875451167576
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -668,6 +699,56 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 50
+--- !u!114 &7735187666239158057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8465387875451167577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 632fe7ad3c3e30c4bb9ea28f7c45a7ab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentUpgrade: 0
+  upgradeOneMoney: 0
+  upgradeOneMaterial: 0
+  upgradeTwoMoney: 0
+  upgradeTwoMaterial: 0
+  movementSpeedIncrease: 25
+  upgradeThreeMoney: 0
+  upgradeThreeMaterial: 0
+  abilityCD: 2
+  abilityReady: 0
+  rangeIncrease: 5
+  fireRateMultiply: 3
+  damageIncrease: 50
+  sniperAbility: {fileID: 5158456270458876578, guid: 96e8ed1d1989e8f448a69b5c76916339, type: 3}
+--- !u!114 &7332012417089875685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8465387875451167577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84ddc4bc03d97b24d8474d6ac61bd62d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentUpgrade: 0
+  upgradeOneMoney: 0
+  upgradeOneMaterial: 0
+  upgradeTwoMoney: 0
+  upgradeTwoMaterial: 0
+  movementSpeedIncrease: 25
+  upgradeThreeMoney: 0
+  upgradeThreeMaterial: 0
+  abilityCD: 3
+  abilityReady: 0
+  fireRateMultiply: 2
+  grenade: {fileID: 1372596116698524053, guid: 15019bdd4ebaddf45afd94d688f08fb9, type: 3}
 --- !u!1001 &288715145866556008
 PrefabInstance:
   m_ObjectHideFlags: 0

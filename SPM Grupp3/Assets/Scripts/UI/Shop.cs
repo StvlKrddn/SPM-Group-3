@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class Shop : MonoBehaviour
 {
-    public GameManager gM;
     private Tower tower;
 
     [Header("UI Elements: ")]

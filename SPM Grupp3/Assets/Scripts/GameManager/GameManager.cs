@@ -34,9 +34,29 @@ public class GameManager : MonoBehaviour
     [Header("Other")]
     public List<GameObject> towersPlaced = new List<GameObject>();
 
+    private GameObject damagingEnemy; // Den senaste fienden som skadade basen
+
     private int currentWave = -1;
+    private int enemiesKilled;
+    private int moneyCollected;
+    private int materialCollected;
+
     public float Money { get { return money; } set { money = value; } }
     public PlayerMode StartingMode { get { return startingMode; } }
+    public int EnemiesKilled { get { return enemiesKilled; } set { enemiesKilled = value; } }
+
+    private static GameManager instance;
+    public static GameManager Instance { 
+        get 
+        {
+            // "Lazy loading" to prevent Unity load order error
+            if (instance == null)
+            {
+                instance = FindObjectOfType<GameManager>();
+            }
+            return instance; 
+        } 
+    }
 
     private void Start()
     {
@@ -78,8 +98,9 @@ public class GameManager : MonoBehaviour
         //Deactivate start button
     }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, GameObject enemy)
     {
+        damagingEnemy = enemy;
         baseHealth -= damage;
         livesSlider.value -= damage;
         if (baseHealth <= 0)
@@ -88,7 +109,6 @@ public class GameManager : MonoBehaviour
             fillArea.SetActive(false);
             Defeat();
         }
-        UpdateResourcesUI();
     }
 
     private void UpdateResourcesUI()
@@ -102,9 +122,10 @@ public class GameManager : MonoBehaviour
         moneyChangerUI.color = colorGain;
         moneyChangerUI.text = "+" + addMoney;
 
-        Instantiate(moneyChangerUI, moneyUI.transform);
+        //Instantiate(moneyChangerUI, moneyUI.transform);
 
         money += addMoney;
+        moneyCollected += (int) addMoney;
         UpdateResourcesUI();
     }
 
@@ -113,9 +134,10 @@ public class GameManager : MonoBehaviour
         materialChangerUI.color = colorGain;
         materialChangerUI.text = "+" + addMaterial;
 
-        Instantiate(materialChangerUI, materialUI.transform);
+        //Instantiate(materialChangerUI, materialUI.transform);
 
         material += addMaterial;
+        materialCollected += (int) addMaterial;
         UpdateResourcesUI();
     }
 
@@ -127,7 +149,7 @@ public class GameManager : MonoBehaviour
             moneyChangerUI.color = Color.red;
             moneyChangerUI.text = "-" + moneySpent;
 
-            Instantiate(moneyChangerUI, moneyUI.transform);
+            //Instantiate(moneyChangerUI, moneyUI.transform);
 
             material -= materialSpent;
             if (materialSpent > 0) 
@@ -135,7 +157,7 @@ public class GameManager : MonoBehaviour
                 materialChangerUI.color = Color.red;
                 materialChangerUI.text = "-" + materialSpent;
 
-                Instantiate(materialChangerUI, moneyUI.transform);
+                //Instantiate(materialChangerUI, moneyUI.transform);
             }
                
 
@@ -154,6 +176,32 @@ public class GameManager : MonoBehaviour
     private void Defeat()
     {
         Debug.Log("Defeat");
+
+        EventHandler.Instance.InvokeEvent(new DefeatEvent(
+            description: "Defeat",
+            wave: currentWave + 1,
+            killedBy: damagingEnemy,
+            enemiesKilled: 0 
+        ));
+
+        money = 0;
+        material = 0;
+        UpdateResourcesUI();
     }
 
+    public void Victory()
+    {
+        Debug.Log("Victory");
+        print("Money collected: " + moneyCollected);
+        print("Material collected: " + materialCollected);
+        print("Enemies killed: " + enemiesKilled);
+
+        EventHandler.Instance.InvokeEvent(new VictoryEvent(
+            description: "Victory",
+            money: (int) moneyCollected,
+            material: (int) materialCollected,
+            enemiesKilled: enemiesKilled,
+            towersBuilt: 0
+        ));
+    }
 }

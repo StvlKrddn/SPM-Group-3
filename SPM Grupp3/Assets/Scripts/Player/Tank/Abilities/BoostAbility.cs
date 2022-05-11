@@ -27,14 +27,24 @@ public class BoostAbility : MonoBehaviour
     void Start()
     {
         tankState = GetComponent<TankState>();
-
-        speedBeforeBoost = tankState.StandardSpeed;
         boostAction = tankState.PlayerInput.actions["Boost"];
+        ChangeSpeed();
     }
 
     void Update()
     {
         Boost();
+    }
+
+    private void OnEnable() 
+    {
+        // Skapar ett exploit där spelaren kan gå in och ut ur Garaget för att få tillbaka sin boost direkt men who cares :)
+        allowedToBoost = true;
+    }
+
+    public void ChangeSpeed()
+    {
+        speedBeforeBoost = tankState.StandardSpeed;
     }
 
     void Boost()

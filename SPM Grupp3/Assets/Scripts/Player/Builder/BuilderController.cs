@@ -135,7 +135,6 @@ public class BuilderController : MonoBehaviour
         if (context.performed)
         {
             Deselect();
-            ResetCursorPosition();
             EventHandler.Instance.InvokeEvent(new PlayerSwitchEvent(
                 description: "Player switched mode",
                 playerContainer: transform.parent.gameObject
