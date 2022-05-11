@@ -12,6 +12,7 @@ public class PlayerHandler : MonoBehaviour
     private PlayerInput playerInput;
     private GameObject tankMode;
     private GameObject buildMode;
+    private GameObject buildMenu;
     private bool destroyed;
 
     public bool Destroyed { get { return destroyed; } set { destroyed = value; } }
@@ -22,6 +23,7 @@ public class PlayerHandler : MonoBehaviour
         destroyed = false;
 
         canvas = Camera.main.transform.Find("Canvas").gameObject;
+        buildMenu = canvas.transform.Find("Build_UI").gameObject;
 
         currentMode = GameManager.Instance.StartingMode;
 
@@ -41,6 +43,8 @@ public class PlayerHandler : MonoBehaviour
         {
             EnterTankMode();
         }
+        
+        buildMenu.SetActive(currentMode == PlayerMode.Build);
     }
 
     void EnterTankMode()
