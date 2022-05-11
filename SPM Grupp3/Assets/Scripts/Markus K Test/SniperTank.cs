@@ -14,7 +14,6 @@ public class SniperTank : TankUpgradeTree
 	{
 		if (base.UpgradeOne())
 		{
-			
 			weapon.MakeSniper(rangeIncrease, fireRateMultiply, damageIncrease);
 			return true;
 		}
@@ -23,8 +22,7 @@ public class SniperTank : TankUpgradeTree
 	public override bool UpgradeTwo()
 	{
 		if (base.UpgradeTwo())
-		{
-			
+		{	
 			weapon.MaxRange();
 			return true;
 		}
@@ -35,7 +33,6 @@ public class SniperTank : TankUpgradeTree
 	{
 		if (base.Ability())
 		{
-			Debug.Log("JAA");
 			Instantiate(sniperAbility, weapon.bulletSpawner.position, weapon.bulletSpawner.rotation);	
 			return true;
 		}
