@@ -13,9 +13,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float material = 0f;
     [SerializeField] private float money = 350f;
 
-    [Header("Enemies: ")]
-    [SerializeField] public bool spawnEnemies = true;
-
     [Header("UI Elements: ")]
     [SerializeField] private Text moneyCounterUI;
     [SerializeField] private Text moneyChangerUI;
@@ -34,7 +31,8 @@ public class GameManager : MonoBehaviour
     [Header("Other")]
     public List<GameObject> towersPlaced = new List<GameObject>();
 
-    private GameObject damagingEnemy; // Den senaste fienden som skadade basen
+    private GameObject damagingEnemy;
+    private WaveManager waveManager;
 
     private int currentWave = -1;
     private int enemiesKilled;
@@ -46,7 +44,8 @@ public class GameManager : MonoBehaviour
     public int EnemiesKilled { get { return enemiesKilled; } set { enemiesKilled = value; } }
 
     private static GameManager instance;
-    public static GameManager Instance { 
+    public static GameManager Instance 
+    { 
         get 
         {
             // "Lazy loading" to prevent Unity load order error
@@ -62,40 +61,11 @@ public class GameManager : MonoBehaviour
     {
         livesSlider.maxValue = baseHealth;
 
+        waveManager = GetComponent<WaveManager>();
+
         UpdateResourcesUI();
 
-        EventHandler.Instance.RegisterListener<StartWaveEvent>(OnStartWave);
-    }
-
-    void Update()
-    {  
-        /*
-        if(Gamepad.current != null && Gamepad.current.xButton.isPressed && spawnEnemies)
-        {
-            SpawnWave();
-        }
-        */
-    }
-
-    private void OnStartWave(StartWaveEvent eventInfo)
-    {
-        if (spawnEnemies)
-        {
-            SpawnWave();
-        }
-    }
-
-    private void SpawnWave()
-    {
-        currentWave++;
-        // Invoke new wave event
-        EventHandler.Instance.InvokeEvent(new NewWaveEvent(
-            description: "New wave started",
-            currentWave: currentWave
-            ));
-
-        spawnEnemies = false;
-        //Deactivate start button
+        
     }
 
     public void TakeDamage(float damage, GameObject enemy)
@@ -184,9 +154,12 @@ public class GameManager : MonoBehaviour
             enemiesKilled: 0 
         ));
 
+        // NOTE(August): Allt under detta borde egentligen hända efter man trycker på Restart-knappen i Defeat skärmen
+        // Kanske ska flyttas till nån OnClick-metod någonstans eller nått
         money = 0;
         material = 0;
         UpdateResourcesUI();
+        waveManager.Restart();
     }
 
     public void Victory()

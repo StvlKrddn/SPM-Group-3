@@ -9,28 +9,48 @@ public class WaveManager : MonoBehaviour
     [Header("Enemies: ")]
     [SerializeField] private Transform spawnPosition;
     [SerializeField] private Text waveUI;
+    [SerializeField] private GameObject enemyContainer;
 
     public WaveInfo[] waves;
 
     [Header("Wave Clear UI: ")]
     [SerializeField] private GameObject waveClear;
     private int enemyCount;
-    private GameManager gM;
-    private int currentWave;
+    private GameManager gameManager;
+    private int currentWave = -1;
     private int victoryWave;
     private int spawnRate = 0;
+    private bool spawnEnemies = true;
     private List<GameObject> currentWaveEnemies = new List<GameObject>();
 
     private void Awake()
     {
         victoryWave = waves.Length;
         waveClear.SetActive(false);
-        gM = GameManager.Instance;
+        gameManager = GameManager.Instance;
+
+        EventHandler.Instance.RegisterListener<StartWaveEvent>(OnStartWave);
     }
 
-    private void Start()
+
+    private void OnStartWave(StartWaveEvent eventInfo)
     {
-      //  StartWave(0);
+        if (spawnEnemies)
+        {
+            SpawnWave();
+        }
+    }
+
+    private void SpawnWave()
+    {
+        currentWave++;
+
+        EventHandler.Instance.InvokeEvent(new NewWaveEvent(
+            description: "New wave started",
+            currentWave: currentWave
+            ));
+
+        spawnEnemies = false;
     }
 
     public void StartWave(int currentWave)
@@ -40,7 +60,6 @@ public class WaveManager : MonoBehaviour
         WaveConstructor(waves[currentWave]);
         StartCoroutine(SpawnCurrentWave());
         UpdateUI();
- //       Debug.Log(enemyCount);
     }
 
     private void WaveConstructor(WaveInfo wave)
@@ -76,27 +95,23 @@ public class WaveManager : MonoBehaviour
         }
     }
 
-    void Update()
-    {
-    }
-
     public void WaveUpdate()
     {
         enemyCount--;
-        gM.EnemiesKilled++;
+        gameManager.EnemiesKilled++;
         if (enemyCount == 0)
         {
             currentWave++;
             
             if (currentWave >= victoryWave)
             {
-                gM.Victory();
+                gameManager.Victory();
             }
             else
             {
                 waveClear.SetActive(true);
 
-                gM.spawnEnemies = true;
+                spawnEnemies = true;
                 Debug.Log("Wave " + currentWave + " cleared");
 
                 EventHandler.Instance.InvokeEvent(new WaveEndEvent(
@@ -112,16 +127,27 @@ public class WaveManager : MonoBehaviour
     {
         for (int i = 0; i < currentWaveEnemies.Count; i++)
         {
-            GameObject g = Instantiate(currentWaveEnemies[i], spawnPosition.position, spawnPosition.rotation); //Spawn enemy and wait for time between enemy
+            GameObject g = Instantiate(currentWaveEnemies[i], spawnPosition.position, spawnPosition.rotation, enemyContainer.transform); //Spawn enemy and wait for time between enemy
             g.SetActive(true);
             yield return new WaitForSeconds(spawnRate);
         }
         yield return false;
     }
 
-    private void UpdateUI()
+    public void UpdateUI()
     {
         waveUI.text = (currentWave + 1) + "/" + victoryWave;
+    }
+
+    public void Restart()
+    {
+        currentWave = -1;
+        foreach (Transform enemy in enemyContainer.transform)
+        {
+            Destroy(enemy.gameObject);
+        }
+        UpdateUI();
+        spawnEnemies = true;
     }
 }
 
