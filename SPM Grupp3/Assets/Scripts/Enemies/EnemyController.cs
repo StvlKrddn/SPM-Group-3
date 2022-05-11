@@ -35,7 +35,7 @@ public abstract class EnemyController : MonoBehaviour
     {
         defaultSpeed = speed;
         currentHealth = health;
-        gM = FindObjectOfType<GameManager>();
+        gM = GameManager.Instance;
         target = Waypoints.wayPoints[currIndex];
         //Change to right tank when done with tanks
     }
@@ -76,8 +76,8 @@ public abstract class EnemyController : MonoBehaviour
 
     private void EnemyDeathBase()
     {
-        gM.TakeDamage(damageBase);
-        DieEvent dieEvent = new DieEvent("död från bas", gameObject, null, null);
+        gM.TakeDamage(damageBase, gameObject);
+        DieEvent dieEvent = new DieEvent("dï¿½d frï¿½n bas", gameObject, null, null);
         EventHandler.Instance.InvokeEvent(dieEvent);
         Destroy(gameObject);
     }
@@ -110,7 +110,7 @@ public abstract class EnemyController : MonoBehaviour
         {
             Instantiate(material, transform.position, transform.rotation);
         }
-        DieEvent dieEvent = new DieEvent("död", gameObject, null, null);
+        DieEvent dieEvent = new DieEvent("dï¿½d", gameObject, null, null);
         EventHandler.Instance.InvokeEvent(dieEvent);
         Destroy(gameObject);
     }
