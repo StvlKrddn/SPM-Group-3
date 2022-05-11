@@ -17,6 +17,8 @@ public class TutorialUI : MonoBehaviour
 
     private List<GameObject> listOfAllTiles = new List<GameObject>();
 
+  //  public List<GameObject> gameObjectsToStartDisabled = new List<GameObject>();
+
    // public GameManager gM; 
 
     public WaveManager scriptToActivate;
@@ -28,8 +30,11 @@ public class TutorialUI : MonoBehaviour
 
     private int whichWave = 0;
 
-    public GameObject FirstWaveActivation; 
-    
+    public GameObject FirstWaveActivation;
+    public GameObject materialToActivate;
+
+    public GameObject tileToActivate; 
+
 
     // Start is called before the first frame update
     void Start()
@@ -41,9 +46,18 @@ public class TutorialUI : MonoBehaviour
             listOfAllTiles.Add(child.gameObject) ; 
         }
 
-        
 
-   //     ShowAmountOfTiles.text = "hej " + listOfAllTiles.Count;
+   //     if(gameObjectsToStartDisabled.Count != 0 )
+   //     {
+   //         foreach (GameObject obj in gameObjectsToStartDisabled)
+   //         {
+   //
+   //             obj.SetActive(false);
+   //         }
+   //
+   //     }
+
+        //     ShowAmountOfTiles.text = "hej " + listOfAllTiles.Count;
 
 
         //Time.timeScale = 0; 
@@ -89,7 +103,13 @@ public class TutorialUI : MonoBehaviour
         {
             case 0:
 
-                FirstWaveActivation.SetActive(true);
+                FirstWaveActivation .SetActive(true);
+
+                // Instantiate<>
+
+                materialToActivate.SetActive(true);
+
+                tileToActivate.layer = LayerMask.NameToLayer("PlaceForTower"); 
                 break;
             case 1:
 
