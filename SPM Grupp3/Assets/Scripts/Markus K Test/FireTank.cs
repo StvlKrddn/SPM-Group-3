@@ -4,22 +4,30 @@ using UnityEngine;
 
 public class FireTank : TankUpgradeTree
 {
-	[SerializeField] private int fireRateIncrease = 2;
+	[SerializeField] private int fireRateMultiply = 2;
 	[SerializeField] private GameObject grenade;
 
-	protected override bool UpgradeOne()
+	protected override void Start()
+	{
+		base.Start();
+		// grenade = tempgrenade 
+	}
+
+	public override bool UpgradeOne()
 	{
 		if (base.UpgradeOne())
 		{
-			weapon.FireRate *= fireRateIncrease;
+			
+			weapon.UpgradeFirerate(fireRateMultiply);
 			return true;
 		}
 		return false;
 	}
-	protected override bool UpgradeTwo()
+	public override bool UpgradeTwo()
 	{
 		if (base.UpgradeTwo())
 		{
+			
 			//Eldkastare
 			return true;
 		}
@@ -31,6 +39,7 @@ public class FireTank : TankUpgradeTree
 	{
 		if (base.Ability())
 		{
+			
 			GameObject grenadeTemp = Instantiate(grenade, transform.position, transform.rotation, null);
 			grenadeTemp.transform.parent = null;
 			return true;

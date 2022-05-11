@@ -17,24 +17,24 @@ public abstract class TankUpgradeTree : MonoBehaviour
     [Header("Upgrade 2: ")]
     [SerializeField] protected int upgradeTwoMoney;
     [SerializeField] protected int upgradeTwoMaterial;
-    [SerializeField] protected int movementSpeedIncrease;
+    [SerializeField] protected int movementSpeedIncrease = 25;
 
     [Header("Upgrade 3: ")]
     [SerializeField] protected int upgradeThreeMoney;
     [SerializeField] protected int upgradeThreeMaterial;
 
+    [Header("Individual: ")]
     [SerializeField] protected float abilityCD;
     [SerializeField] protected bool abilityReady;
 
-
-    private void Start()
+    protected virtual void Start()
 	{
 		tankState = GetComponent<TankState>();
         weapon = GetComponent<WeaponSlot>();
-        gameManager = GameManager.Instance; 
+        gameManager = FindObjectOfType<GameManager>(); 
 	}
 
-    protected virtual bool UpgradeOne()
+    public virtual bool UpgradeOne()
     {
         if (currentUpgrade == 0 && gameManager.SpendResources(upgradeOneMoney, upgradeOneMaterial))
         {
@@ -44,18 +44,18 @@ public abstract class TankUpgradeTree : MonoBehaviour
         return false;
     }
 
-    protected virtual bool UpgradeTwo()
+    public virtual bool UpgradeTwo()
     {
         if (currentUpgrade == 1 && gameManager.SpendResources(upgradeTwoMoney, upgradeTwoMaterial))
         {
             currentUpgrade = 2;
-            tankState.StandardSpeed += movementSpeedIncrease;
+            tankState.IncreaseSpeed(movementSpeedIncrease);
             return true;
         }
         return false;
     }
 
-    protected virtual bool UpgradeThree()
+    public virtual bool UpgradeThree()
     {
         if (currentUpgrade == 2 && gameManager.SpendResources(upgradeThreeMoney, upgradeThreeMaterial))
         {
@@ -70,6 +70,7 @@ public abstract class TankUpgradeTree : MonoBehaviour
     {
         if (currentUpgrade == 3 && abilityReady == true)
         {
+            Debug.Log("Kastar cool spell");
             abilityReady = false;
             StartCoroutine(ResetAbility());
             return true;
@@ -80,6 +81,7 @@ public abstract class TankUpgradeTree : MonoBehaviour
     protected IEnumerator ResetAbility()
     {
         yield return new WaitForSeconds(abilityCD);
+		Debug.Log("We back");
         abilityReady = true;
     }
 

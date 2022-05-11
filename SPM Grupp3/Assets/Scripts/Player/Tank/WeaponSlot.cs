@@ -9,15 +9,16 @@ public class WeaponSlot : MonoBehaviour
 
     [SerializeField] TankWeapon equippedWeapon;
 
-    private float fireRate;
-    private float spread;
-    private float range;
-    private float bulletSpeed;
-    private bool penetrating;
+    [SerializeField] private float fireRate;
+    [SerializeField] private float spread;
+    [SerializeField] private float range;
+    [SerializeField] private float bulletSpeed;
+    [SerializeField] private bool penetrating;
+    [SerializeField] private float damage;
     private GameObject bulletPrefab;
 
     TankState tank;
-    Transform bulletSpawner;
+    public Transform bulletSpawner;
     BulletBehavior bullet;
     Transform turretObject;
     GameObject spawnedBullet;
@@ -29,6 +30,8 @@ public class WeaponSlot : MonoBehaviour
     public float BulletSpread { get { return spread; } set { spread = value; } }
     public float BulletRange { get { return range; } set { range = value; } }
     public float BulletSpeed { get { return bulletSpeed; } set { bulletSpeed = value; } }
+    public float BulletDamage { get { return damage; } set { damage = value; } }
+    public bool BulletPenetration { get { return penetrating; } set { penetrating = value; } }
 
     void Start()
     {
@@ -55,6 +58,8 @@ public class WeaponSlot : MonoBehaviour
         penetrating = equippedWeapon.penetrating;
         bulletSpeed = equippedWeapon.bulletSpeed;
         bulletPrefab = equippedWeapon.bulletPrefab;
+        damage = equippedWeapon.damage;
+		bullet = bulletPrefab.GetComponent<BulletBehavior>();
     }
 
     void Update()
@@ -84,6 +89,7 @@ public class WeaponSlot : MonoBehaviour
             );
     }
 
+
     Quaternion ComputeBulletSpread()
     {
         // Produce a random rotation within a certain radius
@@ -96,23 +102,21 @@ public class WeaponSlot : MonoBehaviour
     }
 
     public void UpgradeFirerate(float modifier)
-    {
-        //1
-        fireRate += modifier;
+	{
+        fireRate /= modifier;
     }
 
-    public void UpgradeDamage(float modifier)
+    public void MaxRange()
     {
-        bullet.BulletDamage += modifier;
+        range += 100;
     }
 
-    public void UpgradeRange(float modifier)
-    {
-        bullet.BulletRange += modifier;
-    }
-
-    public void UpgradePenetration()
-    {
+	public void MakeSniper(float range, float fireRateMultiply, float damageIncrease)
+	{
+		fireRate *= fireRateMultiply;
+        damage += damageIncrease;
+        this.range += range;
         penetrating = true;
-    }
+        spread /= 2;
+	}
 }

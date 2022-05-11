@@ -197,4 +197,9 @@ public abstract class EnemyController : MonoBehaviour
             }
         }
     }
+
+	public virtual void HitByFire(float damage)
+	{
+		TakeDamage(damage);
+	}
 }

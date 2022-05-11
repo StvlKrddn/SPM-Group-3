@@ -4,18 +4,18 @@ using UnityEngine;
 
 public class BulletBehavior : MonoBehaviour
 {
-    [SerializeField] private float bulletDamage;
-    [SerializeField] private bool penetrating;
+    [SerializeField] protected float damage;
+    public bool penetrating;
     
     GameObject tank;
 
-    float bulletSpeed;
-    float range;
+    public float bulletSpeed;
+    public float range;
     
     Vector3 originalPosition;
     private int penetrationCount = 3;
     
-    public float BulletDamage { get { return bulletDamage; } set { bulletDamage = value; } }
+    public float BulletDamage { get { return damage; } set { damage = value; } }
     public float BulletRange { get { return range; } set { range = value; } }
 
     void Start()
@@ -25,6 +25,8 @@ public class BulletBehavior : MonoBehaviour
         originalPosition = transform.position;
         bulletSpeed = tank.GetComponent<WeaponSlot>().BulletSpeed;
         range = tank.GetComponent<WeaponSlot>().BulletRange;
+        damage = tank.GetComponent<WeaponSlot>().BulletDamage;
+        penetrating = tank.GetComponent<WeaponSlot>().BulletPenetration;
     }
 
     void Update()
@@ -41,7 +43,7 @@ public class BulletBehavior : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    protected virtual void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Enemy"))
         {
@@ -51,7 +53,7 @@ public class BulletBehavior : MonoBehaviour
             }
             else
             {
-                Destroy(gameObject, 0.01f);
+				Destroy(gameObject, 0.01f);
             }
         }
     }

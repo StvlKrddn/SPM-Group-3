@@ -11,6 +11,7 @@ public class FireGrenade : MonoBehaviour
     void Start()
     {
         collider = GetComponent<SphereCollider>();
+		StartCoroutine(TooLate());
     }
 
 	public void OnCollisionEnter(Collision collision)
@@ -21,6 +22,12 @@ public class FireGrenade : MonoBehaviour
         }
 	}
 
+	public IEnumerator TooLate()
+	{
+		yield return new WaitForSeconds(10);
+		StartCoroutine(Detonate());
+	}
+
 	private IEnumerator Detonate()
     {
         Collider[] enemies = Physics.OverlapSphere(transform.position, collider.radius);
@@ -28,7 +35,7 @@ public class FireGrenade : MonoBehaviour
         {
             if (c.GetComponent<EnemyController>())
             {
-                c.GetComponent<EnemyController>().TakeDamage(damage);
+                c.GetComponent<EnemyController>().HitByFire(damage);
             }
         }
         gameObject.GetComponent<MeshRenderer>().enabled = false;
