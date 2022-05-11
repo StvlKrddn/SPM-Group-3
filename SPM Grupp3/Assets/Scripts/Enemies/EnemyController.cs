@@ -96,6 +96,7 @@ public abstract class EnemyController : MonoBehaviour
     public virtual void TakeDamage(float damage)
     {
         currentHealth -= damage;
+        GetComponent<Health>().ModifyHealth(damage);
         if (currentHealth <= 0 && dead == false)
         {
             dead = true;

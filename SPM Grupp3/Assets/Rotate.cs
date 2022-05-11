@@ -5,13 +5,6 @@ using UnityEngine;
 public class Rotate : MonoBehaviour
 {
     private float start = 0f;
-    private float from = 0;
-    private float to = 360;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
     // Update is called once per frame
     void FixedUpdate()

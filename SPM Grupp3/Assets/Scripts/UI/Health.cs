@@ -38,12 +38,6 @@ public class Health : MonoBehaviour
 
             ModifyHealth(enemyBullet.damage);
             player.TakeDamage(enemyBullet.damage);
-
-            /*if(currentHealth <= 0)
-            {
-                currentHealth = maxHealth;
-                ModifyHealth(-1.0f);
-            }*/
         }
 
         if (other.gameObject.CompareTag("Bullet"))
@@ -73,12 +67,6 @@ public class Health : MonoBehaviour
 
             ModifyHealth(playerBullet.BulletDamage);
             enemy.TakeDamage(playerBullet.BulletDamage);
-
-            /*if (currentHealth <= 0)
-            {
-                currentHealth = maxHealth;
-                ModifyHealth(-1.0f);
-            }*/
         }
     }
 
@@ -92,12 +80,6 @@ public class Health : MonoBehaviour
             ModifyHealth(enemy.MeleeDamage);
 
             player.TakeDamage(enemy.MeleeDamage);
-
-            /*if (currentHealth <= 0)
-            {
-                currentHealth = maxHealth;
-                ModifyHealth(-1.0f);
-            }*/
         }
 
     }
