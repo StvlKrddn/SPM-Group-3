@@ -15,6 +15,7 @@ public class PlayerHandler : MonoBehaviour
     private bool destroyed;
 
     public bool Destroyed { get { return destroyed; } set { destroyed = value; } }
+    public PlayerMode CurrentMode { get {return currentMode; } }
 
     void Start()
     {
