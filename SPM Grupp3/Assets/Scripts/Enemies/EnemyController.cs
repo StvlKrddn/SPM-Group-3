@@ -116,11 +116,11 @@ public abstract class EnemyController : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public void HitBySlow(float slowProc, float radius, bool single)
+    public void HitBySlow(float slowProc, float radius, bool areaOfEffect)
     {
-        if (single)
+        if (!areaOfEffect)
         {
-            speed = slowProc;
+            speed *= slowProc;
             Invoke(nameof(SlowDuration), 3f);
         }
         else
@@ -131,7 +131,7 @@ public abstract class EnemyController : MonoBehaviour
                 if (c.GetComponent<EnemyController>())
                 {
                     EnemyController eC = c.GetComponent<EnemyController>();
-                    eC.speed = slowProc;
+                    eC.speed *= slowProc;
                     eC.Invoke(nameof(SlowDuration), 3f);
                 }
             }
@@ -140,7 +140,6 @@ public abstract class EnemyController : MonoBehaviour
 
     private void SlowDuration()
     {
-
         speed = defaultSpeed;
     }
 
@@ -152,6 +151,7 @@ public abstract class EnemyController : MonoBehaviour
             {
                 if (poisonTickTimers != null)
                 {
+                    print("DamageTaken");
                     EnemyController eC = collision.gameObject.GetComponent<EnemyController>();
                     eC.HitByPoison(amountOfTicks, amountOfDps, hitByPoisonEffect);
                 }

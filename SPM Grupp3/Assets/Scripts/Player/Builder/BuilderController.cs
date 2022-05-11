@@ -301,6 +301,7 @@ public class BuilderController : MonoBehaviour
         radius.transform.localScale = new Vector3(tow.range * 2f, 0.01f, tow.range * 2f);*/
 
         preTower = Instantiate(tower, towerPlace, placement.rotation);
+        preTower.transform.GetChild(0).gameObject.SetActive(true);
         preTower.layer = 12;
         preTower.GetComponent<Renderer>().material.color = towerPreview;                        
     }
@@ -347,6 +348,7 @@ public class BuilderController : MonoBehaviour
                     
                     tower.ShowUpgradeUI(towerPanel, infoView);
                     EventHandler.Instance.InvokeEvent(new TowerClickedEvent("Tower Is clicked", tower.gameObject));
+                    buildManager.TowerToBuild = null;
                     print("Tower of type: " + tower + " Is clicked");
                 }
                 

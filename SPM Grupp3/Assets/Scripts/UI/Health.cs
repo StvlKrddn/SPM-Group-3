@@ -12,19 +12,24 @@ public class Health : MonoBehaviour
     private TankState player;
     private EnemyController enemy;
 
-    public event Action<float> OnHealthPctChanged = delegate { };
+    public event Action<float> UpdateHealthBar = delegate { };
+    private HealthBar healthBar;
 
     private void Awake()
     {
+        healthBar = GetComponentInChildren<HealthBar>();
+
         if (gameObject.GetComponent<TankState>())
         {
             player = GetComponent<TankState>();
             maxHealth = player.Health;
+            healthBar.slider.value = maxHealth;
         }
         else if (gameObject.GetComponent<EnemyController>())
         {
             enemy = GetComponent<EnemyController>();
             maxHealth = enemy.Health;
+            healthBar.slider.value = maxHealth;
         }
         currentHealth = maxHealth;
     }
@@ -50,12 +55,6 @@ public class Health : MonoBehaviour
             Tower tower = towerBullet.GetComponent<Shot>().getTowerShotCameFrom();
 
             ModifyHealth(tower.ShotDamage);
-
-            if (currentHealth <= 0)
-            {
-                currentHealth = maxHealth;
-                ModifyHealth(-1.0f);
-            }
         }
         if (other.gameObject.CompareTag("PlayerShots"))
         {
@@ -88,13 +87,13 @@ public class Health : MonoBehaviour
     {
         currentHealth -= amount;
 
-        float currentHealthPct = currentHealth / maxHealth;
-        OnHealthPctChanged(currentHealthPct);
+        /*        float currentHealthPct = currentHealth / maxHealth;*/
+        UpdateHealthBar(currentHealth);
     }
 
     public void ResetHealth()
     {
         currentHealth = maxHealth;
-        OnHealthPctChanged(1);
+        UpdateHealthBar(maxHealth);
     }
 }
