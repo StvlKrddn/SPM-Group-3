@@ -6,19 +6,17 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(PlayerInputManager))]
 public class PlayerManager : MonoBehaviour
 {
-    [SerializeField] private GameObject cursorPrefab;
+    [SerializeField] private GameObject buildMenu;
     private PlayerInputManager playerManager;
-    private GameObject playerPrefab;
+    
+    private List<PlayerHandler> players = new List<PlayerHandler>();
+
+    [System.NonSerialized] public bool InBuildMode;
 
     void Awake()
     {
         EventHandler.Instance.RegisterListener<PlayerSwitchEvent>(SwitchPlayerMode);
         playerManager = GetComponent<PlayerInputManager>();
-        playerPrefab = playerManager.playerPrefab;
-        if (playerManager.playerCount == 0)
-        {
-            Instantiate(playerPrefab);
-        }
     }
 
     public void OnPlayerJoined(PlayerInput newPlayer)
@@ -26,6 +24,7 @@ public class PlayerManager : MonoBehaviour
         print("New player joined the game");
         
         GameObject player = newPlayer.gameObject;
+        players.Add(player.GetComponent<PlayerHandler>());
 
         EventHandler.Instance.InvokeEvent(new PlayerJoinedEvent(
             description: "A player joined the game",
@@ -37,5 +36,14 @@ public class PlayerManager : MonoBehaviour
     {
         PlayerHandler playerHandler = eventInfo.PlayerContainer.GetComponent<PlayerHandler>();
         playerHandler.SwitchMode();
+        if (playerManager.playerCount < 2)
+        {
+            InBuildMode = players[0].CurrentMode == PlayerMode.Build;
+        }
+        else
+        {
+            InBuildMode = players[0].CurrentMode == PlayerMode.Build || players[1].CurrentMode == PlayerMode.Build;
+        }
+        buildMenu.SetActive(InBuildMode);
     }
 }

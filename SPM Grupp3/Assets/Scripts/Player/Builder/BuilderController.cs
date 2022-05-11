@@ -161,7 +161,6 @@ public class BuilderController : MonoBehaviour
         {
             ResetCursorPosition();
             cursorTransform.gameObject.SetActive(true);
-            towerPanel.SetActive(true);
         }
     }
 
@@ -172,7 +171,6 @@ public class BuilderController : MonoBehaviour
         {
             ResetCursorPosition();
             cursorTransform.gameObject.SetActive(false);
-            towerPanel.SetActive(false);
         }
     }
 
