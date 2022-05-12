@@ -103,20 +103,20 @@ public class WeaponSlot : MonoBehaviour
 
     public void UpgradeFirerate(float modifier)
 	{
-        fireRate /= modifier;
+        fireRate = modifier;
     }
 
     public void MaxRange()
     {
-        range += 100;
+        range = 100;
     }
 
 	public void MakeSniper(float range, float fireRateMultiply, float damageIncrease)
 	{
-		fireRate *= fireRateMultiply;
-        damage += damageIncrease;
-        this.range += range;
+		fireRate = fireRateMultiply;
+        damage = damageIncrease;
+        this.range = range;
         penetrating = true;
-        spread /= 2;
+        spread = 10;
 	}
 }

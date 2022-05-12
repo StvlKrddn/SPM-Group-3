@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class UpgradesPurchased
+public class TowerUpgradesPurchased
 {
     public GameObject tower;
     public int upgradesPurchased;
 
-    public UpgradesPurchased(GameObject t, int uP)
+    public TowerUpgradesPurchased(GameObject t, int uP)
     {
         tower = t;
         upgradesPurchased = uP;
@@ -17,7 +17,7 @@ public class UpgradesPurchased
 public class TowerUpgradeCotroller : MonoBehaviour
 {
     public static TowerUpgradeCotroller instance;
-    public List<UpgradesPurchased> upgradeList = new List<UpgradesPurchased>();
+    public List<TowerUpgradesPurchased> upgradeList = new List<TowerUpgradesPurchased>();
     private GameObject clickedTower;
 
     public GameObject ClickedTower { get { return clickedTower; } set { clickedTower = value; } }
@@ -41,7 +41,7 @@ public class TowerUpgradeCotroller : MonoBehaviour
 
     public void PlaceTowerInUpgradeList(GameObject placedTower)
     {
-        UpgradesPurchased U = new UpgradesPurchased(placedTower, 0);
+        TowerUpgradesPurchased U = new TowerUpgradesPurchased(placedTower, 0);
         upgradeList.Add(U);
         
     }

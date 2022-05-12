@@ -9,6 +9,7 @@ public class TankState : MonoBehaviour
     // Inspector variables
     [SerializeField] private float movementSpeed = 6f;
     [SerializeField] private float health = 50f;
+    [SerializeField] private int levelOfTank;
 
     // Components
     Rigidbody rb;
@@ -33,7 +34,7 @@ public class TankState : MonoBehaviour
 
     float currentHealth;
     float playerID;
-    private TankUpgradeTree tankUpgradeTree;
+    public TankUpgradeTree tankUpgradeTree;
     [SerializeField] private TankUpgradeTree tankUpgradeTreeOne;
     [SerializeField] private TankUpgradeTree tankUpgradeTreeTwo;
 
@@ -89,6 +90,7 @@ public class TankState : MonoBehaviour
 
         // Subscribe to events
         EventHandler.Instance.RegisterListener<WaveEndEvent>(OnWaveEnd);
+
     }
 
     void InitializeInputSystem()
@@ -130,6 +132,7 @@ public class TankState : MonoBehaviour
     void FixedUpdate()
     {
         Move();
+        levelOfTank = UpgradeController.instance.currentUpgradeLevel;
     }
 
     void Move()
@@ -191,9 +194,6 @@ public class TankState : MonoBehaviour
         if (tankUpgradeTree != null)
         {
             tankUpgradeTree.Ability();
-            tankUpgradeTree.UpgradeThree();
-            tankUpgradeTree.UpgradeTwo();
-            tankUpgradeTree.UpgradeOne();
         }
     }
 
