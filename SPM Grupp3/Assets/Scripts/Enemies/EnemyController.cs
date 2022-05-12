@@ -11,7 +11,7 @@ public abstract class EnemyController : MonoBehaviour
     [SerializeField] private float meleeDamage;
     private GameManager gM;
     private Transform target;
-    private int currIndex = 0;
+    private int currIndex = 1;
     public int damageBase = 10;
     public int moneyDrop = 10;
     public bool materialDrop = false;
@@ -52,18 +52,16 @@ public abstract class EnemyController : MonoBehaviour
     {
         //WIP Enemy moves right direction
         Vector3 direction = target.position - transform.position;
-        //gameObject.transform.LookAt(target);
         direction.Normalize();
         transform.Translate(speed * Time.deltaTime * direction);
-        Debug.DrawRay(transform.position, direction * 100, Color.red);
 
         if (Vector3.Distance(transform.position, target.position) <= 0.4f)
         {
-            NextTarget();
+            NextTarget(direction);
         }
     }
 
-	private void NextTarget()
+	private void NextTarget(Vector3 direction)
     {
         if (Waypoints.wayPoints.Length - 1 <= currIndex) // Changes waypoint to til the enemy reaches the last waypoint
         {
