@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class HealthBar : MonoBehaviour
 {
     public Slider slider;
+    private Transform lookAt;
     [SerializeField] private float updateSpeedSeconds = 0.5f;
     //[SerializeField] private GameObject FollowPlayer;
     [SerializeField] private bool faceCamera = true;
@@ -14,6 +15,7 @@ public class HealthBar : MonoBehaviour
 
     private void Awake()
     {
+        lookAt = GameObject.FindGameObjectWithTag("Look").transform;
         slider = GetComponentInChildren<Slider>();
         GetComponentInParent<Health>().UpdateHealthBar += HandleHealthChanged;
     }
@@ -49,7 +51,7 @@ public class HealthBar : MonoBehaviour
     {
         if (faceCamera)
         {
-            transform.LookAt(Camera.main.transform);
+            transform.LookAt(lookAt);
             transform.Rotate(0, 180, 0);
         }
     }
