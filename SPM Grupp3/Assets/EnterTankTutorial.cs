@@ -6,7 +6,10 @@ using UnityEngine.InputSystem;
 public class EnterTankTutorial : MonoBehaviour
 {
 
-    public TutorialUI ScriptToCallFunction; 
+    public TutorialUI ScriptToCallFunction;
+
+    public GameObject instructionsToDisplay; 
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -21,6 +24,8 @@ public class EnterTankTutorial : MonoBehaviour
             this.gameObject.SetActive(false);
 
             ScriptToCallFunction.activateFirstEvent();
+
+            instructionsToDisplay.SetActive(true);
         }
     }
 }

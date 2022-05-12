@@ -33,7 +33,10 @@ public class TutorialUI : MonoBehaviour
     public GameObject FirstWaveActivation;
     public GameObject materialToActivate;
 
-    public GameObject tileToActivate; 
+    public GameObject tileToActivate;
+
+
+    public GameObject activateAfterSecondWave; 
 
 
     // Start is called before the first frame update
@@ -121,6 +124,9 @@ public class TutorialUI : MonoBehaviour
                 break;
         }
     }
+
+    
+    
     public void activateFirstEvent()
     {
         firstEventActivated = true;

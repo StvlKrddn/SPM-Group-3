@@ -14,6 +14,8 @@ public class TutorialEnterGarage : MonoBehaviour
 
     public GameObject objectToEnable;
 
+    public GameObject arrowToShow;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,6 +30,8 @@ public class TutorialEnterGarage : MonoBehaviour
             objectToDisable.SetActive(false);
 
             objectToEnable.SetActive(true);
+
+            arrowToShow.SetActive(true);
         }
     }
 }

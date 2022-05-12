@@ -15,7 +15,7 @@ public class TutorialBuildCannonTower : MonoBehaviour
     void Start()
     {
         foreach(GameObject obj in gameObjectToEnableStart)
-        {
+        {   Debug.Log("ändras UI:n");
             obj.SetActive(true);
         }
 
