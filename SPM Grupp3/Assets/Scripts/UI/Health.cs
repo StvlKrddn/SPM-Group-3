@@ -2,12 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Health : MonoBehaviour
 {
     [Header("Health")]
     private float maxHealth;
     private float currentHealth;
+
+
 
     private TankState player;
     private EnemyController enemy;
@@ -23,13 +26,13 @@ public class Health : MonoBehaviour
         {
             player = GetComponent<TankState>();
             maxHealth = player.Health;
-            healthBar.slider.value = maxHealth;
+            healthBar.slider.maxValue = maxHealth;
         }
         else if (gameObject.GetComponent<EnemyController>())
         {
             enemy = GetComponent<EnemyController>();
             maxHealth = enemy.Health;
-            healthBar.slider.value = maxHealth;
+            healthBar.slider.maxValue = maxHealth;
         }
         currentHealth = maxHealth;
     }
@@ -86,6 +89,7 @@ public class Health : MonoBehaviour
     public void ModifyHealth(float amount)
     {
         currentHealth -= amount;
+        print(currentHealth);
 
         /*        float currentHealthPct = currentHealth / maxHealth;*/
         UpdateHealthBar(currentHealth);

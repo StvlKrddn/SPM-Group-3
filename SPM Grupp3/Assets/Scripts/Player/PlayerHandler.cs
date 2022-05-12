@@ -43,7 +43,6 @@ public class PlayerHandler : MonoBehaviour
         {
             EnterTankMode();
         }
-        
         buildMenu.SetActive(currentMode == PlayerMode.Build);
     }
 
@@ -68,7 +67,10 @@ public class PlayerHandler : MonoBehaviour
 
         currentMode = PlayerMode.Tank;
 
+        //UpgradeController.instance.FixUpgrades(GetComponentInChildren<TankState>()); Behöver ändras
+
         //print("Entered tank mode");
+
     }
 
     void EnterBuildMode()

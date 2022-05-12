@@ -83,7 +83,18 @@ public class GameManager : MonoBehaviour
 
     private void UpdateResourcesUI()
     {
-        moneyCounterUI.text = ": " + money;
+        float mon;
+        mon = money;
+        if (money / 1000 >= 1)
+        {
+            mon = money / 1000;
+            Mathf.Round(mon);
+            moneyCounterUI.text = mon.ToString() + " K";
+            materialCounterUI.text = ": " + material;
+            return;
+        }
+
+        moneyCounterUI.text = ": " + mon.ToString();
         materialCounterUI.text = ": " + material;
     }
 

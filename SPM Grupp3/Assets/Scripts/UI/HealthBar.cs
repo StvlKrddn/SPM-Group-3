@@ -10,16 +10,20 @@ public class HealthBar : MonoBehaviour
     //[SerializeField] private GameObject FollowPlayer;
     [SerializeField] private bool faceCamera = true;
     private float fillAmount;
-
     public float FillAmount { get { return fillAmount; } set { fillAmount = value; } }
 
     private void Awake()
     {
+        slider = GetComponentInChildren<Slider>();
         GetComponentInParent<Health>().UpdateHealthBar += HandleHealthChanged;
     }
 
     private void HandleHealthChanged(float currentHealth)
     {
+        if (currentHealth <= 0)
+        {
+            return;
+        }
         StartCoroutine(UpdateHealthBar(currentHealth));
     }
 
