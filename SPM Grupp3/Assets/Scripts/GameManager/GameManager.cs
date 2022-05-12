@@ -16,10 +16,15 @@ public class GameManager : MonoBehaviour
     [Header("UI Elements: ")]
     [SerializeField] private Text moneyCounterUI;
     [SerializeField] private Text moneyChangerUI;
+    [Space]
     [SerializeField] private Text materialCounterUI;
     [SerializeField] private Text materialChangerUI;
     [SerializeField] private Slider livesSlider;
+    [Space]
     [SerializeField] private Color colorGain;
+    [Space]
+    [SerializeField] private GameObject victoryUI;
+    [SerializeField] private GameObject defeatUI;
 
     [Header("Spanwer for UI Elements")]
     [SerializeField] private GameObject moneyUI;
@@ -35,6 +40,7 @@ public class GameManager : MonoBehaviour
     private WaveManager waveManager;
 
     private int currentWave = -1;
+    private float currentBaseHealth;
     private int enemiesKilled;
     private int moneyCollected;
     private int materialCollected;
@@ -59,24 +65,25 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        livesSlider.maxValue = baseHealth;
+        currentBaseHealth = baseHealth;
+        livesSlider.maxValue = currentBaseHealth;
+        livesSlider.value = baseHealth;
 
         waveManager = GetComponent<WaveManager>();
 
         UpdateResourcesUI();
 
-        
+        victoryUI.SetActive(false);
+        defeatUI.SetActive(false);
     }
 
     public void TakeDamage(float damage, GameObject enemy)
     {
         damagingEnemy = enemy;
-        baseHealth -= damage;
+        currentBaseHealth -= damage;
         livesSlider.value -= damage;
-        if (baseHealth <= 0)
+        if (currentBaseHealth <= 0)
         {
-            GameObject fillArea = livesSlider.transform.Find("Fill Area").gameObject;
-            fillArea.SetActive(false);
             Defeat();
         }
     }
@@ -158,6 +165,8 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Defeat");
 
+        waveManager.Restart();
+
         EventHandler.Instance.InvokeEvent(new DefeatEvent(
             description: "Defeat",
             wave: currentWave + 1,
@@ -165,12 +174,30 @@ public class GameManager : MonoBehaviour
             enemiesKilled: 0 
         ));
 
-        // NOTE(August): Allt under detta borde egentligen hända efter man trycker på Restart-knappen i Defeat skärmen
-        // Kanske ska flyttas till nån OnClick-metod någonstans eller nått
+        GameObject player1 = GameObject.Find("Player");
+
+        GetComponent<PlayerManager>().TurnOnCursor();
+       
+        defeatUI.SetActive(true);
+
+        Time.timeScale = 0;
+    }
+
+    private void ResetBaseHealth()
+    {
+        currentBaseHealth = baseHealth;
+        livesSlider.value = 100;
+    }
+
+    public void Restart()
+    {
+        Time.timeScale = 1;
         money = 0;
         material = 0;
         UpdateResourcesUI();
-        waveManager.Restart();
+        defeatUI.SetActive(false);
+        ResetBaseHealth();
+        GetComponent<PlayerManager>().Restart();
     }
 
     public void Victory()
@@ -187,5 +214,25 @@ public class GameManager : MonoBehaviour
             enemiesKilled: enemiesKilled,
             towersBuilt: 0
         ));
+
+        waveManager.Restart();
+
+        victoryUI.SetActive(true);
+
+        Time.timeScale = 0;
     }
+    
+    public void Continue()
+    {
+        Time.timeScale = 1;
+        ResetBaseHealth();
+        victoryUI.SetActive(false);
+        GetComponent<PlayerManager>().Restart();
+    }
+
+    public void Quit()
+    {
+        UnityEditor.EditorApplication.isPlaying = false;
+    }
+
 }
