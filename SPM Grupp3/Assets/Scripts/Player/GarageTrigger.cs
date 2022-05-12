@@ -7,9 +7,11 @@ using UnityEngine.InputSystem;
 public class GarageTrigger : MonoBehaviour
 {
     private InputAction acceptAction;
+    [SerializeField] private GameObject hintEnterUI;
     
     private void OnTriggerEnter(Collider other)
     {
+        hintEnterUI.SetActive(true);
         print("Enter Garage? (Press X)");
     }
 
@@ -26,8 +28,14 @@ public class GarageTrigger : MonoBehaviour
                     description: "A player switched mode",
                     playerContainer: other.transform.parent.gameObject
                     ));
+                hintEnterUI.SetActive(false);
             }
         }   
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        hintEnterUI.SetActive(false);
     }
 
 }

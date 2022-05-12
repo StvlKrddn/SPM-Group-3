@@ -74,7 +74,7 @@ public class WeaponSlot : MonoBehaviour
     {
         allowedToShoot = false;
         SpawnBullet();
-        yield return new WaitForSeconds(fireRate);
+        yield return new WaitForSeconds(1 / fireRate);
         allowedToShoot = true;
     }
 
@@ -109,6 +109,7 @@ public class WeaponSlot : MonoBehaviour
     public void MaxRange()
     {
         range = 100;
+        penetrating = true;
     }
 
 	public void MakeSniper(float range, float fireRateMultiply, float damageIncrease)
@@ -116,7 +117,6 @@ public class WeaponSlot : MonoBehaviour
 		fireRate = fireRateMultiply;
         damage = damageIncrease;
         this.range = range;
-        penetrating = true;
         spread = 10;
 	}
 }

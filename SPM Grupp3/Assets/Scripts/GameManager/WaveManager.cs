@@ -158,6 +158,7 @@ public class WaveManager : MonoBehaviour
 [Serializable]
 public struct WaveInfo
 {
+    public string waveName;
     public float waveDuration;
     public int waveMoneyBonus;
     public SubWave[] subWaves;

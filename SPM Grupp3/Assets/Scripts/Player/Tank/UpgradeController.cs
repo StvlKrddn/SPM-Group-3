@@ -5,19 +5,22 @@ using UnityEngine;
 
 public class UpgradeController : MonoBehaviour
 {
-    public static UpgradeController instance;
+    public int moneyCost = 500;
+    public int materialCost = 0;
     public int currentUpgradeLevel = 0;
 
-    // Start is called before the first frame update
-    void Start()
+    private static UpgradeController instance;
+    public static UpgradeController Instance
     {
-        if (instance != null)
+        get
         {
-            return;
+            // "Lazy loading" to prevent Unity load order error
+            if (instance == null)
+            {
+                instance = FindObjectOfType<UpgradeController>();
+            }
+            return instance;
         }
-        instance = this;
-
-        //EventHandler.Instance.RegisterListener<TowerClickedEvent>(GetTowerClicked);
     }
 
     public int GetUpgradesPurchased()
@@ -27,44 +30,48 @@ public class UpgradeController : MonoBehaviour
 
     public void IncreaseUpgradesPurchased()
     {
-        currentUpgradeLevel++;
-        if(FindObjectOfType<TankState>())
+        if (GameManager.Instance.SpendResources(moneyCost, materialCost))
         {
-            TankState player = FindObjectOfType<TankState>();
-            print(player.gameObject.transform.parent.name);
-            switch (currentUpgradeLevel)
+            currentUpgradeLevel++;
+            if(FindObjectOfType<TankState>())
             {
-                case 1:
-                player.tankUpgradeTree.UpgradeOne();
-                break;
+                TankState player = FindObjectOfType<TankState>();
+                print(player.gameObject.transform.parent.name);
+                switch (currentUpgradeLevel)
+                {
+                    case 1:
+                    player.tankUpgradeTree.UpgradeOne();
+                    break;
 
-                case 2:
-                player.tankUpgradeTree.UpgradeTwo();
-                break;
+                    case 2:
+                    player.tankUpgradeTree.UpgradeTwo();
+                    break;
 
-                case 3:
-                player.tankUpgradeTree.UpgradeThree();
-                break;
+                    case 3:
+                    player.tankUpgradeTree.UpgradeThree();
+                    break;
+                }
             }
         }
     }
 
-    public void FixUpgrades(TankState tankState)
+    public void FixUpgrades(GameObject player)
     {
+        TankState tS = player.GetComponentInChildren<TankState>();
         for (int i = 1; i <= currentUpgradeLevel; i++)
         {
             switch (i)
             {
                 case 1:
-                    tankState.tankUpgradeTree.UpgradeOne();
+                    tS.tankUpgradeTree.UpgradeOne();
                     break;
 
                 case 2:
-                    tankState.tankUpgradeTree.UpgradeTwo();
+                    tS.tankUpgradeTree.UpgradeTwo();
                     break;
 
                 case 3:
-                    tankState.tankUpgradeTree.UpgradeThree();
+                    tS.tankUpgradeTree.UpgradeThree();
                     break;
             }
         }

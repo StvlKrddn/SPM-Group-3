@@ -72,16 +72,16 @@ MonoBehaviour:
   range: 20
   fireRate: 1
   shotDamage: 20
-  cost: 1200
+  cost: 1000
   materialCost: 0
-  splashRadius: 5
-  splashDamage: 20
-  amountUpgradeSplashRadius: 0
-  amountUpgradeSplashDamage: 0
+  splashRadius: 2
+  splashDamage: 10
+  amountUpgradeSplashRadius: 2
+  amountUpgradeSplashDamage: 5
   thirdShot: 0
-  level1Cost: 0
-  level2Cost: 0
-  level3Cost: 0
+  level1Cost: 700
+  level2Cost: 700
+  level3Cost: 700
 --- !u!1 &1569145758302136571
 GameObject:
   m_ObjectHideFlags: 0
@@ -206,7 +206,7 @@ Transform:
   m_GameObject: {fileID: 1569145758455605305}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -0.5, z: 0}
-  m_LocalScale: {x: 30, y: 0.01, z: 30}
+  m_LocalScale: {x: 40, y: 0.01, z: 40}
   m_Children: []
   m_Father: {fileID: 1569145758302136567}
   m_RootOrder: 0

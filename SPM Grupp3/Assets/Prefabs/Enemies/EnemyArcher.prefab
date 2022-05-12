@@ -112,7 +112,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
-  health: 100
+  health: 50
   hitEffect: {fileID: 5202362185975563897, guid: afc452a4019ab8b47ac2ea888849a086, type: 3}
   meleeDamage: 2
   damageBase: 10
@@ -239,7 +239,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 15003163187659497, guid: 6c76fb6c527c1db4d85a2e5af6aab512, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9099198633358382237, guid: 6c76fb6c527c1db4d85a2e5af6aab512, type: 3}
       propertyPath: m_Pivot.x
@@ -340,6 +340,10 @@ PrefabInstance:
     - target: {fileID: 9099198633358382241, guid: 6c76fb6c527c1db4d85a2e5af6aab512, type: 3}
       propertyPath: m_Name
       value: HealthBar_Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 9099198633358382243, guid: 6c76fb6c527c1db4d85a2e5af6aab512, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6c76fb6c527c1db4d85a2e5af6aab512, type: 3}
