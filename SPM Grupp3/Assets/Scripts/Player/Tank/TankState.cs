@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(Health))]
 public class TankState : MonoBehaviour
 {
     // Inspector variables
     [SerializeField] private float movementSpeed = 6f;
+    [SerializeField] private float health = 50f;
 
     // Components
     Rigidbody rb;
@@ -15,6 +17,7 @@ public class TankState : MonoBehaviour
     // Input components
     InputAction moveGamepadAction;
     InputAction aimAction;
+    InputAction abilityAction;
 
     // Instance variables
     Vector2 gamepadInputVector;
@@ -23,20 +26,22 @@ public class TankState : MonoBehaviour
     float standardSpeed;
     Matrix4x4 isoMatrix;
 
-    [SerializeField] private float health = 50f;
-
     Transform spawnPoint;
     Transform garage;
     PlayerInput playerInput;
+    PlayerHandler playerHandler;
 
     float currentHealth;
     float playerID;
+    private TankUpgradeTree tankUpgradeTree;
+    [SerializeField] private TankUpgradeTree tankUpgradeTreeOne;
+    [SerializeField] private TankUpgradeTree tankUpgradeTreeTwo;
+
 
     // Getters and Setters
     public float StandardSpeed { 
         get 
         { 
-            // Shady code until i figure out a fix
             if (standardSpeed == 0)
             {
                 standardSpeed = movementSpeed;
@@ -45,13 +50,14 @@ public class TankState : MonoBehaviour
         } 
         set { standardSpeed = value; } 
     }
+    public float Health { get { return health; } }
 
     public PlayerInput PlayerInput { 
         get 
         {
             if (playerInput == null)
             {
-                playerInput = GetComponent<PlayerInput>();
+                playerInput = GetComponentInParent<PlayerInput>();
             }
             return playerInput; 
         } 
@@ -61,7 +67,7 @@ public class TankState : MonoBehaviour
     {
         InitializeInputSystem();
 
-        SetPlayerColor();
+        SetPlayerDiffrence();
 
         FindGarage();
 
@@ -70,6 +76,8 @@ public class TankState : MonoBehaviour
         standardSpeed = movementSpeed;
 
         rb = GetComponent<Rigidbody>();
+
+        playerHandler = GetComponentInParent<PlayerHandler>();
 
         turretObject = transform.GetChild(0);
         
@@ -80,23 +88,25 @@ public class TankState : MonoBehaviour
         /* Explanation of isometric translation can be found here: https://youtu.be/8ZxVBCvJDWk */
 
         // Subscribe to events
-        EventHandler.Instance.RegisterListener<NewWaveEvent>(OnNewWave);
+        EventHandler.Instance.RegisterListener<WaveEndEvent>(OnWaveEnd);
     }
 
     void InitializeInputSystem()
     {
-        playerInput = transform.parent.GetComponent<PlayerInput>();
+        playerInput = GetComponentInParent<PlayerInput>();
 
         playerID = playerInput.playerIndex;
 
         moveGamepadAction = playerInput.actions["Move"];
         aimAction = playerInput.actions["Aim"];
+        abilityAction = playerInput.actions["Ability"];
     }
 
-    void SetPlayerColor()
+    void SetPlayerDiffrence()
     {
         Renderer renderer = GetComponent<Renderer>();
         renderer.material.color = playerInput.playerIndex == 0 ? Color.blue : Color.red;
+        tankUpgradeTree = playerInput.playerIndex == 0 ? tankUpgradeTreeOne : tankUpgradeTreeTwo;
     }
 
     void FindGarage()
@@ -110,7 +120,11 @@ public class TankState : MonoBehaviour
         gamepadInputVector = moveGamepadAction.ReadValue<Vector2>();
         aimInputVector = aimAction.ReadValue<Vector2>();
 
-        RotateTurret(); 
+        RotateTurret();
+        if (abilityAction.triggered)
+        {
+            Ability();
+        }
     }
 
     void FixedUpdate()
@@ -163,24 +177,60 @@ public class TankState : MonoBehaviour
         }
     }
 
-    void TakeDamage(float damage)
-    {
-        print("Taking damage");
-        currentHealth -= damage;
-        if (currentHealth < 0)
+	private void OnCollisionEnter(Collision collision)
+	{
+        if (collision.gameObject.CompareTag("Enemy"))
         {
-            print("Tank destroyed!");
+            EnemyController enemy = collision.gameObject.GetComponent<EnemyController>();
+            TakeDamage(enemy.MeleeDamage);
+        }
+	}
+
+	private void Ability()
+    {
+        if (tankUpgradeTree != null)
+        {
+            tankUpgradeTree.Ability();
+            tankUpgradeTree.UpgradeThree();
+            tankUpgradeTree.UpgradeTwo();
+            tankUpgradeTree.UpgradeOne();
+        }
+    }
+
+    public void TakeDamage(float damage)
+    {
+        currentHealth -= damage;
+        if (currentHealth <= 0)
+        {
             DestroyTank();
         }
     }
 
     void DestroyTank()
     {
+        print("Tank destroyed!");
         transform.position = spawnPoint.position;
+        playerHandler.Destroyed = true;
+        EventHandler.Instance.InvokeEvent(new PlayerSwitchEvent(
+            description: "Player switching mode",
+            playerContainer: transform.parent.gameObject
+        ));
     }
 
-    void OnNewWave(NewWaveEvent eventInfo)
+    void OnWaveEnd(WaveEndEvent eventInfo)
     {
+        RepairTank();
+    }
+
+    public void RepairTank()
+    {
+        playerHandler.Destroyed = false;
         currentHealth = health;
+    }
+
+    public void IncreaseSpeed(float speedIncrease)
+    {
+        standardSpeed += speedIncrease;
+        GetComponent<BoostAbility>().ChangeSpeed();
     }
 }

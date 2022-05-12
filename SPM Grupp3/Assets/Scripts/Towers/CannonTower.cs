@@ -21,7 +21,7 @@ public class CannonTower : Tower
     public Mesh cannonLevel2;
 
     private float fireCountdown = 0f;
-    private List<CannonTower> cannonTowers = new List<CannonTower>();
+
 
 
 
@@ -64,14 +64,17 @@ public class CannonTower : Tower
 
     public override void HitTarget(TowerHitEvent eventInfo)
     {
-        if (target != null)
+        if (eventInfo.towerGO == gameObject)
         {
-            EnemyController enemyTarget = eventInfo.enemyHit.GetComponent<EnemyController>();
-            GameObject effectInstance = Instantiate(eventInfo.hitEffect, enemyTarget.transform.position, enemyTarget.transform.rotation);
+            if (target != null)
+            {
+                EnemyController enemyTarget = eventInfo.enemyHit.GetComponent<EnemyController>();
+                GameObject effectInstance = Instantiate(eventInfo.hitEffect, enemyTarget.transform.position, enemyTarget.transform.rotation);
 
-            Destroy(effectInstance, 1f);
-            TypeOfShot(enemyTarget);
-            /*Destroy(bullet.gameObject, 2f);*/
+                Destroy(effectInstance, 1f);
+                TypeOfShot(enemyTarget);
+                /*Destroy(bullet.gameObject, 2f);*/
+            }
         }
     }
 
@@ -122,7 +125,7 @@ public class CannonTower : Tower
     {
         base.TowerLevel1();
 
-        if (gM.SpendResources(level1Cost,0f) && tUC.GetUpgradesPurchased() == 0)
+        if (tUC.GetUpgradesPurchased() == 0 && gM.SpendResources(level1Cost, 0f))
         {
             tUC.IncreaseUpgradesPurchased();
             CannonTower cT = tUC.ClickedTower.GetComponent<CannonTower>();
@@ -134,18 +137,18 @@ public class CannonTower : Tower
     {
         base.TowerLevel2();
 
-        if (gM.SpendResources(level2Cost, 0f) && tUC.GetUpgradesPurchased() == 1)
+        if (tUC.GetUpgradesPurchased() == 1 && gM.SpendResources(level2Cost, 0f))
         {
             tUC.IncreaseUpgradesPurchased();
             CannonTower cT = tUC.ClickedTower.GetComponent<CannonTower>();
 
             cT.ShotDamage = upgradeDamageAmount;
 
-            /*        GameObject towerUpgradeVisual1 = cT.gameObject.transform.GetChild(1).gameObject;
-                    GameObject towerUpgradeVisual2 = cT.gameObject.transform.GetChild(2).gameObject;*/
-            /*
-                    towerUpgradeVisual1.SetActive(false);
-                    towerUpgradeVisual2.SetActive(true);*/
+            GameObject towerUpgradeVisual1 = cT.gameObject.transform.GetChild(1).gameObject;
+            GameObject towerUpgradeVisual2 = cT.gameObject.transform.GetChild(2).gameObject;
+
+            towerUpgradeVisual1.SetActive(false);
+            towerUpgradeVisual2.SetActive(true);
         }
     }
 
@@ -153,7 +156,7 @@ public class CannonTower : Tower
     {
         base.TowerLevel3();
 
-        if (gM.SpendResources(level3Cost, 0f) && tUC.GetUpgradesPurchased() == 2)
+        if (tUC.GetUpgradesPurchased() == 2 && gM.SpendResources(level3Cost, 0f))
         {
             tUC.IncreaseUpgradesPurchased();
             CannonTower cT = tUC.ClickedTower.GetComponent<CannonTower>();

@@ -19,14 +19,9 @@ public class MissileTower : Tower
     [SerializeField] private float level2Cost;
     [SerializeField] private float level3Cost;
 
-    [Header("Purchased Upgrades")]
-    [SerializeField] private bool level1UpgradePurchased = false;
-    [SerializeField] private bool level2UpgradePurchased = false;
-    [SerializeField] private bool level3UpgradePurchased = false;
-
     private float fireCountdown = 0f;
     private float shotsFired = 0;
-    private List<MissileTower> missileTowers = new List<MissileTower>();
+
 
     public float SplashRadius { get { return splashRadius; } set { splashRadius = value; } }
     public float SplashDamage { get { return splashDamage; } set { splashDamage = value; } }
@@ -60,13 +55,16 @@ public class MissileTower : Tower
 
     public override void HitTarget(TowerHitEvent eventInfo)
     {
-        if (target != null)
+        if (eventInfo.towerGO == gameObject)
         {
-            EnemyController enemyTarget = eventInfo.enemyHit.GetComponent<EnemyController>();
-            GameObject effectInstance = Instantiate(eventInfo.hitEffect, enemyTarget.transform.position, enemyTarget.transform.rotation);
+            if (target != null)
+            {
+                EnemyController enemyTarget = eventInfo.enemyHit.GetComponent<EnemyController>();
+                GameObject effectInstance = Instantiate(eventInfo.hitEffect, enemyTarget.transform.position, enemyTarget.transform.rotation);
 
-            Destroy(effectInstance, 1f);
-            TypeOfShot(enemyTarget);
+                Destroy(effectInstance, 1f);
+                TypeOfShot(enemyTarget);
+            }
         }
     }
 

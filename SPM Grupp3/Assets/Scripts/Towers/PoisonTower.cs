@@ -17,19 +17,13 @@ public class PoisonTower : Tower
     [Header("Upgrade Cost")]
     [SerializeField] private float level1Cost;
     [SerializeField] private float level2Cost;
-    [SerializeField] private float level3Cost;
-
-    [Header("Purchased Upgrades")]
-    [SerializeField] private bool level1UpgradePurchased = false;
-    [SerializeField] private bool level2UpgradePurchased = false;
-    [SerializeField] private bool level3UpgradePurchased = false;
+    [SerializeField] private float level3Cost; 
 
     private float fireCountdown = 0f;
-    private List<PoisonTower> poisonTowers = new List<PoisonTower>();
+
 
     public float PoisonTicks { get { return poisonTicks; } set { poisonTicks = value; } }
     public float PoisonDamagePerTick { get { return poisonDamagePerTick; } set { poisonDamagePerTick = value; } }
-
 
     // Start is called before the first frame update
     void Start()
@@ -58,13 +52,16 @@ public class PoisonTower : Tower
 
     public override void HitTarget(TowerHitEvent eventInfo)
     {
-        if (target != null)
+        if (eventInfo.towerGO == gameObject)
         {
-            EnemyController enemyTarget = eventInfo.enemyHit.GetComponent<EnemyController>();
-            GameObject effectInstance = Instantiate(eventInfo.hitEffect, enemyTarget.transform.position, enemyTarget.transform.rotation);
+            if (target != null)
+            {
+                EnemyController enemyTarget = eventInfo.enemyHit.GetComponent<EnemyController>();
+                GameObject effectInstance = Instantiate(eventInfo.hitEffect, enemyTarget.transform.position, enemyTarget.transform.rotation);
 
-            Destroy(effectInstance, 1f);
-            TypeOfShot(enemyTarget);
+                Destroy(effectInstance, 1f);
+                TypeOfShot(enemyTarget);
+            }
         }
     }
 
@@ -118,7 +115,7 @@ public class PoisonTower : Tower
     public override void TowerLevel1()
     {
         base.TowerLevel1();
-        if (gM.SpendResources(level1Cost, 0f) && !level1UpgradePurchased)
+        if (gM.SpendResources(level1Cost, 0f) && tUC.GetUpgradesPurchased() == 0)
         {
             tUC.IncreaseUpgradesPurchased();
             PoisonTower pT = tUC.ClickedTower.GetComponent<PoisonTower>();            
@@ -128,7 +125,7 @@ public class PoisonTower : Tower
     public override void TowerLevel2()
     {
         base.TowerLevel2();
-        if (gM.SpendResources(level2Cost, 0f) && !level2UpgradePurchased && level1UpgradePurchased)
+        if (gM.SpendResources(level2Cost, 0f) && tUC.GetUpgradesPurchased() == 1)
         {
             tUC.IncreaseUpgradesPurchased();
             PoisonTower pT = tUC.ClickedTower.GetComponent<PoisonTower>();          
@@ -138,7 +135,7 @@ public class PoisonTower : Tower
     public override void TowerLevel3()
     {
         base.TowerLevel3();
-        if (gM.SpendResources(level3Cost, 0f) && !level3UpgradePurchased && level2UpgradePurchased && level1UpgradePurchased)
+        if (gM.SpendResources(level3Cost, 0f) && tUC.GetUpgradesPurchased() == 2)
         {
             tUC.IncreaseUpgradesPurchased();
             PoisonTower pT = tUC.ClickedTower.GetComponent<PoisonTower>();

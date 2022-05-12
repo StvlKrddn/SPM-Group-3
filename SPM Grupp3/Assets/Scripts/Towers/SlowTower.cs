@@ -5,7 +5,8 @@ using UnityEngine;
 public class SlowTower : Tower
 {
     [SerializeField] private float slowProc = 0.7f;
-    [SerializeField] private float slowRadius = 3f;
+    [SerializeField] private float slowRadius = 1f;
+    [SerializeField] private bool areaOfEffect = false;
 
     [Header("Amount To Upgrade")]
     [SerializeField] private float upgradeAmountSlowProc;
@@ -16,14 +17,9 @@ public class SlowTower : Tower
     [SerializeField] private float level2Cost;
     [SerializeField] private float level3Cost;
 
-    [Header("Purchased Upgrades")]
-    [SerializeField] private bool level1UpgradePurchased = false;
-    [SerializeField] private bool level2UpgradePurchased = false;
-    [SerializeField] private bool level3UpgradePurchased = false;
 
     private float fireCountdown = 0f;
-    private bool singleTarget = true;
-    private List<SlowTower> slowTowers = new List<SlowTower>();
+
 
     public float SlowProc { get { return slowProc; } set { slowProc = value; } }
 
@@ -41,13 +37,8 @@ public class SlowTower : Tower
 
     // Update is called once per frame
     void Update()
-    {
-        
+    {        
         LockOnTarget();
-/*        if (shot != null)
-        {
-
-        }*/
 
         if (target != null)
         {
@@ -60,15 +51,19 @@ public class SlowTower : Tower
 
     public override void HitTarget(TowerHitEvent eventInfo)
     {
-        if (target != null)
+        if (eventInfo.towerGO == gameObject)
         {
-            EnemyController enemyTarget = eventInfo.enemyHit.GetComponent<EnemyController>();
-            GameObject effectInstance = Instantiate(eventInfo.hitEffect, enemyTarget.transform.position, enemyTarget.transform.rotation);
+            if (target != null)
+            {
+                EnemyController enemyTarget = eventInfo.enemyHit.GetComponent<EnemyController>();
+                GameObject effectInstance = Instantiate(eventInfo.hitEffect, enemyTarget.transform.position, enemyTarget.transform.rotation);
 
-            Destroy(effectInstance, 1f);
-            TypeOfShot(enemyTarget);
-            /*Destroy(bullet.gameObject, 2f);*/
+                Destroy(effectInstance, 1f);
+                TypeOfShot(enemyTarget);
+                /*Destroy(bullet.gameObject, 2f);*/
+            }
         }
+        
     }
 
     private bool CanYouShoot()
@@ -84,7 +79,7 @@ public class SlowTower : Tower
 
     public override void TypeOfShot(EnemyController enemyTarget)
     {
-        enemyTarget.HitBySlow(SlowProc, slowRadius, singleTarget);
+        enemyTarget.HitBySlow(SlowProc, slowRadius, areaOfEffect);
     }
     private void Shoot()
     {
@@ -118,17 +113,17 @@ public class SlowTower : Tower
     public override void TowerLevel1()
     {
         base.TowerLevel1();
-        if (gM.SpendResources(level1Cost,0f) && !level1UpgradePurchased)
+        if (tUC.GetUpgradesPurchased() == 0 && gM.SpendResources(level1Cost,0f))
         {
             tUC.IncreaseUpgradesPurchased();
             SlowTower sT = tUC.ClickedTower.GetComponent<SlowTower>();           
-            sT.singleTarget = false;              
+            sT.areaOfEffect = true;              
         }        
     }
     public override void TowerLevel2()
     {
         base.TowerLevel2();
-        if (gM.SpendResources(level2Cost, 0f) && !level2UpgradePurchased && level1UpgradePurchased)
+        if (tUC.GetUpgradesPurchased() == 1 && gM.SpendResources(level2Cost, 0f))
         {
             tUC.IncreaseUpgradesPurchased();
             SlowTower sT = tUC.ClickedTower.GetComponent<SlowTower>();
@@ -138,7 +133,7 @@ public class SlowTower : Tower
     public override void TowerLevel3()
     {
         base.TowerLevel3();
-        if (gM.SpendResources(level3Cost, 0f) && !level3UpgradePurchased && level2UpgradePurchased && level1UpgradePurchased)
+        if (tUC.GetUpgradesPurchased() == 2 && gM.SpendResources(level3Cost, 0f))
         {
             tUC.IncreaseUpgradesPurchased();
             SlowTower sT = tUC.ClickedTower.GetComponent<SlowTower>();

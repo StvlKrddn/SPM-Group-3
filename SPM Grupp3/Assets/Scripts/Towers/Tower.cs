@@ -40,17 +40,17 @@ public abstract class Tower : MonoBehaviour
 
     public virtual void TowerLevel1()
     {
-        gM = FindObjectOfType<GameManager>();
+        gM = GameManager.Instance;
         tUC = TowerUpgradeCotroller.instance;
     }
     public virtual void TowerLevel2()
     {
-        gM = FindObjectOfType<GameManager>();
+        gM = GameManager.Instance;
         tUC = TowerUpgradeCotroller.instance;
     }
     public virtual void TowerLevel3()
     {
-        gM = FindObjectOfType<GameManager>();
+        gM = GameManager.Instance;
         tUC = TowerUpgradeCotroller.instance;
     }
 

@@ -38,6 +38,7 @@ public class BuilderController : MonoBehaviour
     private GameObject buildMenu;
     private GameObject infoView;
     private GameObject towerPanel;
+    private GameObject playerCursor;
 
     void Start()
     {
@@ -66,10 +67,10 @@ public class BuilderController : MonoBehaviour
 
     void InitializeCursor()
     {
-        GameObject cursor = Instantiate(cursorPrefab, canvas.position, canvas.transform.rotation, canvas);
-        SetCursorColor(cursor);
-        cursor.name = "Player " + (playerInput.playerIndex + 1) + " cursor";
-        cursorTransform = cursor.GetComponent<RectTransform>();
+        playerCursor = Instantiate(cursorPrefab, canvas.position, canvas.transform.rotation, canvas);
+        SetCursorColor(playerCursor);
+        playerCursor.name = "Player " + (playerInput.playerIndex + 1) + " cursor";
+        cursorTransform = playerCursor.GetComponent<RectTransform>();
         cursorTransform.gameObject.SetActive(true);
     }
 
@@ -106,6 +107,8 @@ public class BuilderController : MonoBehaviour
         virtualMouse.CopyState(out MouseState mouseState);
         mouseState.WithButton(MouseButton.Left, isPressed);
         InputState.Change(virtualMouse, mouseState);
+        CursorHandler cursor = playerCursor.GetComponent<CursorHandler>();
+        cursor.ToggleClick(isPressed);
         if (isPressed)
         {
             ClickedPlacement();
@@ -135,7 +138,6 @@ public class BuilderController : MonoBehaviour
         if (context.performed)
         {
             Deselect();
-            ResetCursorPosition();
             EventHandler.Instance.InvokeEvent(new PlayerSwitchEvent(
                 description: "Player switched mode",
                 playerContainer: transform.parent.gameObject
@@ -162,7 +164,6 @@ public class BuilderController : MonoBehaviour
         {
             ResetCursorPosition();
             cursorTransform.gameObject.SetActive(true);
-            towerPanel.SetActive(true);
         }
     }
 
@@ -173,7 +174,6 @@ public class BuilderController : MonoBehaviour
         {
             ResetCursorPosition();
             cursorTransform.gameObject.SetActive(false);
-            towerPanel.SetActive(false);
         }
     }
 
@@ -302,6 +302,7 @@ public class BuilderController : MonoBehaviour
         radius.transform.localScale = new Vector3(tow.range * 2f, 0.01f, tow.range * 2f);*/
 
         preTower = Instantiate(tower, towerPlace, placement.rotation);
+        preTower.transform.GetChild(0).gameObject.SetActive(true);
         preTower.layer = 12;
         preTower.GetComponent<Renderer>().material.color = towerPreview;                        
     }
@@ -348,6 +349,7 @@ public class BuilderController : MonoBehaviour
                     
                     tower.ShowUpgradeUI(towerPanel, infoView);
                     EventHandler.Instance.InvokeEvent(new TowerClickedEvent("Tower Is clicked", tower.gameObject));
+                    buildManager.TowerToBuild = null;
                     print("Tower of type: " + tower + " Is clicked");
                 }
                 

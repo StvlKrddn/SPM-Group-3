@@ -12,12 +12,20 @@ public class PlayerHandler : MonoBehaviour
     private PlayerInput playerInput;
     private GameObject tankMode;
     private GameObject buildMode;
+    private GameObject buildMenu;
+    private bool destroyed;
+
+    public bool Destroyed { get { return destroyed; } set { destroyed = value; } }
+    public PlayerMode CurrentMode { get {return currentMode; } }
 
     void Start()
     {
-        canvas = Camera.main.transform.Find("Canvas").gameObject;
+        destroyed = false;
 
-        currentMode = FindObjectOfType<GameManager>().StartingMode;
+        canvas = Camera.main.transform.Find("Canvas").gameObject;
+        buildMenu = canvas.transform.Find("Build_UI").gameObject;
+
+        currentMode = GameManager.Instance.StartingMode;
 
         playerInput = GetComponent<PlayerInput>();
 
@@ -31,10 +39,12 @@ public class PlayerHandler : MonoBehaviour
         {
             EnterBuildMode();
         }
-        else
+        else if (currentMode == PlayerMode.Tank)
         {
             EnterTankMode();
         }
+        
+        buildMenu.SetActive(currentMode == PlayerMode.Build);
     }
 
     void EnterTankMode()
@@ -51,6 +61,10 @@ public class PlayerHandler : MonoBehaviour
             ));
 
         playerInput.SwitchCurrentActionMap("Tank");
+
+        GetComponentInChildren<Health>().ResetHealth();
+
+        //canvas.transform.Find("Build_UI").gameObject.SetActive(false);
 
         currentMode = PlayerMode.Tank;
 
@@ -72,6 +86,8 @@ public class PlayerHandler : MonoBehaviour
 
         playerInput.SwitchCurrentActionMap("Builder");
 
+        //canvas.transform.Find("Build_UI").gameObject.SetActive(true);
+
         currentMode = PlayerMode.Build;
 
         //print("Entered build mode");
@@ -85,9 +101,14 @@ public class PlayerHandler : MonoBehaviour
             EnterBuildMode();
         }
         // If in Build mode, switch to Tank
-        else
+        else if (currentMode == PlayerMode.Build && !destroyed)
         {
             EnterTankMode();
+        }
+
+        if (destroyed)
+        {
+            print("Your tank is destroyed! Repair it or wait until next wave");
         }
     }
 

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class MaterialBehavior : MonoBehaviour
 {
@@ -11,36 +12,51 @@ public class MaterialBehavior : MonoBehaviour
     private GameManager gameManager;
     private Rigidbody rb;
     private bool landed = false;
+	private Vector3 direction;
 
-    private Vector3 originalPosition;
+	float x;
+	float z;
+
+
+	private Vector3 originalPosition;
 
     void Start()
     {
         gameManager = FindObjectOfType<GameManager>();
-        originalPosition = transform.position;
         rb = GetComponent<Rigidbody>();
-        Throw();
-        StartCoroutine(SelfDestruct());
+		direction = Random.insideUnitSphere.normalized;
+		while ((x < 0.15f && x > -0.15f) || (z < 0.15f && z > -0.15f))
+		{
+			x = Random.Range(-0.30f, 0.30f);
+			z = Random.Range(-0.17f, 0.17f);
+		}
     }
 
     void Update()
     {
-        if (landed == true)
-        {
-            Bobbing();
-        }
-        Invoke(nameof(Landed), 1.5f);
+		if (landed == true)
+		{
+			Bobbing();
+		}
+		else
+		{
+			Throw();
+		}
     }
 
     private void Landed()
     {
+        originalPosition = transform.position;
+		originalPosition.y += 1;
         landed = true;
-    }
+		StartCoroutine(SelfDestruct());
+	}
 
     private void Throw()
     {
-        transform.position += transform.right * 10;
-        transform.position += transform.up * 10;
+		transform.Translate(transform.position * x * Time.smoothDeltaTime);
+		transform.Translate(transform.position * z * Time.smoothDeltaTime);
+		transform.Translate(transform.up * 5 * Time.smoothDeltaTime);
     }
 
     private void Bobbing()
@@ -51,7 +67,11 @@ public class MaterialBehavior : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Tank"))
+		if (landed != true && (other.gameObject.CompareTag("PlaceForTower") || other.gameObject.CompareTag("Road")))
+		{
+			Landed();
+		}
+		if (other.gameObject.CompareTag("Tank"))
         {
             gameManager.AddMaterial(1);
             Destroy(gameObject);

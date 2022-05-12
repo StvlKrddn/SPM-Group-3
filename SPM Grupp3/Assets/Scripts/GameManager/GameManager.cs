@@ -13,9 +13,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float material = 0f;
     [SerializeField] private float money = 350f;
 
-    [Header("Enemies: ")]
-    [SerializeField] public bool spawnEnemies = true;
-
     [Header("UI Elements: ")]
     [SerializeField] private Text moneyCounterUI;
     [SerializeField] private Text moneyChangerUI;
@@ -34,52 +31,46 @@ public class GameManager : MonoBehaviour
     [Header("Other")]
     public List<GameObject> towersPlaced = new List<GameObject>();
 
+    private GameObject damagingEnemy;
+    private WaveManager waveManager;
+
     private int currentWave = -1;
+    private int enemiesKilled;
+    private int moneyCollected;
+    private int materialCollected;
+
     public float Money { get { return money; } set { money = value; } }
     public PlayerMode StartingMode { get { return startingMode; } }
+    public int EnemiesKilled { get { return enemiesKilled; } set { enemiesKilled = value; } }
+
+    private static GameManager instance;
+    public static GameManager Instance 
+    { 
+        get 
+        {
+            // "Lazy loading" to prevent Unity load order error
+            if (instance == null)
+            {
+                instance = FindObjectOfType<GameManager>();
+            }
+            return instance; 
+        } 
+    }
 
     private void Start()
     {
         livesSlider.maxValue = baseHealth;
 
+        waveManager = GetComponent<WaveManager>();
+
         UpdateResourcesUI();
 
-        EventHandler.Instance.RegisterListener<StartWaveEvent>(OnStartWave);
+        
     }
 
-    void Update()
-    {  
-        /*
-        if(Gamepad.current != null && Gamepad.current.xButton.isPressed && spawnEnemies)
-        {
-            SpawnWave();
-        }
-        */
-    }
-
-    private void OnStartWave(StartWaveEvent eventInfo)
+    public void TakeDamage(float damage, GameObject enemy)
     {
-        if (spawnEnemies)
-        {
-            SpawnWave();
-        }
-    }
-
-    private void SpawnWave()
-    {
-        currentWave++;
-        // Invoke new wave event
-        EventHandler.Instance.InvokeEvent(new NewWaveEvent(
-            description: "New wave started",
-            currentWave: currentWave
-            ));
-
-        spawnEnemies = false;
-        //Deactivate start button
-    }
-
-    public void TakeDamage(float damage)
-    {
+        damagingEnemy = enemy;
         baseHealth -= damage;
         livesSlider.value -= damage;
         if (baseHealth <= 0)
@@ -88,7 +79,6 @@ public class GameManager : MonoBehaviour
             fillArea.SetActive(false);
             Defeat();
         }
-        UpdateResourcesUI();
     }
 
     private void UpdateResourcesUI()
@@ -102,9 +92,10 @@ public class GameManager : MonoBehaviour
         moneyChangerUI.color = colorGain;
         moneyChangerUI.text = "+" + addMoney;
 
-        Instantiate(moneyChangerUI, moneyUI.transform);
+        //Instantiate(moneyChangerUI, moneyUI.transform);
 
         money += addMoney;
+        moneyCollected += (int) addMoney;
         UpdateResourcesUI();
     }
 
@@ -113,9 +104,10 @@ public class GameManager : MonoBehaviour
         materialChangerUI.color = colorGain;
         materialChangerUI.text = "+" + addMaterial;
 
-        Instantiate(materialChangerUI, materialUI.transform);
+        //Instantiate(materialChangerUI, materialUI.transform);
 
         material += addMaterial;
+        materialCollected += (int) addMaterial;
         UpdateResourcesUI();
     }
 
@@ -127,7 +119,7 @@ public class GameManager : MonoBehaviour
             moneyChangerUI.color = Color.red;
             moneyChangerUI.text = "-" + moneySpent;
 
-            Instantiate(moneyChangerUI, moneyUI.transform);
+            //Instantiate(moneyChangerUI, moneyUI.transform);
 
             material -= materialSpent;
             if (materialSpent > 0) 
@@ -135,7 +127,7 @@ public class GameManager : MonoBehaviour
                 materialChangerUI.color = Color.red;
                 materialChangerUI.text = "-" + materialSpent;
 
-                Instantiate(materialChangerUI, moneyUI.transform);
+                //Instantiate(materialChangerUI, moneyUI.transform);
             }
                
 
@@ -154,6 +146,35 @@ public class GameManager : MonoBehaviour
     private void Defeat()
     {
         Debug.Log("Defeat");
+
+        EventHandler.Instance.InvokeEvent(new DefeatEvent(
+            description: "Defeat",
+            wave: currentWave + 1,
+            killedBy: damagingEnemy,
+            enemiesKilled: 0 
+        ));
+
+        // NOTE(August): Allt under detta borde egentligen hända efter man trycker på Restart-knappen i Defeat skärmen
+        // Kanske ska flyttas till nån OnClick-metod någonstans eller nått
+        money = 0;
+        material = 0;
+        UpdateResourcesUI();
+        waveManager.Restart();
     }
 
+    public void Victory()
+    {
+        Debug.Log("Victory");
+        print("Money collected: " + moneyCollected);
+        print("Material collected: " + materialCollected);
+        print("Enemies killed: " + enemiesKilled);
+
+        EventHandler.Instance.InvokeEvent(new VictoryEvent(
+            description: "Victory",
+            money: (int) moneyCollected,
+            material: (int) materialCollected,
+            enemiesKilled: enemiesKilled,
+            towersBuilt: 0
+        ));
+    }
 }
