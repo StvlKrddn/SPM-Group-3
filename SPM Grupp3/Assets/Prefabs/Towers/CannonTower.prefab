@@ -70,16 +70,16 @@ MonoBehaviour:
   tower: {fileID: 6433795423722352152}
   upgradeUI: {fileID: 4649296799169425345, guid: 1ba4dea646629164c94da1eb4ee62503, type: 3}
   buildUI: {fileID: 1244981537908834648, guid: 9c16f0f1001d7a841b130781a7ae7c4f, type: 3}
-  range: 8
-  fireRate: 3.8
+  range: 5
+  fireRate: 1
   shotDamage: 10
-  cost: 150
+  cost: 500
   materialCost: 0
-  upgradeDamageAmount: 10
-  upgradeRangeAmount: 1
-  upgradeFireRateAmount: 0.5
+  upgradeDamageAmount: 20
+  upgradeRangeAmount: 0
+  upgradeFireRateAmount: 1.6
   shootTwice: 0
-  level1Cost: 0
+  level1Cost: 700
   level2Cost: 0
   level3Cost: 0
   cannonLevel2: {fileID: 0}
@@ -379,6 +379,18 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 25849e9d284ed274b969ec87455dc6d3, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 25849e9d284ed274b969ec87455dc6d3, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 25849e9d284ed274b969ec87455dc6d3, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 25849e9d284ed274b969ec87455dc6d3, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -452,7 +464,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 25849e9d284ed274b969ec87455dc6d3, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6162583871730536078, guid: 25849e9d284ed274b969ec87455dc6d3, type: 3}
       propertyPath: m_Layer

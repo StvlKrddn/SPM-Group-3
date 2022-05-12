@@ -17,19 +17,19 @@ public class Health : MonoBehaviour
 
     private void Awake()
     {
-        healthBar = GetComponentInChildren<HealthBar>();
-
+      //  healthBar = GetComponentInChildren<HealthBar>();
+   
         if (gameObject.GetComponent<TankState>())
         {
             player = GetComponent<TankState>();
             maxHealth = player.Health;
-            healthBar.slider.value = maxHealth;
+      //      healthBar.slider.value = maxHealth;
         }
         else if (gameObject.GetComponent<EnemyController>())
         {
             enemy = GetComponent<EnemyController>();
             maxHealth = enemy.Health;
-            healthBar.slider.value = maxHealth;
+         //   healthBar.slider.value = maxHealth;
         }
         currentHealth = maxHealth;
     }
@@ -41,7 +41,7 @@ public class Health : MonoBehaviour
             
             EnemyBullet enemyBullet = other.GetComponent<EnemyBullet>();
 
-            ModifyHealth(enemyBullet.damage);
+       //     ModifyHealth(enemyBullet.damage);
             player.TakeDamage(enemyBullet.damage);
         }
 
@@ -54,7 +54,7 @@ public class Health : MonoBehaviour
             GameObject towerBullet = other.gameObject;
             Tower tower = towerBullet.GetComponent<Shot>().getTowerShotCameFrom();
 
-            ModifyHealth(tower.ShotDamage);
+        //    ModifyHealth(tower.ShotDamage);
         }
         if (other.gameObject.CompareTag("PlayerShots"))
         {
@@ -64,7 +64,7 @@ public class Health : MonoBehaviour
             }
             BulletBehavior playerBullet = other.GetComponent<BulletBehavior>();
 
-            ModifyHealth(playerBullet.BulletDamage);
+         //   ModifyHealth(playerBullet.BulletDamage);
             enemy.TakeDamage(playerBullet.BulletDamage);
         }
     }
@@ -76,7 +76,7 @@ public class Health : MonoBehaviour
             TankState player = gameObject.GetComponent<TankState>();
             EnemyController enemy = other.gameObject.GetComponent<EnemyController>();
 
-            ModifyHealth(enemy.MeleeDamage);
+      //      ModifyHealth(enemy.MeleeDamage);
 
             player.TakeDamage(enemy.MeleeDamage);
         }
@@ -88,7 +88,7 @@ public class Health : MonoBehaviour
         currentHealth -= amount;
 
         /*        float currentHealthPct = currentHealth / maxHealth;*/
-        UpdateHealthBar(currentHealth);
+     //   UpdateHealthBar(currentHealth);
     }
 
     public void ResetHealth()

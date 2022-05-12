@@ -111,13 +111,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2972d638bc5665943b947e47bfcf7e4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 5
-  health: 100
+  speed: 11
+  health: 17.5
   hitEffect: {fileID: 5202362185975563897, guid: afc452a4019ab8b47ac2ea888849a086, type: 3}
   meleeDamage: 10
   damageBase: 10
   moneyDrop: 15
-  materialDrop: 1
+  materialDrop: 0
   material: {fileID: 2880112694638519676, guid: ad4ab04936b9afa45a48c743a72df55b, type: 3}
   spread: 0
 --- !u!114 &7448570098435509368
@@ -234,6 +234,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5940178821907547974}
     m_Modifications:
+    - target: {fileID: 15003163187659497, guid: 6c76fb6c527c1db4d85a2e5af6aab512, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9099198633358382237, guid: 6c76fb6c527c1db4d85a2e5af6aab512, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
