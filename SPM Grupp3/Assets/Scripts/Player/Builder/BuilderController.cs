@@ -163,7 +163,7 @@ public class BuilderController : MonoBehaviour
         if (cursorTransform != null)
         {
             ResetCursorPosition();
-            cursorTransform.gameObject.SetActive(true);
+            cursorTransform.gameObject.SetActive(true);            
         }
     }
 

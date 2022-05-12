@@ -662,6 +662,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementSpeed: 6
   health: 50
+  levelOfTank: 0
+  tankUpgradeTree: {fileID: 0}
   tankUpgradeTreeOne: {fileID: 291801988}
   tankUpgradeTreeTwo: {fileID: 291801997}
 --- !u!114 &8961258511388597484
@@ -696,7 +698,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f615dcb75a8e914b8e7101164f82b13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boostSpeedMultiplier: 4
+  boostSpeedMultiplier: 3
   boostDuration: 1
   boostCooldownTime: 5
 --- !u!114 &2030755986
@@ -723,19 +725,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 632fe7ad3c3e30c4bb9ea28f7c45a7ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentUpgrade: 0
-  upgradeOneMoney: 0
-  upgradeOneMaterial: 0
-  upgradeTwoMoney: 0
-  upgradeTwoMaterial: 0
-  movementSpeedIncrease: 6
-  upgradeThreeMoney: 0
-  upgradeThreeMaterial: 0
+  movementSpeed: 12
   abilityCD: 0
   abilityReady: 0
-  rangeIncrease: 5
-  fireRateMultiply: 3
-  damageIncrease: 50
+  range: 25
+  fireRate: 1.2
+  damage: 75
   sniperAbility: {fileID: 5158456270458876578, guid: 96e8ed1d1989e8f448a69b5c76916339, type: 3}
 --- !u!114 &291801997
 MonoBehaviour:
@@ -749,17 +744,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84ddc4bc03d97b24d8474d6ac61bd62d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentUpgrade: 0
-  upgradeOneMoney: 0
-  upgradeOneMaterial: 0
-  upgradeTwoMoney: 0
-  upgradeTwoMaterial: 0
-  movementSpeedIncrease: 6
-  upgradeThreeMoney: 0
-  upgradeThreeMaterial: 0
+  movementSpeed: 12
   abilityCD: 0
   abilityReady: 0
-  fireRateMultiply: 2
+  fireRate: 0.2
   flameThrower: {fileID: 5495812521528275591}
   grenade: {fileID: 1372596116698524053, guid: 15019bdd4ebaddf45afd94d688f08fb9, type: 3}
 --- !u!1001 &288715145866556008
@@ -769,10 +757,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 9092989505414773219}
     m_Modifications:
-    - target: {fileID: 1266639345510973030, guid: e661c134b733cde42a1a509849bb34e5, type: 3}
-      propertyPath: faceCamera
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 1266639345510973034, guid: e661c134b733cde42a1a509849bb34e5, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -5811,7 +5795,7 @@ ParticleSystemRenderer:
   m_RenderAlignment: 0
   m_Pivot: {x: 0, y: 0, z: 0}
   m_Flip: {x: 0, y: 0.5, z: 0}
-  m_UseCustomVertexStreams: 1
+  m_UseCustomVertexStreams: 0
   m_EnableGPUInstancing: 1
   m_ApplyActiveColorSpace: 0
   m_AllowRoll: 1
