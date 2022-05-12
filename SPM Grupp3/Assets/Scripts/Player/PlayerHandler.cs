@@ -67,7 +67,7 @@ public class PlayerHandler : MonoBehaviour
 
         currentMode = PlayerMode.Tank;
 
-        //UpgradeController.instance.FixUpgrades(GetComponentInChildren<TankState>()); Behöver ändras
+        UpgradeController.instance.FixUpgrades(gameObject); //Behöver ändras
 
         //print("Entered tank mode");
 

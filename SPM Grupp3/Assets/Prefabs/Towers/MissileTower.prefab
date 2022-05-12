@@ -59,11 +59,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8dfc2432f92b2b94ea4dcddc6c4491ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 15
-  fireRate: 0.7
-  cost: 200
-  materialCost: 5
-  shotDamage: 70
   enemyTag: Enemy
   turnSpeed: 10
   shot: {fileID: 3201376968240350041, guid: 7e4902a1dd3b3484280a32e92534c4c7, type: 3}
@@ -72,12 +67,21 @@ MonoBehaviour:
   onHitEffect: {fileID: 6970288597742466642, guid: a61e722881e7d9d48b3435d574f938a1, type: 3}
   towerScript: {fileID: 0}
   tower: {fileID: 1569145756733406200}
-  towers:
-    serializedVersion: 2
-    m_Bits: 256
-  splashRadius: 3
+  upgradeUI: {fileID: 0}
+  buildUI: {fileID: 0}
+  range: 20
+  fireRate: 1
+  shotDamage: 20
+  cost: 1200
+  materialCost: 0
+  splashRadius: 5
   splashDamage: 20
-  fireCountdown: 0
+  amountUpgradeSplashRadius: 0
+  amountUpgradeSplashDamage: 0
+  thirdShot: 0
+  level1Cost: 0
+  level2Cost: 0
+  level3Cost: 0
 --- !u!1 &1569145758302136571
 GameObject:
   m_ObjectHideFlags: 0
