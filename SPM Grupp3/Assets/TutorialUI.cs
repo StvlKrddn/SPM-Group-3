@@ -36,7 +36,14 @@ public class TutorialUI : MonoBehaviour
     public GameObject tileToActivate;
 
 
-    public GameObject activateAfterSecondWave; 
+    public GameObject activateAfterSecondWave;
+
+
+
+    public GameObject lastWaveActivate; 
+
+
+    //private int whichWaveIsItOn; 
 
 
     // Start is called before the first frame update
@@ -100,26 +107,39 @@ public class TutorialUI : MonoBehaviour
     }
 
     public void waveEnded()
-    {
+    {   
         Debug.Log("waven slutade");
         switch (whichWave)
         {
             case 0:
 
-                FirstWaveActivation .SetActive(true);
+                whichWave += 1; 
+                break;
+            case 1:
+
+                FirstWaveActivation.SetActive(true);
 
                 // Instantiate<>
 
                 materialToActivate.SetActive(true);
 
-                tileToActivate.layer = LayerMask.NameToLayer("PlaceForTower"); 
-                break;
-            case 1:
+                tileToActivate.layer = LayerMask.NameToLayer("PlaceForTower");
 
-
+                whichWave += 1;
                 break;
             case 2:
 
+                activateAfterSecondWave.SetActive(true);
+
+                whichWave += 1;
+                break;
+            case 3:
+
+                
+                break;
+            case 4:
+                lastWaveActivate.SetActive(true);
+                whichWave += 1;
 
                 break;
         }
