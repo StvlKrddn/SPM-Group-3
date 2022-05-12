@@ -6016,7 +6016,7 @@ PrefabInstance:
     - target: {fileID: 1555352807092885021, guid: 6364959b4060537488578e889cf8fbea, type: 3}
       propertyPath: cameraForCursor
       value: 
-      objectReference: {fileID: 1744604482}
+      objectReference: {fileID: 0}
     - target: {fileID: 1555352807092885021, guid: 6364959b4060537488578e889cf8fbea, type: 3}
       propertyPath: cursorTransform
       value: 
@@ -11738,6 +11738,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 52298287073652944, guid: f38755517d96a124d80b16613eb953a3, type: 3}
+      propertyPath: m_Cameras.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 682837613534905906, guid: f38755517d96a124d80b16613eb953a3, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -276
@@ -102097,11 +102101,6 @@ Transform:
   m_Father: {fileID: 1947946572}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!20 &1744604482 stripped
-Camera:
-  m_CorrespondingSourceObject: {fileID: 8007248707635808279, guid: f38755517d96a124d80b16613eb953a3, type: 3}
-  m_PrefabInstance: {fileID: 170392080}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1749205517
 GameObject:
   m_ObjectHideFlags: 0
