@@ -5,12 +5,12 @@ using UnityEngine;
 public class FireGrenade : MonoBehaviour
 {
     [SerializeField] private int damage;
-    private SphereCollider collider;
+    private SphereCollider sphereCollider;
 
     // Start is called before the first frame update
     void Start()
     {
-        collider = GetComponent<SphereCollider>();
+        sphereCollider = GetComponent<SphereCollider>();
 		StartCoroutine(TooLate());
     }
 
@@ -30,7 +30,7 @@ public class FireGrenade : MonoBehaviour
 
 	private IEnumerator Detonate()
     {
-        Collider[] enemies = Physics.OverlapSphere(transform.position, collider.radius);
+        Collider[] enemies = Physics.OverlapSphere(transform.position, sphereCollider.radius);
         foreach (Collider c in enemies)
         {
             if (c.GetComponent<EnemyController>())

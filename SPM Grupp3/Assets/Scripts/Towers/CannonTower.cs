@@ -17,9 +17,6 @@ public class CannonTower : Tower
     [SerializeField] private float level2Cost;
     [SerializeField] private float level3Cost;
 
-    [Header("Visual Upgrades")]
-    public Mesh cannonLevel2;
-
     private float fireCountdown = 0f;
 
 

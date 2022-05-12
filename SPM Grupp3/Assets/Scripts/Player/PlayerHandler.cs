@@ -38,18 +38,20 @@ public class PlayerHandler : MonoBehaviour
         if (currentMode == PlayerMode.Build)
         {
             EnterBuildMode();
+            
         }
         else if (currentMode == PlayerMode.Tank)
         {
             EnterTankMode();
         }
-        buildMenu.SetActive(currentMode == PlayerMode.Build);
+        //buildMenu.SetActive(currentMode == PlayerMode.Build);
     }
 
     void EnterTankMode()
     {
         // Disable Build
         buildMode.SetActive(false);
+        buildMenu.SetActive(false);
 
         // Enable Tank
         tankMode.SetActive(true);
@@ -67,7 +69,7 @@ public class PlayerHandler : MonoBehaviour
 
         currentMode = PlayerMode.Tank;
 
-        UpgradeController.instance.FixUpgrades(gameObject); //Behöver ändras
+        UpgradeController.Instance.FixUpgrades(gameObject); //Behöver ändras
 
         //print("Entered tank mode");
 
@@ -80,6 +82,7 @@ public class PlayerHandler : MonoBehaviour
 
         // Enable Build
         buildMode.SetActive(true);
+        buildMenu.SetActive(true);
 
         EventHandler.Instance.InvokeEvent(new EnterBuildModeEvent(
             description: "Player entered build mode",
@@ -110,7 +113,7 @@ public class PlayerHandler : MonoBehaviour
 
         if (destroyed)
         {
-            print("Your tank is destroyed! Repair it or wait until next wave");
+            print("Your tank is destroyed! Wait until next wave");
         }
     }
 

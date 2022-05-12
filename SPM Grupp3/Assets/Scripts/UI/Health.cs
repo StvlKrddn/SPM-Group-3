@@ -89,9 +89,7 @@ public class Health : MonoBehaviour
     public void ModifyHealth(float amount)
     {
         currentHealth -= amount;
-        print(currentHealth);
 
-        /*        float currentHealthPct = currentHealth / maxHealth;*/
         UpdateHealthBar(currentHealth);
     }
 

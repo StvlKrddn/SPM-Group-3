@@ -71,7 +71,7 @@ MonoBehaviour:
   tower: {fileID: 6433795423722352152}
   upgradeUI: {fileID: 4649296799169425345, guid: 1ba4dea646629164c94da1eb4ee62503, type: 3}
   buildUI: {fileID: 1244981537908834648, guid: 9c16f0f1001d7a841b130781a7ae7c4f, type: 3}
-  range: 5
+  range: 7
   fireRate: 1
   shotDamage: 10
   cost: 500
@@ -81,8 +81,8 @@ MonoBehaviour:
   upgradeFireRateAmount: 1.6
   shootTwice: 0
   level1Cost: 700
-  level2Cost: 0
-  level3Cost: 0
+  level2Cost: 700
+  level3Cost: 700
   cannonLevel2: {fileID: 0}
 --- !u!1 &6433795424573960509
 GameObject:
@@ -142,7 +142,7 @@ Transform:
   m_GameObject: {fileID: 6559027840814895499}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0.165, z: 0}
-  m_LocalScale: {x: 10, y: 0.01, z: 10}
+  m_LocalScale: {x: 14, y: 0.01, z: 14}
   m_Children: []
   m_Father: {fileID: 5304290660611409877}
   m_RootOrder: 3
@@ -238,7 +238,7 @@ Transform:
   m_GameObject: {fileID: 6793205654700964269}
   m_LocalRotation: {x: -0.00000008146034, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: -0.08196724, z: 0}
-  m_LocalScale: {x: 10, y: 0.01, z: 10}
+  m_LocalScale: {x: 14, y: 0.01, z: 14}
   m_Children: []
   m_Father: {fileID: 2431024903302100788}
   m_RootOrder: 0
@@ -332,8 +332,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8349444188524842393}
   m_LocalRotation: {x: 0.00000008146034, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.01, z: -0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: -0.087, z: 0}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_Children: []
   m_Father: {fileID: 6433795423722352153}
   m_RootOrder: 3
@@ -400,15 +400,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0f56c83892ead024a871f503ce228e43, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0f56c83892ead024a871f503ce228e43, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0f56c83892ead024a871f503ce228e43, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0f56c83892ead024a871f503ce228e43, type: 3}
       propertyPath: m_LocalPosition.x
@@ -456,7 +456,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 0f56c83892ead024a871f503ce228e43, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0f56c83892ead024a871f503ce228e43, type: 3}
@@ -478,15 +478,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 25849e9d284ed274b969ec87455dc6d3, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 25849e9d284ed274b969ec87455dc6d3, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 25849e9d284ed274b969ec87455dc6d3, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 25849e9d284ed274b969ec87455dc6d3, type: 3}
       propertyPath: m_LocalPosition.x
@@ -562,7 +562,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 25849e9d284ed274b969ec87455dc6d3, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6162583871730536078, guid: 25849e9d284ed274b969ec87455dc6d3, type: 3}
       propertyPath: m_Layer
