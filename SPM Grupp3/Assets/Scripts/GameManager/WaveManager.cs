@@ -19,7 +19,7 @@ public class WaveManager : MonoBehaviour
     private GameManager gameManager;
     private int currentWave = -1;
     private int victoryWave;
-    private int spawnRate = 0;
+    private float spawnRate = 0;
     private bool spawnEnemies = true;
     private int waveMoneyBonus;
     private List<GameObject> currentWaveEnemies = new List<GameObject>();
@@ -81,7 +81,7 @@ public class WaveManager : MonoBehaviour
         }
         waveMoneyBonus = wave.waveMoneyBonus;
         enemyCount = currentWaveEnemies.Count;
-        spawnRate = wave.waveDuration / currentWaveEnemies.Count;
+        spawnRate = wave.waveDuration / currentWaveEnemies.Count; //Sverker säger delete 
     }
 
     void Shuffle(List<GameObject> list)
@@ -158,7 +158,7 @@ public class WaveManager : MonoBehaviour
 [Serializable]
 public struct WaveInfo
 {
-    public int waveDuration;
+    public float waveDuration;
     public int waveMoneyBonus;
     public SubWave[] subWaves;
 }
@@ -167,6 +167,8 @@ public struct WaveInfo
 public struct SubWave
 {
     public EnemyStruct[] enemies;
+    //public  float spawnRate 
+ 
 }
 
 [Serializable]

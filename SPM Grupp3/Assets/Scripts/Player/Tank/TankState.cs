@@ -132,7 +132,7 @@ public class TankState : MonoBehaviour
     void FixedUpdate()
     {
         Move();
-        levelOfTank = UpgradeController.instance.currentUpgradeLevel;
+        //levelOfTank = UpgradeController.instance.currentUpgradeLevel;
     }
 
     void Move()
