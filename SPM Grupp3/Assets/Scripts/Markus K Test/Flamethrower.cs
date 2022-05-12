@@ -6,12 +6,12 @@ using UnityEngine.ParticleSystemJobs;
 
 public class Flamethrower : MonoBehaviour
 {
+    public int fireDamage = 25;
     private CapsuleCollider capsuleCollider;
-    private int fireDamage = 50;
     private TankState state;
     private PlayerInput playerInput;
     private InputAction fireAction;
-    [SerializeField] private ParticleSystem particleSystem;
+    [SerializeField] private ParticleSystem fireParticles;
 
 
     void Start()
@@ -27,13 +27,13 @@ public class Flamethrower : MonoBehaviour
 	{
         if(fireAction.IsPressed())
         {
-            particleSystem.Play();
+            fireParticles.Play();
             capsuleCollider.enabled = true;
         }
         else
         {
             capsuleCollider.enabled = false;
-            particleSystem.Stop();
+            fireParticles.Stop();
         }
         
 

@@ -19,7 +19,7 @@ public abstract class TankUpgradeTree : MonoBehaviour
 
     protected virtual void Start()
 	{   
-        uC = UpgradeController.instance;
+        uC = UpgradeController.Instance;
         tankState = GetComponent<TankState>();
         weapon = GetComponent<WeaponSlot>();
         gameManager = FindObjectOfType<GameManager>(); 
@@ -41,7 +41,6 @@ public abstract class TankUpgradeTree : MonoBehaviour
     {
         if (abilityReady == true)
         {
-            Debug.Log("Kastar cool spell");
             abilityReady = false;
             StartCoroutine(ResetAbility());
             return true;
@@ -52,7 +51,6 @@ public abstract class TankUpgradeTree : MonoBehaviour
     protected IEnumerator ResetAbility()
     {
         yield return new WaitForSeconds(abilityCD);
-		Debug.Log("We back");
         abilityReady = true;
     }
 
