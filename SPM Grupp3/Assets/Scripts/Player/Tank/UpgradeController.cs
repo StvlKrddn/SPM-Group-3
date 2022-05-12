@@ -49,22 +49,23 @@ public class UpgradeController : MonoBehaviour
         }
     }
 
-    public void FixUpgrades(TankState tankState)
+    public void FixUpgrades(GameObject player)
     {
+        TankState tS = player.GetComponentInChildren<TankState>();
         for (int i = 1; i <= currentUpgradeLevel; i++)
         {
             switch (i)
             {
                 case 1:
-                    tankState.tankUpgradeTree.UpgradeOne();
+                    tS.tankUpgradeTree.UpgradeOne();
                     break;
 
                 case 2:
-                    tankState.tankUpgradeTree.UpgradeTwo();
+                    tS.tankUpgradeTree.UpgradeTwo();
                     break;
 
                 case 3:
-                    tankState.tankUpgradeTree.UpgradeThree();
+                    tS.tankUpgradeTree.UpgradeThree();
                     break;
             }
         }
