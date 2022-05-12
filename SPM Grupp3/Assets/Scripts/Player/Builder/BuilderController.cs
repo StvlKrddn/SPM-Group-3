@@ -38,6 +38,7 @@ public class BuilderController : MonoBehaviour
     private GameObject buildMenu;
     private GameObject infoView;
     private GameObject towerPanel;
+    private GameObject playerCursor;
 
     void Start()
     {
@@ -66,10 +67,10 @@ public class BuilderController : MonoBehaviour
 
     void InitializeCursor()
     {
-        GameObject cursor = Instantiate(cursorPrefab, canvas.position, canvas.transform.rotation, canvas);
-        SetCursorColor(cursor);
-        cursor.name = "Player " + (playerInput.playerIndex + 1) + " cursor";
-        cursorTransform = cursor.GetComponent<RectTransform>();
+        playerCursor = Instantiate(cursorPrefab, canvas.position, canvas.transform.rotation, canvas);
+        SetCursorColor(playerCursor);
+        playerCursor.name = "Player " + (playerInput.playerIndex + 1) + " cursor";
+        cursorTransform = playerCursor.GetComponent<RectTransform>();
         cursorTransform.gameObject.SetActive(true);
     }
 
@@ -106,6 +107,8 @@ public class BuilderController : MonoBehaviour
         virtualMouse.CopyState(out MouseState mouseState);
         mouseState.WithButton(MouseButton.Left, isPressed);
         InputState.Change(virtualMouse, mouseState);
+        CursorHandler cursor = playerCursor.GetComponent<CursorHandler>();
+        cursor.ToggleClick(isPressed);
         if (isPressed)
         {
             ClickedPlacement();
