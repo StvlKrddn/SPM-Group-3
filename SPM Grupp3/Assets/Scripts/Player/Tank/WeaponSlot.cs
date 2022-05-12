@@ -74,7 +74,7 @@ public class WeaponSlot : MonoBehaviour
     {
         allowedToShoot = false;
         SpawnBullet();
-        yield return new WaitForSeconds(fireRate);
+        yield return new WaitForSeconds(1 / fireRate);
         allowedToShoot = true;
     }
 
