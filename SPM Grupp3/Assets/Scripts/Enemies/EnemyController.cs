@@ -73,7 +73,7 @@ public abstract class EnemyController : MonoBehaviour
         }
         currIndex++;
         target = Waypoints.wayPoints[currIndex];
-        transform.rotation = Quaternion.LookRotation(target.position - transform.position);
+        transform.LookAt(target);
     }
 
     public virtual void TakeDamage(float damage)

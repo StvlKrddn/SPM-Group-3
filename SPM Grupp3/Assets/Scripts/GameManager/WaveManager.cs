@@ -138,7 +138,7 @@ public class WaveManager : MonoBehaviour
     {
         for (int i = 0; i < currentWaveEnemies.Count; i++)
         {
-            GameObject g = Instantiate(currentWaveEnemies[i], spawnPosition.position, spawnPosition.rotation, enemyContainer.transform); //Spawn enemy and wait for time between enemy
+            GameObject g = Instantiate(currentWaveEnemies[i], spawnPosition.position, currentWaveEnemies[i].transform.rotation, enemyContainer.transform); //Spawn enemy and wait for time between enemy
             g.SetActive(true);
             yield return new WaitForSeconds(spawnRate);
         }
