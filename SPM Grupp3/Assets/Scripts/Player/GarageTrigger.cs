@@ -12,7 +12,6 @@ public class GarageTrigger : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         hintEnterUI.SetActive(true);
-        print("Enter Garage? (Press X)");
     }
 
     private void OnTriggerStay(Collider other)

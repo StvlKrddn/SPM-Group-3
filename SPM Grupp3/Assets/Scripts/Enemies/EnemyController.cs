@@ -53,15 +53,18 @@ public abstract class EnemyController : MonoBehaviour
         //WIP Enemy moves right direction
         Vector3 direction = target.position - transform.position;
         direction.Normalize();
-        transform.Translate(speed * Time.deltaTime * direction);
-
-        if (Vector3.Distance(transform.position, target.position) <= 0.4f)
-        {
-            NextTarget(direction);
-        }
+        transform.position += speed * Time.deltaTime * direction;
     }
 
-	private void NextTarget(Vector3 direction)
+    private void EnemyDeathBase()
+    {
+        gM.TakeDamage(damageBase, gameObject);
+        DieEvent dieEvent = new DieEvent("död från bas", gameObject, null, null);
+        EventHandler.Instance.InvokeEvent(dieEvent);
+        Destroy(gameObject);
+    }
+
+    private void OnTriggerEnter(Collider other)
     {
         if (Waypoints.wayPoints.Length - 1 <= currIndex) // Changes waypoint to til the enemy reaches the last waypoint
         {
@@ -70,26 +73,8 @@ public abstract class EnemyController : MonoBehaviour
         }
         currIndex++;
         target = Waypoints.wayPoints[currIndex];
+        transform.rotation = Quaternion.LookRotation(target.position - transform.position);
     }
-
-    private void EnemyDeathBase()
-    {
-        gM.TakeDamage(damageBase, gameObject);
-        DieEvent dieEvent = new DieEvent("d�d fr�n bas", gameObject, null, null);
-        EventHandler.Instance.InvokeEvent(dieEvent);
-        Destroy(gameObject);
-    }
-
-    /*private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("PlayerShots"))
-        {
-            BulletBehavior bullet = other.gameObject.GetComponent<BulletBehavior>();
-            GameObject hitEffektInstance = Instantiate(hitEffect, transform.position, transform.rotation);
-            TakeDamage(bullet.BulletDamage);
-            Destroy(hitEffektInstance, 1f);
-        }
-    }*/
 
     public virtual void TakeDamage(float damage)
     {

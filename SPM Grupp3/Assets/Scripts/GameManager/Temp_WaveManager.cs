@@ -165,7 +165,7 @@ public class Temp_WaveManager : MonoBehaviour
 }
 
 [Serializable]
-public struct WaveInfo
+public struct WaveInfo_TEMP
 {
     public string waveName;
     public float waveDuration;
@@ -174,7 +174,7 @@ public struct WaveInfo
 }
 
 [Serializable]
-public struct SubWave
+public struct SubWave_TEMP
 {
     public EnemyStruct[] enemies;
     //public  float spawnRate 
@@ -182,7 +182,7 @@ public struct SubWave
 }
 
 [Serializable]
-public struct EnemyStruct
+public struct EnemyStruct_TEMP
 {
     public GameObject enemyPrefab;
     public int amount;
