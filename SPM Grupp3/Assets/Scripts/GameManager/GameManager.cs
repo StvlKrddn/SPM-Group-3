@@ -77,6 +77,28 @@ public class GameManager : MonoBehaviour
         defeatUI.SetActive(false);
     }
 
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            Victory();
+        }
+        if (Input.GetKeyDown(KeyCode.Backspace))
+        {
+            Defeat();
+        }
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            money += 1000;
+            material += 50;
+        }
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            money -= 1000;
+            material -= 50;
+        }
+    }
+
     public void TakeDamage(float damage, GameObject enemy)
     {
         damagingEnemy = enemy;
