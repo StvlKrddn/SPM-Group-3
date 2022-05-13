@@ -11,6 +11,7 @@ public class EnemyArcher : EnemyController
     // Update is called once per frame
     protected override void Update()
     {
+
         MoveStep();
         timer += Time.deltaTime;
         if (timer >= cd)
