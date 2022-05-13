@@ -36,7 +36,6 @@ public class UpgradeController : MonoBehaviour
             if(FindObjectOfType<TankState>())
             {
                 TankState player = FindObjectOfType<TankState>();
-                print(player.gameObject.transform.parent.name);
                 switch (currentUpgradeLevel)
                 {
                     case 1:

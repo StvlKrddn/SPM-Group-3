@@ -26,6 +26,5 @@ public class WaveEndSystem : MonoBehaviour
         {
             tutorial.waveEnded();
         }
-        
     }
 }

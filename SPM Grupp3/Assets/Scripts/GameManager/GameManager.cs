@@ -36,6 +36,7 @@ public class GameManager : MonoBehaviour
     [Header("Other")]
     public List<GameObject> towersPlaced = new List<GameObject>();
 
+    private BuildManager buildManager;
     private GameObject damagingEnemy;
     private WaveManager waveManager;
 
@@ -65,6 +66,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        buildManager = FindObjectOfType<BuildManager>();
         currentBaseHealth = baseHealth;
         livesSlider.maxValue = currentBaseHealth;
         livesSlider.value = baseHealth;
@@ -94,9 +96,13 @@ public class GameManager : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-            money -= 1000;
-            material -= 50;
+            if (money - 1000 > 0 && material - 50 > 0)
+            {
+                money -= 1000;
+                material -= 50;
+            }
         }
+        UpdateResourcesUI();
     }
 
     public void TakeDamage(float damage, GameObject enemy)
@@ -114,14 +120,14 @@ public class GameManager : MonoBehaviour
     {
         float mon;
         mon = money;
-        if (money / 1000 >= 1)
+        /*if (money / 1000 >= 1)
         {
             mon = money / 1000;
             Mathf.Round(mon);
             moneyCounterUI.text = mon.ToString() + " K";
             materialCounterUI.text = ": " + material;
             return;
-        }
+        }*/
 
         moneyCounterUI.text = ": " + mon.ToString();
         materialCounterUI.text = ": " + material;
@@ -202,6 +208,8 @@ public class GameManager : MonoBehaviour
        
         defeatUI.SetActive(true);
 
+        buildManager.TowerToBuild = null;
+
         Time.timeScale = 0;
     }
 
@@ -239,7 +247,11 @@ public class GameManager : MonoBehaviour
 
         waveManager.Restart();
 
+        GetComponent<PlayerManager>().TurnOnCursor();
+
         victoryUI.SetActive(true);
+
+        buildManager.TowerToBuild = null;
 
         Time.timeScale = 0;
     }

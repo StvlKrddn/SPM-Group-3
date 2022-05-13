@@ -15,6 +15,10 @@ public class WaveManager : MonoBehaviour
 
     [Header("Wave Clear UI: ")]
     [SerializeField] private GameObject waveClear;
+
+    [Header("Debug")]
+    [SerializeField] private int startingWave = 1;
+
     private int enemyCount;
     private GameManager gameManager;
     private int currentWave = -1;
@@ -26,6 +30,11 @@ public class WaveManager : MonoBehaviour
 
     private void Awake()
     {
+        if (startingWave != 1)
+        {
+            currentWave = startingWave - 2;
+        }
+
         victoryWave = waves.Length;
         waveClear.SetActive(false);
         gameManager = GameManager.Instance;
@@ -103,8 +112,7 @@ public class WaveManager : MonoBehaviour
         gameManager.EnemiesKilled++;
         if (enemyCount == 0)
         {
-            
-            if (currentWave >= victoryWave)
+            if (currentWave >= victoryWave - 1)
             {
                 gameManager.Victory();
             }
@@ -117,7 +125,8 @@ public class WaveManager : MonoBehaviour
                 GameManager.Instance.AddMoney(waveMoneyBonus);
 
                 EventHandler.Instance.InvokeEvent(new WaveEndEvent(
-                    description: "wave ended"
+                    description: "wave ended",
+                    currentWave: currentWave
                 ));
 
                 //Activates the the button so the players can start next round 

@@ -6,8 +6,8 @@ public class WaveEndEvent : Event
 {
     public int CurrentWave;
 
-    public WaveEndEvent(string description) : base(description)
+    public WaveEndEvent(string description, int currentWave) : base(description)
     {
-        
+        CurrentWave = currentWave;
     }
 }
