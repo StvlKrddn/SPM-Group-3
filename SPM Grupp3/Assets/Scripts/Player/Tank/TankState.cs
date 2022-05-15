@@ -10,6 +10,8 @@ public class TankState : MonoBehaviour
     [SerializeField] private float movementSpeed = 6f;
     [SerializeField] private float health = 50f;
     [SerializeField] private int levelOfTank;
+    [Space]
+    [SerializeField] private GameObject destroyEffect;
 
     // Components
     Rigidbody rb;
@@ -119,6 +121,11 @@ public class TankState : MonoBehaviour
     }
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            DestroyTank();
+        }
+
         gamepadInputVector = moveGamepadAction.ReadValue<Vector2>();
         aimInputVector = aimAction.ReadValue<Vector2>();
 
@@ -209,6 +216,8 @@ public class TankState : MonoBehaviour
     void DestroyTank()
     {
         print("Tank destroyed!");
+        TankExplosion effect = Instantiate(destroyEffect, transform.position, transform.rotation).GetComponent<TankExplosion>();
+        effect.TankColor = GetComponent<Renderer>().material.color;
         transform.position = spawnPoint.position;
         playerHandler.Destroyed = true;
         EventHandler.Instance.InvokeEvent(new PlayerSwitchEvent(

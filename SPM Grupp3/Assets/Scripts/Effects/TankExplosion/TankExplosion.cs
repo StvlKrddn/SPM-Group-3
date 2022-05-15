@@ -8,17 +8,16 @@ public class TankExplosion : MonoBehaviour
     [SerializeField] private int explosionRadius;
     [SerializeField] private Transform explosionPoint;
 
+    public Color TankColor;
+
     private ParticleSystem system;
     private Rigidbody[] rigidBodies;
 
     private void Start() 
     {
-        StartCoroutine(Delay());
-    }
+        Renderer tank = transform.Find("TankBody").GetComponent<Renderer>();
+        tank.material.color = TankColor;
 
-    IEnumerator Delay()
-    {
-        yield return new WaitForSeconds(0.08f);
         rigidBodies = GetComponentsInChildren<Rigidbody>();
 
         foreach (Rigidbody rb in rigidBodies)
