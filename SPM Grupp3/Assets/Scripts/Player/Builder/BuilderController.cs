@@ -40,6 +40,7 @@ public class BuilderController : MonoBehaviour
     private GameObject towerPanel;
     private GameObject playerCursor;
 
+
     void Start()
     {
         screenMiddle = new Vector2(Screen.width / 2, Screen.height / 2);
@@ -135,7 +136,7 @@ public class BuilderController : MonoBehaviour
 
     public void EnterTank(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed )
         {
             Deselect();
             EventHandler.Instance.InvokeEvent(new PlayerSwitchEvent(

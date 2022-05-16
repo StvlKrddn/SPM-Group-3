@@ -40,7 +40,10 @@ public class TutorialUI : MonoBehaviour
 
 
 
-    public GameObject lastWaveActivate; 
+    public GameObject lastWaveActivate;
+
+
+    public GameObject disableTankInstructions; 
 
 
     //private int whichWaveIsItOn; 
@@ -55,6 +58,8 @@ public class TutorialUI : MonoBehaviour
             child.gameObject.layer = 0; 
             listOfAllTiles.Add(child.gameObject) ; 
         }
+
+
 
 
    //     if(gameObjectsToStartDisabled.Count != 0 )
@@ -118,6 +123,8 @@ public class TutorialUI : MonoBehaviour
                 // Instantiate<>
 
                 materialToActivate.SetActive(true);
+
+                disableTankInstructions.SetActive(false);
 
                 tileToActivate.layer = LayerMask.NameToLayer("PlaceForTower");
 

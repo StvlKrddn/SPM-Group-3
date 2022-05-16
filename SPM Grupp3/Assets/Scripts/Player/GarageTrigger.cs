@@ -8,7 +8,11 @@ public class GarageTrigger : MonoBehaviour
 {
     private InputAction acceptAction;
     [SerializeField] private GameObject hintEnterUI;
-    
+
+    private bool limit = false;
+
+
+
     private void OnTriggerEnter(Collider other)
     {
         hintEnterUI.SetActive(true);
@@ -17,11 +21,11 @@ public class GarageTrigger : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         if (other.CompareTag("Tank"))
-        {
+        {   
             PlayerInput playerInput = other.GetComponentInParent<PlayerInput>();
             acceptAction = playerInput.actions["EnterGarage"];
-
-            if (acceptAction.IsPressed())
+            print("vad är värdet för limit " + limit);
+            if (acceptAction.IsPressed() && !limit)
             {
                 EventHandler.Instance.InvokeEvent(new PlayerSwitchEvent(
                     description: "A player switched mode",
@@ -35,6 +39,12 @@ public class GarageTrigger : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         hintEnterUI.SetActive(false);
+    }
+
+    public void ChangeLimit()
+    {
+        print("kommer den hit");
+        limit = !limit; 
     }
 
 }

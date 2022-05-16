@@ -26,6 +26,7 @@ public class TutorialButton : MonoBehaviour
     public void startGame()
     {
         Time.timeScale = 1; 
+
     }
 
     public void loadNextDialogue()

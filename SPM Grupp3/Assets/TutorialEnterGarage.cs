@@ -21,9 +21,14 @@ public class TutorialEnterGarage : MonoBehaviour
     private bool trigger;
 
     private bool hasTriggered = false;
+
+    private GarageTrigger garageTrigger; 
+
     // Start is called before the first frame update
     void Start()
     {
+        garageTrigger = FindObjectOfType<GarageTrigger>();
+
 
         PlayerInput playerInput = FindObjectOfType<PlayerInput>();
         acceptAction = playerInput.actions["EnterGarage"];
