@@ -19,7 +19,7 @@ public class GarageTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        //hintEnterUI.SetActive(true);
+        hintEnterUI.SetActive(true);
     }
 
     private void OnTriggerStay(Collider other)
@@ -35,14 +35,14 @@ public class GarageTrigger : MonoBehaviour
                     description: "A player switched mode",
                     playerContainer: other.transform.parent.gameObject
                     ));
-                //hintEnterUI.SetActive(false);
+                hintEnterUI.SetActive(false);
             }
         }   
     }
 
     private void OnTriggerExit(Collider other)
     {
-        //hintEnterUI.SetActive(false);
+        hintEnterUI.SetActive(false);
     }
 
     public void ChangeLimit()
