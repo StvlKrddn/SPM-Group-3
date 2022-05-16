@@ -49,7 +49,7 @@ public class BuilderController : MonoBehaviour
         mainCamera = Camera.main;
 
         canvas = UIHandler.Canvas.transform; 
-        towerMenu = canvas.Find("TowerMenu").gameObject;
+        towerMenu = canvas.Find("TowerMenu").GetChild(0).gameObject;
         buildMenu = canvas.Find("Build_UI").gameObject;
         infoView = buildMenu.transform.Find("InfoViews").gameObject;
         towerPanel = buildMenu.transform.Find("TowerPanel").gameObject;
@@ -299,7 +299,7 @@ public class BuilderController : MonoBehaviour
 
     void GhostTower()
     {
-        if (buildManager.TowerToBuild == null)
+        if (buildManager.TowerToBuild == null || buildManager.ClickedArea == null)
         {
             Destroy(preTower);
             return;           
@@ -345,21 +345,7 @@ public class BuilderController : MonoBehaviour
                 RaycastHit hitTower = CastRayFromCamera(towerLayerMask);
                 if (hitTower.collider == null)
                 {
-                    
-
-                    if (towerMenuIsActive)
-                    {
-                        RaycastHit uiHit = CastRayFromCamera(uiLayer);
-                        if (uiHit.collider == null)
-                        {
-                            towerMenu.SetActive(false);
-                            towerMenuIsActive = false;
-                            return;
-                        }
-                    }
-
                     towerMenu.SetActive(true);
-                    towerMenuIsActive = true;
 
                     buildManager.ClickedArea = _selection.gameObject;
 
