@@ -366,6 +366,18 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 19cf4a4c-ad34-4584-8512-93dd2ea58daa
     m_ActionName: Builder/Pause[/DualShock4GamepadHID/start,/DualShock4GamepadHID1/start]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 5089b784-32cb-42b9-962f-04fb0334fd37
+    m_ActionName: MenuNav/Navigate[/DualShock4GamepadHID/leftStick/up,/DualShock4GamepadHID1/leftStick/up,/DualShock4GamepadHID/rightStick/up,/DualShock4GamepadHID1/rightStick/up,/DualShock4GamepadHID/leftStick/down,/DualShock4GamepadHID1/leftStick/down,/DualShock4GamepadHID/rightStick/down,/DualShock4GamepadHID1/rightStick/down,/DualShock4GamepadHID/leftStick/left,/DualShock4GamepadHID1/leftStick/left,/DualShock4GamepadHID/rightStick/left,/DualShock4GamepadHID1/rightStick/left,/DualShock4GamepadHID/leftStick/right,/DualShock4GamepadHID1/leftStick/right,/DualShock4GamepadHID/rightStick/right,/DualShock4GamepadHID1/rightStick/right,/DualShock4GamepadHID/dpad/up,/DualShock4GamepadHID1/dpad/up,/DualShock4GamepadHID/dpad/down,/DualShock4GamepadHID1/dpad/down,/DualShock4GamepadHID/dpad/left,/DualShock4GamepadHID1/dpad/left,/DualShock4GamepadHID/dpad/right,/DualShock4GamepadHID1/dpad/right]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 7d82bafd-ab90-4e2c-92db-05c705906bed
+    m_ActionName: MenuNav/Submit[/DualShock4GamepadHID/buttonSouth,/DualShock4GamepadHID1/buttonSouth]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 85f0d07f-0371-4b67-bc4a-aadd4513b71e
+    m_ActionName: MenuNav/Cancel[/DualShock4GamepadHID/buttonEast,/DualShock4GamepadHID1/buttonEast]
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: Gamepad
   m_DefaultActionMap: Tank
@@ -413,7 +425,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b16c6f78230fa4964a222622d8aae332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_FirstSelected: {fileID: 0}
+  m_FirstSelected: {fileID: 1893087514910770401}
   m_sendNavigationEvents: 1
   m_DragThreshold: 10
   m_PlayerRoot: {fileID: 7929459826175837796}
@@ -434,9 +446,9 @@ MonoBehaviour:
   m_XRTrackingOrigin: {fileID: 0}
   m_ActionsAsset: {fileID: -944628639613478452, guid: 351c0499b2b84c649910748b49572abc, type: 3}
   m_PointAction: {fileID: -8113715173509063206, guid: 351c0499b2b84c649910748b49572abc, type: 3}
-  m_MoveAction: {fileID: 0}
-  m_SubmitAction: {fileID: 0}
-  m_CancelAction: {fileID: 0}
+  m_MoveAction: {fileID: 4731592764894269551, guid: 351c0499b2b84c649910748b49572abc, type: 3}
+  m_SubmitAction: {fileID: -697817357864993919, guid: 351c0499b2b84c649910748b49572abc, type: 3}
+  m_CancelAction: {fileID: 5639877111600719461, guid: 351c0499b2b84c649910748b49572abc, type: 3}
   m_LeftClickAction: {fileID: -569677231619898763, guid: 351c0499b2b84c649910748b49572abc, type: 3}
   m_MiddleClickAction: {fileID: 0}
   m_RightClickAction: {fileID: 0}
@@ -538,7 +550,7 @@ MonoBehaviour:
     m_Mode: 4
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 1293157647546365159}
-    m_SelectOnDown: {fileID: 5662488601243487113}
+    m_SelectOnDown: {fileID: 1293157647546365159}
     m_SelectOnLeft: {fileID: 0}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
@@ -1029,9 +1041,9 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 0.6226415, g: 0.6226415, b: 0.6226415, a: 0.3529412}
-    m_HighlightedColor: {r: 0.62352943, g: 0.62352943, b: 0.62352943, a: 0.7058824}
+    m_HighlightedColor: {r: 0.62352943, g: 0.62352943, b: 0.62352943, a: 0.39215687}
     m_PressedColor: {r: 0.5754717, g: 0.5754717, b: 0.5754717, a: 0.7058824}
-    m_SelectedColor: {r: 0.62352943, g: 0.62352943, b: 0.62352943, a: 1}
+    m_SelectedColor: {r: 0.62352943, g: 0.62352943, b: 0.62352943, a: 0.7058824}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
