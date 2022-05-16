@@ -7,8 +7,7 @@ using UnityEngine.InputSystem;
 public class GarageTrigger : MonoBehaviour
 {
     private InputAction acceptAction;
-
-/*    [SerializeField] private GameObject hintEnterUI;*/
+    //[SerializeField] private GameObject hintEnterUI;
     
     [SerializeField] private GameObject hintEnterUI;
 
@@ -35,14 +34,14 @@ public class GarageTrigger : MonoBehaviour
                     description: "A player switched mode",
                     playerContainer: other.transform.parent.gameObject
                     ));
-                hintEnterUI.SetActive(false);
+                //hintEnterUI.SetActive(false);
             }
         }   
     }
 
     private void OnTriggerExit(Collider other)
     {
-        hintEnterUI.SetActive(false);
+        //hintEnterUI.SetActive(false);
     }
 
     public void ChangeLimit()

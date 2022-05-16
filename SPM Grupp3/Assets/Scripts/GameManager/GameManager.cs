@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour
     private BuildManager buildManager;
     private GameObject damagingEnemy;
     private WaveManager waveManager;
+    private Canvas canvas;
 
     private int currentWave = -1;
     private float currentBaseHealth;
@@ -72,6 +73,8 @@ public class GameManager : MonoBehaviour
         livesSlider.value = baseHealth;
 
         waveManager = GetComponent<WaveManager>();
+
+        canvas = UI.Canvas;
 
         UpdateResourcesUI();
 
@@ -213,26 +216,11 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0;
     }
 
-    private void ResetBaseHealth()
-    {
-        currentBaseHealth = baseHealth;
-        livesSlider.value = 100;
-    }
-
-    public void Restart()
-    {
-        Time.timeScale = 1;
-        money = 0;
-        material = 0;
-        UpdateResourcesUI();
-        defeatUI.SetActive(false);
-        ResetBaseHealth();
-        GetComponent<PlayerManager>().Restart();
-    }
-
     public void Victory()
     {
         Debug.Log("Victory");
+
+        // NOTE(August): Lite stats som kan vara kul att ha med på Victory Panel
         print("Money collected: " + moneyCollected);
         print("Material collected: " + materialCollected);
         print("Enemies killed: " + enemiesKilled);
@@ -245,30 +233,35 @@ public class GameManager : MonoBehaviour
             towersBuilt: 0
         ));
 
-        waveManager.Restart();
+        PauseMenu.OpenMenu();
 
-        GetComponent<PlayerManager>().TurnOnCursor();
+        waveManager.Restart();
 
         victoryUI.SetActive(true);
 
         buildManager.TowerToBuild = null;
-
-        Time.timeScale = 0;
     }
     
     public void Continue()
     {
-        Time.timeScale = 1;
         ResetBaseHealth();
         victoryUI.SetActive(false);
         GetComponent<PlayerManager>().Restart();
     }
 
-    public void Quit()
+    public void RestartGame()
     {
-        //UnityEditor.EditorApplication.isPlaying = false;
-        Application.Quit();
-        // Switch between the rows to build out
+        money = 0;
+        material = 0;
+        UpdateResourcesUI();
+        defeatUI.SetActive(false);
+        ResetBaseHealth();
+        GetComponent<PlayerManager>().Restart();
     }
 
+    private void ResetBaseHealth()
+    {
+        currentBaseHealth = baseHealth;
+        livesSlider.value = 100;
+    }
 }
