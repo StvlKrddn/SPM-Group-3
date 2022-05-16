@@ -66,14 +66,17 @@ public abstract class EnemyController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (Waypoints.wayPoints.Length - 1 <= currIndex) // Changes waypoint to til the enemy reaches the last waypoint
+        if (other.CompareTag("Waypoint"))
         {
-            EnemyDeathBase();
-            return;
+            if (Waypoints.wayPoints.Length - 1 <= currIndex) // Changes waypoint to til the enemy reaches the last waypoint
+            {
+                EnemyDeathBase();
+                return;
+            }
+            currIndex++;
+            target = Waypoints.wayPoints[currIndex];
+            transform.LookAt(target);
         }
-        currIndex++;
-        target = Waypoints.wayPoints[currIndex];
-        transform.rotation = Quaternion.LookRotation(target.position - transform.position);
     }
 
     public virtual void TakeDamage(float damage)

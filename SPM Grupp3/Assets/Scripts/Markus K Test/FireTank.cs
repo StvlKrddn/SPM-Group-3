@@ -8,11 +8,6 @@ public class FireTank : TankUpgradeTree
 	[SerializeField] private Transform flameThrower;
 	[SerializeField] private GameObject grenade;
 
-	protected override void Start()
-	{
-		base.Start();
-		// grenade = tempgrenade 
-	}
 
 	public override void UpgradeOne()
 	{

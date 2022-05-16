@@ -266,7 +266,9 @@ public class GameManager : MonoBehaviour
 
     public void Quit()
     {
-        UnityEditor.EditorApplication.isPlaying = false;
+        //UnityEditor.EditorApplication.isPlaying = false;
+        Application.Quit();
+        // Switch between the rows to build out
     }
 
 }
