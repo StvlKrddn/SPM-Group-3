@@ -44,10 +44,6 @@ public class TutorialButton : MonoBehaviour
             {
                 obj.SetActive(true);
             }
-        }
-
-
-    
-        
+        }      
     }
 }

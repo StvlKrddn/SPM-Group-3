@@ -90,6 +90,7 @@ public class TutorialUI : MonoBehaviour
                 uiToActivate.SetActive(true);
                 firstEventNotStarted = false;
 
+            
                 EventHandler.Instance.InvokeEvent(new NewWaveEvent(
         description: "New wave started",
         currentWave: 0
@@ -112,11 +113,6 @@ public class TutorialUI : MonoBehaviour
         switch (whichWave)
         {
             case 0:
-
-                whichWave += 1; 
-                break;
-            case 1:
-
                 FirstWaveActivation.SetActive(true);
 
                 // Instantiate<>
@@ -125,24 +121,23 @@ public class TutorialUI : MonoBehaviour
 
                 tileToActivate.layer = LayerMask.NameToLayer("PlaceForTower");
 
-                whichWave += 1;
+        
                 break;
-            case 2:
+            case 1:
 
                 activateAfterSecondWave.SetActive(true);
 
-                whichWave += 1;
                 break;
-            case 3:
-
-                
-                break;
-            case 4:
+           
+            case 2:
                 lastWaveActivate.SetActive(true);
-                whichWave += 1;
+              
 
                 break;
+          
         }
+
+        whichWave += 1; 
     }
 
     

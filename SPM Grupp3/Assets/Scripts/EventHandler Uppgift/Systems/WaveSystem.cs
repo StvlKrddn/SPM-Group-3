@@ -15,6 +15,8 @@ public class WaveSystem : MonoBehaviour
 
     void NextWave(NewWaveEvent newWaveEvent)
     {
+        
+
         waveManager.StartWave(newWaveEvent.CurrentWave);
     }
 }
