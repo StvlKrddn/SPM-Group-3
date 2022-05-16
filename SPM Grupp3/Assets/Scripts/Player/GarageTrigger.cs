@@ -27,14 +27,14 @@ public class GarageTrigger : MonoBehaviour
                     description: "A player switched mode",
                     playerContainer: other.transform.parent.gameObject
                     ));
-                hintEnterUI.SetActive(false);
+                //hintEnterUI.SetActive(false);
             }
         }   
     }
 
     private void OnTriggerExit(Collider other)
     {
-        hintEnterUI.SetActive(false);
+        //hintEnterUI.SetActive(false);
     }
 
 }
