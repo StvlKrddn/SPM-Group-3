@@ -51,10 +51,5 @@ public class GarageTrigger : MonoBehaviour
         limit = !limit; 
     }
 
-    public void ChangeLimit()
-    {
-        print("kommer den hit");
-        limit = !limit; 
-    }
 
 }
