@@ -6095,7 +6095,31 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1525326520}
     - target: {fileID: 1555352807768005137, guid: 6364959b4060537488578e889cf8fbea, type: 3}
+      propertyPath: m_ActionEvents.Array.size
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 1555352807768005137, guid: 6364959b4060537488578e889cf8fbea, type: 3}
+      propertyPath: m_ActionEvents.Array.data[15].m_ActionId
+      value: d7c56841-2ed0-4480-9b1e-33db2744e58a
+      objectReference: {fileID: 0}
+    - target: {fileID: 1555352807768005137, guid: 6364959b4060537488578e889cf8fbea, type: 3}
+      propertyPath: m_ActionEvents.Array.data[16].m_ActionId
+      value: 19cf4a4c-ad34-4584-8512-93dd2ea58daa
+      objectReference: {fileID: 0}
+    - target: {fileID: 1555352807768005137, guid: 6364959b4060537488578e889cf8fbea, type: 3}
+      propertyPath: m_ActionEvents.Array.data[15].m_ActionName
+      value: Tank/Pause[/DualShock4GamepadHID/start,/DualShock4GamepadHID1/start]
+      objectReference: {fileID: 0}
+    - target: {fileID: 1555352807768005137, guid: 6364959b4060537488578e889cf8fbea, type: 3}
+      propertyPath: m_ActionEvents.Array.data[16].m_ActionName
+      value: Builder/Pause[/DualShock4GamepadHID/start,/DualShock4GamepadHID1/start]
+      objectReference: {fileID: 0}
+    - target: {fileID: 1555352807768005137, guid: 6364959b4060537488578e889cf8fbea, type: 3}
       propertyPath: m_ActionEvents.Array.data[11].m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1555352807768005137, guid: 6364959b4060537488578e889cf8fbea, type: 3}
+      propertyPath: m_ActionEvents.Array.data[15].m_PersistentCalls.m_Calls.Array.size
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1555352807768005137, guid: 6364959b4060537488578e889cf8fbea, type: 3}
@@ -6103,11 +6127,19 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1555352807768005137, guid: 6364959b4060537488578e889cf8fbea, type: 3}
+      propertyPath: m_ActionEvents.Array.data[15].m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1555352807768005137, guid: 6364959b4060537488578e889cf8fbea, type: 3}
       propertyPath: m_ActionEvents.Array.data[11].m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1984571510}
     - target: {fileID: 1555352807768005137, guid: 6364959b4060537488578e889cf8fbea, type: 3}
       propertyPath: m_ActionEvents.Array.data[11].m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1555352807768005137, guid: 6364959b4060537488578e889cf8fbea, type: 3}
+      propertyPath: m_ActionEvents.Array.data[15].m_PersistentCalls.m_Calls.Array.data[0].m_CallState
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1555352807768005137, guid: 6364959b4060537488578e889cf8fbea, type: 3}
@@ -127262,6 +127294,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 290948933974178010, guid: 5df48d97566997748a12d4ab8329f3e5, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -25.999756
+      objectReference: {fileID: 0}
     - target: {fileID: 290948933987502816, guid: 5df48d97566997748a12d4ab8329f3e5, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -127404,6 +127440,23 @@ PrefabInstance:
       objectReference: {fileID: 886386782}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5df48d97566997748a12d4ab8329f3e5, type: 3}
+--- !u!1 &290948934151643485 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 290948934914669989, guid: 5df48d97566997748a12d4ab8329f3e5, type: 3}
+  m_PrefabInstance: {fileID: 290948934151643484}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &290948934151643486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 290948934151643485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c733e80029ccd52418a74f458f71fd8b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &6726519399045763872
 PrefabInstance:
   m_ObjectHideFlags: 0

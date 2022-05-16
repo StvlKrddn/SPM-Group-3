@@ -3,9 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UIHandler : MonoBehaviour
+public class UI : MonoBehaviour
 {
-    
     private static Canvas canvas;
 
     public static Canvas Canvas
@@ -23,10 +22,5 @@ public class UIHandler : MonoBehaviour
     void Awake() 
     {
         canvas = GetComponent<Canvas>();
-    }
-
-    void Update()
-    {
-        
     }
 }

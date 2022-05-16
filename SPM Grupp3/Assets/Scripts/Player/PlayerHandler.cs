@@ -22,7 +22,7 @@ public class PlayerHandler : MonoBehaviour
     {
         destroyed = false;
 
-        canvas = UIHandler.Canvas.gameObject;
+        canvas = UI.Canvas.gameObject;
         buildMenu = canvas.transform.Find("Build_UI").gameObject;
 
         currentMode = GameManager.Instance.StartingMode;

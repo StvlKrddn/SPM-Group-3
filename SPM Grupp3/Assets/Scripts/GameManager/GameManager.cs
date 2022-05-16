@@ -263,12 +263,4 @@ public class GameManager : MonoBehaviour
         victoryUI.SetActive(false);
         GetComponent<PlayerManager>().Restart();
     }
-
-    public void Quit()
-    {
-        //UnityEditor.EditorApplication.isPlaying = false;
-        Application.Quit();
-        // Switch between the rows to build out
-    }
-
 }
