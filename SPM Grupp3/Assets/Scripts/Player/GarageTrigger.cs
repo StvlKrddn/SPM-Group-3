@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 public class GarageTrigger : MonoBehaviour
 {
     private InputAction acceptAction;
-    [SerializeField] private GameObject hintEnterUI;
+/*    [SerializeField] private GameObject hintEnterUI;*/
     
     private void OnTriggerEnter(Collider other)
     {
