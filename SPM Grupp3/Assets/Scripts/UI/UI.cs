@@ -7,6 +7,8 @@ public class UI : MonoBehaviour
 {
     private static Canvas canvas;
 
+    public static bool IsPaused;
+
     public static Canvas Canvas
     {
         get 

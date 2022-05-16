@@ -1,34 +1,61 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
 
 public class PauseMenu : MonoBehaviour
 {
-    private static bool isPaused;
-
-    public static bool IsPaused { get { return isPaused; } }
+    [SerializeField] private GameObject pauseMenu;
 
     void Awake() 
     {
-        EventHandler.Instance.RegisterListener<VictoryEvent>(OnVictory);
-        EventHandler.Instance.RegisterListener<DefeatEvent>(OnDefeat);    
+        Canvas canvas = GetComponent<Canvas>();
+        canvas.worldCamera = FindObjectOfType<MoveToMainCamera>().gameObject.GetComponent<Camera>();
+        canvas.planeDistance = 10;
     }
 
-    public static void PauseGame()
+    public void PauseGame(InputAction.CallbackContext context)
     {
-        isPaused = true;
-        Time.timeScale = 0f;
+        if (context.performed)
+        {
+            if (!UI.IsPaused)
+            {
+                Time.timeScale = 0f;
+                pauseMenu.SetActive(true);
+                UI.IsPaused = true;
+            }
+            else
+            {
+                Resume();
+            }
+        }
     }
 
-    public static void ResumeGame()
+    public void Resume()
     {
-        isPaused = false;
+        UI.IsPaused = false;
         Time.timeScale = 1f;
+        pauseMenu.SetActive(false);
     }
 
-    public void QuitGame()
+    public void Restart()
     {
-        ResumeGame();
+        Resume();
+        GameManager.Instance.RestartGame();
+    }
+
+    public void Continue()
+    {
+        Resume();
+        GameManager.Instance.Continue();
+    }
+
+    public void Quit()
+    {
+        // NOTE(August): "Are you sure you want to quit?..." prompt?
+
+        Resume();
 
         UnityEditor.EditorApplication.isPlaying = false;
         //Application.Quit();
@@ -36,13 +63,9 @@ public class PauseMenu : MonoBehaviour
         // Switch between the rows to build out
     }
 
-    private void OnVictory(VictoryEvent eventInfo)
-    {
-        PauseGame();
-    }
-
-    private void OnDefeat(DefeatEvent eventInfo)
-    {
-        PauseGame();
+    public static void OpenMenu()
+    {        
+        UI.IsPaused = true;
+        Time.timeScale = 0f;
     }
 }
