@@ -7,9 +7,13 @@ using UnityEngine.InputSystem;
 public class GarageTrigger : MonoBehaviour
 {
     private InputAction acceptAction;
+
+/*    [SerializeField] private GameObject hintEnterUI;*/
+    
     [SerializeField] private GameObject hintEnterUI;
 
     private bool limit = false;
+
 
 
 
@@ -24,7 +28,7 @@ public class GarageTrigger : MonoBehaviour
         {   
             PlayerInput playerInput = other.GetComponentInParent<PlayerInput>();
             acceptAction = playerInput.actions["EnterGarage"];
-            print("vad är värdet för limit " + limit);
+            print("vad ï¿½r vï¿½rdet fï¿½r limit " + limit);
             if (acceptAction.IsPressed() && !limit)
             {
                 EventHandler.Instance.InvokeEvent(new PlayerSwitchEvent(
@@ -39,6 +43,12 @@ public class GarageTrigger : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         hintEnterUI.SetActive(false);
+    }
+
+    public void ChangeLimit()
+    {
+        print("kommer den hit");
+        limit = !limit; 
     }
 
     public void ChangeLimit()
