@@ -22,7 +22,7 @@ public class PlayerHandler : MonoBehaviour
     {
         destroyed = false;
 
-        canvas = Camera.main.transform.Find("Canvas").gameObject;
+        canvas = UIHandler.Canvas.gameObject;
         buildMenu = canvas.transform.Find("Build_UI").gameObject;
 
         currentMode = GameManager.Instance.StartingMode;

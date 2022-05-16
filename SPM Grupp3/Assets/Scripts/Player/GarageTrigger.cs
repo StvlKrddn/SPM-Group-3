@@ -11,7 +11,7 @@ public class GarageTrigger : MonoBehaviour
     
     private void OnTriggerEnter(Collider other)
     {
-        hintEnterUI.SetActive(true);
+        //hintEnterUI.SetActive(true);
     }
 
     private void OnTriggerStay(Collider other)
