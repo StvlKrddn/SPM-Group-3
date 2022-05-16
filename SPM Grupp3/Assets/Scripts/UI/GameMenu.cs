@@ -20,7 +20,7 @@ public class GameMenu : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Ska ï¿½ndras till Esc, Tab fï¿½r tillfï¿½llet fï¿½r att visa att musen kan bli osynlig
+        // Ska ändras till Esc, Tab för tillfället för att visa att musen kan bli osynlig
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             if (!escapePanel.activeInHierarchy)

@@ -9,7 +9,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private GameObject buildMenu;
     private PlayerInputManager playerManager;
     
-    public List<PlayerHandler> players = new List<PlayerHandler>();
+    private List<PlayerHandler> players = new List<PlayerHandler>();
 
     [System.NonSerialized] public bool InBuildMode;
 

@@ -39,7 +39,6 @@ public class GameManager : MonoBehaviour
     private BuildManager buildManager;
     private GameObject damagingEnemy;
     private WaveManager waveManager;
-    private Canvas canvas;
 
     private int currentWave = -1;
     private float currentBaseHealth;
@@ -74,8 +73,6 @@ public class GameManager : MonoBehaviour
 
         waveManager = GetComponent<WaveManager>();
 
-        canvas = UI.Canvas;
-
         UpdateResourcesUI();
 
         victoryUI.SetActive(false);
@@ -106,10 +103,6 @@ public class GameManager : MonoBehaviour
             }
         }
         UpdateResourcesUI();
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            PauseMenu.IsPaused = true;
-        }
     }
 
     public void TakeDamage(float damage, GameObject enemy)
@@ -200,6 +193,7 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Defeat");
 
+        waveManager.Restart();
 
         EventHandler.Instance.InvokeEvent(new DefeatEvent(
             description: "Defeat",
@@ -207,21 +201,38 @@ public class GameManager : MonoBehaviour
             killedBy: damagingEnemy,
             enemiesKilled: 0 
         ));
-       
-        PauseMenu.OpenMenu();
 
-        waveManager.Restart();
-        
-        buildManager.TowerToBuild = null;
-        
+        GameObject player1 = GameObject.Find("Player");
+
+        GetComponent<PlayerManager>().TurnOnCursor();
+       
         defeatUI.SetActive(true);
+
+        buildManager.TowerToBuild = null;
+
+        Time.timeScale = 0;
+    }
+
+    private void ResetBaseHealth()
+    {
+        currentBaseHealth = baseHealth;
+        livesSlider.value = 100;
+    }
+
+    public void Restart()
+    {
+        Time.timeScale = 1;
+        money = 0;
+        material = 0;
+        UpdateResourcesUI();
+        defeatUI.SetActive(false);
+        ResetBaseHealth();
+        GetComponent<PlayerManager>().Restart();
     }
 
     public void Victory()
     {
         Debug.Log("Victory");
-
-        // NOTE(August): Lite stats som kan vara kul att ha med på Victory Panel
         print("Money collected: " + moneyCollected);
         print("Material collected: " + materialCollected);
         print("Enemies killed: " + enemiesKilled);
@@ -234,36 +245,22 @@ public class GameManager : MonoBehaviour
             towersBuilt: 0
         ));
 
-        PauseMenu.OpenMenu();
-
         waveManager.Restart();
+
+        GetComponent<PlayerManager>().TurnOnCursor();
+
+        victoryUI.SetActive(true);
 
         buildManager.TowerToBuild = null;
 
-        victoryUI.SetActive(true);
+        Time.timeScale = 0;
     }
     
-
-    public void RestartGame()
+    public void Continue()
     {
-        money = 0;
-        material = 0;
-        UpdateResourcesUI();
-        defeatUI.SetActive(false);
-        ResetBaseHealth();
-        GetComponent<PlayerManager>().Restart();
-    }
-    
-    public void ContinueGame()
-    {
+        Time.timeScale = 1;
         ResetBaseHealth();
         victoryUI.SetActive(false);
         GetComponent<PlayerManager>().Restart();
-    }
-    
-    private void ResetBaseHealth()
-    {
-        currentBaseHealth = baseHealth;
-        livesSlider.value = 100;
     }
 }

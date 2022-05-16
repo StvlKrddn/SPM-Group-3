@@ -9,7 +9,7 @@ public class PlayerHandler : MonoBehaviour
 {
     private PlayerMode currentMode;
     private GameObject canvas;
-    public PlayerInput playerInput;
+    private PlayerInput playerInput;
     private GameObject tankMode;
     private GameObject buildMode;
     private GameObject buildMenu;
@@ -69,7 +69,7 @@ public class PlayerHandler : MonoBehaviour
 
         currentMode = PlayerMode.Tank;
 
-        UpgradeController.Instance.FixUpgrades(gameObject); //Behöver ändras
+        UpgradeController.Instance.FixUpgrades(gameObject); //Beh�ver �ndras
 
         //print("Entered tank mode");
 
