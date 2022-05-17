@@ -36,7 +36,8 @@ public class UpgradeController : MonoBehaviour
             if(FindObjectOfType<TankState>())
             {
                 TankState player = FindObjectOfType<TankState>();
-                switch (currentUpgradeLevel)
+                player.levelOfTank++;
+                switch (player.levelOfTank)
                 {
                     case 1:
                     player.tankUpgradeTree.UpgradeOne();
@@ -50,6 +51,7 @@ public class UpgradeController : MonoBehaviour
                     player.tankUpgradeTree.UpgradeThree();
                     break;
                 }
+                print("Upgrade lvl" + player.levelOfTank + " instant");
             }
         }
     }
@@ -57,9 +59,10 @@ public class UpgradeController : MonoBehaviour
     public void FixUpgrades(GameObject player)
     {
         TankState tS = player.GetComponentInChildren<TankState>();
-        for (int i = 1; i <= currentUpgradeLevel; i++)
+        for (int i = tS.levelOfTank; i < currentUpgradeLevel; i++)
         {
-            switch (i)
+            tS.levelOfTank++;
+            switch (tS.levelOfTank)
             {
                 case 1:
                     tS.tankUpgradeTree.UpgradeOne();

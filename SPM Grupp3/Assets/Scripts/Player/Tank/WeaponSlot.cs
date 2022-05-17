@@ -95,7 +95,8 @@ public class WeaponSlot : MonoBehaviour
         spawnedBullet = Instantiate(
             original: bulletPrefab,
             position: bulletSpawner.position,
-            rotation: bulletSpawner.rotation * spreadDirection
+            rotation: bulletSpawner.rotation * spreadDirection,
+            parent: transform
             );
     }
 
@@ -127,6 +128,6 @@ public class WeaponSlot : MonoBehaviour
 		fireRate = fireRateMultiply;
         damage = damageIncrease;
         this.range = range;
-        spread = 10;
+        spread = 0;
 	}
 }
