@@ -62,7 +62,12 @@ public class WeaponSlot : MonoBehaviour
 		bullet = bulletPrefab.GetComponent<BulletBehavior>();
     }
 
-    void Update()
+	private void OnEnable()
+	{
+        allowedToShoot = true;
+	}
+
+	void Update()
     {
         if (shootAction.IsPressed() && allowedToShoot)
         {
