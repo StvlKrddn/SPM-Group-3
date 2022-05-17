@@ -5,9 +5,13 @@ using UnityEngine;
 
 public class UI : MonoBehaviour
 {
-    private static Canvas canvas;
-
     public static bool IsPaused;
+    
+    [SerializeField] private GameObject victoryPanel;
+    [SerializeField] private GameObject defeatPanel;
+
+
+    private static Canvas canvas;
 
     public static Canvas Canvas
     {
@@ -24,5 +28,40 @@ public class UI : MonoBehaviour
     void Awake() 
     {
         canvas = GetComponent<Canvas>();
+    }
+
+    public void Restart()
+    {
+        victoryPanel.SetActive(false);
+        defeatPanel.SetActive(false);
+        GameManager.Instance.RestartGame();
+    }
+
+    public void Continue()
+    {
+        victoryPanel.SetActive(false);
+        GameManager.Instance.Continue();
+    }
+
+    public void Quit()
+    {
+        // NOTE(August): "Are you sure you want to quit?..." prompt?
+
+        UnityEditor.EditorApplication.isPlaying = false;
+        //Application.Quit();
+
+        // Switch between the rows to build out
+    }
+
+    public static void OpenMenu()
+    {        
+        IsPaused = true;
+        Time.timeScale = 0f;
+    }
+
+    public static void CloseMenu()
+    {
+        IsPaused = false;
+        Time.timeScale = 1f;
     }
 }
