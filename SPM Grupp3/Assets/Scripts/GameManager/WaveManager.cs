@@ -8,13 +8,10 @@ public class WaveManager : MonoBehaviour
 {
     [Header("Enemies: ")]
     [SerializeField] private Transform spawnPosition;
-    [SerializeField] private Text waveUI;
     [SerializeField] private GameObject enemyContainer;
-
+    
+    [Space]
     public WaveInfo[] waves;
-
-    [Header("Wave Clear UI: ")]
-    [SerializeField] private GameObject waveClear;
 
     [Header("Debug")]
     [SerializeField] private int startingWave = 1;
@@ -27,6 +24,8 @@ public class WaveManager : MonoBehaviour
     private bool spawnEnemies = true;
     private int waveMoneyBonus;
     private List<GameObject> currentWaveEnemies = new List<GameObject>();
+    private Text waveUI;
+    private GameObject waveClear;
 
     private void Awake()
     {
@@ -35,9 +34,14 @@ public class WaveManager : MonoBehaviour
             currentWave = startingWave - 2;
         }
 
+        Transform waveHolder = UI.Canvas.transform.GetChild(0).Find("WaveHolder");
+        waveUI = waveHolder.Find("WaveCounter").GetComponent<Text>();
+        waveClear = waveHolder.Find("WaveCleared").gameObject;
+        
         victoryWave = waves.Length;
         waveClear.SetActive(false);
         gameManager = GameManager.Instance;
+
 
         EventHandler.Instance.RegisterListener<StartWaveEvent>(OnStartWave);
     }
