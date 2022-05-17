@@ -10,7 +10,7 @@ public class BoostAbility : MonoBehaviour
     [SerializeField] private float boostSpeedMultiplier = 5f;
     [SerializeField] private float boostDuration = 1f;
     [SerializeField] private float boostCooldownTime = 5f;
-    [SerializeField] private GameObject boostEffect;
+    [SerializeField] private GameObject boosters;
 
     InputAction boostAction;
     TankState tankState;
@@ -57,7 +57,11 @@ public class BoostAbility : MonoBehaviour
         if (boostAction.IsPressed() && allowedToBoost)
         {
             // Play particle effect
-            system.Play();
+            //system.Play();
+            foreach (Transform booster in boosters.transform)
+            {
+                booster.GetComponent<ParticleSystem>().Play();
+            }
 
             boostTimer = boostDuration;
             StartCoroutine(BoostCooldown());
@@ -76,7 +80,10 @@ public class BoostAbility : MonoBehaviour
         {
             // Reset movement speed
             tankState.StandardSpeed = Mathf.Lerp(tankState.StandardSpeed, speedBeforeBoost, Time.deltaTime * boostAccelerationTimeMultiplier);
-            system.Play();
+            foreach (Transform booster in boosters.transform)
+            {
+                booster.GetComponent<ParticleSystem>().Play();
+            }
         }
     }
 

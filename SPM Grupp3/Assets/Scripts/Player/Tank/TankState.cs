@@ -68,7 +68,7 @@ public class TankState : MonoBehaviour
     {
         InitializeInputSystem();
 
-        SetPlayerDiffrence();
+        SetPlayerDifference();
 
         FindGarage();
 
@@ -104,7 +104,7 @@ public class TankState : MonoBehaviour
         abilityAction = playerInput.actions["Ability"];
     }
 
-    void SetPlayerDiffrence()
+    void SetPlayerDifference()
     {
         Renderer renderer = GetComponent<Renderer>();
         renderer.material.color = playerInput.playerIndex == 0 ? Color.blue : Color.red;
