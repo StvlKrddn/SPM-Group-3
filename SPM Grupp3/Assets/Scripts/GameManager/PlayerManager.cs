@@ -6,17 +6,17 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(PlayerInputManager))]
 public class PlayerManager : MonoBehaviour
 {
-    [SerializeField] private GameObject buildMenu;
-    private PlayerInputManager playerManager;
-    
-    private List<PlayerHandler> players = new List<PlayerHandler>();
-
     [System.NonSerialized] public bool InBuildMode;
+    private PlayerInputManager playerManager;
+    private List<PlayerHandler> players = new List<PlayerHandler>();
+    private GameObject buildMenu;
 
     void Awake()
     {
         EventHandler.Instance.RegisterListener<PlayerSwitchEvent>(SwitchPlayerMode);
         playerManager = GetComponent<PlayerInputManager>();
+
+        buildMenu = UI.Canvas.transform.Find("Build_UI").gameObject;
     }
 
     public void OnPlayerJoined(PlayerInput newPlayer)
