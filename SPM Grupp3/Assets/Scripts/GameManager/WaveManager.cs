@@ -92,6 +92,7 @@ public class WaveManager : MonoBehaviour
             Shuffle(subWaveEnemies);
             currentWaveEnemies.AddRange(subWaveEnemies); //Then adds the shuffled subwave to the wave
         }
+        spawnRate = 0.5f;
         waveMoneyBonus = wave.waveMoneyBonus;
         enemyCount = currentWaveEnemies.Count;
     }

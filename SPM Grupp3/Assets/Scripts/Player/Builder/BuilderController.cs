@@ -40,6 +40,9 @@ public class BuilderController : MonoBehaviour
     private GameObject towerPanel;
     private GameObject playerCursor;
 
+    private GameObject towerMenu;
+    private GameObject upgradeMenu;
+    private bool placementClicked = false;
 
     void Start()
     {
@@ -50,6 +53,9 @@ public class BuilderController : MonoBehaviour
         buildMenu = canvas.Find("Build_UI").gameObject;
         infoView = buildMenu.transform.Find("InfoViews").gameObject;
         towerPanel = buildMenu.transform.Find("TowerPanel").gameObject;
+
+        towerMenu = canvas.Find("TowerMenu").GetChild(0).gameObject;
+        upgradeMenu = canvas.Find("UpgradeMenu").GetChild(0).gameObject;
 
         buildManager = GetComponentInParent<BuildManager>();
 
@@ -155,6 +161,8 @@ public class BuilderController : MonoBehaviour
             Renderer selectionRenderer = _selection.GetComponent<Renderer>();
             selectionRenderer.material.color = startColor;
         }
+        towerMenu.SetActive(false);
+        placementClicked = false;
         towerPanel.SetActive(true);
     }
 
@@ -204,7 +212,11 @@ public class BuilderController : MonoBehaviour
 
         RaycastHit hit = CastRayFromCamera(placeForTowerLayerMask);
 
-        Hover(hit);
+        if (!placementClicked)
+        {
+            Hover(hit);
+        }
+       
     }
 
     Vector2 MoveMouse()
@@ -254,7 +266,6 @@ public class BuilderController : MonoBehaviour
             var selectionRenderer = _selection.GetComponent<Renderer>();
             selectionRenderer.material.color = startColor;
             _selection = null;
-            Destroy(preTower);
         }
 
         // Raycast along the ray and return the hit point
@@ -265,47 +276,55 @@ public class BuilderController : MonoBehaviour
             if (selectionRenderer != null)
             {
                 selectionRenderer.material.color = hoverColor;
-
-
-                if (buildManager.TowerToBuild != null)
-                {
-                    RaycastHit hitTower = CastRayFromCamera(towerLayerMask);
-                    if (hitTower.collider == null)
-                    {
-                        GhostTower(selection, buildManager);
-                    }
-                }
             }
             _selection = selection;
         }
     }
 
-    void GhostTower(Transform selection, BuildManager buildManager)
+    public void ResetHover()
     {
-        int index = 1;
-        for (;  index < buildManager.TowerToBuild.transform.childCount; index++)
+        placementClicked = false;
+    }
+
+    public void ExitHover()
+    {
+        buildManager.TowerToBuild = null;
+        GhostTower();
+    }
+
+    public void TowerToHover(GameObject tower)
+    {
+        buildManager.TowerToBuild = tower;
+        GhostTower();
+    }
+
+    void GhostTower()
+    {
+        if (buildManager.ClickedArea == null || buildManager.TowerToBuild == null)
         {
-            bool active = buildManager.TowerToBuild.transform.GetChild(index).gameObject.activeSelf;
-            if (active)
-            {
-                break;
-            }
+            Destroy(preTower);
+            return;
         }
 
-        GameObject tower = buildManager.TowerToBuild.transform.GetChild(index).gameObject;
-        
-        Transform placement = selection.GetChild(0).transform;
-        Vector3 placeVec = placement.position;
-        Vector3 towerPlace = new Vector3(placeVec.x, placeVec.y + 0.5f, placeVec.z);
+        if (GameManager.Instance.CheckIfEnoughResourcesForTower())
+        {
+            GameObject tower = buildManager.TowerToBuild.transform.GetChild(1).gameObject;
 
-/*        Tower tow = tower.GetComponent<Tower>();
-        GameObject radius = tower.transform.Find("Radius").gameObject;
-        radius.transform.localScale = new Vector3(tow.range * 2f, 0.01f, tow.range * 2f);*/
 
-        preTower = Instantiate(tower, towerPlace, placement.rotation);
-        preTower.transform.GetChild(0).gameObject.SetActive(true);
-        preTower.layer = 12;
-        preTower.GetComponent<Renderer>().material.color = towerPreview;                        
+            Transform placement = buildManager.ClickedArea.transform.GetChild(0).transform;
+            Vector3 placeVec = placement.position;
+            Vector3 towerPlace = new Vector3(placeVec.x, placeVec.y + 0.5f, placeVec.z);
+
+            preTower = Instantiate(tower, towerPlace, placement.rotation);
+            GameObject radius = preTower.transform.GetChild(0).gameObject;
+
+            preTower.layer = 12;
+            preTower.GetComponent<Renderer>().material.color = towerPreview;
+
+            Tower tow = buildManager.TowerToBuild.GetComponent<Tower>();
+            radius.transform.localScale = new Vector3(tow.range * 2f, 0.01f, tow.range * 2f);
+            radius.SetActive(true);
+        }       
     }
 
     GameObject GetTowerPlacement()
@@ -316,25 +335,21 @@ public class BuilderController : MonoBehaviour
 
     void ClickedPlacement()
     {   
-        RaycastHit hit = CastRayFromCamera(placeForTowerLayerMask);
-        if (hit.collider != null)
+        if (!placementClicked)
         {
-            GameObject placementHit = hit.collider.gameObject;
-            if (placementHit.CompareTag("PlaceForTower"))
+            RaycastHit hit = CastRayFromCamera(placeForTowerLayerMask);
+            if (hit.collider != null)
             {
-                if (buildManager.TowerToBuild != null)
+                GameObject placementHit = hit.collider.gameObject;
+                if (placementHit.CompareTag("PlaceForTower"))
                 {
-                    RaycastHit hitTower = CastRayFromCamera(towerLayerMask);
-                    if (hitTower.collider == null)
-                    {
-                        buildManager.ClickedArea = _selection.gameObject;
-                        buildManager.InstantiateTower();
-                        
-                    }
-
+                    buildManager.ClickedArea = _selection.gameObject;
+                    _selection.gameObject.GetComponent<Renderer>().material.color = hoverColor;
+                    placementClicked = true;
+                    towerMenu.SetActive(true);
                 }
             }
-        }
+        }       
     }
     void ClickedTower()
     {
@@ -342,32 +357,19 @@ public class BuilderController : MonoBehaviour
         if (hit.collider != null)
         {
             GameObject towerHit = hit.collider.gameObject;
-/*            if (towerHit.CompareTag("Tower"))
-            {*/
-                if (towerHit != null && preTower == null)
-                {
-                    Tower tower = towerHit.GetComponent<Tower>();
+
+            if (towerHit != null && preTower == null)
+            {
+                Tower tower = towerHit.GetComponent<Tower>();
                     
-                    tower.ShowUpgradeUI(towerPanel, infoView);
-                    EventHandler.Instance.InvokeEvent(new TowerClickedEvent("Tower Is clicked", tower.gameObject));
-                    buildManager.TowerToBuild = null;
-                    print("Tower of type: " + tower + " Is clicked");
-                }
-                
-
-/*                if (tower.radius.activeInHierarchy)
-                {
-                    tower.radius.SetActive(false);
-                    tower.upgradeUI.SetActive(false);
-                        
-                }
-                else
-                {
-                    tower.radius.SetActive(true);
-                    tower.upgradeUI.SetActive(true);
-
-                } */
+                tower.ShowUpgradeUI(upgradeMenu);
+                EventHandler.Instance.InvokeEvent(new TowerClickedEvent("Tower Is clicked", tower.gameObject));
+                buildManager.TowerToBuild = null;
+                print("Tower of type: " + tower + " Is clicked");
+                placementClicked = true;
             }
-        /*}*/
+
+        }
+
     }
 }
