@@ -91,7 +91,7 @@ public class WaveManager : MonoBehaviour
             }
             Shuffle(subWaveEnemies);
             currentWaveEnemies.AddRange(subWaveEnemies); //Then adds the shuffled subwave to the wave
-            changeSpawnRate.Add(subWaveEnemies.Count - 1);
+            changeSpawnRate.Add(subWaveEnemies.Count, subWave.spawnRate);
         }
         spawnRate = 0.5f;
         waveMoneyBonus = wave.waveMoneyBonus;
@@ -147,11 +147,13 @@ public class WaveManager : MonoBehaviour
             GameObject g = Instantiate(currentWaveEnemies[i], Waypoints.wayPoints[path][0].position, currentWaveEnemies[i].transform.rotation, enemyContainer.transform); //Spawn enemy and wait for time between enemy
             g.GetComponent<EnemyController>().TakePath(path);
             g.SetActive(true);
-            if (changeSpawnRate.Contains(i))
-            {
 
-            }
             yield return new WaitForSeconds(spawnRate);
+
+            if (changeSpawnRate.ContainsKey(i))
+            {
+                spawnRate = changeSpawnRate[i];
+            }
         }
         yield return false;
     }
