@@ -13,22 +13,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float material = 0f;
     [SerializeField] private float money = 350f;
 
-    [Header("UI Elements: ")]
-    [SerializeField] private Text moneyCounterUI;
-    [SerializeField] private Text moneyChangerUI;
-    [Space]
-    [SerializeField] private Text materialCounterUI;
-    [SerializeField] private Text materialChangerUI;
-    [SerializeField] private Slider livesSlider;
-    [Space]
+    [Header("Vet inte vad detta är: ")]
     [SerializeField] private Color colorGain;
-    [Space]
-    [SerializeField] private GameObject victoryUI;
-    [SerializeField] private GameObject defeatUI;
-
-    [Header("Spanwer for UI Elements")]
-    [SerializeField] private GameObject moneyUI;
-    [SerializeField] private GameObject materialUI;
 
     [Header("Player")]
     [SerializeField] private PlayerMode startingMode;
@@ -40,6 +26,15 @@ public class GameManager : MonoBehaviour
     private GameObject damagingEnemy;
     private WaveManager waveManager;
     private Canvas canvas;
+    private Text moneyCounterUI;
+    private Text moneyChangerUI;
+    private Text materialCounterUI;
+    private Text materialChangerUI;
+    private Slider livesSlider;
+    private GameObject victoryUI;
+    private GameObject defeatUI;
+    private GameObject moneyUI;
+    private GameObject materialUI;
 
     private int currentWave = -1;
     private float currentBaseHealth;
@@ -67,6 +62,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        InitializeUIElements();
+
         buildManager = FindObjectOfType<BuildManager>();
         currentBaseHealth = baseHealth;
         livesSlider.maxValue = currentBaseHealth;
@@ -80,6 +77,24 @@ public class GameManager : MonoBehaviour
 
         victoryUI.SetActive(false);
         defeatUI.SetActive(false);
+    }
+
+    void InitializeUIElements()
+    {
+        Transform canvas = UI.Canvas.transform;
+        
+        Transform currencyPanel = canvas.GetChild(0);
+        moneyCounterUI = currencyPanel.Find("MoneyHolder").Find("MoneyCounter").GetComponent<Text>();
+        moneyUI = currencyPanel.Find("MoneyChanger").gameObject;
+        moneyChangerUI = moneyUI.transform.GetChild(0).GetComponent<Text>();
+        materialCounterUI = currencyPanel.Find("MaterialHolder").Find("MaterialCounter").GetComponent<Text>();
+        materialUI = currencyPanel.Find("MaterialChanger").gameObject;
+        materialChangerUI = materialUI.transform.GetChild(0).GetComponent<Text>();
+        
+        livesSlider = canvas.Find("LivesSlider").GetComponent<Slider>();
+
+        defeatUI = canvas.Find("DefeatPanel").gameObject;
+        victoryUI = canvas.Find("VictoryPanel").gameObject;
     }
 
     private void Update()

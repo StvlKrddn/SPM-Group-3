@@ -167,17 +167,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseHealth: 100
   material: 10
-  money: 350
-  moneyCounterUI: {fileID: 0}
-  moneyChangerUI: {fileID: 1635743904581684894, guid: 4364b9ba3f4c41f43bc2ec8ffdee6763, type: 3}
-  materialCounterUI: {fileID: 0}
-  materialChangerUI: {fileID: 1635743904581684894, guid: 4364b9ba3f4c41f43bc2ec8ffdee6763, type: 3}
-  livesSlider: {fileID: 0}
+  money: 1400
   colorGain: {r: 0.20376274, g: 0.6415094, b: 0, a: 1}
-  victoryUI: {fileID: 0}
-  defeatUI: {fileID: 0}
-  moneyUI: {fileID: 0}
-  materialUI: {fileID: 0}
   startingMode: 0
   towersPlaced: []
 --- !u!114 &5574963424639874967
@@ -193,16 +184,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnPosition: {fileID: 0}
-  waveUI: {fileID: 0}
   enemyContainer: {fileID: 0}
   waves:
   - waveName: 
-    waveDuration: 9
+    waveDuration: 3
     waveMoneyBonus: 0
     subWaves:
     - enemies:
       - enemyPrefab: {fileID: 5940178821907547970, guid: 3da10c386b23dcd4fb83590a6b67370e, type: 3}
         amount: 3
+      spawnRate: 0.1
   - waveName: 
     waveDuration: 12
     waveMoneyBonus: 0
@@ -210,6 +201,7 @@ MonoBehaviour:
     - enemies:
       - enemyPrefab: {fileID: 5940178821907547970, guid: 3da10c386b23dcd4fb83590a6b67370e, type: 3}
         amount: 5
+      spawnRate: 0.1
   - waveName: 
     waveDuration: 10
     waveMoneyBonus: 0
@@ -217,8 +209,9 @@ MonoBehaviour:
     - enemies:
       - enemyPrefab: {fileID: 5940178821907547970, guid: 3da10c386b23dcd4fb83590a6b67370e, type: 3}
         amount: 5
-      - enemyPrefab: {fileID: 5940178821907547970, guid: ebabe95a03637314a8f1d189111fd669, type: 3}
+      - enemyPrefab: {fileID: 4264572846131703882, guid: 2d4349db505aec44a877c3bc1f47965b, type: 3}
         amount: 5
+      spawnRate: 0.1
   - waveName: 
     waveDuration: 20
     waveMoneyBonus: 0
@@ -226,8 +219,9 @@ MonoBehaviour:
     - enemies:
       - enemyPrefab: {fileID: 5940178821907547970, guid: 3da10c386b23dcd4fb83590a6b67370e, type: 3}
         amount: 8
-      - enemyPrefab: {fileID: 5940178821907547970, guid: ebabe95a03637314a8f1d189111fd669, type: 3}
+      - enemyPrefab: {fileID: 4264572846131703882, guid: 2d4349db505aec44a877c3bc1f47965b, type: 3}
         amount: 8
+      spawnRate: 0.1
   - waveName: 
     waveDuration: 20
     waveMoneyBonus: 0
@@ -235,8 +229,9 @@ MonoBehaviour:
     - enemies:
       - enemyPrefab: {fileID: 5940178821907547970, guid: 3da10c386b23dcd4fb83590a6b67370e, type: 3}
         amount: 8
-      - enemyPrefab: {fileID: 5940178821907547970, guid: ebabe95a03637314a8f1d189111fd669, type: 3}
+      - enemyPrefab: {fileID: 4264572846131703882, guid: 2d4349db505aec44a877c3bc1f47965b, type: 3}
         amount: 12
+      spawnRate: 0.1
   - waveName: 
     waveDuration: 1
     waveMoneyBonus: 0
@@ -244,6 +239,7 @@ MonoBehaviour:
     - enemies:
       - enemyPrefab: {fileID: 5940178821907547970, guid: 2d58c5c9792dba04da822e43cf28112c, type: 3}
         amount: 1
+      spawnRate: 0.1
   - waveName: 
     waveDuration: 15
     waveMoneyBonus: 0
@@ -251,12 +247,15 @@ MonoBehaviour:
     - enemies:
       - enemyPrefab: {fileID: 5940178821907547970, guid: 2d58c5c9792dba04da822e43cf28112c, type: 3}
         amount: 1
+      spawnRate: 0.1
     - enemies:
-      - enemyPrefab: {fileID: 5940178821907547970, guid: ebabe95a03637314a8f1d189111fd669, type: 3}
+      - enemyPrefab: {fileID: 4264572846131703882, guid: 2d4349db505aec44a877c3bc1f47965b, type: 3}
         amount: 5
+      spawnRate: 0.1
     - enemies:
       - enemyPrefab: {fileID: 5940178821907547970, guid: 3da10c386b23dcd4fb83590a6b67370e, type: 3}
         amount: 3
+      spawnRate: 0.1
   - waveName: 
     waveDuration: 20
     waveMoneyBonus: 0
@@ -264,12 +263,15 @@ MonoBehaviour:
     - enemies:
       - enemyPrefab: {fileID: 5940178821907547970, guid: 2d58c5c9792dba04da822e43cf28112c, type: 3}
         amount: 2
+      spawnRate: 0
     - enemies:
-      - enemyPrefab: {fileID: 5940178821907547970, guid: ebabe95a03637314a8f1d189111fd669, type: 3}
+      - enemyPrefab: {fileID: 4264572846131703882, guid: 2d4349db505aec44a877c3bc1f47965b, type: 3}
         amount: 3
+      spawnRate: 0
     - enemies:
       - enemyPrefab: {fileID: 5940178821907547970, guid: b57826fc685def9419bc9115924fbf68, type: 3}
         amount: 3
+      spawnRate: 0
   - waveName: 
     waveDuration: 30
     waveMoneyBonus: 0
@@ -277,14 +279,17 @@ MonoBehaviour:
     - enemies:
       - enemyPrefab: {fileID: 5940178821907547970, guid: 2d58c5c9792dba04da822e43cf28112c, type: 3}
         amount: 2
+      spawnRate: 0.1
     - enemies:
-      - enemyPrefab: {fileID: 5940178821907547970, guid: ebabe95a03637314a8f1d189111fd669, type: 3}
+      - enemyPrefab: {fileID: 4264572846131703882, guid: 2d4349db505aec44a877c3bc1f47965b, type: 3}
         amount: 6
       - enemyPrefab: {fileID: 5940178821907547970, guid: 3da10c386b23dcd4fb83590a6b67370e, type: 3}
         amount: 3
+      spawnRate: 0.1
     - enemies:
       - enemyPrefab: {fileID: 5940178821907547970, guid: b57826fc685def9419bc9115924fbf68, type: 3}
         amount: 6
+      spawnRate: 0.1
   - waveName: 
     waveDuration: 30
     waveMoneyBonus: 0
@@ -292,18 +297,21 @@ MonoBehaviour:
     - enemies:
       - enemyPrefab: {fileID: 5940178821907547970, guid: c746b2154d39e8544b1fb107223e7cb0, type: 3}
         amount: 3
+      spawnRate: 0.1
     - enemies:
       - enemyPrefab: {fileID: 5940178821907547970, guid: 2d58c5c9792dba04da822e43cf28112c, type: 3}
         amount: 3
+      spawnRate: 0
     - enemies:
-      - enemyPrefab: {fileID: 5940178821907547970, guid: ebabe95a03637314a8f1d189111fd669, type: 3}
+      - enemyPrefab: {fileID: 4264572846131703882, guid: 2d4349db505aec44a877c3bc1f47965b, type: 3}
         amount: 5
+      spawnRate: 0.1
     - enemies:
       - enemyPrefab: {fileID: 5940178821907547970, guid: b57826fc685def9419bc9115924fbf68, type: 3}
         amount: 5
       - enemyPrefab: {fileID: 5940178821907547970, guid: 3da10c386b23dcd4fb83590a6b67370e, type: 3}
         amount: 5
-  waveClear: {fileID: 0}
+      spawnRate: 0.1
   startingWave: 1
 --- !u!114 &2570363305664917266
 MonoBehaviour:
@@ -317,7 +325,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f55e4939cbcf7fe4a8140b08f908ec3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buildMenu: {fileID: 0}
 --- !u!114 &5574963424639874960
 MonoBehaviour:
   m_ObjectHideFlags: 0
