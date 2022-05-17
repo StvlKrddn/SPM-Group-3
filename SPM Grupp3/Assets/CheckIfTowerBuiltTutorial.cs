@@ -29,6 +29,9 @@ public class CheckIfTowerBuiltTutorial : MonoBehaviour
             {
                 obj.SetActive(true);
             }
+
+
+            this.enabled = false;
         }
     }
 }

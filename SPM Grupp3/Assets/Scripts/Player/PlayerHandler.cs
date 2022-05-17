@@ -22,7 +22,7 @@ public class PlayerHandler : MonoBehaviour
     {
         destroyed = false;
 
-        canvas = Camera.main.transform.Find("Canvas").gameObject;
+        canvas = UI.Canvas.gameObject;
         buildMenu = canvas.transform.Find("Build_UI").gameObject;
 
         currentMode = GameManager.Instance.StartingMode;
@@ -69,7 +69,7 @@ public class PlayerHandler : MonoBehaviour
 
         currentMode = PlayerMode.Tank;
 
-        UpgradeController.Instance.FixUpgrades(gameObject); //Behöver ändras
+        UpgradeController.Instance.FixUpgrades(gameObject); //Behï¿½ver ï¿½ndras
 
         //print("Entered tank mode");
 
