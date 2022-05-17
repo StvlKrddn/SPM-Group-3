@@ -4,20 +4,17 @@ using System.Collections.Generic;
 public class Waypoints : MonoBehaviour
 {
     public static List<Transform[]> wayPoints = new List<Transform[]>();
-    public static int currentPath = 0;
+    public static int currentPath = -1;
     // Start is called before the first frame update
     void Awake()
     {
         for (int i = 0; i < transform.childCount; i++)
         {
-            int c = 0;
             Transform[] path = new Transform[transform.GetChild(i).childCount];
 		    for (int j = 0; j < path.Length; j++)
 		    {
-                c++;
                 path[j] = transform.GetChild(i).GetChild(j);
 		    }
-            print(c);
             wayPoints.Add(path);
 		}
     }
@@ -25,7 +22,7 @@ public class Waypoints : MonoBehaviour
     public static int GivePath()
     {
         currentPath++;
-        if (currentPath > wayPoints.Count -1)
+        if (currentPath >= wayPoints.Count)
         {
             currentPath = 0;
         }

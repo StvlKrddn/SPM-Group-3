@@ -25,7 +25,7 @@ public class WaveManager : MonoBehaviour
     private List<GameObject> currentWaveEnemies = new List<GameObject>();
     private Text waveUI;
     private GameObject waveClear;
-    private Dictionary<int, float> changeSpawnRate;
+    private Dictionary<int, float> changeSpawnRate = new Dictionary<int, float>();
 
     private void Awake()
     {
@@ -79,8 +79,12 @@ public class WaveManager : MonoBehaviour
     private void WaveConstructor(WaveInfo wave)
     {
         currentWaveEnemies.Clear();
+        changeSpawnRate.Clear();
+
+        spawnRate = wave.subWaves[0].spawnRate;
         foreach (SubWave subWave in wave.subWaves)
         {
+            changeSpawnRate.Add(currentWaveEnemies.Count - 1, subWave.spawnRate);
             List<GameObject> subWaveEnemies = new List<GameObject>(); //Goes through each subwave and shuffles it
             for (int i = 0; i < subWave.enemies.Length; i++)
             {
@@ -91,9 +95,7 @@ public class WaveManager : MonoBehaviour
             }
             Shuffle(subWaveEnemies);
             currentWaveEnemies.AddRange(subWaveEnemies); //Then adds the shuffled subwave to the wave
-            changeSpawnRate.Add(subWaveEnemies.Count, subWave.spawnRate);
         }
-        spawnRate = 0.5f;
         waveMoneyBonus = wave.waveMoneyBonus;
         enemyCount = currentWaveEnemies.Count;
     }
@@ -153,6 +155,7 @@ public class WaveManager : MonoBehaviour
             if (changeSpawnRate.ContainsKey(i))
             {
                 spawnRate = changeSpawnRate[i];
+                Debug.Log(changeSpawnRate[i]);
             }
         }
         yield return false;
