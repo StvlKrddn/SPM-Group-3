@@ -110,26 +110,26 @@ public class SlowTower : Tower
         }
     }
 
-public override void TowerLevel1()
+    public override void TowerLevel1()
     {
-    base.TowerLevel1();
-    if (tUC.GetUpgradesPurchased() == 1 && gM.SpendResources(level2Cost, 0f))
-    {
-        tUC.IncreaseUpgradesPurchased();
-        SlowTower sT = tUC.ClickedTower.GetComponent<SlowTower>();
-        sT.slowRadius += upgradeAmountSlowRadius;
+        base.TowerLevel1();
+        if (tUC.GetUpgradesPurchased() == 0 && gM.SpendResources(level1Cost,0f))
+        {
+            tUC.IncreaseUpgradesPurchased();
+            SlowTower sT = tUC.ClickedTower.GetComponent<SlowTower>();           
+            sT.areaOfEffect = true;              
+        }        
     }
-}
     public override void TowerLevel2()
     {
-    base.TowerLevel2();
-    if (tUC.GetUpgradesPurchased() == 0 && gM.SpendResources(level1Cost, 0f))
-    {
-        tUC.IncreaseUpgradesPurchased();
-        SlowTower sT = tUC.ClickedTower.GetComponent<SlowTower>();
-        sT.areaOfEffect = true;
+        base.TowerLevel2();
+        if (tUC.GetUpgradesPurchased() == 1 && gM.SpendResources(level2Cost, 0f))
+        {
+            tUC.IncreaseUpgradesPurchased();
+            SlowTower sT = tUC.ClickedTower.GetComponent<SlowTower>();
+            sT.slowRadius += upgradeAmountSlowRadius;
+        }
     }
-}
     public override void TowerLevel3()
     {
         base.TowerLevel3();
