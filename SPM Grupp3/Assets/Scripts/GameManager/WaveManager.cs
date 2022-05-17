@@ -90,7 +90,6 @@ public class WaveManager : MonoBehaviour
         }
         waveMoneyBonus = wave.waveMoneyBonus;
         enemyCount = currentWaveEnemies.Count;
-        spawnRate = wave.waveDuration / currentWaveEnemies.Count; //Sverker säger delete 
     }
 
     void Shuffle(List<GameObject> list)
@@ -145,6 +144,27 @@ public class WaveManager : MonoBehaviour
         yield return false;
     }
 
+    [ContextMenu("Calculate Wave Duration")]
+    public void CalculateWaveDuration()
+    {
+		for (int i = 0; i < waves.Length; i++)
+        {
+			WaveInfo waveInfo = waves[i];
+			waveInfo.waveDuration = 0;
+
+			for (int j = 0; j < waveInfo.subWaves.Length; j++)
+            {
+				SubWave subwave = waveInfo.subWaves[j];
+				for (int k = 0; k < subwave.enemies.Length; k++)
+                {
+					EnemyStruct enemy = subwave.enemies[k];
+                    waveInfo.waveDuration += enemy.amount * subwave.spawnRate;
+                }
+            }
+            print("Wave " + (i + 1) + " is " + waveInfo.waveDuration + " seconds long");
+        }
+    }
+
     public void UpdateUI()
     {
         waveUI.text = (currentWave + 1) + "/" + victoryWave;
@@ -177,7 +197,7 @@ public struct WaveInfo
 public struct SubWave
 {
     public EnemyStruct[] enemies;
-    //public  float spawnRate 
+    public float spawnRate;
  
 }
 

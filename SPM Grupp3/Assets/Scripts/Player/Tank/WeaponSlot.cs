@@ -50,7 +50,12 @@ public class WeaponSlot : MonoBehaviour
         shootAction = tank.PlayerInput.actions["Shoot"];
     }
 
-    void ConstructWeapon()
+	private void OnEnable()
+	{
+        allowedToShoot = true;
+	}
+
+	void ConstructWeapon()
     {
         fireRate = equippedWeapon.fireRate;
         spread = equippedWeapon.spread;

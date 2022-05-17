@@ -8,7 +8,6 @@ public class SniperAbility : BulletBehavior
     {
         if (other.CompareTag("Enemy"))
         {
-            Debug.Log("test");
             EnemyController target = other.GetComponent<EnemyController>();
             EnemyController[] enemyControllers = FindObjectsOfType(typeof(EnemyController)) as EnemyController[];
             foreach (EnemyController enemy in enemyControllers)
