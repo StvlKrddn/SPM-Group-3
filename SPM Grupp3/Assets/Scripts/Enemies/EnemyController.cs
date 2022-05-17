@@ -11,7 +11,7 @@ public abstract class EnemyController : MonoBehaviour
     [SerializeField] private float meleeDamage;
     private GameManager gM;
     private Transform target;
-    private int currIndex = 1;
+    private int currIndex = 0;
     public int damageBase = 10;
     public int moneyDrop = 10;
     public bool materialDrop = false;
@@ -53,43 +53,31 @@ public abstract class EnemyController : MonoBehaviour
         //WIP Enemy moves right direction
         Vector3 direction = target.position - transform.position;
         direction.Normalize();
-        transform.Translate(speed * Time.deltaTime * direction);
-
-        if (Vector3.Distance(transform.position, target.position) <= 0.4f)
-        {
-            NextTarget(direction);
-        }
-    }
-
-	private void NextTarget(Vector3 direction)
-    {
-        if (Waypoints.wayPoints.Length - 1 <= currIndex) // Changes waypoint to til the enemy reaches the last waypoint
-        {
-            EnemyDeathBase();
-            return;
-        }
-        currIndex++;
-        target = Waypoints.wayPoints[currIndex];
+        transform.position += speed * Time.deltaTime * direction;
     }
 
     private void EnemyDeathBase()
     {
         gM.TakeDamage(damageBase, gameObject);
-        DieEvent dieEvent = new DieEvent("d�d fr�n bas", gameObject, null, null);
+        DieEvent dieEvent = new DieEvent("död från bas", gameObject, null, null);
         EventHandler.Instance.InvokeEvent(dieEvent);
         Destroy(gameObject);
     }
 
-    /*private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("PlayerShots"))
+        if (other.CompareTag("Waypoint"))
         {
-            BulletBehavior bullet = other.gameObject.GetComponent<BulletBehavior>();
-            GameObject hitEffektInstance = Instantiate(hitEffect, transform.position, transform.rotation);
-            TakeDamage(bullet.BulletDamage);
-            Destroy(hitEffektInstance, 1f);
+            if (Waypoints.wayPoints.Length - 1 <= currIndex) // Changes waypoint to til the enemy reaches the last waypoint
+            {
+                EnemyDeathBase();
+                return;
+            }
+            currIndex++;
+            target = Waypoints.wayPoints[currIndex];
+            transform.LookAt(target);
         }
-    }*/
+    }
 
     public virtual void TakeDamage(float damage)
     {

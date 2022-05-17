@@ -28,7 +28,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5940178821907547970}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1.5, y: 2, z: 1.5}
   m_Children:
@@ -36,7 +36,7 @@ Transform:
   - {fileID: 5905676073593807524}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!33 &5940178821907547973
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -111,13 +111,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2972d638bc5665943b947e47bfcf7e4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
+  speed: 2.5
   health: 10
   hitEffect: {fileID: 5202362185975563897, guid: afc452a4019ab8b47ac2ea888849a086, type: 3}
   meleeDamage: 5
-  damageBase: 100
+  damageBase: 10
   moneyDrop: 15
-  materialDrop: 0
+  materialDrop: 1
   material: {fileID: 2880112694638519676, guid: ad4ab04936b9afa45a48c743a72df55b, type: 3}
   spread: 0
 --- !u!114 &7161303631853809746
@@ -237,6 +237,14 @@ PrefabInstance:
     - target: {fileID: 15003163187659497, guid: 6c76fb6c527c1db4d85a2e5af6aab512, type: 3}
       propertyPath: m_Enabled
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5169459426060798591, guid: 6c76fb6c527c1db4d85a2e5af6aab512, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5169459426060798591, guid: 6c76fb6c527c1db4d85a2e5af6aab512, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9099198633358382237, guid: 6c76fb6c527c1db4d85a2e5af6aab512, type: 3}
       propertyPath: m_Pivot.x

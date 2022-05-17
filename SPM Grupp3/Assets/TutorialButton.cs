@@ -26,6 +26,7 @@ public class TutorialButton : MonoBehaviour
     public void startGame()
     {
         Time.timeScale = 1; 
+
     }
 
     public void loadNextDialogue()
@@ -44,10 +45,6 @@ public class TutorialButton : MonoBehaviour
             {
                 obj.SetActive(true);
             }
-        }
-
-
-    
-        
+        }      
     }
 }

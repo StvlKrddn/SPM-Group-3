@@ -8,6 +8,8 @@ using UnityEngine.InputSystem.Users;
 using UnityEngine.Events;
 public class TutorialDisableOnNewWave : MonoBehaviour
 {
+
+    public GameObject[] gameObjectsToDisable; 
     // Start is called before the first frame update
     void Start()
     {
@@ -20,6 +22,11 @@ public class TutorialDisableOnNewWave : MonoBehaviour
         if(Gamepad.current.xButton.isPressed)
         {
             gameObject.SetActive(false);
+
+            foreach(GameObject obj in gameObjectsToDisable)
+            {
+                obj.SetActive(false);
+            }
         }
     }
 }

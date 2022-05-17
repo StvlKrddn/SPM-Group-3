@@ -9,11 +9,11 @@ public class BulletBehavior : MonoBehaviour
     
     GameObject tank;
 
-    public float bulletSpeed;
-    public float range;
+    [SerializeField] private float bulletSpeed;
+    [SerializeField] private float range;
     
     Vector3 originalPosition;
-    private int penetrationCount = 3;
+    [SerializeField] private int penetrationCount = 3;
     
     public float BulletDamage { get { return damage; } set { damage = value; } }
     public float BulletRange { get { return range; } set { range = value; } }
@@ -21,12 +21,13 @@ public class BulletBehavior : MonoBehaviour
     void Start()
     {
         // NOTE(August): Ändra från FindObjectOfType eftersom den körs varje gång en kula skjuts
-        tank = FindObjectOfType<TankState>().gameObject;
+        tank = GetComponentInParent<TankState>().gameObject;
         originalPosition = transform.position;
         bulletSpeed = tank.GetComponent<WeaponSlot>().BulletSpeed;
         range = tank.GetComponent<WeaponSlot>().BulletRange;
         damage = tank.GetComponent<WeaponSlot>().BulletDamage;
         penetrating = tank.GetComponent<WeaponSlot>().BulletPenetration;
+        transform.parent = null;
     }
 
     void Update()
