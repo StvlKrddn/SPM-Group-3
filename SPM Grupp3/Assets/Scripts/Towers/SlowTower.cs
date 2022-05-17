@@ -96,44 +96,43 @@ public class SlowTower : Tower
         }
     }
 
-    public override void ShowUpgradeUI(GameObject medium, GameObject infoView)
+    public override void ShowUpgradeUI(GameObject upgradeMenu)
     {
-        if (infoView.transform.GetChild(2).gameObject.activeInHierarchy)
+        upgradeMenu.SetActive(true);
+        for (int i = 0; i < upgradeMenu.transform.childCount; i++)
         {
-            infoView.transform.GetChild(2).gameObject.SetActive(false);
-            medium.SetActive(true);
-        }
-        else
-        {
-            infoView.transform.GetChild(2).gameObject.SetActive(true);
-            medium.SetActive(false);
+            if (upgradeMenu.transform.GetChild(i).gameObject.name.Equals("UpgradeSlowPanel"))
+            {
+                upgradeMenu.transform.GetChild(i).gameObject.SetActive(true);
+                upgradeMenu.SetActive(true);
+            }
         }
     }
 
-    public override void TowerLevel1()
+    protected override void TowerLevel1()
     {
         base.TowerLevel1();
-        if (tUC.GetUpgradesPurchased() == 0 && gM.SpendResources(level1Cost,0f))
+        if (gM.SpendResources(level1Cost,0f))
         {
             tUC.IncreaseUpgradesPurchased();
             SlowTower sT = tUC.ClickedTower.GetComponent<SlowTower>();           
             sT.areaOfEffect = true;              
         }        
     }
-    public override void TowerLevel2()
+    protected override void TowerLevel2()
     {
         base.TowerLevel2();
-        if (tUC.GetUpgradesPurchased() == 1 && gM.SpendResources(level2Cost, 0f))
+        if (gM.SpendResources(level2Cost, 0f))
         {
             tUC.IncreaseUpgradesPurchased();
             SlowTower sT = tUC.ClickedTower.GetComponent<SlowTower>();
             sT.slowRadius += upgradeAmountSlowRadius;
         }
     }
-    public override void TowerLevel3()
+    protected override void TowerLevel3()
     {
         base.TowerLevel3();
-        if (tUC.GetUpgradesPurchased() == 2 && gM.SpendResources(level3Cost, 0f))
+        if (gM.SpendResources(level3Cost, 0f))
         {
             tUC.IncreaseUpgradesPurchased();
             SlowTower sT = tUC.ClickedTower.GetComponent<SlowTower>();

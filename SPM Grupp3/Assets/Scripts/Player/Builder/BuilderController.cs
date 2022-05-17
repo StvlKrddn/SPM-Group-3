@@ -41,6 +41,8 @@ public class BuilderController : MonoBehaviour
     private GameObject playerCursor;
 
     private GameObject towerMenu;
+    private GameObject upgradeMenu;
+    private bool placementClicked = false;
 
     void Start()
     {
@@ -53,6 +55,7 @@ public class BuilderController : MonoBehaviour
         towerPanel = buildMenu.transform.Find("TowerPanel").gameObject;
 
         towerMenu = canvas.Find("TowerMenu").GetChild(0).gameObject;
+        upgradeMenu = canvas.Find("UpgradeMenu").GetChild(0).gameObject;
 
         buildManager = GetComponentInParent<BuildManager>();
 
@@ -158,6 +161,8 @@ public class BuilderController : MonoBehaviour
             Renderer selectionRenderer = _selection.GetComponent<Renderer>();
             selectionRenderer.material.color = startColor;
         }
+        towerMenu.SetActive(false);
+        placementClicked = false;
         towerPanel.SetActive(true);
     }
 
@@ -207,7 +212,11 @@ public class BuilderController : MonoBehaviour
 
         RaycastHit hit = CastRayFromCamera(placeForTowerLayerMask);
 
-        Hover(hit);
+        if (!placementClicked)
+        {
+            Hover(hit);
+        }
+       
     }
 
     Vector2 MoveMouse()
@@ -272,10 +281,15 @@ public class BuilderController : MonoBehaviour
         }
     }
 
+    public void ResetHover()
+    {
+        placementClicked = false;
+    }
+
     public void ExitHover()
     {
         buildManager.TowerToBuild = null;
-        Destroy(preTower);
+        GhostTower();
     }
 
     public void TowerToHover(GameObject tower)
@@ -286,21 +300,31 @@ public class BuilderController : MonoBehaviour
 
     void GhostTower()
     {
-        GameObject tower = buildManager.TowerToBuild.transform.GetChild(1).gameObject;
-        
-        Transform placement = buildManager.ClickedArea.transform.GetChild(0).transform;
-        Vector3 placeVec = placement.position;
-        Vector3 towerPlace = new Vector3(placeVec.x, placeVec.y + 0.5f, placeVec.z);
+        if (buildManager.ClickedArea == null || buildManager.TowerToBuild == null)
+        {
+            Destroy(preTower);
+            return;
+        }
 
-        preTower = Instantiate(tower, towerPlace, placement.rotation);
-        GameObject radius = preTower.transform.GetChild(0).gameObject;
-        
-        preTower.layer = 12;
-        preTower.GetComponent<Renderer>().material.color = towerPreview;
+        if (GameManager.Instance.CheckIfEnoughResourcesForTower())
+        {
+            GameObject tower = buildManager.TowerToBuild.transform.GetChild(1).gameObject;
 
-        Tower tow = tower.GetComponent<Tower>();       
-        radius.transform.localScale = new Vector3(tow.range * 2f, 0.01f, tow.range * 2f);
-        radius.SetActive(true);
+
+            Transform placement = buildManager.ClickedArea.transform.GetChild(0).transform;
+            Vector3 placeVec = placement.position;
+            Vector3 towerPlace = new Vector3(placeVec.x, placeVec.y + 0.5f, placeVec.z);
+
+            preTower = Instantiate(tower, towerPlace, placement.rotation);
+            GameObject radius = preTower.transform.GetChild(0).gameObject;
+
+            preTower.layer = 12;
+            preTower.GetComponent<Renderer>().material.color = towerPreview;
+
+            Tower tow = buildManager.TowerToBuild.GetComponent<Tower>();
+            radius.transform.localScale = new Vector3(tow.range * 2f, 0.01f, tow.range * 2f);
+            radius.SetActive(true);
+        }       
     }
 
     GameObject GetTowerPlacement()
@@ -311,16 +335,21 @@ public class BuilderController : MonoBehaviour
 
     void ClickedPlacement()
     {   
-        RaycastHit hit = CastRayFromCamera(placeForTowerLayerMask);
-        if (hit.collider != null)
+        if (!placementClicked)
         {
-            GameObject placementHit = hit.collider.gameObject;
-            if (placementHit.CompareTag("PlaceForTower"))
+            RaycastHit hit = CastRayFromCamera(placeForTowerLayerMask);
+            if (hit.collider != null)
             {
-                buildManager.ClickedArea = _selection.gameObject;
-                towerMenu.SetActive(true);
+                GameObject placementHit = hit.collider.gameObject;
+                if (placementHit.CompareTag("PlaceForTower"))
+                {
+                    buildManager.ClickedArea = _selection.gameObject;
+                    _selection.gameObject.GetComponent<Renderer>().material.color = hoverColor;
+                    placementClicked = true;
+                    towerMenu.SetActive(true);
+                }
             }
-        }
+        }       
     }
     void ClickedTower()
     {
@@ -328,32 +357,19 @@ public class BuilderController : MonoBehaviour
         if (hit.collider != null)
         {
             GameObject towerHit = hit.collider.gameObject;
-/*            if (towerHit.CompareTag("Tower"))
-            {*/
-                if (towerHit != null && preTower == null)
-                {
-                    Tower tower = towerHit.GetComponent<Tower>();
+
+            if (towerHit != null && preTower == null)
+            {
+                Tower tower = towerHit.GetComponent<Tower>();
                     
-                    tower.ShowUpgradeUI(towerPanel, infoView);
-                    EventHandler.Instance.InvokeEvent(new TowerClickedEvent("Tower Is clicked", tower.gameObject));
-                    buildManager.TowerToBuild = null;
-                    print("Tower of type: " + tower + " Is clicked");
-                }
-                
-
-/*                if (tower.radius.activeInHierarchy)
-                {
-                    tower.radius.SetActive(false);
-                    tower.upgradeUI.SetActive(false);
-                        
-                }
-                else
-                {
-                    tower.radius.SetActive(true);
-                    tower.upgradeUI.SetActive(true);
-
-                } */
+                tower.ShowUpgradeUI(upgradeMenu);
+                EventHandler.Instance.InvokeEvent(new TowerClickedEvent("Tower Is clicked", tower.gameObject));
+                buildManager.TowerToBuild = null;
+                print("Tower of type: " + tower + " Is clicked");
+                placementClicked = true;
             }
-        /*}*/
+
+        }
+
     }
 }
