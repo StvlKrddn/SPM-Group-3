@@ -98,43 +98,44 @@ public class PoisonTower : Tower
         }
     }
 
-    public override void ShowUpgradeUI(GameObject upgradeMenu)
-    {
-        upgradeMenu.SetActive(true);
-        for (int i = 0; i < upgradeMenu.transform.childCount; i++)
+    public override void ShowUpgradeUI(GameObject medium, GameObject infoView)
+    {    
+        if (infoView.transform.GetChild(3).gameObject.activeInHierarchy)
         {
-            if (upgradeMenu.transform.GetChild(i).gameObject.name.Equals("UpgradePoisonPanel"))
-            {
-                upgradeMenu.transform.GetChild(i).gameObject.SetActive(true);
-                upgradeMenu.SetActive(true);
-            }
+            infoView.transform.GetChild(3).gameObject.SetActive(false);
+            medium.SetActive(true);
+        }
+        else
+        {
+            infoView.transform.GetChild(3).gameObject.SetActive(true);
+            medium.SetActive(false);
         }
     }
 
-    protected override void TowerLevel1()
+    public override void TowerLevel1()
     {
         base.TowerLevel1();
-        if (gM.SpendResources(level1Cost, 0f))
+        if (gM.SpendResources(level1Cost, 0f) && tUC.GetUpgradesPurchased() == 0)
         {
             tUC.IncreaseUpgradesPurchased();
             PoisonTower pT = tUC.ClickedTower.GetComponent<PoisonTower>();            
             pT.poisonTicks += upgradeAmountPoisonTicks;                
         }
     }
-    protected override void TowerLevel2()
+    public override void TowerLevel2()
     {
         base.TowerLevel2();
-        if (gM.SpendResources(level2Cost, 0f))
+        if (gM.SpendResources(level2Cost, 0f) && tUC.GetUpgradesPurchased() == 1)
         {
             tUC.IncreaseUpgradesPurchased();
             PoisonTower pT = tUC.ClickedTower.GetComponent<PoisonTower>();          
             pT.poisonDamagePerTick += upgradeAmountPoisonDamagePerTick;               
         }
     }
-    protected override void TowerLevel3()
+    public override void TowerLevel3()
     {
         base.TowerLevel3();
-        if (gM.SpendResources(level3Cost, 0f))
+        if (gM.SpendResources(level3Cost, 0f) && tUC.GetUpgradesPurchased() == 2)
         {
             tUC.IncreaseUpgradesPurchased();
             PoisonTower pT = tUC.ClickedTower.GetComponent<PoisonTower>();

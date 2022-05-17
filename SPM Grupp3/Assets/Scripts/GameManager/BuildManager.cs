@@ -69,7 +69,7 @@ public class BuildManager : MonoBehaviour
 /*            towerPlacement = clickedArea.GetComponent<TowerPlacement>();*/
             Instantiate(towerBase, ClickedArea.transform.GetChild(0).transform.position, ClickedArea.transform.GetChild(0).transform.rotation);
             placedTower = Instantiate(TowerToBuild, ClickedArea.transform.GetChild(0).transform.position, ClickedArea.transform.GetChild(0).transform.rotation);
-            ClickedArea.layer = 11;
+
             ClickedArea = null;
 
             TowerUpgradeCotroller.instance.PlaceTowerInUpgradeList(placedTower);

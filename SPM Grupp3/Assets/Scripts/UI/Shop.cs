@@ -32,7 +32,6 @@ public class Shop : MonoBehaviour
         buildManager = player.GetComponent<BuildManager>();
         buildManager.TowerToBuild = buildManager.cannonTowerPrefab;
         UpdateCostUI(buildManager.TowerToBuild.GetComponent<Tower>().cost, buildManager.TowerToBuild.GetComponent<Tower>().materialCost);
-        buildManager.InstantiateTower();
     }
 
     public void PurchaseMissileTower()
@@ -40,7 +39,6 @@ public class Shop : MonoBehaviour
         buildManager = player.GetComponent<BuildManager>();
         buildManager.TowerToBuild = buildManager.missileTowerPrefab;
         UpdateCostUI(buildManager.TowerToBuild.GetComponent<Tower>().cost, buildManager.TowerToBuild.GetComponent<Tower>().materialCost);
-        buildManager.InstantiateTower();
     }
 
     public void PurchaseSlowTower()
@@ -48,7 +46,6 @@ public class Shop : MonoBehaviour
         buildManager = player.GetComponent<BuildManager>();
         buildManager.TowerToBuild = buildManager.slowTowerPrefab;
         UpdateCostUI(buildManager.TowerToBuild.GetComponent<Tower>().cost, buildManager.TowerToBuild.GetComponent<Tower>().materialCost);
-        buildManager.InstantiateTower();
     }
 
     public void PurchasePoisonTower()
@@ -56,7 +53,6 @@ public class Shop : MonoBehaviour
         buildManager = player.GetComponent<BuildManager>();
         buildManager.TowerToBuild = buildManager.poisonTowerPrefab;
         UpdateCostUI(buildManager.TowerToBuild.GetComponent<Tower>().cost, buildManager.TowerToBuild.GetComponent<Tower>().materialCost);
-        buildManager.InstantiateTower();
     }
 
     public void OnClicked(Button button)
