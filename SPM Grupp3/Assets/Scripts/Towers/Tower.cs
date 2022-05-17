@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class Tower : MonoBehaviour
 {
     [Header("Unity Setup Fields")]
-
+    [SerializeField] protected int towerLevel;
     [SerializeField] protected string enemyTag = "Enemy";
     [SerializeField] protected float turnSpeed = 10f;
     [SerializeField] protected GameObject shot;
@@ -35,20 +35,37 @@ public abstract class Tower : MonoBehaviour
 
     public abstract void TypeOfShot(EnemyController enemyTarget);
     public abstract void HitTarget(TowerHitEvent eventInfo);
-    public abstract void ShowUpgradeUI(GameObject medium, GameObject infoView);
+    public abstract void ShowUpgradeUI(GameObject upgradeMenu);
     /*    public abstract void CheckLevels();*/
 
-    public virtual void TowerLevel1()
+    public void LevelUpTower()
+    {
+        tUC = TowerUpgradeCotroller.instance;
+        switch (tUC.GetUpgradesPurchased())
+        {
+            case 0:
+                TowerLevel1();               
+                break;
+            case 1:
+                TowerLevel2();
+                break;
+            case 2:
+                TowerLevel3();
+                break;
+        }
+    }
+
+    protected virtual void TowerLevel1()
     {
         gM = GameManager.Instance;
         tUC = TowerUpgradeCotroller.instance;
     }
-    public virtual void TowerLevel2()
+    protected virtual void TowerLevel2()
     {
         gM = GameManager.Instance;
         tUC = TowerUpgradeCotroller.instance;
     }
-    public virtual void TowerLevel3()
+    protected virtual void TowerLevel3()
     {
         gM = GameManager.Instance;
         tUC = TowerUpgradeCotroller.instance;

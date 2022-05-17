@@ -202,6 +202,17 @@ public class GameManager : MonoBehaviour
         return false;
     }
 
+    public bool CheckIfEnoughResourcesForTower()
+    {
+        Tower tower = buildManager.TowerToBuild.GetComponent<Tower>();
+        if (tower.cost <= money && tower.materialCost <= material)
+        {
+            return true;
+        }
+        //Show Error
+        return false;
+    }
+
     public void AddPlacedTower(GameObject tower)
     {
         towersPlaced.Add(tower); 
