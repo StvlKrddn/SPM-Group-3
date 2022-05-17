@@ -11,7 +11,7 @@ public abstract class EnemyController : MonoBehaviour
     [SerializeField] private float meleeDamage;
     private GameManager gM;
     private Transform target;
-    private int currIndex = 1;
+    private int currIndex = 0;
     public int damageBase = 10;
     public int moneyDrop = 10;
     public bool materialDrop = false;
