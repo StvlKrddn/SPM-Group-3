@@ -9,7 +9,7 @@ public class TankState : MonoBehaviour
     // Inspector variables
     [SerializeField] private float movementSpeed = 6f;
     [SerializeField] private float health = 50f;
-    [SerializeField] private int levelOfTank;
+    public int levelOfTank;
 
     // Components
     Rigidbody rb;
