@@ -117,6 +117,15 @@ public class PlayerHandler : MonoBehaviour
         }
     }
 
+    public void RepairTank()
+    {
+        if (GameManager.Instance.SpendResources(500,20))
+        {
+            destroyed = false;
+            EnterTankMode();
+        }
+    }
+
     public void StartWave (InputAction.CallbackContext context)
     {
         if (context.performed)
