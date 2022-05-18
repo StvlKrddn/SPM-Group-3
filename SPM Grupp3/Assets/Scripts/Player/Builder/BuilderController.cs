@@ -71,7 +71,7 @@ public class BuilderController : MonoBehaviour
 
     void InitializeCursor()
     {
-        playerCursor = Instantiate(cursorPrefab, transform.parent.Find("PlayerCanvas"));
+        playerCursor = Instantiate(cursorPrefab, transform.parent.Find("PlayerUI"));
         SetCursorColor(playerCursor);
         playerCursor.name = "Player " + (playerInput.playerIndex + 1) + " cursor";
         cursorTransform = playerCursor.GetComponent<RectTransform>();
