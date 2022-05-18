@@ -6,15 +6,15 @@ public class EnemyPortal : EnemyController
 {
 	[SerializeField] private float timer;
 	private bool opened = false;
-	private BoxCollider collider;
+	private BoxCollider boxCollider;
 	private int randomWaypoint;
 
 	protected override void Awake()
 	{
 		base.Awake();
 
-		collider = GetComponent<BoxCollider>();
-		collider.enabled = false;
+		boxCollider = GetComponent<BoxCollider>();
+		boxCollider.enabled = false;
 		RandomizeTargets();
 		StartCoroutine(OpenPortal());
 		//Start Particle
@@ -41,7 +41,7 @@ public class EnemyPortal : EnemyController
 	{
 		yield return new WaitForSeconds(timer);
 		opened = true;
-		collider.enabled = true;
+		boxCollider.enabled = true;
 		//Stop particle
 		//Stop invis
 		yield return null;
