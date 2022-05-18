@@ -7,7 +7,8 @@ public class BulletBehavior : MonoBehaviour
     [SerializeField] protected float damage;
     public bool penetrating;
     
-    GameObject tank;
+    private GameObject tank;
+    private WeaponSlot weapon;
 
     [SerializeField] private float bulletSpeed;
     [SerializeField] private float range;
@@ -22,11 +23,12 @@ public class BulletBehavior : MonoBehaviour
     {
         // NOTE(August): Ändra från FindObjectOfType eftersom den körs varje gång en kula skjuts
         tank = GetComponentInParent<TankState>().gameObject;
+        weapon = tank.GetComponent<WeaponSlot>();
         originalPosition = transform.position;
-        bulletSpeed = tank.GetComponent<WeaponSlot>().BulletSpeed;
-        range = tank.GetComponent<WeaponSlot>().BulletRange;
-        damage = tank.GetComponent<WeaponSlot>().BulletDamage;
-        penetrating = tank.GetComponent<WeaponSlot>().BulletPenetration;
+        bulletSpeed = weapon.BulletSpeed;
+        range = weapon.BulletRange;
+        damage = weapon.BulletDamage;
+        penetrating = weapon.BulletPenetration; //The bullet gets the stats from their weapon
         transform.parent = null;
     }
 
@@ -48,7 +50,7 @@ public class BulletBehavior : MonoBehaviour
     {
         if (other.CompareTag("Enemy"))
         {
-            if (penetrating == true && penetrationCount > 0)
+            if (penetrating == true && penetrationCount > 0) // Penetrating goes through the enemy
             {
                 penetrationCount--;
             }

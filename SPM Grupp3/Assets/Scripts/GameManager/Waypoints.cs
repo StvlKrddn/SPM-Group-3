@@ -8,7 +8,7 @@ public class Waypoints : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        for (int i = 0; i < transform.childCount; i++)
+        for (int i = 0; i < transform.childCount; i++) // Foreach path, add the path to the list
         {
             Transform[] path = new Transform[transform.GetChild(i).childCount];
 		    for (int j = 0; j < path.Length; j++)
@@ -19,7 +19,7 @@ public class Waypoints : MonoBehaviour
 		}
     }
 
-    public static int GivePath()
+    public static int GivePath() // Gives out the path
     {
         currentPath++;
         if (currentPath >= wayPoints.Count)
