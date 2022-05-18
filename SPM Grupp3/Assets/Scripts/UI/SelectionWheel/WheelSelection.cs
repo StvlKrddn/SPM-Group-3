@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 
 /* Based on: https://answers.unity.com/questions/1592985/how-would-i-create-an-item-wheel-using-analog-stic.html*/
@@ -11,7 +12,7 @@ public class WheelSelection : MonoBehaviour
     public PlayerInput playerInput;
 
     // Put in order from right going counter-clockwise
-    public Image[] MenuItems;
+    public GameObject[] MenuItems;
 
     // Is the first item centered on the X-axis?
     public bool FirstCenteredX = true;
@@ -20,6 +21,8 @@ public class WheelSelection : MonoBehaviour
     private float firstItemDegrees = 0;
 
     // Current direction the player is pointing, -1 is no input
+    [SerializeField] private Color highLight;
+    [SerializeField] private Color hidden;
     private float pointingAngle;
     private float degreesPerItem;
     private float overflowFirstItem;
@@ -91,25 +94,22 @@ public class WheelSelection : MonoBehaviour
         }
 
         // Check if pointing at the first item because it can cross axis
-        print(overflowFirstItem);
+
         if (angle < firstItemDegrees + degreesPerItem || angle > overflowFirstItem)
         {
             return 0;
         }
 
         int itemIndex = -1;
-        int counter = 0;
 
         for (int i = 1; i <= numberOfMenuItems; i++)
         {
             if (angle > i * degreesPerItem + firstItemDegrees && angle < i * (degreesPerItem + degreesPerItem) + firstItemDegrees)
             {
-                counter++;
                 itemIndex = i;
             }
         }
 
-        print(counter);
         return itemIndex;
     }
 
@@ -125,12 +125,12 @@ public class WheelSelection : MonoBehaviour
             if (i == index)
             {
                 // Hover effect
-                MenuItems[i].color = Color.green;
+                MenuItems[i].transform.GetChild(0).GetComponent<Image>().color = highLight;
             }
             else
             {
                 // Remove hover effect from all other items
-                MenuItems[i].color = Color.red;
+                MenuItems[i].transform.GetChild(0).GetComponent<Image>().color = hidden;
             }
         }
     }
@@ -141,11 +141,12 @@ public class WheelSelection : MonoBehaviour
         GameObject selectedItem = MenuItems[index].gameObject;
         if (isPressed)
         {
-            MenuItems[index].color = Color.blue;
+
+            selectedItem.GetComponent<ButtonClick>().Click();
         }
         else
         {
-            MenuItems[index].color = Color.green;
+            /*MenuItems[index].color = Color.green;*/
         }
     }
 }
