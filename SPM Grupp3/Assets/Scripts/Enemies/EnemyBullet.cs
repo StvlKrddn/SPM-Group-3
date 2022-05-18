@@ -6,33 +6,25 @@ public class EnemyBullet : MonoBehaviour
 {
     public float speed = 5f;
     private Transform target;
-    public GameObject tank1;
-    public GameObject tank2;
+    private TankState[] tanks;
     Vector3 direction;
     public float bulletTime = 5f;
     public float timer = 0;
     public float damage = 5;
     // Start is called before the first frame update
 
-    private void Awake()
-    {
-        //Change to right tank when done with tanks
-    }
-
     void Start()
     {
         //Checks who is closer between tank1 and tank2
         if (FindObjectOfType<TankState>())
         {
-            tank1 = FindObjectOfType<TankState>().gameObject; //Needs change 
-            tank2 = FindObjectOfType<TankState>().gameObject;
-            if (Vector3.Distance(transform.position, tank1.transform.position) < Vector3.Distance(transform.position, tank2.transform.position))
+            tanks = FindObjectsOfType<TankState>();
+            foreach (TankState tank in tanks)
             {
-                target = tank1.transform;
-            }
-            else
-            {
-                target = tank2.transform;
+                if (target == null || Vector2.Distance(tank.transform.position, transform.position) < Vector3.Distance(target.position, transform.position))
+                {
+                    target = tank.transform;
+                }
             }
 
         }
@@ -46,9 +38,16 @@ public class EnemyBullet : MonoBehaviour
         transform.LookAt(direction);
     }
 
+	private void OnTriggerEnter(Collider other)
+	{
+        if (!other.CompareTag("Enemy"))
+        {
+            Destroy(gameObject, Mathf.Epsilon);
+        }
+	}
 
-    // Update is called once per frame
-    void Update()
+	// Update is called once per frame
+	void Update()
     {
         timer += Time.deltaTime;
         transform.Translate(speed * Time.deltaTime * direction, Space.World); //Bullet travels
