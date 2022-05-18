@@ -62,4 +62,10 @@ public class PauseMenu : MonoBehaviour
 
         // Switch between the rows to build out
     }
+
+    public static void OpenMenu()
+    {        
+        UI.IsPaused = true;
+        Time.timeScale = 0f;
+    }
 }
