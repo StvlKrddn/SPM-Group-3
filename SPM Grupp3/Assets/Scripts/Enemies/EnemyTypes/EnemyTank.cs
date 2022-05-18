@@ -9,7 +9,6 @@ public class EnemyTank : EnemyController
 	public override void TakeDamage(float damage)
 	{
 		damage -= armor;
-		Debug.Log(damage);
 		if (damage < armorThreshold)
 		{
 			damage = armorThreshold;

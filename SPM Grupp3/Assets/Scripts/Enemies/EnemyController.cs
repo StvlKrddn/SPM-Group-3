@@ -25,6 +25,7 @@ public abstract class EnemyController : MonoBehaviour
     private float amountOfDps;
     private bool dead = false;
     private float currentHealth;
+    private int path;
 
     public float MeleeDamage { get { return meleeDamage; } set { meleeDamage = value; } }
     public float Health { get { return health; } }
@@ -36,8 +37,13 @@ public abstract class EnemyController : MonoBehaviour
         defaultSpeed = speed;
         currentHealth = health;
         gM = GameManager.Instance;
-        target = Waypoints.wayPoints[currIndex];
         //Change to right tank when done with tanks
+    }
+
+    public void TakePath(int path)
+    {
+        this.path = path;
+        target = Waypoints.wayPoints[path][currIndex];
     }
 
     protected virtual void Start() {}
@@ -68,13 +74,13 @@ public abstract class EnemyController : MonoBehaviour
     {
         if (other.CompareTag("Waypoint"))
         {
-            if (Waypoints.wayPoints.Length - 1 <= currIndex) // Changes waypoint to til the enemy reaches the last waypoint
+            if (Waypoints.wayPoints[path].Length - 1 <= currIndex) // Changes waypoint to til the enemy reaches the last waypoint
             {
                 EnemyDeathBase();
                 return;
             }
             currIndex++;
-            target = Waypoints.wayPoints[currIndex];
+            target = Waypoints.wayPoints[path][currIndex];
             transform.LookAt(target);
         }
     }
