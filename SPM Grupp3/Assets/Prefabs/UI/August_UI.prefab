@@ -2523,7 +2523,7 @@ Transform:
   m_Children:
   - {fileID: 157684845}
   m_Father: {fileID: 2805306752234046872}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &529025193
 GameObject:
@@ -4131,7 +4131,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be6f1b9e84993ae41a1c787c62870dc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  towerLevel: 0
   enemyTag: Enemy
   turnSpeed: 10
   shot: {fileID: 3201376968240350041, guid: 7e4902a1dd3b3484280a32e92534c4c7, type: 3}
@@ -4807,7 +4806,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8dfc2432f92b2b94ea4dcddc6c4491ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  towerLevel: 0
   enemyTag: Enemy
   turnSpeed: 10
   shot: {fileID: 3201376968240350041, guid: 7e4902a1dd3b3484280a32e92534c4c7, type: 3}
@@ -5769,7 +5767,7 @@ RectTransform:
   - {fileID: 137600383}
   - {fileID: 1794096089}
   m_Father: {fileID: 2805306752234046872}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
@@ -7215,7 +7213,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7a7c7fd49d87b74f8e3404733e055d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  towerLevel: 0
   enemyTag: Enemy
   turnSpeed: 10
   shot: {fileID: 3201376968240350041, guid: 7e4902a1dd3b3484280a32e92534c4c7, type: 3}
@@ -8521,7 +8518,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58c48bdc9ae22e644902a6f96ee7fe15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  towerLevel: 0
   enemyTag: Enemy
   turnSpeed: 10
   shot: {fileID: 3201376968240350041, guid: 7e4902a1dd3b3484280a32e92534c4c7, type: 3}
@@ -20288,7 +20284,6 @@ RectTransform:
   - {fileID: 2805306753110311838}
   - {fileID: 2805306751363345784}
   - {fileID: 2805306752044981856}
-  - {fileID: 654044983}
   - {fileID: 498834982}
   - {fileID: 1276759299}
   m_Father: {fileID: 0}
@@ -20386,8 +20381,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfa5f68c939ac1446932a2551a72ed94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  victoryPanel: {fileID: 0}
-  defeatPanel: {fileID: 0}
+  victoryPanel: {fileID: 2805306752044981859}
+  defeatPanel: {fileID: 2805306751363345787}
 --- !u!1 &2805306752240039015
 GameObject:
   m_ObjectHideFlags: 0

@@ -52,7 +52,7 @@ public class BuilderController : MonoBehaviour
         infoView = buildMenu.transform.Find("InfoViews").gameObject;
         towerPanel = buildMenu.transform.Find("TowerPanel").gameObject;
 
-        towerMenu = canvas.Find("TowerMenu").GetChild(0).gameObject;
+        towerMenu = buildMenu.transform.Find("TowerPanel").GetChild(0).gameObject;
 
         buildManager = GetComponentInParent<BuildManager>();
 
@@ -71,7 +71,7 @@ public class BuilderController : MonoBehaviour
 
     void InitializeCursor()
     {
-        playerCursor = Instantiate(cursorPrefab, transform.parent.Find("PlayerCanvas"));
+        playerCursor = Instantiate(cursorPrefab, transform.parent.Find("PlayerUI"));
         SetCursorColor(playerCursor);
         playerCursor.name = "Player " + (playerInput.playerIndex + 1) + " cursor";
         cursorTransform = playerCursor.GetComponent<RectTransform>();
