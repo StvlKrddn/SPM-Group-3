@@ -22,13 +22,40 @@ public class EnemyArcher : EnemyController
         timer += Time.deltaTime;
         if (timer >= cd)
         {
-            ShootPlayer();
+            StartCoroutine( ShootPlayer());
             timer = 0;
         }
     }
 
-    private void ShootPlayer()
+    private IEnumerator ShootPlayer()
     {
-        Instantiate(shot, transform.position, Quaternion.identity);
+        Transform target = FindTarget();
+        transform.LookAt(target);
+        yield return new WaitForSeconds(1);
+        GameObject g = Instantiate(shot, transform.position, Quaternion.identity);
+        g.GetComponent<EnemyBullet>().SetTarget(target);
+        transform.LookAt(Waypoints.wayPoints[path][currWaypointIndex]);
+    }
+
+    private Transform FindTarget()
+    {
+        Transform target = null;
+        if (FindObjectOfType<TankState>()) //Find player
+        {
+            TankState[] tanks = FindObjectsOfType<TankState>();
+            foreach (TankState tank in tanks)
+            {
+                if (target == null || Vector2.Distance(tank.transform.position, transform.position) < Vector3.Distance(target.position, transform.position))
+                {
+                    target = tank.transform;
+                }
+            }
+
+        }
+        else
+        {
+            target = FindObjectOfType<GarageTrigger>().gameObject.transform;
+        }
+        return target;
     }
 }
