@@ -17,6 +17,7 @@ public class SlowTower : Tower
     [SerializeField] private float level2Cost;
     [SerializeField] private float level3Cost;
 
+    public float firerateIncrease = 0.5f; 
 
     private float fireCountdown = 0f;
 
@@ -117,7 +118,7 @@ public class SlowTower : Tower
         {
             tUC.IncreaseUpgradesPurchased();
             SlowTower sT = tUC.ClickedTower.GetComponent<SlowTower>();           
-            sT.areaOfEffect = true;              
+            sT.slowRadius += upgradeAmountSlowRadius; //Temp
         }        
     }
     public override void TowerLevel2()
@@ -127,7 +128,7 @@ public class SlowTower : Tower
         {
             tUC.IncreaseUpgradesPurchased();
             SlowTower sT = tUC.ClickedTower.GetComponent<SlowTower>();
-            sT.slowRadius += upgradeAmountSlowRadius;
+            sT.areaOfEffect = true; //Temp   
         }
     }
     public override void TowerLevel3()

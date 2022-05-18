@@ -27,6 +27,7 @@ public abstract class EnemyController : MonoBehaviour
     private bool dead = false;
     private float currentHealth;
     protected int path;
+    [SerializeField] private float maxHealthPosion = 0.05f;
 
     public float MeleeDamage { get { return meleeDamage; } set { meleeDamage = value; } }
     public float Health { get { return health; } }
@@ -183,6 +184,7 @@ public abstract class EnemyController : MonoBehaviour
                 poisonTickTimers[i]--;
             }
             TakeDamage(dps);
+            TakeDamage(health * maxHealthPosion); //Temp
             poisonTickTimers.RemoveAll(i => i == 0);
             yield return new WaitForSeconds(0.75f);
         }

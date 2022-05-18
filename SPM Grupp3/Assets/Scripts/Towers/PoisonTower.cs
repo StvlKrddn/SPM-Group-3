@@ -21,6 +21,8 @@ public class PoisonTower : Tower
 
     private float fireCountdown = 0f;
 
+    public float fireRateIncrease = 0.5f;
+
 
     public float PoisonTicks { get { return poisonTicks; } set { poisonTicks = value; } }
     public float PoisonDamagePerTick { get { return poisonDamagePerTick; } set { poisonDamagePerTick = value; } }
@@ -129,7 +131,8 @@ public class PoisonTower : Tower
         {
             tUC.IncreaseUpgradesPurchased();
             PoisonTower pT = tUC.ClickedTower.GetComponent<PoisonTower>();          
-            pT.poisonDamagePerTick += upgradeAmountPoisonDamagePerTick;               
+            pT.poisonDamagePerTick += upgradeAmountPoisonDamagePerTick;
+            pT.fireRate *= fireRateIncrease; //Temp
         }
     }
     public override void TowerLevel3()
