@@ -7,7 +7,6 @@ using System;
 public class WaveManager : MonoBehaviour
 {
     [Header("Enemies: ")]
-    [SerializeField] private Transform spawnPosition;
     [SerializeField] private GameObject enemyContainer;
     
     [Space]
@@ -26,6 +25,7 @@ public class WaveManager : MonoBehaviour
     private List<GameObject> currentWaveEnemies = new List<GameObject>();
     private Text waveUI;
     private GameObject waveClear;
+    private Dictionary<int, float> changeSpawnRate = new Dictionary<int, float>();
 
     private void Awake()
     {
@@ -79,8 +79,12 @@ public class WaveManager : MonoBehaviour
     private void WaveConstructor(WaveInfo wave)
     {
         currentWaveEnemies.Clear();
+        changeSpawnRate.Clear();
+
+        spawnRate = wave.subWaves[0].spawnRate;
         foreach (SubWave subWave in wave.subWaves)
         {
+            changeSpawnRate.Add(currentWaveEnemies.Count - 1, subWave.spawnRate); //Adds in each subwaves spawnrate into the list
             List<GameObject> subWaveEnemies = new List<GameObject>(); //Goes through each subwave and shuffles it
             for (int i = 0; i < subWave.enemies.Length; i++)
             {
@@ -92,7 +96,6 @@ public class WaveManager : MonoBehaviour
             Shuffle(subWaveEnemies);
             currentWaveEnemies.AddRange(subWaveEnemies); //Then adds the shuffled subwave to the wave
         }
-        spawnRate = 0.5f;
         waveMoneyBonus = wave.waveMoneyBonus;
         enemyCount = currentWaveEnemies.Count;
     }
@@ -142,9 +145,18 @@ public class WaveManager : MonoBehaviour
     {
         for (int i = 0; i < currentWaveEnemies.Count; i++)
         {
-            GameObject g = Instantiate(currentWaveEnemies[i], spawnPosition.position, currentWaveEnemies[i].transform.rotation, enemyContainer.transform); //Spawn enemy and wait for time between enemy
+            int path = Waypoints.GivePath(); //Gives the enemy the right path
+            GameObject g = Instantiate(currentWaveEnemies[i], Waypoints.wayPoints[path][0].position, currentWaveEnemies[i].transform.rotation, enemyContainer.transform); //Spawn enemy and wait for time between enemy
+            g.GetComponent<EnemyController>().TakePath(path);
             g.SetActive(true);
+
             yield return new WaitForSeconds(spawnRate);
+
+            if (changeSpawnRate.ContainsKey(i)) //The wave changes spawnrate after a subwave
+            {
+                spawnRate = changeSpawnRate[i];
+                Debug.Log(changeSpawnRate[i]);
+            }
         }
         yield return false;
     }

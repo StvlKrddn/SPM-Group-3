@@ -68,7 +68,7 @@ public class TankState : MonoBehaviour
     {
         InitializeInputSystem();
 
-        SetPlayerDiffrence();
+        SetPlayerDifference();
 
         FindGarage();
 
@@ -104,7 +104,7 @@ public class TankState : MonoBehaviour
         abilityAction = playerInput.actions["Ability"];
     }
 
-    void SetPlayerDiffrence()
+    void SetPlayerDifference()
     {
         Renderer renderer = GetComponent<Renderer>();
         renderer.material.color = playerInput.playerIndex == 0 ? Color.blue : Color.red;
@@ -211,6 +211,16 @@ public class TankState : MonoBehaviour
         print("Tank destroyed!");
         transform.position = spawnPoint.position;
         playerHandler.Destroyed = true;
+
+        if (gameObject.transform.parent.name.Equals("Player"))
+        {
+            GameObject.Find("TankRepairButtonP1").SetActive(true);
+        }
+        else
+        {
+            GameObject.Find("TankRepairButtonP2").SetActive(true);
+        }
+            
         EventHandler.Instance.InvokeEvent(new PlayerSwitchEvent(
             description: "Player switching mode",
             playerContainer: transform.parent.gameObject
