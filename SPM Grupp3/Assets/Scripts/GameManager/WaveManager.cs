@@ -48,15 +48,17 @@ public class WaveManager : MonoBehaviour
 
 
     private void OnStartWave(StartWaveEvent eventInfo)
-    {
+    {       
         if (spawnEnemies)
         {
+            print("Run?");
             SpawnWave();
         }
     }
 
     private void SpawnWave()
     {
+        print("Run 1?");
         currentWave++;
 
         EventHandler.Instance.InvokeEvent(new NewWaveEvent(
@@ -69,6 +71,7 @@ public class WaveManager : MonoBehaviour
 
     public void StartWave(int currentWave)
     {
+        print("Run 2?");
         waveClear.SetActive(false);
         this.currentWave = currentWave;
         WaveConstructor(waves[currentWave]);
