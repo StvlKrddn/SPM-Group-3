@@ -40,7 +40,7 @@ public class BuilderController : MonoBehaviour
     private GameObject infoView;
     private GameObject towerPanel;
     private GameObject playerCursor;
-
+    private Tower selectedTower;
     private Transform playerUI;
     private Transform towerMenu;
     private GameObject buildPanel;
@@ -228,8 +228,7 @@ public class BuilderController : MonoBehaviour
             UpdateCursorImage(newPosition);
         }
 
-
-    RaycastHit hit = CastRayFromCamera(placeForTowerLayerMask);
+        RaycastHit hit = CastRayFromCamera(placeForTowerLayerMask);
 
         if (!stopHover)
         {
@@ -276,6 +275,8 @@ public class BuilderController : MonoBehaviour
         
         return hit;
     }
+
+    
 
     void Hover(RaycastHit hit)
     {
@@ -387,16 +388,15 @@ public class BuilderController : MonoBehaviour
             {*/
                 if (towerHit != null && preTower == null)
                 {
-                    Tower tower = towerHit.GetComponent<Tower>();
+                    selectedTower = towerHit.GetComponent<Tower>();
                     
-                    tower.ShowUpgradeUI(towerMenu);
+                    selectedTower.ShowUpgradeUI(towerMenu);
                     
-                    EventHandler.Instance.InvokeEvent(new TowerClickedEvent("Tower Is clicked", tower.gameObject));
+                    EventHandler.Instance.InvokeEvent(new TowerClickedEvent("Tower Is clicked", selectedTower.gameObject));
                     buildManager.TowerToBuild = null;
                     stopHover = true;
                     stopMouse = true;
                     placementClicked = true;
-                print("Tower of type: " + tower + " Is clicked");
                 }
                 
 
@@ -414,6 +414,15 @@ public class BuilderController : MonoBehaviour
                 } */
             }
         /*}*/
+    }
+
+    public void DeleteTower()
+    {
+        if (selectedTower != null)
+        {
+            Destroy(selectedTower.gameObject);
+            Deselect();
+        }
     }
 
     void ClickedGarage()
