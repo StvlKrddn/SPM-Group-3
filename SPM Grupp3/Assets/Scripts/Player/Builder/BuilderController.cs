@@ -222,14 +222,14 @@ public class BuilderController : MonoBehaviour
         {
             return;
         }
-/*        if (!stopMouse)
-        {*/
+        if (!stopMouse)
+        {
             newPosition = MoveMouse();
             UpdateCursorImage(newPosition);
-/*        }*/
+        }
 
 
-        RaycastHit hit = CastRayFromCamera(placeForTowerLayerMask);
+    RaycastHit hit = CastRayFromCamera(placeForTowerLayerMask);
 
         if (!stopHover)
         {
