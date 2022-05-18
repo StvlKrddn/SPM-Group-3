@@ -302,9 +302,11 @@ public class BuilderController : MonoBehaviour
     public void ResetHover()
     {
         stopHover = false;
+        stopMouse = false;
         placementClicked = false;
         buildManager.TowerToBuild = null;
         buildManager.ClickedArea = null;
+        cursorTransform.gameObject.SetActive(true);
         GhostTower();
     }
 
@@ -362,6 +364,9 @@ public class BuilderController : MonoBehaviour
                 {
                     buildManager.ClickedArea = _selection.gameObject;
                     buildPanel.transform.position = buildManager.ClickedArea.transform.position;
+
+                    cursorTransform.gameObject.SetActive(false);
+
                     buildPanel.SetActive(true);
                     stopHover = true;
                     stopMouse = true;

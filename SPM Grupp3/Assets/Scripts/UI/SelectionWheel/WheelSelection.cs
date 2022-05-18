@@ -126,11 +126,13 @@ public class WheelSelection : MonoBehaviour
             {
                 // Hover effect
                 MenuItems[i].transform.GetChild(0).GetComponent<Image>().color = highLight;
+                MenuItems[i].transform.Find("Cost").gameObject.SetActive(true);
             }
             else
             {
                 // Remove hover effect from all other items
                 MenuItems[i].transform.GetChild(0).GetComponent<Image>().color = hidden;
+                MenuItems[i].transform.Find("Cost").gameObject.SetActive(false);
             }
         }
     }
@@ -141,7 +143,6 @@ public class WheelSelection : MonoBehaviour
         GameObject selectedItem = MenuItems[index].gameObject;
         if (isPressed)
         {
-
             selectedItem.GetComponent<ButtonClick>().Click();
         }
         else
