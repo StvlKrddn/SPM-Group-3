@@ -11,6 +11,9 @@ public class SlowTower : Tower
     [Header("Amount To Upgrade")]
     [SerializeField] private float upgradeAmountSlowProc;
     [SerializeField] private float upgradeAmountSlowRadius;
+    [SerializeField] private bool stunEnemiesPeriodically = false;
+    [SerializeField] private float stunDuration;
+    [SerializeField] private float stunTimer;
 
     [Header("Upgrade Cost")]
     [SerializeField] private float level1Cost;
@@ -18,8 +21,9 @@ public class SlowTower : Tower
     [SerializeField] private float level3Cost;
 
 
-    private float fireCountdown = 0f;
 
+    private float fireCountdown = 0f;
+    private float timer;
 
     public float SlowProc { get { return slowProc; } set { slowProc = value; } }
 
@@ -45,6 +49,14 @@ public class SlowTower : Tower
             if (CanYouShoot())
             {
                 Shoot();
+            }
+            if (stunEnemiesPeriodically)
+            {
+                if (timer >= stunTimer)
+                {
+                    StunEnemies();
+                }
+                timer += Time.deltaTime;
             }
         }
     }
@@ -96,24 +108,35 @@ public class SlowTower : Tower
         }
     }
 
-    public override void ShowUpgradeUI(GameObject medium, GameObject infoView)
+    private void StunEnemies()
     {
-        if (infoView.transform.GetChild(2).gameObject.activeInHierarchy)
+/*        Collider[] colliders = Physics.OverlapSphere(transform.position, radius);
+        foreach (Collider c in colliders)
         {
-            infoView.transform.GetChild(2).gameObject.SetActive(false);
-            medium.SetActive(true);
-        }
-        else
+            if (c.GetComponent<EnemyController>())
+            {
+                c.GetComponent<EnemyController>().TakeDamage(splashDamage);
+            }
+        }*/
+    }
+
+    public override void ShowUpgradeUI(Transform towerMenu)
+    {
+        for (int i = 0; i < towerMenu.childCount; i++)
         {
-            infoView.transform.GetChild(2).gameObject.SetActive(true);
-            medium.SetActive(false);
+            if (towerMenu.GetChild(i).gameObject.name.Equals("UpgradeSlowPanel"))
+            {
+                GameObject menuToShow = towerMenu.GetChild(i).gameObject;
+                menuToShow.transform.position = transform.position;
+                menuToShow.SetActive(true);
+            }
         }
     }
 
     public override void TowerLevel1()
     {
         base.TowerLevel1();
-        if (tUC.GetUpgradesPurchased() == 0 && gM.SpendResources(level1Cost,0f))
+        if (gM.SpendResources(level1Cost,0f))
         {
             tUC.IncreaseUpgradesPurchased();
             SlowTower sT = tUC.ClickedTower.GetComponent<SlowTower>();           
@@ -123,7 +146,7 @@ public class SlowTower : Tower
     public override void TowerLevel2()
     {
         base.TowerLevel2();
-        if (tUC.GetUpgradesPurchased() == 1 && gM.SpendResources(level2Cost, 0f))
+        if (gM.SpendResources(level2Cost, 0f))
         {
             tUC.IncreaseUpgradesPurchased();
             SlowTower sT = tUC.ClickedTower.GetComponent<SlowTower>();
@@ -133,7 +156,7 @@ public class SlowTower : Tower
     public override void TowerLevel3()
     {
         base.TowerLevel3();
-        if (tUC.GetUpgradesPurchased() == 2 && gM.SpendResources(level3Cost, 0f))
+        if (gM.SpendResources(level3Cost, 0f))
         {
             tUC.IncreaseUpgradesPurchased();
             SlowTower sT = tUC.ClickedTower.GetComponent<SlowTower>();

@@ -19,40 +19,45 @@ public class Shop : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        moneyCostUI.color = Color.gray;
+
+/*        moneyCostUI.color = Color.gray;
         moneyCostUI.text = "0";
         materialCostUI.color = Color.gray;
-        materialCostUI.text = "0";
+        materialCostUI.text = "0";*/
 
-        EventHandler.Instance.RegisterListener<UIClickedEvent>(OnClick);
+/*        EventHandler.Instance.RegisterListener<UIClickedEvent>(OnClick);*/
     }
 
     public void PurchaseCannonTower()
     {
-        buildManager = player.GetComponent<BuildManager>();
+        buildManager = GetComponentInParent<BuildManager>();
         buildManager.TowerToBuild = buildManager.cannonTowerPrefab;
         UpdateCostUI(buildManager.TowerToBuild.GetComponent<Tower>().cost, buildManager.TowerToBuild.GetComponent<Tower>().materialCost);
+        buildManager.InstantiateTower();
     }
 
     public void PurchaseMissileTower()
     {
-        buildManager = player.GetComponent<BuildManager>();
+        buildManager = GetComponentInParent<BuildManager>();
         buildManager.TowerToBuild = buildManager.missileTowerPrefab;
         UpdateCostUI(buildManager.TowerToBuild.GetComponent<Tower>().cost, buildManager.TowerToBuild.GetComponent<Tower>().materialCost);
+        buildManager.InstantiateTower();
     }
 
     public void PurchaseSlowTower()
     {
-        buildManager = player.GetComponent<BuildManager>();
+        buildManager = GetComponentInParent<BuildManager>();
         buildManager.TowerToBuild = buildManager.slowTowerPrefab;
         UpdateCostUI(buildManager.TowerToBuild.GetComponent<Tower>().cost, buildManager.TowerToBuild.GetComponent<Tower>().materialCost);
+        buildManager.InstantiateTower();
     }
 
     public void PurchasePoisonTower()
     {
-        buildManager = player.GetComponent<BuildManager>();
+        buildManager = GetComponentInParent<BuildManager>();
         buildManager.TowerToBuild = buildManager.poisonTowerPrefab;
         UpdateCostUI(buildManager.TowerToBuild.GetComponent<Tower>().cost, buildManager.TowerToBuild.GetComponent<Tower>().materialCost);
+        buildManager.InstantiateTower();
     }
 
     public void OnClicked(Button button)
@@ -61,10 +66,10 @@ public class Shop : MonoBehaviour
         PurchaseTower();
     }
 
-    public void OnClick(UIClickedEvent eventInfo)
+/*    public void OnClick(UIClickedEvent eventInfo)
     {
         player = eventInfo.Clicker;
-    }
+    }*/
 
     private void PurchaseTower()
     {
@@ -87,7 +92,7 @@ public class Shop : MonoBehaviour
 
     private void UpdateCostUI(float moneyCost, float materialCost)
     {
-        moneyCostUI.color = Color.red;
+/*        moneyCostUI.color = Color.red;
         moneyCostUI.text = "-" + moneyCost;
 
         if (materialCost > 0)
@@ -99,6 +104,6 @@ public class Shop : MonoBehaviour
         {
             materialCostUI.color = Color.gray;
             materialCostUI.text = "0";
-        }
+        }*/
     }
 }
