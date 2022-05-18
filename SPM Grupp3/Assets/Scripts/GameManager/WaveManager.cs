@@ -84,7 +84,7 @@ public class WaveManager : MonoBehaviour
         spawnRate = wave.subWaves[0].spawnRate;
         foreach (SubWave subWave in wave.subWaves)
         {
-            changeSpawnRate.Add(currentWaveEnemies.Count - 1, subWave.spawnRate);
+            changeSpawnRate.Add(currentWaveEnemies.Count - 1, subWave.spawnRate); //Adds in each subwaves spawnrate into the list
             List<GameObject> subWaveEnemies = new List<GameObject>(); //Goes through each subwave and shuffles it
             for (int i = 0; i < subWave.enemies.Length; i++)
             {
@@ -145,14 +145,14 @@ public class WaveManager : MonoBehaviour
     {
         for (int i = 0; i < currentWaveEnemies.Count; i++)
         {
-            int path = Waypoints.GivePath();
+            int path = Waypoints.GivePath(); //Gives the enemy the right path
             GameObject g = Instantiate(currentWaveEnemies[i], Waypoints.wayPoints[path][0].position, currentWaveEnemies[i].transform.rotation, enemyContainer.transform); //Spawn enemy and wait for time between enemy
             g.GetComponent<EnemyController>().TakePath(path);
             g.SetActive(true);
 
             yield return new WaitForSeconds(spawnRate);
 
-            if (changeSpawnRate.ContainsKey(i))
+            if (changeSpawnRate.ContainsKey(i)) //The wave changes spawnrate after a subwave
             {
                 spawnRate = changeSpawnRate[i];
                 Debug.Log(changeSpawnRate[i]);

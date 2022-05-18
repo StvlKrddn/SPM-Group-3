@@ -11,7 +11,8 @@ public abstract class EnemyController : MonoBehaviour
     [SerializeField] private float meleeDamage;
     private GameManager gM;
     private Transform target;
-    private int currIndex = 0;
+    private Health healthBar;
+    protected int currWaypointIndex = 0;
     public int damageBase = 10;
     public int moneyDrop = 10;
     public bool materialDrop = false;
@@ -25,7 +26,7 @@ public abstract class EnemyController : MonoBehaviour
     private float amountOfDps;
     private bool dead = false;
     private float currentHealth;
-    private int path;
+    protected int path;
 
     public float MeleeDamage { get { return meleeDamage; } set { meleeDamage = value; } }
     public float Health { get { return health; } }
@@ -37,13 +38,14 @@ public abstract class EnemyController : MonoBehaviour
         defaultSpeed = speed;
         currentHealth = health;
         gM = GameManager.Instance;
+        healthBar = GetComponent<Health>();
         //Change to right tank when done with tanks
     }
 
     public void TakePath(int path)
     {
         this.path = path;
-        target = Waypoints.wayPoints[path][currIndex];
+        target = Waypoints.wayPoints[path][currWaypointIndex];
     }
 
     protected virtual void Start() {}
@@ -74,13 +76,13 @@ public abstract class EnemyController : MonoBehaviour
     {
         if (other.CompareTag("Waypoint"))
         {
-            if (Waypoints.wayPoints[path].Length - 1 <= currIndex) // Changes waypoint to til the enemy reaches the last waypoint
+            if (Waypoints.wayPoints[path].Length - 1 <= currWaypointIndex) // Changes waypoint to til the enemy reaches the last waypoint
             {
                 EnemyDeathBase();
                 return;
             }
-            currIndex++;
-            target = Waypoints.wayPoints[path][currIndex];
+            currWaypointIndex++;
+            target = Waypoints.wayPoints[path][currWaypointIndex];
             transform.LookAt(target);
         }
     }
@@ -88,7 +90,7 @@ public abstract class EnemyController : MonoBehaviour
     public virtual void TakeDamage(float damage)
     {
         currentHealth -= damage;
-        GetComponent<Health>().ModifyHealth(damage);
+        healthBar.ModifyHealth(damage);
         if (currentHealth <= 0 && dead == false)
         {
             dead = true;
@@ -151,7 +153,15 @@ public abstract class EnemyController : MonoBehaviour
         }
     }
 
-    public void HitByPoison(float ticks, float dps, GameObject effect)
+	private void OnParticleCollision(GameObject other)
+	{
+        if (other.CompareTag("Flamethrower"))
+        {
+            HitByFire(Flamethrower.FireDamage * Time.fixedDeltaTime);
+        }
+	}
+
+	public void HitByPoison(float ticks, float dps, GameObject effect)
     {
         amountOfTicks = ticks;
         amountOfDps = dps;

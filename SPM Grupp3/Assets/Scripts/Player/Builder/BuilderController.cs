@@ -52,7 +52,7 @@ public class BuilderController : MonoBehaviour
         infoView = buildMenu.transform.Find("InfoViews").gameObject;
         towerPanel = buildMenu.transform.Find("TowerPanel").gameObject;
 
-        towerMenu = canvas.Find("TowerMenu").GetChild(0).gameObject;
+        //towerMenu = canvas.Find("TowerMenu").GetChild(0).gameObject;
 
         buildManager = GetComponentInParent<BuildManager>();
 
