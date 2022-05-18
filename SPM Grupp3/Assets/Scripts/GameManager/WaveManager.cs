@@ -155,7 +155,6 @@ public class WaveManager : MonoBehaviour
             if (changeSpawnRate.ContainsKey(i)) //The wave changes spawnrate after a subwave
             {
                 spawnRate = changeSpawnRate[i];
-                Debug.Log(changeSpawnRate[i]);
             }
         }
         yield return false;
