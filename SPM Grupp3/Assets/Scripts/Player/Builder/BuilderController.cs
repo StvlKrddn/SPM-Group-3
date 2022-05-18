@@ -175,7 +175,7 @@ public class BuilderController : MonoBehaviour
         {
             towerMenu.GetChild(i).gameObject.SetActive(false);
         }
-
+        cursorTransform.gameObject.SetActive(true);
         stopHover = false;
         stopMouse = false;
         placementClicked = false;
@@ -307,10 +307,10 @@ public class BuilderController : MonoBehaviour
         buildManager.TowerToBuild = null;
         buildManager.ClickedArea = null;
         cursorTransform.gameObject.SetActive(true);
-        GhostTower();
+        GhostTower(buildManager.TowerToBuild);
     }
 
-    public void ExitHover()
+/*    public void ExitHover()
     {
         buildManager.TowerToBuild = null;
         GhostTower();
@@ -320,22 +320,23 @@ public class BuilderController : MonoBehaviour
     {
         buildManager.TowerToBuild = tower;
         GhostTower();
-    }
+    }*/
 
-    void GhostTower()
+    public void GhostTower(GameObject towerToDisplay)
     {
-        if (buildManager.TowerToBuild == null || buildManager.ClickedArea == null)
+        if (towerToDisplay == null || buildManager.ClickedArea == null)
         {
             Destroy(preTower);
             return;
         }
-        GameObject tower = buildManager.TowerToBuild.transform.GetChild(1).gameObject;
+        GameObject tower = towerToDisplay.transform.GetChild(1).gameObject;
         
         Transform placement = buildManager.ClickedArea.transform.GetChild(0).transform;
         Vector3 placeVec = placement.position;
         Vector3 towerPlace = new Vector3(placeVec.x, placeVec.y, placeVec.z);
 
         preTower = Instantiate(tower, towerPlace, placement.rotation);
+        preTower.name = "IHAteMyLife";
         GameObject radius = preTower.transform.GetChild(0).gameObject;
         
         preTower.layer = 12;
@@ -344,6 +345,11 @@ public class BuilderController : MonoBehaviour
         Tower tow = tower.GetComponent<Tower>();       
 /*        radius.transform.localScale = new Vector3(tow.range * 2f, 0.01f, tow.range * 2f);*/
         radius.SetActive(true);
+    }
+
+    public void DestroyPreTower()
+    {
+        Destroy(preTower);
     }
 
     GameObject GetTowerPlacement()
@@ -383,37 +389,22 @@ public class BuilderController : MonoBehaviour
         if (hit.collider != null)
         {
             GameObject towerHit = hit.collider.gameObject;
-/*            if (towerHit.CompareTag("Tower"))
-            {*/
-                if (towerHit != null && preTower == null)
-                {
-                    Tower tower = towerHit.GetComponent<Tower>();
+
+            if (towerHit != null && preTower == null)
+            {
+                Tower tower = towerHit.GetComponent<Tower>();
                     
-                    tower.ShowUpgradeUI(towerMenu);
+                tower.ShowUpgradeUI(towerMenu);
                     
-                    EventHandler.Instance.InvokeEvent(new TowerClickedEvent("Tower Is clicked", tower.gameObject));
-                    buildManager.TowerToBuild = null;
-                    stopHover = true;
-                    stopMouse = true;
-                    placementClicked = true;
+                EventHandler.Instance.InvokeEvent(new TowerClickedEvent("Tower Is clicked", tower.gameObject));
+                buildManager.TowerToBuild = null;
+                stopHover = true;
+                stopMouse = true;
+                placementClicked = true;
                 print("Tower of type: " + tower + " Is clicked");
-                }
-                
-
-/*                if (tower.radius.activeInHierarchy)
-                {
-                    tower.radius.SetActive(false);
-                    tower.upgradeUI.SetActive(false);
-                        
-                }
-                else
-                {
-                    tower.radius.SetActive(true);
-                    tower.upgradeUI.SetActive(true);
-
-                } */
             }
-        /*}*/
+
+        }
     }
 
     void ClickedGarage()

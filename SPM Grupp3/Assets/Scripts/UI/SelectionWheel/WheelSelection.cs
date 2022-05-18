@@ -23,6 +23,9 @@ public class WheelSelection : MonoBehaviour
     // Current direction the player is pointing, -1 is no input
     [SerializeField] private Color highLight;
     [SerializeField] private Color hidden;
+
+    [SerializeField] private BuilderController builderController;
+    [SerializeField] private BuildManager buildManager;
     private float pointingAngle;
     private float degreesPerItem;
     private float overflowFirstItem;
@@ -32,6 +35,8 @@ public class WheelSelection : MonoBehaviour
     private InputAction stickAction;
     private InputAction selectAction;
     private Vector2 stickInput;
+
+    private GameObject towerToDisplay;
 
     private void Start() 
     {
@@ -113,6 +118,8 @@ public class WheelSelection : MonoBehaviour
         return itemIndex;
     }
 
+    private int prevIndex;
+
     void HighlightItem(int index)
     {
         if (numberOfMenuItems <= 0)
@@ -126,14 +133,45 @@ public class WheelSelection : MonoBehaviour
             {
                 // Hover effect
                 MenuItems[i].transform.GetChild(0).GetComponent<Image>().color = highLight;
-                MenuItems[i].transform.Find("Cost").gameObject.SetActive(true);
+                if (MenuItems[i].transform.Find("Cost"))
+                {
+                    MenuItems[i].transform.Find("Cost").gameObject.SetActive(true);
+                }
+                
+                decideTowerToBuild(MenuItems[i].name);
+                builderController.GhostTower(towerToDisplay);
+                if (prevIndex != index)
+                {
+                    builderController.DestroyPreTower();
+                }
             }
             else
             {
                 // Remove hover effect from all other items
                 MenuItems[i].transform.GetChild(0).GetComponent<Image>().color = hidden;
                 MenuItems[i].transform.Find("Cost").gameObject.SetActive(false);
+                builderController.GhostTower(null);
             }
+        }
+        prevIndex = index;
+    }
+
+    public void decideTowerToBuild(string name)
+    {
+        switch (name)
+        {
+            case "Cannon":
+                towerToDisplay = buildManager.cannonTowerPrefab;
+                break;
+            case "Missile":
+                towerToDisplay = buildManager.missileTowerPrefab;
+                break;
+            case "Slow":
+                towerToDisplay = buildManager.slowTowerPrefab;
+                break;
+            case "Poison":
+                towerToDisplay = buildManager.poisonTowerPrefab;
+                break;
         }
     }
 
