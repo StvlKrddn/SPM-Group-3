@@ -7,6 +7,7 @@ using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
+
     [Header("Stats: ")]
     [SerializeField] private float baseHealth = 100f;
     [SerializeField] private float material = 0f;
@@ -20,8 +21,6 @@ public class GameManager : MonoBehaviour
 
     [Header("Other")]
     public List<GameObject> towersPlaced = new List<GameObject>();
-
-    public GameObject selectedButton;
 
     private BuildManager buildManager;
     private GameObject damagingEnemy;
@@ -212,6 +211,8 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Defeat");
 
+        waveManager.Restart();
+
         EventHandler.Instance.InvokeEvent(new DefeatEvent(
             description: "Defeat",
             wave: currentWave + 1,
@@ -221,14 +222,13 @@ public class GameManager : MonoBehaviour
 
         GameObject player1 = GameObject.Find("Player");
 
-        UI.OpenMenu();
-
-        waveManager.Restart();
+        GetComponent<PlayerManager>().TurnOnCursor();
        
         defeatUI.SetActive(true);
 
         buildManager.TowerToBuild = null;
 
+        Time.timeScale = 0;
     }
 
     public void Victory()
@@ -236,9 +236,9 @@ public class GameManager : MonoBehaviour
         Debug.Log("Victory");
 
         // NOTE(August): Lite stats som kan vara kul att ha med på Victory Panel
-        /*print("Money collected: " + moneyCollected);
+        print("Money collected: " + moneyCollected);
         print("Material collected: " + materialCollected);
-        print("Enemies killed: " + enemiesKilled);*/
+        print("Enemies killed: " + enemiesKilled);
 
         EventHandler.Instance.InvokeEvent(new VictoryEvent(
             description: "Victory",
@@ -248,15 +248,13 @@ public class GameManager : MonoBehaviour
             towersBuilt: 0
         ));
 
-        UI.OpenMenu();
+        PauseMenu.OpenMenu();
 
         waveManager.Restart();
 
         victoryUI.SetActive(true);
 
         buildManager.TowerToBuild = null;
-
-        GameObject.Find("Player").GetComponent<PlayerHandler>().SetSelected(selectedButton);
     }
     
     public void Continue()

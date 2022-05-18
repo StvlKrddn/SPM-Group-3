@@ -7,9 +7,6 @@ using UnityEngine.InputSystem.UI;
 
 public class PlayerHandler : MonoBehaviour
 {
-
-    public MultiplayerEventSystem eventSystem;
-
     private PlayerMode currentMode;
     private GameObject canvas;
     private PlayerInput playerInput;
@@ -72,7 +69,10 @@ public class PlayerHandler : MonoBehaviour
 
         currentMode = PlayerMode.Tank;
 
-        UpgradeController.Instance.FixUpgrades(gameObject);
+        UpgradeController.Instance.FixUpgrades(gameObject); //Beh�ver �ndras
+
+        //print("Entered tank mode");
+
     }
 
     void EnterBuildMode()
@@ -117,15 +117,6 @@ public class PlayerHandler : MonoBehaviour
         }
     }
 
-    public void RepairTank()
-    {
-        if (GameManager.Instance.SpendResources(500,20))
-        {
-            destroyed = false;
-            EnterTankMode();
-        }
-    }
-
     public void StartWave (InputAction.CallbackContext context)
     {
         if (context.performed)
@@ -135,14 +126,5 @@ public class PlayerHandler : MonoBehaviour
                 invoker: gameObject
             ));
         }
-    }
-
-    public void SetSelected(GameObject selection)
-    {
-        // Clear selected object
-        eventSystem.SetSelectedGameObject(null);
-        
-        // Set a new selected object
-        eventSystem.SetSelectedGameObject(selection);
     }
 }
