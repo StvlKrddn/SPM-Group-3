@@ -26,6 +26,9 @@ public class WheelSelection : MonoBehaviour
 
     [SerializeField] private BuilderController builderController;
     [SerializeField] private BuildManager buildManager;
+    [SerializeField] private GameObject selectHint;
+    [SerializeField] private GameObject infoHint;
+
     private float pointingAngle;
     private float degreesPerItem;
     private float overflowFirstItem;
@@ -61,6 +64,11 @@ public class WheelSelection : MonoBehaviour
 
     private void Update() 
     {
+        selectHint.SetActive(false);
+        //infoHint.SetActive(false);
+
+        builderController.DestroyPreTower();
+
         stickInput = stickAction.ReadValue<Vector2>();
 
         if (stickAction.IsPressed())
@@ -83,7 +91,7 @@ public class WheelSelection : MonoBehaviour
 
         HighlightItem(selectedIndex);
 
-        if (selectAction.IsPressed() && selectedIndex != -1)
+        if (selectAction.triggered && selectedIndex != -1)
         {
             SelectItem(selectedIndex);
         }
@@ -118,15 +126,13 @@ public class WheelSelection : MonoBehaviour
         return itemIndex;
     }
 
-    private int prevIndex;
-
     void HighlightItem(int index)
     {
         if (numberOfMenuItems <= 0)
         {
+            
             return;
         }
-
         for (int i = 0; i < numberOfMenuItems; i++)
         {
             if (i == index)
@@ -137,26 +143,25 @@ public class WheelSelection : MonoBehaviour
                 {
                     MenuItems[i].transform.Find("Cost").gameObject.SetActive(true);
                 }
-                
-                decideTowerToBuild(MenuItems[i].name);
+                DecideTowerToBuild(MenuItems[i].name);
                 builderController.GhostTower(towerToDisplay);
-                if (prevIndex != index)
-                {
-                    builderController.DestroyPreTower();
-                }
+                selectHint.SetActive(true);
+                //infoHint.SetActive(true);
             }
             else
             {
                 // Remove hover effect from all other items
                 MenuItems[i].transform.GetChild(0).GetComponent<Image>().color = hidden;
-                MenuItems[i].transform.Find("Cost").gameObject.SetActive(false);
-                builderController.GhostTower(null);
+                if (MenuItems[i].transform.Find("Cost"))
+                {
+                    MenuItems[i].transform.Find("Cost").gameObject.SetActive(false);
+                }
+
             }
         }
-        prevIndex = index;
     }
 
-    public void decideTowerToBuild(string name)
+    public void DecideTowerToBuild(string name)
     {
         switch (name)
         {
@@ -177,7 +182,7 @@ public class WheelSelection : MonoBehaviour
 
     void SelectItem(int index)
     {
-        bool isPressed = selectAction.IsPressed();
+        bool isPressed = selectAction.triggered;
         GameObject selectedItem = MenuItems[index].gameObject;
         if (isPressed)
         {

@@ -9,14 +9,11 @@ public class PlayerManager : MonoBehaviour
     [System.NonSerialized] public bool InBuildMode;
     private PlayerInputManager playerManager;
     private List<PlayerHandler> players = new List<PlayerHandler>();
-    private GameObject buildMenu;
 
     void Awake()
     {
         EventHandler.Instance.RegisterListener<PlayerSwitchEvent>(SwitchPlayerMode);
         playerManager = GetComponent<PlayerInputManager>();
-
-        buildMenu = UI.Canvas.transform.Find("Build_UI").gameObject;
     }
 
     public void OnPlayerJoined(PlayerInput newPlayer)
@@ -44,7 +41,6 @@ public class PlayerManager : MonoBehaviour
         {
             InBuildMode = players[0].CurrentMode == PlayerMode.Build || players[1].CurrentMode == PlayerMode.Build;
         }
-        buildMenu.SetActive(InBuildMode);
     }
 
     public void TurnOnCursor()
@@ -53,7 +49,6 @@ public class PlayerManager : MonoBehaviour
         {
             players[0].SwitchMode();
         }
-        buildMenu.SetActive(false);
     }
 
     public void Restart()
@@ -61,7 +56,6 @@ public class PlayerManager : MonoBehaviour
         PlayerMode startingMode = GameManager.Instance.StartingMode;
         if (startingMode == PlayerMode.Build || players[0].CurrentMode == PlayerMode.Build || players[1].CurrentMode == PlayerMode.Build)
         {
-            buildMenu.SetActive(true);
         }
     }
 }
