@@ -1360,7 +1360,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 16538361}
-  m_Layer: 10
+  m_Layer: 11
   m_Name: PlacementPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2201,7 +2201,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 32162185}
-  m_Layer: 10
+  m_Layer: 11
   m_Name: PlacementPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15913,7 +15913,7 @@ GameObject:
   - component: {fileID: 228329477}
   - component: {fileID: 228329476}
   - component: {fileID: 228329475}
-  m_Layer: 10
+  m_Layer: 11
   m_Name: PlaceForTower (77)
   m_TagString: PlaceForTower
   m_Icon: {fileID: 0}
@@ -17058,6 +17058,90 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d98ae63126889cd4abb43311decdbd28, type: 3}
+--- !u!1001 &247086674
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 9f4222d8e8dad2846837c893d5bc56f1, type: 3}
+      propertyPath: m_RootOrder
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 9f4222d8e8dad2846837c893d5bc56f1, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 39.357998
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 9f4222d8e8dad2846837c893d5bc56f1, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 9.10659
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 9f4222d8e8dad2846837c893d5bc56f1, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.42698696
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 9f4222d8e8dad2846837c893d5bc56f1, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -12.244915
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 9f4222d8e8dad2846837c893d5bc56f1, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.62917364
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 9f4222d8e8dad2846837c893d5bc56f1, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.71631604
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 9f4222d8e8dad2846837c893d5bc56f1, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.27283186
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 9f4222d8e8dad2846837c893d5bc56f1, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.1288204
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 9f4222d8e8dad2846837c893d5bc56f1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -123.79
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 9f4222d8e8dad2846837c893d5bc56f1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 71.65
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 9f4222d8e8dad2846837c893d5bc56f1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: -83.86798
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 9f4222d8e8dad2846837c893d5bc56f1, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 1e81debafe3dad047a5552ddc4287178, type: 2}
+    - target: {fileID: 919132149155446097, guid: 9f4222d8e8dad2846837c893d5bc56f1, type: 3}
+      propertyPath: m_Name
+      value: SnowPile_low (1)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 9f4222d8e8dad2846837c893d5bc56f1, type: 3}
+--- !u!1 &247086675 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 9f4222d8e8dad2846837c893d5bc56f1, type: 3}
+  m_PrefabInstance: {fileID: 247086674}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &247086676
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 247086675}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -6547907931025826799, guid: 9f4222d8e8dad2846837c893d5bc56f1, type: 3}
 --- !u!1 &248041799
 GameObject:
   m_ObjectHideFlags: 0
@@ -17639,7 +17723,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 257766581}
-  m_Layer: 10
+  m_Layer: 11
   m_Name: PlacementPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21776,7 +21860,7 @@ GameObject:
   - component: {fileID: 324871710}
   - component: {fileID: 324871709}
   - component: {fileID: 324871708}
-  m_Layer: 10
+  m_Layer: 11
   m_Name: PlaceForTower (75)
   m_TagString: PlaceForTower
   m_Icon: {fileID: 0}
@@ -21790,14 +21874,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 324871706}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -10, y: -0.125, z: -4}
+  m_LocalRotation: {x: 0.0012288351, y: 0.0015432539, z: -0.00020532683, w: 0.99999803}
+  m_LocalPosition: {x: -10.003095, y: -0.1233554, z: -4.0061665}
   m_LocalScale: {x: 2, y: 0.25, z: 2}
   m_Children:
   - {fileID: 1881027399}
   m_Father: {fileID: 693492187}
   m_RootOrder: 57
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0.141, y: 0.177, z: -0.023}
 --- !u!65 &324871708
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -26153,7 +26237,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 407630301}
-  m_Layer: 10
+  m_Layer: 11
   m_Name: PlacementPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -30117,7 +30201,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 480753604}
-  m_Layer: 10
+  m_Layer: 11
   m_Name: PlacementPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -35044,7 +35128,7 @@ GameObject:
   - component: {fileID: 561804050}
   - component: {fileID: 561804049}
   - component: {fileID: 561804048}
-  m_Layer: 10
+  m_Layer: 11
   m_Name: PlaceForTower (249)
   m_TagString: PlaceForTower
   m_Icon: {fileID: 0}
@@ -45540,7 +45624,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 703209617}
-  m_Layer: 10
+  m_Layer: 11
   m_Name: PlacementPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46490,15 +46574,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9f4222d8e8dad2846837c893d5bc56f1, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -34.608185
+      value: -41.4
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9f4222d8e8dad2846837c893d5bc56f1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.8633878
+      value: 0.9
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9f4222d8e8dad2846837c893d5bc56f1, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -35.142357
+      value: -26.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9f4222d8e8dad2846837c893d5bc56f1, type: 3}
       propertyPath: m_LocalRotation.w
@@ -46804,6 +46888,25 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 722818032}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &723581657 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 4b80a885aaa901140b8830d4c2ecb041, type: 3}
+  m_PrefabInstance: {fileID: 1671647651}
+  m_PrefabAsset: {fileID: 0}
+--- !u!64 &723581661
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 723581657}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -4501796150618816075, guid: 080525972d3be0e48af8c641b41cfae5, type: 3}
 --- !u!1 &723994009
 GameObject:
   m_ObjectHideFlags: 0
@@ -53310,7 +53413,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 826066458}
-  m_Layer: 10
+  m_Layer: 11
   m_Name: PlacementPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -58551,7 +58654,7 @@ GameObject:
   - component: {fileID: 911849601}
   - component: {fileID: 911849600}
   - component: {fileID: 911849599}
-  m_Layer: 10
+  m_Layer: 11
   m_Name: PlaceForTower (78)
   m_TagString: PlaceForTower
   m_Icon: {fileID: 0}
@@ -58565,14 +58668,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 911849597}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -12, y: -0.125, z: -4}
+  m_LocalRotation: {x: 0.0012288351, y: 0.0015432539, z: -0.00020532683, w: 0.99999803}
+  m_LocalPosition: {x: -12.003086, y: -0.12254167, z: -3.9999921}
   m_LocalScale: {x: 2, y: 0.25, z: 2}
   m_Children:
   - {fileID: 480753604}
   m_Father: {fileID: 693492187}
   m_RootOrder: 60
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0.141, y: 0.177, z: -0.023}
 --- !u!65 &911849599
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -62059,7 +62162,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 970385033}
-  m_Layer: 10
+  m_Layer: 11
   m_Name: PlacementPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -65015,7 +65118,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1014753162}
-  m_Layer: 10
+  m_Layer: 11
   m_Name: PlacementPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -82607,7 +82710,7 @@ GameObject:
   - component: {fileID: 1355657124}
   - component: {fileID: 1355657123}
   - component: {fileID: 1355657122}
-  m_Layer: 10
+  m_Layer: 11
   m_Name: PlaceForTower (235)
   m_TagString: PlaceForTower
   m_Icon: {fileID: 0}
@@ -83089,7 +83192,7 @@ GameObject:
   - component: {fileID: 1362121858}
   - component: {fileID: 1362121857}
   - component: {fileID: 1362121856}
-  m_Layer: 10
+  m_Layer: 11
   m_Name: PlaceForTower (1157)
   m_TagString: PlaceForTower
   m_Icon: {fileID: 0}
@@ -92372,7 +92475,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2805306751383741881, guid: 921e6aa14a6947c4d8c3a7e35244ca12, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -179.30016
+      value: -179.30017
       objectReference: {fileID: 0}
     - target: {fileID: 2805306751447253533, guid: 921e6aa14a6947c4d8c3a7e35244ca12, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -92524,7 +92627,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2805306753178920215, guid: 921e6aa14a6947c4d8c3a7e35244ca12, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -179.30016
+      value: -179.30017
       objectReference: {fileID: 0}
     - target: {fileID: 8141237013483930817, guid: 921e6aa14a6947c4d8c3a7e35244ca12, type: 3}
       propertyPath: m_IsActive
@@ -94127,7 +94230,7 @@ GameObject:
   - component: {fileID: 1539708714}
   - component: {fileID: 1539708713}
   - component: {fileID: 1539708712}
-  m_Layer: 10
+  m_Layer: 11
   m_Name: PlaceForTower (1159)
   m_TagString: PlaceForTower
   m_Icon: {fileID: 0}
@@ -95529,7 +95632,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1568494754}
-  m_Layer: 10
+  m_Layer: 11
   m_Name: PlacementPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -96511,14 +96614,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1579099766}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -14, y: -0.125, z: -2}
+  m_LocalRotation: {x: 0.0012288351, y: 0.0015432539, z: -0.00020532683, w: 0.99999803}
+  m_LocalPosition: {x: -13.996904, y: -0.1266446, z: -1.9938332}
   m_LocalScale: {x: 2, y: 0.25, z: 2}
   m_Children:
   - {fileID: 953794375}
   m_Father: {fileID: 693492187}
   m_RootOrder: 64
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0.141, y: 0.177, z: -0.023}
 --- !u!65 &1579099768
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -103855,7 +103958,7 @@ GameObject:
   - component: {fileID: 1678489724}
   - component: {fileID: 1678489723}
   - component: {fileID: 1678489722}
-  m_Layer: 10
+  m_Layer: 11
   m_Name: PlaceForTower (79)
   m_TagString: PlaceForTower
   m_Icon: {fileID: 0}
@@ -103870,7 +103973,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1678489720}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -10, y: -0.125, z: -2}
+  m_LocalPosition: {x: -9.999999, y: -0.125, z: -1.9999998}
   m_LocalScale: {x: 2, y: 0.25, z: 2}
   m_Children:
   - {fileID: 826066458}
@@ -106971,7 +107074,7 @@ GameObject:
   - component: {fileID: 1753763436}
   - component: {fileID: 1753763435}
   - component: {fileID: 1753763434}
-  m_Layer: 10
+  m_Layer: 11
   m_Name: PlaceForTower (1154)
   m_TagString: PlaceForTower
   m_Icon: {fileID: 0}
@@ -106986,7 +107089,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1753763432}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -10, y: -0.125, z: 0}
+  m_LocalPosition: {x: -9.999999, y: -0.125, z: 0}
   m_LocalScale: {x: 2, y: 0.25, z: 2}
   m_Children:
   - {fileID: 703209617}
@@ -108489,7 +108592,7 @@ GameObject:
   - component: {fileID: 1775999899}
   - component: {fileID: 1775999898}
   - component: {fileID: 1775999897}
-  m_Layer: 10
+  m_Layer: 11
   m_Name: PlaceForTower (252)
   m_TagString: PlaceForTower
   m_Icon: {fileID: 0}
@@ -115782,7 +115885,7 @@ GameObject:
   - component: {fileID: 1872815664}
   - component: {fileID: 1872815663}
   - component: {fileID: 1872815662}
-  m_Layer: 10
+  m_Layer: 11
   m_Name: PlaceForTower (258)
   m_TagString: PlaceForTower
   m_Icon: {fileID: 0}
@@ -116701,7 +116804,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1881027399}
-  m_Layer: 10
+  m_Layer: 11
   m_Name: PlacementPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -117265,7 +117368,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1894631843}
-  m_Layer: 10
+  m_Layer: 11
   m_Name: PlacementPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -118192,7 +118295,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1909788124}
-  m_Layer: 10
+  m_Layer: 11
   m_Name: PlacementPosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -125756,7 +125859,7 @@ GameObject:
   - component: {fileID: 2030674225}
   - component: {fileID: 2030674224}
   - component: {fileID: 2030674223}
-  m_Layer: 10
+  m_Layer: 11
   m_Name: PlaceForTower (250)
   m_TagString: PlaceForTower
   m_Icon: {fileID: 0}
@@ -125899,15 +126002,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3c4649f940f0bcb4bb3311b3747bea65, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -37.51
+      value: -17.7
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3c4649f940f0bcb4bb3311b3747bea65, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.11
+      value: 0.07
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3c4649f940f0bcb4bb3311b3747bea65, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -18.76
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 3c4649f940f0bcb4bb3311b3747bea65, type: 3}
       propertyPath: m_LocalRotation.w
@@ -128344,7 +128447,7 @@ GameObject:
   - component: {fileID: 2077556440}
   - component: {fileID: 2077556439}
   - component: {fileID: 2077556438}
-  m_Layer: 10
+  m_Layer: 11
   m_Name: PlaceForTower (256)
   m_TagString: PlaceForTower
   m_Icon: {fileID: 0}

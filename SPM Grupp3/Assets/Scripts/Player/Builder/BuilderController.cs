@@ -20,9 +20,9 @@ public class BuilderController : MonoBehaviour
     [SerializeField] private LayerMask uiLayer;
     [SerializeField] private LayerMask garageLayer;
     [SerializeField] private Color hoverColor;
-    [SerializeField] private Color startColor;
     [SerializeField] private Color towerPreview;
 
+    private Color startColor;
     private Transform _selection;
     private BuildManager buildManager;
     private Camera mainCamera;
@@ -52,6 +52,8 @@ public class BuilderController : MonoBehaviour
 
     void Start()
     {
+        GameObject placement = GameObject.Find("PlaceForTower").gameObject;
+        startColor = placement.GetComponent<Renderer>().material.color;
         screenMiddle = new Vector2(Screen.width / 2, Screen.height / 2);
 
         mainCamera = Camera.main;

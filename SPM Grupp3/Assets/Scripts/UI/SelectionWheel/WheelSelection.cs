@@ -177,7 +177,7 @@ public class WheelSelection : MonoBehaviour
 
     void SelectItem(int index)
     {
-        bool isPressed = selectAction.IsPressed();
+        bool isPressed = selectAction.triggered;
         GameObject selectedItem = MenuItems[index].gameObject;
         if (isPressed)
         {
