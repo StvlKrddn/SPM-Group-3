@@ -107,7 +107,6 @@ public class MissileTower : Tower
 
     public override void TypeOfShot(EnemyController enemyTarget)
     {
-        print(shotsFired % 3);
         if (thirdShot && shotsFired % 3 == 0)
         {
             enemyTarget.HitBySplash(SplashRadius, SplashDamage * 2);
