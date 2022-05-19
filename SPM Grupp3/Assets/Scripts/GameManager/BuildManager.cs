@@ -44,6 +44,8 @@ public class BuildManager : MonoBehaviour
         //EventHandler.Instance.UnregisterListener<GarageEvent>(EnterBuildMode);
     }
 
+
+
     public void InstantiateTower()
     {
         if (TowerToBuild != null)
@@ -66,9 +68,10 @@ public class BuildManager : MonoBehaviour
 
         if (gM.SpendResources(tower.cost, tower.materialCost))
         {
-/*            towerPlacement = clickedArea.GetComponent<TowerPlacement>();*/
-            Instantiate(towerBase, ClickedArea.transform.GetChild(0).transform.position, ClickedArea.transform.GetChild(0).transform.rotation);
             placedTower = Instantiate(TowerToBuild, ClickedArea.transform.GetChild(0).transform.position, ClickedArea.transform.GetChild(0).transform.rotation);
+            Instantiate(towerBase, ClickedArea.transform.GetChild(0).transform.position, ClickedArea.transform.GetChild(0).transform.rotation, placedTower.transform);
+
+            clickedArea.layer = 11;
 
             ClickedArea = null;
 
