@@ -36,14 +36,12 @@ public class BuilderController : MonoBehaviour
     private bool previousMouseState;
     private bool previousYState;
     private GameObject preTower;
-    private GameObject buildMenu;
-    private GameObject infoView;
-    private GameObject towerPanel;
     private GameObject playerCursor;
     private Tower selectedTower;
     private Transform playerUI;
     private Transform towerMenu;
     private GameObject buildPanel;
+    private GameObject hintsPanel;
     private GameObject tankUpgrade;
 
     private bool stopHover = false;
@@ -56,13 +54,11 @@ public class BuilderController : MonoBehaviour
 
         mainCamera = Camera.main;
         canvas = UI.Canvas.transform;
-        buildMenu = canvas.Find("Build_UI").gameObject;
-        infoView = buildMenu.transform.Find("InfoViews").gameObject;
-        towerPanel = buildMenu.transform.Find("TowerPanel").gameObject;
 
         playerUI = transform.parent.Find("PlayerUI");
         towerMenu = playerUI.Find("TowerMenu");
         buildPanel = towerMenu.Find("BuildPanel").gameObject;
+        hintsPanel = towerMenu.Find("Hints").gameObject;
         tankUpgrade = towerMenu.Find("TankPanel").gameObject;
 
         buildManager = GetComponentInParent<BuildManager>();
@@ -142,10 +138,7 @@ public class BuilderController : MonoBehaviour
         if (context.performed)
         {
             Deselect();
-            for (int i = 0; i < infoView.transform.childCount; i++)
-            {
-                infoView.transform.GetChild(i).gameObject.SetActive(false);
-            }
+            
         }
     }
 
@@ -175,6 +168,7 @@ public class BuilderController : MonoBehaviour
         {
             towerMenu.GetChild(i).gameObject.SetActive(false);
         }
+        hintsPanel.SetActive(false);
         cursorTransform.gameObject.SetActive(true);
         stopHover = false;
         stopMouse = false;
@@ -302,6 +296,7 @@ public class BuilderController : MonoBehaviour
 
     public void ResetHover()
     {
+        Deselect();
         stopHover = false;
         stopMouse = false;
         placementClicked = false;
@@ -371,10 +366,12 @@ public class BuilderController : MonoBehaviour
                 {
                     buildManager.ClickedArea = _selection.gameObject;
                     buildPanel.transform.position = buildManager.ClickedArea.transform.position;
+                    hintsPanel.transform.position = buildManager.ClickedArea.transform.position;
 
                     cursorTransform.gameObject.SetActive(false);
 
                     buildPanel.SetActive(true);
+                    hintsPanel.SetActive(true);
                     stopHover = true;
                     stopMouse = true;
                     placementClicked = true;
@@ -404,7 +401,7 @@ public class BuilderController : MonoBehaviour
                     stopMouse = true;
                     placementClicked = true;
                 }           
-            }
+            
 
         }
     }

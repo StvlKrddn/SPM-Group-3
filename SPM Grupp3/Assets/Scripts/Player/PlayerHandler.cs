@@ -15,7 +15,6 @@ public class PlayerHandler : MonoBehaviour
     private PlayerInput playerInput;
     private GameObject tankMode;
     private GameObject buildMode;
-    private GameObject buildMenu;
     private bool destroyed;
 
     public bool Destroyed { get { return destroyed; } set { destroyed = value; } }
@@ -26,7 +25,6 @@ public class PlayerHandler : MonoBehaviour
         destroyed = false;
 
         canvas = UI.Canvas.gameObject;
-        buildMenu = canvas.transform.Find("Build_UI").gameObject;
 
         currentMode = GameManager.Instance.StartingMode;
 
@@ -54,7 +52,6 @@ public class PlayerHandler : MonoBehaviour
     {
         // Disable Build
         buildMode.SetActive(false);
-        buildMenu.SetActive(false);
 
         // Enable Tank
         tankMode.SetActive(true);
@@ -82,7 +79,6 @@ public class PlayerHandler : MonoBehaviour
 
         // Enable Build
         buildMode.SetActive(true);
-        buildMenu.SetActive(true);
 
         EventHandler.Instance.InvokeEvent(new EnterBuildModeEvent(
             description: "Player entered build mode",
