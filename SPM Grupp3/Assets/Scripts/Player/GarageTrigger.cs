@@ -22,9 +22,8 @@ public class GarageTrigger : MonoBehaviour
         {
             PlayerInput playerInput = other.GetComponentInParent<PlayerInput>();
             acceptAction = playerInput.actions["EnterGarage"];
-            if (acceptAction.IsPressed() && !limit)
+            if (acceptAction.IsPressed() && limit == false)
             {
-
                 //hintEnterUI.SetActive(false);
                 EventHandler.Instance.InvokeEvent(new PlayerSwitchEvent(
                     description: "A player switched mode",
@@ -44,7 +43,6 @@ public class GarageTrigger : MonoBehaviour
 
     public void ChangeLimit()
     {
-        print("kommer den hit");
-        limit = !limit; 
+        //limit = !limit; 
     }
 }

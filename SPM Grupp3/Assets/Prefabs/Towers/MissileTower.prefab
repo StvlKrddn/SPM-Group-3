@@ -61,7 +61,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyTag: Enemy
   turnSpeed: 10
-  shot: {fileID: 3201376968240350041, guid: 7e4902a1dd3b3484280a32e92534c4c7, type: 3}
+  shot: {fileID: 3201376968240350041, guid: 59a23df688db2f9439ac2b42b2622c16, type: 3}
   firePoint: {fileID: 1569145758683705722}
   radius: {fileID: 1569145758455605305}
   onHitEffect: {fileID: 6970288597742466642, guid: a61e722881e7d9d48b3435d574f938a1, type: 3}
@@ -69,6 +69,7 @@ MonoBehaviour:
   tower: {fileID: 1569145756733406200}
   upgradeUI: {fileID: 0}
   buildUI: {fileID: 0}
+  towerPlacement: {fileID: 0}
   range: 10
   fireRate: 1
   shotDamage: 5
@@ -82,6 +83,7 @@ MonoBehaviour:
   level1Cost: 700
   level2Cost: 1800
   level3Cost: 1200
+  costForUpgrade: 0
 --- !u!1 &1569145758302136571
 GameObject:
   m_ObjectHideFlags: 0
