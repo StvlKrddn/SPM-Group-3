@@ -2,15 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class PoisonTower : Tower
 {
     [SerializeField] private float poisonTicks = 5;
     [SerializeField] private float poisonDamagePerTick = 25;
+    [SerializeField] private float maxHealthPerTick = 0.1f;
 
     [Header("Amount To Upgrade")]
     [SerializeField] private float upgradeAmountPoisonTicks = 5;
     [SerializeField] private float upgradeAmountPoisonDamagePerTick = 25;
-
+    [SerializeField] private float upgradeMaxHealthPoisonDamagePerTick = 0.01f;
+    [SerializeField] private float upgradeAttackSpeed = 0.1f;
     [Header("Poison Spreading")]
     [SerializeField] private bool poisonSpread = false;
 
@@ -38,7 +41,7 @@ public class PoisonTower : Tower
     // Update is called once per frame
     void Update()
     {      
-        LockOnTarget();
+       // LockOnTarget();
 
         if (target != null)
         {
@@ -82,19 +85,43 @@ public class PoisonTower : Tower
         {
             enemyTarget.spread = true;
         }
-        enemyTarget.HitByPoison(PoisonTicks,PoisonDamagePerTick, onHitEffect);
+        //enemyTarget.HitByPoison(PoisonTicks,PoisonDamagePerTick, onHitEffect, maxHealthPerTick);
     }
 
     protected void Shoot()
     {
-        GameObject bulletGO = Instantiate(shot, firePoint.position, firePoint.rotation);
-        bulletGO.transform.parent = transform;
-        bulletGO.SetActive(true);
-        bullet = bulletGO.GetComponent<Shot>();
+        
+        //     GameObject bulletGO = Instantiate(shot, firePoint.position, firePoint.rotation);
+        //     bulletGO.transform.parent = transform;
+        //     bulletGO.SetActive(true);
+        //     bullet = bulletGO.GetComponent<Shot>();
+        //
+        //     if (bullet != null)
+        //     {
+        //         bullet.Seek(target);
+        //     }
+        
 
-        if (bullet != null)
+        Collider[] colliders = Physics.OverlapSphere(transform.position, range);
+        foreach (Collider c in colliders)
         {
-            bullet.Seek(target);
+            if (c.GetComponent<EnemyController>())
+            {
+                GameObject effectInstance = Instantiate(onHitEffect, transform.position, transform.rotation);
+
+                ParticleSystem particleEffect = effectInstance.GetComponent<ParticleSystem>();
+                   
+            //    particleEffect.SetCustomParticleData = 5; //= radius;
+
+                Destroy(effectInstance, 1f);
+                EnemyController enemyontroller = c.GetComponent<EnemyController>();
+                enemyontroller.HitByPoison(PoisonTicks, PoisonDamagePerTick, maxHealthPerTick);
+                //EnemyController enemyTarget = eventInfo.enemyHit.GetComponent<EnemyController>();
+                
+
+                
+             //   TypeOfShot(enemyontroller);
+            }
         }
     }
 
@@ -128,7 +155,9 @@ public class PoisonTower : Tower
         {
             tUC.IncreaseUpgradesPurchased();
             PoisonTower pT = tUC.ClickedTower.GetComponent<PoisonTower>();          
-            pT.poisonDamagePerTick += upgradeAmountPoisonDamagePerTick;               
+            pT.poisonDamagePerTick += upgradeAmountPoisonDamagePerTick;
+            pT.maxHealthPerTick += upgradeMaxHealthPoisonDamagePerTick; 
+            pT.fireRate += upgradeAttackSpeed;
         }
     }
     public override void TowerLevel3()
