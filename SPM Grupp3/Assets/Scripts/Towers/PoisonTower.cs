@@ -24,9 +24,27 @@ public class PoisonTower : Tower
 
     private float fireCountdown = 0f;
 
+    public float costForUpgrade;
 
     public float PoisonTicks { get { return poisonTicks; } set { poisonTicks = value; } }
     public float PoisonDamagePerTick { get { return poisonDamagePerTick; } set { poisonDamagePerTick = value; } }
+
+    public override float UpgradeCostUpdate()
+    {
+        switch (tUC.GetUpgradesPurchased())
+        {
+            case 0:
+                costForUpgrade = level1Cost;
+                break;
+            case 1:
+                costForUpgrade = level2Cost;
+                break;
+            case 2:
+                costForUpgrade = level3Cost;
+                break;
+        }
+        return costForUpgrade;
+    }
 
     // Start is called before the first frame update
     void Start()

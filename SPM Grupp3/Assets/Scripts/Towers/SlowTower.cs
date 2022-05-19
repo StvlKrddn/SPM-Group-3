@@ -26,14 +26,30 @@ public class SlowTower : Tower
 
     private bool stunActive = false;
 
-
+    public float costForUpgrade;
 
     private float fireCountdown = 0f;
     private float timer;
 
     public float SlowProc { get { return slowProc; } set { slowProc = value; } }
 
-    
+
+    public override float UpgradeCostUpdate()
+    {
+        switch (tUC.GetUpgradesPurchased())
+        {
+            case 0:
+                costForUpgrade = level1Cost;
+                break;
+            case 1:
+                costForUpgrade = level2Cost;
+                break;
+            case 2:
+                costForUpgrade = level3Cost;
+                break;
+        }
+        return costForUpgrade;
+    }
 
     // Start is called before the first frame update
     void Start()

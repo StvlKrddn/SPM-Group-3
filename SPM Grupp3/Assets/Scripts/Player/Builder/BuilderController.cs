@@ -21,6 +21,8 @@ public class BuilderController : MonoBehaviour
     [SerializeField] private LayerMask garageLayer;
     [SerializeField] private Color hoverColor;
     [SerializeField] private Color towerPreview;
+    [SerializeField] private Color builderCursorColorP1;
+    [SerializeField] private Color builderCursorColorP2;
 
     private Color startColor;
     private Transform _selection;
@@ -112,6 +114,35 @@ public class BuilderController : MonoBehaviour
     {
         Image cursorImage = cursor.GetComponent<Image>();
         cursorImage.color = playerInput.playerIndex == 0 ? Color.blue : Color.red;
+
+
+        if (playerInput.playerIndex == 0)
+        {
+            for (int i = 0; i < towerMenu.transform.childCount; i++)
+            {
+                if (towerMenu.transform.GetChild(i).name.Equals("Hints"))
+                {
+                    continue;
+                }
+                towerMenu.transform.GetChild(i).GetChild(0).GetComponent<Image>().color = builderCursorColorP1;
+            }
+
+        }
+
+        if (playerInput.playerIndex == 1)
+        {
+            for (int i = 0; i < towerMenu.transform.childCount; i++)
+            {
+                if (towerMenu.transform.GetChild(i).name.Equals("Hints"))
+                {
+                    continue;
+                }
+                towerMenu.transform.GetChild(i).GetChild(0).GetComponent<Image>().color = builderCursorColorP2;
+            }
+            
+        }
+        
+        
     }
 
     public void AcceptAction (InputAction.CallbackContext context)
@@ -146,7 +177,7 @@ public class BuilderController : MonoBehaviour
 
     public void EnterTank(InputAction.CallbackContext context)
     {
-        if (context.performed )
+        if (context.performed && !stopMouse)
         {
             Deselect();
             EventHandler.Instance.InvokeEvent(new PlayerSwitchEvent(
@@ -372,6 +403,8 @@ public class BuilderController : MonoBehaviour
 
                     cursorTransform.gameObject.SetActive(false);
 
+
+
                     buildPanel.SetActive(true);
                     hintsPanel.SetActive(true);
                     stopHover = true;
@@ -389,20 +422,23 @@ public class BuilderController : MonoBehaviour
         if (hit.collider != null)
         {
             GameObject towerHit = hit.collider.gameObject;
-/*            if (towerHit.CompareTag("Tower"))
+
+            if (towerHit != null && preTower == null)
             {
-			*/
-                if (towerHit != null && preTower == null)
-                {
-                    selectedTower = towerHit.GetComponent<Tower>();
+                selectedTower = towerHit.GetComponent<Tower>();
                     
-                    selectedTower.ShowUpgradeUI(towerMenu);
-                    
-                    EventHandler.Instance.InvokeEvent(new TowerClickedEvent("Tower Is clicked", selectedTower.gameObject));
-                    buildManager.TowerToBuild = null;
-                    stopHover = true;
-                    stopMouse = true;
-                    placementClicked = true;
+                selectedTower.ShowUpgradeUI(towerMenu);
+
+            cursorTransform.gameObject.SetActive(false);
+
+            EventHandler.Instance.InvokeEvent(new TowerClickedEvent("Tower Is clicked", selectedTower.gameObject));
+                tankUpgrade.transform.position = towerHit.transform.position;
+                hintsPanel.transform.position = towerHit.transform.position;
+                hintsPanel.SetActive(true);
+                buildManager.TowerToBuild = null;
+                stopHover = true;
+                stopMouse = true;
+                placementClicked = true;
                 }           
             
 
@@ -424,8 +460,12 @@ public class BuilderController : MonoBehaviour
         RaycastHit hit = CastRayFromCamera(garageLayer);
         if (hit.collider != null)
         {
-/*            tankUpgrade.transform.position = hit.collider.transform.position;*/
+            cursorTransform.gameObject.SetActive(false);
+
+            tankUpgrade.transform.position = hit.collider.transform.position;
+            hintsPanel.transform.position = hit.collider.transform.position;
             tankUpgrade.SetActive(true);
+            hintsPanel.SetActive(true);
             stopHover = true;
             stopMouse = true;
             placementClicked = true;
