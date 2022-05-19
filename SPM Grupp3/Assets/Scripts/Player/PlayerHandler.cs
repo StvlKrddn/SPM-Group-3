@@ -10,11 +10,12 @@ public class PlayerHandler : MonoBehaviour
 
     public MultiplayerEventSystem eventSystem;
 
+    [SerializeField] private GameObject tankMode;
+    [SerializeField] private GameObject buildMode;
+
     private PlayerMode currentMode;
     private GameObject canvas;
     private PlayerInput playerInput;
-    private GameObject tankMode;
-    private GameObject buildMode;
     private bool destroyed;
 
     public bool Destroyed { get { return destroyed; } set { destroyed = value; } }
@@ -31,9 +32,6 @@ public class PlayerHandler : MonoBehaviour
         playerInput = GetComponent<PlayerInput>();
 
         playerInput.uiInputModule = GetComponent<InputSystemUIInputModule>();
-
-        tankMode = transform.Find("TankMode").gameObject;
-        buildMode = transform.Find("BuilderMode").gameObject;
 
         // First mode set up
         if (currentMode == PlayerMode.Build)
