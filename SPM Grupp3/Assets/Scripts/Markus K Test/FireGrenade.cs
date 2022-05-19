@@ -7,6 +7,8 @@ public class FireGrenade : MonoBehaviour
     [SerializeField] private int damage;
     private SphereCollider sphereCollider;
 
+    [SerializeField] private int timer; 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -18,13 +20,13 @@ public class FireGrenade : MonoBehaviour
 	{
         if (collision.collider.tag == "Enemy")
         {
-	        StartCoroutine(Detonate());
+	      //  StartCoroutine(Detonate());
         }
 	}
 
 	public IEnumerator TooLate()
 	{
-		yield return new WaitForSeconds(10);
+		yield return new WaitForSeconds(timer);
 		StartCoroutine(Detonate());
 	}
 

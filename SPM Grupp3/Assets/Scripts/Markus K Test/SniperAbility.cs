@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SniperAbility : BulletBehavior
 {
+    [SerializeField] float damageOfAbility; 
     protected override void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Enemy"))
@@ -14,7 +15,7 @@ public class SniperAbility : BulletBehavior
             {
                 if (target.GetType() == enemy.GetType())
                 {
-                    enemy.TakeDamage(damage);
+                    enemy.TakeDamage(damageOfAbility);
                 }
             }
             Destroy(gameObject, 0.01f);
