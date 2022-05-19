@@ -17,6 +17,8 @@ public class CannonTower : Tower
     [SerializeField] private float level2Cost;
     [SerializeField] private float level3Cost;
 
+    public float costForUpgrade;
+
     private float fireCountdown = 0f;
 
 
@@ -52,6 +54,23 @@ public class CannonTower : Tower
             }
 
         }
+    }
+
+    public override float UpgradeCostUpdate()
+    {
+        switch (tUC.GetUpgradesPurchased())
+        {
+            case 0:
+                costForUpgrade = level1Cost;
+                break;
+            case 1:
+                costForUpgrade = level2Cost;
+                break;
+            case 2:
+                costForUpgrade = level3Cost;
+                break;
+        }
+        return costForUpgrade;
     }
 
     void DubbelShot()

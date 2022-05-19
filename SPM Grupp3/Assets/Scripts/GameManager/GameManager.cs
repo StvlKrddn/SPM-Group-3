@@ -28,9 +28,9 @@ public class GameManager : MonoBehaviour
     private WaveManager waveManager;
     private Canvas canvas;
     private Text moneyCounterUI;
-    private Text moneyChangerUI;
+    //private Text moneyChangerUI;
     private Text materialCounterUI;
-    private Text materialChangerUI;
+    //private Text materialChangerUI;
     private Slider livesSlider;
     private GameObject victoryUI;
     private GameObject defeatUI;
@@ -80,17 +80,18 @@ public class GameManager : MonoBehaviour
         defeatUI.SetActive(false);
     }
 
+    //[SerializeField] private Text moneyChangerText;
     void InitializeUIElements()
     {
         Transform canvas = UI.Canvas.transform;
         
         Transform currencyPanel = canvas.GetChild(0);
         moneyCounterUI = currencyPanel.Find("MoneyHolder").Find("MoneyCounter").GetComponent<Text>();
-        moneyUI = currencyPanel.Find("MoneyChanger").gameObject;
-        moneyChangerUI = moneyUI.transform.GetChild(0).GetComponent<Text>();
+        //moneyUI = currencyPanel.Find("MoneyChanger").gameObject;
+        //moneyChangerUI = moneyUI.transform.GetChild(0).GetComponent<Text>();
         materialCounterUI = currencyPanel.Find("MaterialHolder").Find("MaterialCounter").GetComponent<Text>();
-        materialUI = currencyPanel.Find("MaterialChanger").gameObject;
-        materialChangerUI = materialUI.transform.GetChild(0).GetComponent<Text>();
+        //materialUI = currencyPanel.Find("MaterialChanger").gameObject;
+        //materialChangerUI = materialUI.transform.GetChild(0).GetComponent<Text>();
         
         livesSlider = canvas.Find("LivesSlider").GetComponent<Slider>();
 
@@ -149,15 +150,15 @@ public class GameManager : MonoBehaviour
         }*/
 
         moneyCounterUI.text = ": " + mon.ToString();
-        materialCounterUI.text = ": " + material;
+        materialCounterUI.text = ": " + material.ToString();
     }
 
     public void AddMoney(float addMoney)
     {
-        moneyChangerUI.color = colorGain;
+/*        moneyChangerUI.color = colorGain;
         moneyChangerUI.text = "+" + addMoney;
 
-        Instantiate(moneyChangerUI, moneyUI.transform);
+        Instantiate(moneyChangerUI, moneyUI.transform);*/
 
         money += addMoney;
         moneyCollected += (int) addMoney;
@@ -166,10 +167,10 @@ public class GameManager : MonoBehaviour
 
     public void AddMaterial(float addMaterial)
     {
-        materialChangerUI.color = colorGain;
+/*        materialChangerUI.color = colorGain;
         materialChangerUI.text = "+" + addMaterial;
 
-        Instantiate(materialChangerUI, materialUI.transform);
+        Instantiate(materialChangerUI, materialUI.transform);*/
 
         material += addMaterial;
         materialCollected += (int) addMaterial;
@@ -181,25 +182,34 @@ public class GameManager : MonoBehaviour
         if (moneySpent <= money && materialSpent <= material)
         {
             money -= moneySpent;
-            moneyChangerUI.color = Color.red;
-            moneyChangerUI.text = "-" + moneySpent;
+/*            moneyChangerUI.color = Color.red;
+            moneyChangerUI.text = "-" + moneySpent;*//*
 
-            Instantiate(moneyChangerUI, moneyUI.transform);
+            Instantiate(moneyChangerUI, moneyUI.transform);*/
 
             material -= materialSpent;
-            if (materialSpent > 0) 
+/*            if (materialSpent > 0) 
             {
                 materialChangerUI.color = Color.red;
                 materialChangerUI.text = "-" + materialSpent;
 
                 Instantiate(materialChangerUI, materialUI.transform);
-            }
+            }*/
                
 
             UpdateResourcesUI();
             return true;
         }
         //Show Error
+        return false;
+    }
+
+    public bool CheckIfEnoughResources(Tower tower)
+    {
+        if (tower.cost < money && tower.materialCost < material)
+        {
+            return true;
+        }
         return false;
     }
 

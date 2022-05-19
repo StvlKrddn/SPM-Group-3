@@ -143,8 +143,18 @@ public class WheelSelection : MonoBehaviour
                 {
                     MenuItems[i].transform.Find("Cost").gameObject.SetActive(true);
                 }
+                
                 DecideTowerToBuild(MenuItems[i].name);
-                builderController.GhostTower(towerToDisplay);
+                if (towerToDisplay != null)
+                {
+                    if (GameManager.Instance.CheckIfEnoughResources(towerToDisplay.GetComponent<Tower>()))
+                    {
+                        builderController.GhostTower(towerToDisplay);
+                    }
+
+                }
+                
+                    
                 selectHint.SetActive(true);
                 //infoHint.SetActive(true);
             }
