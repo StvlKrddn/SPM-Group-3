@@ -280,7 +280,7 @@ public class BuilderController : MonoBehaviour
     
     void UpdateCursorImage(Vector2 newPosition)
     {
-        if (cursorTransform != null && mainCamera != null)
+        if (cursorTransform != null)
         {
             RectTransformUtility.ScreenPointToLocalPointInRectangle(
                 rect: canvas.GetComponent<RectTransform>(), 

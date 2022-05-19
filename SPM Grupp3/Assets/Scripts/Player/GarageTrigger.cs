@@ -22,6 +22,7 @@ public class GarageTrigger : MonoBehaviour
         {
             PlayerInput playerInput = other.GetComponentInParent<PlayerInput>();
             acceptAction = playerInput.actions["EnterGarage"];
+            print("Enter tank");
             if (acceptAction.IsPressed() && limit == false)
             {
                 //hintEnterUI.SetActive(false);
