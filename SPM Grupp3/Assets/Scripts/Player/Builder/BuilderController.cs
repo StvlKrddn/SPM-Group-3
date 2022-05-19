@@ -388,7 +388,8 @@ public class BuilderController : MonoBehaviour
         {
             GameObject towerHit = hit.collider.gameObject;
 /*            if (towerHit.CompareTag("Tower"))
-            {*/
+            {
+			*/
                 if (towerHit != null && preTower == null)
                 {
                     selectedTower = towerHit.GetComponent<Tower>();
@@ -406,16 +407,17 @@ public class BuilderController : MonoBehaviour
         }
     }
 
-    public void DeleteTower()
-    {
-        if (selectedTower != null)
-        {
-            Destroy(selectedTower.gameObject);
-            Deselect();
-        }
-    }
+	public void DeleteTower()
+	{
+		if (selectedTower != null)
+		{
+			selectedTower.GetComponent<Tower>().towerPlacement.layer = 10;
+			Destroy(selectedTower.gameObject);
+			Deselect();
+		}
+	}
 
-    void ClickedGarage()
+	void ClickedGarage()
     {
         RaycastHit hit = CastRayFromCamera(garageLayer);
         if (hit.collider != null)
