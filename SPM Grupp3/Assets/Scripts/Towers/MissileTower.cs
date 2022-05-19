@@ -52,7 +52,7 @@ public class MissileTower : Tower
             }
         }
     }
-
+    private bool shotAlready = false;
     public override void HitTarget(TowerHitEvent eventInfo)
     {
         if (eventInfo.towerGO == gameObject)
@@ -63,9 +63,19 @@ public class MissileTower : Tower
                 GameObject effectInstance = Instantiate(eventInfo.hitEffect, enemyTarget.transform.position, enemyTarget.transform.rotation);
 
                 Destroy(effectInstance, 1f);
-                TypeOfShot(enemyTarget);
+                
+                if (!shotAlready)
+                {
+                    TypeOfShot(enemyTarget);
+                    shotAlready = true;
+                }
+                Invoke("Coldown", 0.3f);
             }
         }
+    }
+    void Coldown()
+    {
+        shotAlready = false;
     }
 
     private bool CanYouShoot()
@@ -81,6 +91,7 @@ public class MissileTower : Tower
 
     public override void TypeOfShot(EnemyController enemyTarget)
     {
+        print(shotsFired % 3);
         if (thirdShot && shotsFired % 3 == 0)
         {
             enemyTarget.HitBySplash(SplashRadius, SplashDamage * 2);
