@@ -69,11 +69,11 @@ public class BuildManager : MonoBehaviour
         if (gM.SpendResources(tower.cost, tower.materialCost))
         {
             placedTower = Instantiate(TowerToBuild, ClickedArea.transform.GetChild(0).transform.position, ClickedArea.transform.GetChild(0).transform.rotation);
-            Instantiate(towerBase, ClickedArea.transform.GetChild(0).transform.position, ClickedArea.transform.GetChild(0).transform.rotation, placedTower.transform);
+			Instantiate(towerBase, ClickedArea.transform.GetChild(0).transform.position, ClickedArea.transform.GetChild(0).transform.rotation, placedTower.transform);
+			placedTower.GetComponent<Tower>().towerPlacement = ClickedArea;
+			clickedArea.layer = 11;
 
-            clickedArea.layer = 11;
-
-            ClickedArea = null;
+			ClickedArea = null;
 
             TowerUpgradeCotroller.instance.PlaceTowerInUpgradeList(placedTower);
             gM.AddPlacedTower(placedTower);
