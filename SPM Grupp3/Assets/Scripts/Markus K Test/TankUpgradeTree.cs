@@ -42,7 +42,7 @@ public abstract class TankUpgradeTree : MonoBehaviour
         if (abilityReady == true)
         {
             abilityReady = false;
-            StartCoroutine(ResetAbility());
+   //         StartCoroutine(ResetAbility());
             return true;
         }
         return false;
@@ -51,6 +51,11 @@ public abstract class TankUpgradeTree : MonoBehaviour
     protected IEnumerator ResetAbility()
     {
         yield return new WaitForSeconds(abilityCD);
+        abilityReady = true;
+    }
+
+    public void ResetColdown()
+    {
         abilityReady = true;
     }
 
