@@ -391,7 +391,8 @@ public class BuilderController : MonoBehaviour
         {
             GameObject towerHit = hit.collider.gameObject;
 /*            if (towerHit.CompareTag("Tower"))
-            {*/
+			*/
+            {
                 if (towerHit != null && preTower == null)
                 {
                     selectedTower = towerHit.GetComponent<Tower>();
