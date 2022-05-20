@@ -168,8 +168,13 @@ MonoBehaviour:
   baseHealth: 100
   material: 10
   money: 1400
-  colorGain: {r: 0.20376274, g: 0.6415094, b: 0, a: 1}
+  victoryPanel: {fileID: 0}
+  continueButton: {fileID: 0}
+  defeatPanel: {fileID: 0}
+  restartButton: {fileID: 0}
   startingMode: 0
+  Player1Color: {r: 0, g: 0, b: 1, a: 1}
+  Player2Color: {r: 1, g: 0, b: 0, a: 1}
   towersPlaced: []
 --- !u!114 &5574963424639874967
 MonoBehaviour:
@@ -183,7 +188,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 895d73ef8f8fd554c9f1f12de093ea70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPosition: {fileID: 0}
   enemyContainer: {fileID: 0}
   waves:
   - waveName: 

@@ -21,8 +21,8 @@ public class BuilderController : MonoBehaviour
     [SerializeField] private LayerMask garageLayer;
     [SerializeField] private Color hoverColor;
     [SerializeField] private Color towerPreview;
-    [SerializeField] private Color builderCursorColorP1;
-    [SerializeField] private Color builderCursorColorP2;
+    private Color player1Color;
+    private Color player2Color;
 
     private Color startColor;
     private Transform _selection;
@@ -55,6 +55,9 @@ public class BuilderController : MonoBehaviour
         GameObject placement = GameObject.Find("PlaceForTower").gameObject;
         startColor = placement.GetComponent<Renderer>().material.color;
         screenMiddle = new Vector2(Screen.width / 2, Screen.height / 2);
+
+        player1Color = GameManager.Instance.Player1Color;
+        player2Color = GameManager.Instance.Player2Color;
 
         mainCamera = Camera.main;
         canvas = UI.Canvas.transform;
@@ -113,7 +116,7 @@ public class BuilderController : MonoBehaviour
     void SetCursorColor(GameObject cursor)
     {
         Image cursorImage = cursor.GetComponent<Image>();
-        cursorImage.color = playerInput.playerIndex == 0 ? Color.blue : Color.red;
+        cursorImage.color = playerInput.playerIndex == 0 ? player1Color : player2Color;
 
 
 		if (playerInput.playerIndex == 0)
@@ -124,7 +127,7 @@ public class BuilderController : MonoBehaviour
 				{
 					continue;
 				}
-				towerMenu.transform.GetChild(i).GetChild(0).GetComponent<Image>().color = builderCursorColorP1;
+				towerMenu.transform.GetChild(i).GetChild(0).GetComponent<Image>().color = player1Color;
 			}
 
 		}
@@ -137,7 +140,7 @@ public class BuilderController : MonoBehaviour
 				{
 					continue;
 				}
-				towerMenu.transform.GetChild(i).GetChild(0).GetComponent<Image>().color = builderCursorColorP2;
+				towerMenu.transform.GetChild(i).GetChild(0).GetComponent<Image>().color = player2Color;
 			}
 
 		}

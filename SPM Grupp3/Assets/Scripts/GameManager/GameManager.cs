@@ -18,8 +18,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject defeatPanel;
     [SerializeField] private GameObject restartButton;
 
-    [Header("Player")]
+    [Header("Players: ")]
     [SerializeField] private PlayerMode startingMode;
+    public Color Player1Color;
+    public Color Player2Color;
 
     [Header("Other")]
     public List<GameObject> towersPlaced = new List<GameObject>();
