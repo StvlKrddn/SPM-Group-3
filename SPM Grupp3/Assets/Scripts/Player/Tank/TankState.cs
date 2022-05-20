@@ -9,14 +9,17 @@ public class TankState : MonoBehaviour
     // Inspector variables
     [SerializeField] private float movementSpeed = 6f;
     [SerializeField] private float health = 50f;
+    [SerializeField] private Animator animator;
     public int levelOfTank;
+
+
 
     // Components
     Rigidbody rb;
     Transform turretObject;
 
     // Input components
-    InputAction moveGamepadAction;
+    InputAction moveAction;
     InputAction aimAction;
     InputAction abilityAction;
 
@@ -101,7 +104,7 @@ public class TankState : MonoBehaviour
 
         playerID = playerInput.playerIndex;
 
-        moveGamepadAction = playerInput.actions["Move"];
+        moveAction = playerInput.actions["Move"];
         aimAction = playerInput.actions["Aim"];
         abilityAction = playerInput.actions["Ability"];
     }
@@ -130,7 +133,7 @@ public class TankState : MonoBehaviour
     }
     void Update()
     {
-        gamepadInputVector = moveGamepadAction.ReadValue<Vector2>();
+        gamepadInputVector = moveAction.ReadValue<Vector2>();
         aimInputVector = aimAction.ReadValue<Vector2>();
 
         RotateTurret();
@@ -142,6 +145,8 @@ public class TankState : MonoBehaviour
 
     void FixedUpdate()
     {
+        animator.SetBool("isMoving", moveAction.IsPressed());
+
         Move();
         //levelOfTank = UpgradeController.instance.currentUpgradeLevel;
     }
@@ -158,7 +163,7 @@ public class TankState : MonoBehaviour
 
         rb.MovePosition(transform.position + movement);
 
-        if (moveGamepadAction.IsPressed())
+        if (moveAction.IsPressed())
         {
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(skewedVector), Time.deltaTime * standardSpeed);
         }

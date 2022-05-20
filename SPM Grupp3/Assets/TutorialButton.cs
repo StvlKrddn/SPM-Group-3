@@ -31,7 +31,6 @@ public class TutorialButton : MonoBehaviour
 
     public void loadNextDialogue()
     {
-        print("click");
         if(objectsToDisable.Length != 0)
         {
             foreach (GameObject obj in objectsToDisable)

@@ -6,26 +6,16 @@ using UnityEngine.UI;
 
 public class Shop : MonoBehaviour
 {
-    private Tower tower;
-
     [Header("UI Elements: ")]
-    public Text moneyCostUI;
-    public Text materialCostUI;
+    public Canvas canvas;
 
-    private GameObject player;
     private Button pressedButton;
     private BuildManager buildManager;
 
-    // Start is called before the first frame update
     void Start()
     {
-
-/*        moneyCostUI.color = Color.gray;
-        moneyCostUI.text = "0";
-        materialCostUI.color = Color.gray;
-        materialCostUI.text = "0";*/
-
-/*        EventHandler.Instance.RegisterListener<UIClickedEvent>(OnClick);*/
+        Camera canvasCamera = GameObject.FindGameObjectWithTag("Camera/CanvasCamera").GetComponent<Camera>();
+        canvas.worldCamera = canvasCamera;
     }
 
     public void PurchaseCannonTower()

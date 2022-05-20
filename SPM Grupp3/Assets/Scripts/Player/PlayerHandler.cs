@@ -8,8 +8,6 @@ using UnityEngine.InputSystem.UI;
 public class PlayerHandler : MonoBehaviour
 {
 
-    public MultiplayerEventSystem eventSystem;
-
     [SerializeField] private GameObject tankMode;
     [SerializeField] private GameObject buildMode;
 
@@ -131,12 +129,12 @@ public class PlayerHandler : MonoBehaviour
         }
     }
 
-    public void SetSelected(GameObject selection)
+    public void PauseGame (InputAction.CallbackContext context)
     {
-        // Clear selected object
-        eventSystem.SetSelectedGameObject(null);
-        
-        // Set a new selected object
-        eventSystem.SetSelectedGameObject(selection);
+        if (context.performed)
+        {
+            canvas.GetComponent<UI>().PauseGame();
+        }
     }
+
 }

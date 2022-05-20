@@ -12,28 +12,27 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float material = 0f;
     [SerializeField] private float money = 350f;
 
-    [Header("Vet inte vad detta är: ")]
-    [SerializeField] private Color colorGain;
+    [Header("UI: ")]
+    [SerializeField] private GameObject victoryPanel;
+    [SerializeField] private GameObject continueButton;
+    [SerializeField] private GameObject defeatPanel;
+    [SerializeField] private GameObject restartButton;
 
-    [Header("Player")]
+    [Header("Players: ")]
     [SerializeField] private PlayerMode startingMode;
+    public Color Player1Color;
+    public Color Player2Color;
 
     [Header("Other")]
     public List<GameObject> towersPlaced = new List<GameObject>();
-
-    public GameObject selectedButton;
 
     private BuildManager buildManager;
     private GameObject damagingEnemy;
     private WaveManager waveManager;
     private Canvas canvas;
     private Text moneyCounterUI;
-    //private Text moneyChangerUI;
     private Text materialCounterUI;
-    //private Text materialChangerUI;
     private Slider livesSlider;
-    private GameObject victoryUI;
-    private GameObject defeatUI;
     private GameObject moneyUI;
     private GameObject materialUI;
 
@@ -76,27 +75,22 @@ public class GameManager : MonoBehaviour
 
         UpdateResourcesUI();
 
-        victoryUI.SetActive(false);
-        defeatUI.SetActive(false);
+        victoryPanel.SetActive(false);
+        defeatPanel.SetActive(false);
     }
 
-    //[SerializeField] private Text moneyChangerText;
     void InitializeUIElements()
     {
         Transform canvas = UI.Canvas.transform;
         
         Transform currencyPanel = canvas.GetChild(0);
         moneyCounterUI = currencyPanel.Find("MoneyHolder").Find("MoneyCounter").GetComponent<Text>();
-        //moneyUI = currencyPanel.Find("MoneyChanger").gameObject;
-        //moneyChangerUI = moneyUI.transform.GetChild(0).GetComponent<Text>();
         materialCounterUI = currencyPanel.Find("MaterialHolder").Find("MaterialCounter").GetComponent<Text>();
-        //materialUI = currencyPanel.Find("MaterialChanger").gameObject;
-        //materialChangerUI = materialUI.transform.GetChild(0).GetComponent<Text>();
         
         livesSlider = canvas.Find("LivesSlider").GetComponent<Slider>();
 
-        defeatUI = canvas.Find("DefeatPanel").gameObject;
-        victoryUI = canvas.Find("VictoryPanel").gameObject;
+        defeatPanel = canvas.Find("DefeatPanel").gameObject;
+        victoryPanel = canvas.Find("VictoryPanel").gameObject;
     }
 
     private void Update()
@@ -231,11 +225,12 @@ public class GameManager : MonoBehaviour
 
         GameObject player1 = GameObject.Find("Player");
 
+        canvas.GetComponent<UI>().SetSelectedButton(restartButton);
         UI.OpenMenu();
 
         waveManager.Restart();
        
-        defeatUI.SetActive(true);
+        defeatPanel.SetActive(true);
 
         buildManager.TowerToBuild = null;
 
@@ -258,21 +253,20 @@ public class GameManager : MonoBehaviour
             towersBuilt: 0
         ));
 
+        canvas.GetComponent<UI>().SetSelectedButton(continueButton);
         UI.OpenMenu();
 
         waveManager.Restart();
 
-        victoryUI.SetActive(true);
+        victoryPanel.SetActive(true);
 
         buildManager.TowerToBuild = null;
-
-        GameObject.Find("Player").GetComponent<PlayerHandler>().SetSelected(selectedButton);
     }
     
     public void Continue()
     {
         ResetBaseHealth();
-        victoryUI.SetActive(false);
+        victoryPanel.SetActive(false);
         GetComponent<PlayerManager>().Restart();
     }
 
@@ -281,7 +275,7 @@ public class GameManager : MonoBehaviour
         money = 0;
         material = 0;
         UpdateResourcesUI();
-        defeatUI.SetActive(false);
+        defeatPanel.SetActive(false);
         ResetBaseHealth();
         GetComponent<PlayerManager>().Restart();
     }
