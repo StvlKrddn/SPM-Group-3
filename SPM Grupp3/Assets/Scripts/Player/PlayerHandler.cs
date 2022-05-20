@@ -11,8 +11,8 @@ public class PlayerHandler : MonoBehaviour
     [SerializeField] private GameObject tankMode;
     [SerializeField] private GameObject buildMode;
 
-    [SerializeField] private GameObject tankMode;
-    [SerializeField] private GameObject buildMode;
+/*    [SerializeField] private GameObject tankMode;
+    [SerializeField] private GameObject buildMode;*/
 
     private PlayerMode currentMode;
     private GameObject canvas;
