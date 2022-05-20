@@ -37,6 +37,8 @@ public class TankState : MonoBehaviour
     public TankUpgradeTree tankUpgradeTree;
     [SerializeField] private TankUpgradeTree tankUpgradeTreeOne;
     [SerializeField] private TankUpgradeTree tankUpgradeTreeTwo;
+    [SerializeField] private UnityEngine.Material player1Material;
+    [SerializeField] private UnityEngine.Material player2Material;
 
 
     // Getters and Setters
@@ -107,7 +109,16 @@ public class TankState : MonoBehaviour
     void SetPlayerDifference()
     {
         Renderer renderer = GetComponent<Renderer>();
-        renderer.material.color = playerInput.playerIndex == 0 ? Color.blue : Color.red;
+        if (playerInput.playerIndex == 0)
+        {
+            renderer.material = player1Material;
+            transform.Find("TankBody").Find("Cube.004").GetComponent<Renderer>().material = player1Material;
+        }
+        else
+        {
+            renderer.material = player2Material;
+            transform.Find("TankBody").Find("Cube.004").GetComponent<Renderer>().material = player2Material;
+        }
         tankUpgradeTree = playerInput.playerIndex == 0 ? tankUpgradeTreeOne : tankUpgradeTreeTwo;
     }
 
