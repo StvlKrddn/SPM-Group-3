@@ -22,12 +22,28 @@ public class MissileTower : Tower
     private float fireCountdown = 0f;
     private float shotsFired = 0;
 
+    public float costForUpgrade;
 
     public float SplashRadius { get { return splashRadius; } set { splashRadius = value; } }
     public float SplashDamage { get { return splashDamage; } set { splashDamage = value; } }
 
 
-
+    public override float UpgradeCostUpdate()
+    {
+        switch (tUC.GetUpgradesPurchased())
+        {
+            case 0:
+                costForUpgrade = level1Cost;
+                break;
+            case 1:
+                costForUpgrade = level2Cost;
+                break;
+            case 2:
+                costForUpgrade = level3Cost;
+                break;
+        }
+        return costForUpgrade;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -52,7 +68,7 @@ public class MissileTower : Tower
             }
         }
     }
-
+    private bool shotAlready = false;
     public override void HitTarget(TowerHitEvent eventInfo)
     {
         if (eventInfo.towerGO == gameObject)
@@ -63,9 +79,19 @@ public class MissileTower : Tower
                 GameObject effectInstance = Instantiate(eventInfo.hitEffect, enemyTarget.transform.position, enemyTarget.transform.rotation);
 
                 Destroy(effectInstance, 1f);
-                TypeOfShot(enemyTarget);
+                
+                if (!shotAlready)
+                {
+                    TypeOfShot(enemyTarget);
+                    shotAlready = true;
+                }
+                Invoke("Coldown", 0.3f);
             }
         }
+    }
+    void Coldown()
+    {
+        shotAlready = false;
     }
 
     private bool CanYouShoot()
@@ -105,25 +131,23 @@ public class MissileTower : Tower
             bullet.Seek(target);
         }
     }
-    public override void ShowUpgradeUI(GameObject medium, GameObject infoView)
+    public override void ShowUpgradeUI(Transform towerMenu)
     {
-        if (infoView.transform.GetChild(1).gameObject.activeInHierarchy)
+        for (int i = 0; i < towerMenu.childCount; i++)
         {
-            infoView.transform.GetChild(1).gameObject.SetActive(false);
-
-            medium.SetActive(true);
-        }
-        else
-        {
-            infoView.transform.GetChild(1).gameObject.SetActive(true);
-            medium.SetActive(false);
+            if (towerMenu.GetChild(i).gameObject.name.Equals("UpgradeMissilePanel"))
+            {
+                GameObject menuToShow = towerMenu.GetChild(i).gameObject;
+                menuToShow.transform.position = transform.position;
+                menuToShow.SetActive(true);
+            }
         }
     }
 
     public override void TowerLevel1()
     {
         base.TowerLevel1();
-        if (gM.SpendResources(level1Cost, 0f) && tUC.GetUpgradesPurchased() == 0)
+        if (gM.SpendResources(level1Cost, 0f))
         {
             tUC.IncreaseUpgradesPurchased();
             MissileTower mT = tUC.ClickedTower.GetComponent<MissileTower>();
@@ -133,7 +157,7 @@ public class MissileTower : Tower
     public override void TowerLevel2()
     {
         base.TowerLevel2();
-        if (gM.SpendResources(level2Cost, 0f) && tUC.GetUpgradesPurchased() == 1)
+        if (gM.SpendResources(level2Cost, 0f))
         {
             tUC.IncreaseUpgradesPurchased();
             MissileTower mT = tUC.ClickedTower.GetComponent<MissileTower>();
@@ -144,7 +168,7 @@ public class MissileTower : Tower
     public override void TowerLevel3()
     {
         base.TowerLevel3();
-        if (gM.SpendResources(level3Cost, 0f) && tUC.GetUpgradesPurchased() == 2)
+        if (gM.SpendResources(level3Cost, 0f))
         {
             tUC.IncreaseUpgradesPurchased();
             MissileTower mT = tUC.ClickedTower.GetComponent<MissileTower>();
