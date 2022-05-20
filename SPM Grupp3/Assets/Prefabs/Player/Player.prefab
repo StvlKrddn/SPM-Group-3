@@ -4713,8 +4713,6 @@ MonoBehaviour:
     m_Bits: 32768
   hoverColor: {r: 0.3962264, g: 0.39024565, b: 0.39024565, a: 1}
   towerPreview: {r: 1, g: 1, b: 1, a: 0.38431373}
-  builderCursorColorP1: {r: 0, g: 0.042789586, b: 0.6156863, a: 0.78431374}
-  builderCursorColorP2: {r: 0.8679245, g: 0, b: 0, a: 0.78431374}
 --- !u!1 &1555352807768005138
 GameObject:
   m_ObjectHideFlags: 0
@@ -4972,7 +4970,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b44984da848d06f4892f37e3b13b6b4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eventSystem: {fileID: 2139105061749222950}
+  tankMode: {fileID: 8465387875451167577}
+  buildMode: {fileID: 1555352807092885023}
 --- !u!114 &-261402878187306693
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9100,7 +9099,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 99999
+  m_Text: 0
 --- !u!1 &2832161543713047382
 GameObject:
   m_ObjectHideFlags: 0
@@ -11291,7 +11290,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 99999
+  m_Text: 0
 --- !u!1 &3823037232201969152
 GameObject:
   m_ObjectHideFlags: 0
@@ -13912,7 +13911,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 99999
+  m_Text: 700
 --- !u!1 &5065108526367419921
 GameObject:
   m_ObjectHideFlags: 0
@@ -15140,7 +15139,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 99999
+  m_Text: 700
 --- !u!1 &5568926826055171804
 GameObject:
   m_ObjectHideFlags: 0
@@ -16170,7 +16169,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 99999
+  m_Text: 0
 --- !u!1 &5767204716194462975
 GameObject:
   m_ObjectHideFlags: 0
@@ -18656,7 +18655,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 99999
+  m_Text: 700
 --- !u!1 &6188207472121952315
 GameObject:
   m_ObjectHideFlags: 0
@@ -22317,7 +22316,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 99999
+  m_Text: 700
 --- !u!1 &7491180538319563970
 GameObject:
   m_ObjectHideFlags: 0
@@ -23731,8 +23730,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcdc732b2ad87cf4fa19811d60122d88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moneyCostUI: {fileID: 0}
-  materialCostUI: {fileID: 0}
+  canvas: {fileID: 0}
 --- !u!1 &7935309508707344948
 GameObject:
   m_ObjectHideFlags: 0
@@ -24349,7 +24347,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 99999
+  m_Text: 0
 --- !u!1 &8108701225789280039
 GameObject:
   m_ObjectHideFlags: 0
@@ -25362,10 +25360,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementSpeed: 6
   health: 50
+  animator: {fileID: 0}
   levelOfTank: 0
   tankUpgradeTree: {fileID: 0}
   tankUpgradeTreeOne: {fileID: 291801988}
   tankUpgradeTreeTwo: {fileID: 291801997}
+  player1Material: {fileID: 0}
+  player2Material: {fileID: 0}
 --- !u!114 &8961258511388597484
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25402,6 +25403,7 @@ MonoBehaviour:
   boostDuration: 1
   boostCooldownTime: 5
   boosters: {fileID: 3436361576616561496}
+  animator: {fileID: 0}
 --- !u!114 &2030755986
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25430,7 +25432,8 @@ MonoBehaviour:
   abilityCD: 2
   abilityReady: 0
   range: 25
-  fireRate: 1
+  fireRateFirst: 1.2
+  fireRateSecond: 0.5
   damage: 50
   sniperAbility: {fileID: 5158456270458876578, guid: 96e8ed1d1989e8f448a69b5c76916339, type: 3}
 --- !u!114 &291801997

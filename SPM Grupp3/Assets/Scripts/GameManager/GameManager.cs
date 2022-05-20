@@ -30,11 +30,9 @@ public class GameManager : MonoBehaviour
     private GameObject damagingEnemy;
     private WaveManager waveManager;
     private Canvas canvas;
-    private Text moneyCounterUI;
-    private Text materialCounterUI;
+    [SerializeField] private Text moneyCounterUI;
+    [SerializeField] private Text materialCounterUI;
     private Slider livesSlider;
-    private GameObject moneyUI;
-    private GameObject materialUI;
 
     private int currentWave = -1;
     private float currentBaseHealth;
@@ -84,8 +82,8 @@ public class GameManager : MonoBehaviour
         Transform canvas = UI.Canvas.transform;
         
         Transform currencyPanel = canvas.GetChild(0);
-        moneyCounterUI = currencyPanel.Find("MoneyHolder").Find("MoneyCounter").GetComponent<Text>();
-        materialCounterUI = currencyPanel.Find("MaterialHolder").Find("MaterialCounter").GetComponent<Text>();
+        //moneyCounterUI = currencyPanel.Find("MoneyHolder").Find("MoneyCounter").GetComponent<Text>();
+        //materialCounterUI = currencyPanel.Find("MaterialHolder").Find("MaterialCounter").GetComponent<Text>();
         
         livesSlider = canvas.Find("LivesSlider").GetComponent<Slider>();
 
