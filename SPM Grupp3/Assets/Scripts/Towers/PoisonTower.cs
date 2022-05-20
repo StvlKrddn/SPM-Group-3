@@ -8,6 +8,7 @@ public class PoisonTower : Tower
     [SerializeField] private float poisonTicks = 5;
     [SerializeField] private float poisonDamagePerTick = 25;
     [SerializeField] private float maxHealthPerTick = 0.1f;
+    [SerializeField] private GameObject poisonPulse;
 
     [Header("Amount To Upgrade")]
     [SerializeField] private float upgradeAmountPoisonTicks = 5;
@@ -125,7 +126,7 @@ public class PoisonTower : Tower
         {
             if (c.GetComponent<EnemyController>())
             {
-                GameObject effectInstance = Instantiate(onHitEffect, transform.position, transform.rotation);
+                GameObject effectInstance = Instantiate(poisonPulse, transform.position, transform.rotation);
 
                 ParticleSystem particleEffect = effectInstance.GetComponent<ParticleSystem>();
                    
@@ -133,7 +134,7 @@ public class PoisonTower : Tower
 
                 Destroy(effectInstance, 1f);
                 EnemyController enemyontroller = c.GetComponent<EnemyController>();
-                enemyontroller.HitByPoison(PoisonTicks, PoisonDamagePerTick, maxHealthPerTick);
+                enemyontroller.HitByPoison(PoisonTicks, onHitEffect, PoisonDamagePerTick, maxHealthPerTick);
                 //EnemyController enemyTarget = eventInfo.enemyHit.GetComponent<EnemyController>();
                 
 
