@@ -9,6 +9,7 @@ public class UI : MonoBehaviour
     
     [SerializeField] private GameObject victoryPanel;
     [SerializeField] private GameObject defeatPanel;
+    [SerializeField] private GameObject pauseMenu;
 
 
     private static Canvas canvas;
