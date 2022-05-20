@@ -22,7 +22,6 @@ public class WaveEndSystem : MonoBehaviour
         
         if(FindObjectOfType<TankUpgradeTree>())
         {
-            print("kommer den hit");    
             tank = FindObjectOfType<TankUpgradeTree>();
         }
 

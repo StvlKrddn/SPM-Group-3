@@ -116,34 +116,32 @@ public class BuilderController : MonoBehaviour
         cursorImage.color = playerInput.playerIndex == 0 ? Color.blue : Color.red;
 
 
-        /*if (playerInput.playerIndex == 0)
-        {
-            for (int i = 0; i < towerMenu.transform.childCount; i++)
-            {
-                if (towerMenu.transform.GetChild(i).name.Equals("Hints"))
-                {
-                    continue;
-                }
-                towerMenu.transform.GetChild(i).GetChild(0).GetComponent<Image>().color = builderCursorColorP1;
-            }
+		if (playerInput.playerIndex == 0)
+		{
+			for (int i = 0; i < towerMenu.transform.childCount; i++)
+			{
+				if (towerMenu.transform.GetChild(i).name.Equals("Hints"))
+				{
+					continue;
+				}
+				towerMenu.transform.GetChild(i).GetChild(0).GetComponent<Image>().color = builderCursorColorP1;
+			}
 
-        }
+		}
 
-        if (playerInput.playerIndex == 1)
-        {
-            for (int i = 0; i < towerMenu.transform.childCount; i++)
-            {
-                if (towerMenu.transform.GetChild(i).name.Equals("Hints"))
-                {
-                    continue;
-                }
-                towerMenu.transform.GetChild(i).GetChild(0).GetComponent<Image>().color = builderCursorColorP2;
-            }
-            
-        }*/
-        
-        
-    }
+		if (playerInput.playerIndex == 1)
+		{
+			for (int i = 0; i < towerMenu.transform.childCount; i++)
+			{
+				if (towerMenu.transform.GetChild(i).name.Equals("Hints"))
+				{
+					continue;
+				}
+				towerMenu.transform.GetChild(i).GetChild(0).GetComponent<Image>().color = builderCursorColorP2;
+			}
+
+		}
+	}
 
     public void AcceptAction (InputAction.CallbackContext context)
     {
