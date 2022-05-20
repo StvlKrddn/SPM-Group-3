@@ -2712,18 +2712,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: -2985063043124971177, guid: 2e70cc575af38ad488bf5330cf4b943d, type: 3}
-        m_TargetAssemblyTypeName: CursorHandler, Assembly-CSharp
-        m_MethodName: OnClick
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
     m_ActionId: 9d746912-391b-47da-8fb2-f8d36bfe1317
     m_ActionName: Builder/Accept[/XInputControllerWindows/buttonSouth]
   - m_PersistentCalls:
@@ -2800,8 +2788,8 @@ MonoBehaviour:
     m_ActionName: Tank/Ability[/XInputControllerWindows/rightShoulder,/XInputControllerWindows1/rightShoulder,/XInputControllerWindows/select,/XInputControllerWindows1/select]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
+      - m_Target: {fileID: 705580133456242782}
+        m_TargetAssemblyTypeName: PlayerHandler, Assembly-CSharp
         m_MethodName: PauseGame
         m_Mode: 0
         m_Arguments:
@@ -2816,8 +2804,8 @@ MonoBehaviour:
     m_ActionName: Tank/Pause[/DualShock4GamepadHID/start,/DualShock4GamepadHID1/start]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
+      - m_Target: {fileID: 705580133456242782}
+        m_TargetAssemblyTypeName: PlayerHandler, Assembly-CSharp
         m_MethodName: PauseGame
         m_Mode: 0
         m_Arguments:
@@ -2859,7 +2847,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b44984da848d06f4892f37e3b13b6b4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  eventSystem: {fileID: 139788608052468839}
   tankMode: {fileID: 3141392934154749893}
   buildMode: {fileID: 705580134668559454}
 --- !u!114 &6917616096664220538
