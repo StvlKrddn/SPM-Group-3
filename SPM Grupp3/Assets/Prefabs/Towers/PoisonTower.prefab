@@ -176,11 +176,12 @@ MonoBehaviour:
   shot: {fileID: 3201376968240350041, guid: 7e4902a1dd3b3484280a32e92534c4c7, type: 3}
   firePoint: {fileID: 2543076756762422033}
   radius: {fileID: 2543076757610419390}
-  onHitEffect: {fileID: 642787401388277777, guid: 04e3a8d744d3bca4baee1cfc011c8f8e, type: 3}
+  onHitEffect: {fileID: 6062907644201011195, guid: 0bdcc3aa4ab50af46ab88c1eeecdcf4a, type: 3}
   towerScript: {fileID: 0}
   tower: {fileID: 2543076757521757243}
   upgradeUI: {fileID: 0}
   buildUI: {fileID: 0}
+  towerPlacement: {fileID: 0}
   range: 6
   fireRate: 1
   shotDamage: 0
@@ -188,14 +189,17 @@ MonoBehaviour:
   materialCost: 0
   poisonTicks: 4
   poisonDamagePerTick: 1
-  maxHealthPerTick: 0.125
+  maxHealthPerTick: 0.04
+  poisonPulse: {fileID: 642787401388277777, guid: 04e3a8d744d3bca4baee1cfc011c8f8e, type: 3}
   upgradeAmountPoisonTicks: 2
   upgradeAmountPoisonDamagePerTick: 0.33
+  upgradeMaxHealthPoisonDamagePerTick: 0.01
   upgradeAttackSpeed: 0.1
   poisonSpread: 0
   level1Cost: 1000
   level2Cost: 1200
   level3Cost: 2000
+  costForUpgrade: 0
 --- !u!1 &2543076757610419390
 GameObject:
   m_ObjectHideFlags: 0

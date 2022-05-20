@@ -148,7 +148,7 @@ public abstract class EnemyController : MonoBehaviour
                 {
                     print("DamageTaken");
                     EnemyController eC = collision.gameObject.GetComponent<EnemyController>();
-                    eC.HitByPoison(amountOfTicks, amountOfDps, maxHealthDamage);
+                    eC.HitByPoison(amountOfTicks, hitByPoisonEffect, amountOfDps, maxHealthDamage);
                 }
             }
         }
@@ -162,13 +162,13 @@ public abstract class EnemyController : MonoBehaviour
         }
 	}
 
-	public void HitByPoison(float ticks, float dps, float currentHealthDamage)
+	public void HitByPoison(float ticks, GameObject hitEffect, float dps, float currentHealthDamage)
     {
         amountOfTicks = ticks;
         amountOfDps = dps;
-        maxHealthDamage = currentHealthDamage; 
-        //GameObject poisonEffect = Instantiate( gameObject.transform);
-        //Destroy(poisonEffect, ticks);
+        maxHealthDamage = currentHealthDamage;
+        GameObject poisonEffect = Instantiate(hitEffect, gameObject.transform);
+        Destroy(poisonEffect, ticks);
         if (poisonTickTimers.Count <= 0)
         {
             poisonTickTimers.Add(ticks);
