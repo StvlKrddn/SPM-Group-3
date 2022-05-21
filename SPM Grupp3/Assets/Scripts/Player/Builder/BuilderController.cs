@@ -18,10 +18,13 @@ public class BuilderController : MonoBehaviour
     [SerializeField] private LayerMask towerLayerMask;
     [SerializeField] private LayerMask ghostTower;
     [SerializeField] private LayerMask uiLayer;
+    [SerializeField] private LayerMask garageLayer;
     [SerializeField] private Color hoverColor;
-    [SerializeField] private Color startColor;
     [SerializeField] private Color towerPreview;
+    private Color player1Color;
+    private Color player2Color;
 
+    private Color startColor;
     private Transform _selection;
     private BuildManager buildManager;
     private Camera mainCamera;
@@ -35,24 +38,35 @@ public class BuilderController : MonoBehaviour
     private bool previousMouseState;
     private bool previousYState;
     private GameObject preTower;
-    private GameObject buildMenu;
-    private GameObject infoView;
-    private GameObject towerPanel;
     private GameObject playerCursor;
+    private Tower selectedTower;
+    private Transform playerUI;
+    private Transform towerMenu;
+    private GameObject buildPanel;
+    private GameObject hintsPanel;
+    private GameObject tankUpgrade;
 
-    private GameObject towerMenu;
+    private bool stopHover = false;
+    private bool stopMouse = false;
+    private bool placementClicked = false;
 
     void Start()
     {
+        GameObject placement = GameObject.Find("PlaceForTower").gameObject;
+        startColor = placement.GetComponent<Renderer>().material.color;
         screenMiddle = new Vector2(Screen.width / 2, Screen.height / 2);
+
+        player1Color = GameManager.Instance.Player1Color;
+        player2Color = GameManager.Instance.Player2Color;
 
         mainCamera = Camera.main;
         canvas = UI.Canvas.transform;
-        buildMenu = canvas.Find("Build_UI").gameObject;
-        infoView = buildMenu.transform.Find("InfoViews").gameObject;
-        towerPanel = buildMenu.transform.Find("TowerPanel").gameObject;
 
-        //towerMenu = canvas.Find("TowerMenu").GetChild(0).gameObject;
+        playerUI = transform.parent.Find("PlayerUI");
+        towerMenu = playerUI.Find("TowerMenu");
+        buildPanel = towerMenu.Find("BuildPanel").gameObject;
+        hintsPanel = towerMenu.Find("Hints").gameObject;
+        tankUpgrade = towerMenu.Find("TankPanel").gameObject;
 
         buildManager = GetComponentInParent<BuildManager>();
 
@@ -71,7 +85,7 @@ public class BuilderController : MonoBehaviour
 
     void InitializeCursor()
     {
-        playerCursor = Instantiate(cursorPrefab, transform.parent.Find("PlayerCanvas"));
+        playerCursor = Instantiate(cursorPrefab, playerUI);
         SetCursorColor(playerCursor);
         playerCursor.name = "Player " + (playerInput.playerIndex + 1) + " cursor";
         cursorTransform = playerCursor.GetComponent<RectTransform>();
@@ -102,8 +116,35 @@ public class BuilderController : MonoBehaviour
     void SetCursorColor(GameObject cursor)
     {
         Image cursorImage = cursor.GetComponent<Image>();
-        cursorImage.color = playerInput.playerIndex == 0 ? Color.blue : Color.red;
-    }
+        cursorImage.color = playerInput.playerIndex == 0 ? player1Color : player2Color;
+
+
+		if (playerInput.playerIndex == 0)
+		{
+			for (int i = 0; i < towerMenu.transform.childCount; i++)
+			{
+				if (towerMenu.transform.GetChild(i).name.Equals("Hints"))
+				{
+					continue;
+				}
+				towerMenu.transform.GetChild(i).GetChild(0).GetComponent<Image>().color = player1Color;
+			}
+
+		}
+
+		if (playerInput.playerIndex == 1)
+		{
+			for (int i = 0; i < towerMenu.transform.childCount; i++)
+			{
+				if (towerMenu.transform.GetChild(i).name.Equals("Hints"))
+				{
+					continue;
+				}
+				towerMenu.transform.GetChild(i).GetChild(0).GetComponent<Image>().color = player2Color;
+			}
+
+		}
+	}
 
     public void AcceptAction (InputAction.CallbackContext context)
     {
@@ -117,6 +158,7 @@ public class BuilderController : MonoBehaviour
         {
             ClickedPlacement();
             ClickedTower();
+            ClickedGarage();
             EventHandler.Instance.InvokeEvent(new UIClickedEvent(
                 description: "Accept button clicked",
                 clicker: transform.parent.gameObject
@@ -130,16 +172,13 @@ public class BuilderController : MonoBehaviour
         if (context.performed)
         {
             Deselect();
-            for (int i = 0; i < infoView.transform.childCount; i++)
-            {
-                infoView.transform.GetChild(i).gameObject.SetActive(false);
-            }
+            
         }
     }
 
     public void EnterTank(InputAction.CallbackContext context)
     {
-        if (context.performed )
+        if (context.performed && !stopMouse)
         {
             Deselect();
             EventHandler.Instance.InvokeEvent(new PlayerSwitchEvent(
@@ -158,7 +197,17 @@ public class BuilderController : MonoBehaviour
             Renderer selectionRenderer = _selection.GetComponent<Renderer>();
             selectionRenderer.material.color = startColor;
         }
-        towerPanel.SetActive(true);
+
+        for (int i = 0; i < towerMenu.childCount; i++)
+        {
+            towerMenu.GetChild(i).gameObject.SetActive(false);
+        }
+        hintsPanel.SetActive(false);
+        cursorTransform.gameObject.SetActive(true);
+        stopHover = false;
+        stopMouse = false;
+        placementClicked = false;
+/*        towerPanel.SetActive(true);*/
     }
 
     private void OnEnable()
@@ -201,13 +250,18 @@ public class BuilderController : MonoBehaviour
         {
             return;
         }
-
-        newPosition = MoveMouse();
-        UpdateCursorImage(newPosition);
+        if (!stopMouse)
+        {
+            newPosition = MoveMouse();
+            UpdateCursorImage(newPosition);
+        }
 
         RaycastHit hit = CastRayFromCamera(placeForTowerLayerMask);
 
-        Hover(hit);
+        if (!stopHover)
+        {
+            Hover(hit);
+        }        
     }
 
     Vector2 MoveMouse()
@@ -250,6 +304,8 @@ public class BuilderController : MonoBehaviour
         return hit;
     }
 
+    
+
     void Hover(RaycastHit hit)
     {
         if (_selection != null)
@@ -272,35 +328,58 @@ public class BuilderController : MonoBehaviour
         }
     }
 
-    public void ExitHover()
+    public void ResetHover()
+    {
+        Deselect();
+        stopHover = false;
+        stopMouse = false;
+        placementClicked = false;
+        buildManager.TowerToBuild = null;
+        buildManager.ClickedArea = null;
+        cursorTransform.gameObject.SetActive(true);
+        GhostTower(buildManager.TowerToBuild);
+    }
+
+/*    public void ExitHover()
     {
         buildManager.TowerToBuild = null;
-        Destroy(preTower);
+        GhostTower();
     }
 
     public void TowerToHover(GameObject tower)
     {
         buildManager.TowerToBuild = tower;
         GhostTower();
-    }
+    }*/
 
-    void GhostTower()
+    public void GhostTower(GameObject towerToDisplay)
     {
-        GameObject tower = buildManager.TowerToBuild.transform.GetChild(1).gameObject;
+        if (towerToDisplay == null || buildManager.ClickedArea == null)
+        {
+            Destroy(preTower);
+            return;
+        }
+        GameObject tower = towerToDisplay.transform.GetChild(1).gameObject;
         
         Transform placement = buildManager.ClickedArea.transform.GetChild(0).transform;
         Vector3 placeVec = placement.position;
-        Vector3 towerPlace = new Vector3(placeVec.x, placeVec.y + 0.5f, placeVec.z);
+        Vector3 towerPlace = new Vector3(placeVec.x, placeVec.y, placeVec.z);
 
         preTower = Instantiate(tower, towerPlace, placement.rotation);
+        preTower.name = "IHAteMyLife";
         GameObject radius = preTower.transform.GetChild(0).gameObject;
         
         preTower.layer = 12;
         preTower.GetComponent<Renderer>().material.color = towerPreview;
 
         Tower tow = tower.GetComponent<Tower>();       
-        radius.transform.localScale = new Vector3(tow.range * 2f, 0.01f, tow.range * 2f);
+/*        radius.transform.localScale = new Vector3(tow.range * 2f, 0.01f, tow.range * 2f);*/
         radius.SetActive(true);
+    }
+
+    public void DestroyPreTower()
+    {
+        Destroy(preTower);
     }
 
     GameObject GetTowerPlacement()
@@ -311,16 +390,32 @@ public class BuilderController : MonoBehaviour
 
     void ClickedPlacement()
     {   
-        RaycastHit hit = CastRayFromCamera(placeForTowerLayerMask);
-        if (hit.collider != null)
+        if (!placementClicked)
         {
-            GameObject placementHit = hit.collider.gameObject;
-            if (placementHit.CompareTag("PlaceForTower"))
+            RaycastHit hit = CastRayFromCamera(placeForTowerLayerMask);
+            if (hit.collider != null)
             {
-                buildManager.ClickedArea = _selection.gameObject;
-                towerMenu.SetActive(true);
+                GameObject placementHit = hit.collider.gameObject;
+                if (placementHit.CompareTag("PlaceForTower"))
+                {
+                    buildManager.ClickedArea = _selection.gameObject;
+                    buildPanel.transform.position = buildManager.ClickedArea.transform.position;
+                    hintsPanel.transform.position = buildManager.ClickedArea.transform.position;
+
+                    cursorTransform.gameObject.SetActive(false);
+
+
+
+                    buildPanel.SetActive(true);
+                    hintsPanel.SetActive(true);
+                    stopHover = true;
+                    stopMouse = true;
+                    placementClicked = true;
+
+                }
             }
         }
+        
     }
     void ClickedTower()
     {
@@ -328,32 +423,53 @@ public class BuilderController : MonoBehaviour
         if (hit.collider != null)
         {
             GameObject towerHit = hit.collider.gameObject;
-/*            if (towerHit.CompareTag("Tower"))
-            {*/
-                if (towerHit != null && preTower == null)
-                {
-                    Tower tower = towerHit.GetComponent<Tower>();
+
+            if (towerHit != null && preTower == null)
+            {
+                selectedTower = towerHit.GetComponent<Tower>();
                     
-                    tower.ShowUpgradeUI(towerPanel, infoView);
-                    EventHandler.Instance.InvokeEvent(new TowerClickedEvent("Tower Is clicked", tower.gameObject));
-                    buildManager.TowerToBuild = null;
-                    print("Tower of type: " + tower + " Is clicked");
-                }
-                
+                selectedTower.ShowUpgradeUI(towerMenu);
 
-/*                if (tower.radius.activeInHierarchy)
-                {
-                    tower.radius.SetActive(false);
-                    tower.upgradeUI.SetActive(false);
-                        
-                }
-                else
-                {
-                    tower.radius.SetActive(true);
-                    tower.upgradeUI.SetActive(true);
+            cursorTransform.gameObject.SetActive(false);
 
-                } */
-            }
-        /*}*/
+            EventHandler.Instance.InvokeEvent(new TowerClickedEvent("Tower Is clicked", selectedTower.gameObject));
+                tankUpgrade.transform.position = towerHit.transform.position;
+                hintsPanel.transform.position = towerHit.transform.position;
+                hintsPanel.SetActive(true);
+                buildManager.TowerToBuild = null;
+                stopHover = true;
+                stopMouse = true;
+                placementClicked = true;
+                }           
+            
+
+        }
+    }
+
+	public void DeleteTower()
+	{
+		if (selectedTower != null)
+		{
+			selectedTower.GetComponent<Tower>().towerPlacement.layer = 10;
+			Destroy(selectedTower.gameObject);
+			Deselect();
+		}
+	}
+
+	void ClickedGarage()
+    {
+        RaycastHit hit = CastRayFromCamera(garageLayer);
+        if (hit.collider != null)
+        {
+            cursorTransform.gameObject.SetActive(false);
+
+            tankUpgrade.transform.position = hit.collider.transform.position;
+            hintsPanel.transform.position = hit.collider.transform.position;
+            tankUpgrade.SetActive(true);
+            hintsPanel.SetActive(true);
+            stopHover = true;
+            stopMouse = true;
+            placementClicked = true;
+        }
     }
 }

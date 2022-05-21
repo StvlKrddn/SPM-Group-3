@@ -18,6 +18,7 @@ public abstract class Tower : MonoBehaviour
     public GameObject tower;
     public GameObject upgradeUI;
     public GameObject buildUI;
+	public GameObject towerPlacement;
 
     [Header("BaseStats")]
 
@@ -35,8 +36,27 @@ public abstract class Tower : MonoBehaviour
 
     public abstract void TypeOfShot(EnemyController enemyTarget);
     public abstract void HitTarget(TowerHitEvent eventInfo);
-    public abstract void ShowUpgradeUI(GameObject medium, GameObject infoView);
+    public abstract void ShowUpgradeUI(Transform towerMenu);
+    public abstract float UpgradeCostUpdate();
     /*    public abstract void CheckLevels();*/
+
+    public void LevelUpTower()
+    {
+        tUC = TowerUpgradeCotroller.instance;
+        switch (tUC.GetUpgradesPurchased())
+        {
+            case 0:
+                TowerLevel1();
+                break;
+            case 1:
+                TowerLevel2();
+                break;
+            case 2:
+                TowerLevel3();
+                break;
+
+        }
+    }
 
     public virtual void TowerLevel1()
     {

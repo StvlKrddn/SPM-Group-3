@@ -17,6 +17,8 @@ public class CannonTower : Tower
     [SerializeField] private float level2Cost;
     [SerializeField] private float level3Cost;
 
+    public float costForUpgrade;
+
     private float fireCountdown = 0f;
 
 
@@ -52,6 +54,23 @@ public class CannonTower : Tower
             }
 
         }
+    }
+
+    public override float UpgradeCostUpdate()
+    {
+        switch (tUC.GetUpgradesPurchased())
+        {
+            case 0:
+                costForUpgrade = level1Cost;
+                break;
+            case 1:
+                costForUpgrade = level2Cost;
+                break;
+            case 2:
+                costForUpgrade = level3Cost;
+                break;
+        }
+        return costForUpgrade;
     }
 
     void DubbelShot()
@@ -104,17 +123,16 @@ public class CannonTower : Tower
         }
     }
 
-    public override void ShowUpgradeUI(GameObject medium, GameObject infoView)
+    public override void ShowUpgradeUI(Transform towerMenu)
     {
-        if (infoView.transform.GetChild(0).gameObject.activeInHierarchy)
+        for (int i = 0; i < towerMenu.childCount; i++)
         {
-            infoView.transform.GetChild(0).gameObject.SetActive(false);
-            medium.SetActive(true);
-        }
-        else
-        {
-            infoView.transform.GetChild(0).gameObject.SetActive(true);
-            medium.SetActive(false);
+            if (towerMenu.GetChild(i).gameObject.name.Equals("UpgradeCannonPanel"))
+            {
+                GameObject menuToShow = towerMenu.GetChild(i).gameObject;
+                menuToShow.transform.position = transform.position;
+                menuToShow.SetActive(true);
+            }
         }
     }
 
@@ -122,7 +140,7 @@ public class CannonTower : Tower
     {
         base.TowerLevel1();
 
-        if (tUC.GetUpgradesPurchased() == 0 && gM.SpendResources(level1Cost, 0f))
+        if (gM.SpendResources(level1Cost, 0f))
         {
             tUC.IncreaseUpgradesPurchased();
             CannonTower cT = tUC.ClickedTower.GetComponent<CannonTower>();
@@ -134,7 +152,7 @@ public class CannonTower : Tower
     {
         base.TowerLevel2();
 
-        if (tUC.GetUpgradesPurchased() == 1 && gM.SpendResources(level2Cost, 0f))
+        if (gM.SpendResources(level2Cost, 0f))
         {
             tUC.IncreaseUpgradesPurchased();
             CannonTower cT = tUC.ClickedTower.GetComponent<CannonTower>();
@@ -153,7 +171,7 @@ public class CannonTower : Tower
     {
         base.TowerLevel3();
 
-        if (tUC.GetUpgradesPurchased() == 2 && gM.SpendResources(level3Cost, 0f))
+        if (gM.SpendResources(level3Cost, 0f))
         {
             tUC.IncreaseUpgradesPurchased();
             CannonTower cT = tUC.ClickedTower.GetComponent<CannonTower>();

@@ -39,18 +39,26 @@ public abstract class TankUpgradeTree : MonoBehaviour
 
     public virtual bool Ability()
     {
+        print(abilityReady);
         if (abilityReady == true)
         {
             abilityReady = false;
-            StartCoroutine(ResetAbility());
+   //         StartCoroutine(ResetAbility());
             return true;
         }
+
+        print(abilityReady);
         return false;
     }
 
     protected IEnumerator ResetAbility()
     {
         yield return new WaitForSeconds(abilityCD);
+        abilityReady = true;
+    }
+
+    public void ResetColdown()
+    {
         abilityReady = true;
     }
 

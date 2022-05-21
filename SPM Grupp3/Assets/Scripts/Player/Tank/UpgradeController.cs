@@ -7,7 +7,7 @@ public class UpgradeController : MonoBehaviour
 {
     public int moneyCost = 500;
     public int materialCost = 0;
-    public int currentUpgradeLevel = 0;
+    public static int currentUpgradeLevel = 0;
 
     private static UpgradeController instance;
     public static UpgradeController Instance

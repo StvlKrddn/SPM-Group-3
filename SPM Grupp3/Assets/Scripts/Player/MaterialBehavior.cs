@@ -22,14 +22,17 @@ public class MaterialBehavior : MonoBehaviour
 
     void Start()
     {
+        transform.position = new Vector3(transform.position.x, transform.position.y + 2, transform.position.z);
         gameManager = FindObjectOfType<GameManager>();
         rb = GetComponent<Rigidbody>();
 		direction = Random.insideUnitSphere.normalized;
-		while ((x < 0.15f && x > -0.15f) || (z < 0.15f && z > -0.15f))
+		while ((x > 0.25f && x < -0.25f) || (z > 0.25f && z < -0.25f))
 		{
-			x = Random.Range(-0.30f, 0.30f);
-			z = Random.Range(-0.17f, 0.17f);
 		}
+			//x = Random.Range(-0.35f, 0.35f);
+			//z = Random.Range(-0.26f, 0.26f);
+        direction = new Vector3(-3f, 0, 0);
+
     }
 
     void Update()
@@ -54,9 +57,10 @@ public class MaterialBehavior : MonoBehaviour
 
     private void Throw()
     {
-		transform.Translate(transform.position * x * Time.smoothDeltaTime);
-		transform.Translate(transform.position * z * Time.smoothDeltaTime);
-		transform.Translate(transform.up * 5 * Time.smoothDeltaTime);
+        transform.position += (direction * Time.fixedDeltaTime);
+		//transform.Translate(transform.position * x * Time.smoothDeltaTime);
+		//transform.Translate(transform.position * z * Time.smoothDeltaTime);
+		//transform.Translate(transform.up * 5 * Time.smoothDeltaTime);
     }
 
     private void Bobbing()

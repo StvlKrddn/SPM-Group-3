@@ -181,19 +181,25 @@ MonoBehaviour:
   tower: {fileID: 2543076757521757243}
   upgradeUI: {fileID: 0}
   buildUI: {fileID: 0}
-  range: 9
+  towerPlacement: {fileID: 0}
+  range: 6
   fireRate: 1
   shotDamage: 0
-  cost: 500
-  materialCost: 10
-  poisonTicks: 5
-  poisonDamagePerTick: 10
-  upgradeAmountPoisonTicks: 3
-  upgradeAmountPoisonDamagePerTick: 5
+  cost: 2100
+  materialCost: 0
+  poisonTicks: 4
+  poisonDamagePerTick: 1
+  maxHealthPerTick: 0.04
+  poisonPulse: {fileID: 642787401388277777, guid: 04e3a8d744d3bca4baee1cfc011c8f8e, type: 3}
+  upgradeAmountPoisonTicks: 2
+  upgradeAmountPoisonDamagePerTick: 0.33
+  upgradeMaxHealthPoisonDamagePerTick: 0.01
+  upgradeAttackSpeed: 0.1
   poisonSpread: 0
-  level1Cost: 700
-  level2Cost: 700
-  level3Cost: 700
+  level1Cost: 1000
+  level2Cost: 1200
+  level3Cost: 2000
+  costForUpgrade: 0
 --- !u!1 &2543076757610419390
 GameObject:
   m_ObjectHideFlags: 0

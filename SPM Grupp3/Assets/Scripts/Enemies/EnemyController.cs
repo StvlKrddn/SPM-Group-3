@@ -7,7 +7,7 @@ public abstract class EnemyController : MonoBehaviour
 {
     public float speed = 10f;
     [SerializeField] private float health = 100f;
-    [SerializeField] private GameObject hitEffect;
+    public GameObject hitEffect;
     [SerializeField] private float meleeDamage;
     private GameManager gM;
     private Transform target;
@@ -24,10 +24,10 @@ public abstract class EnemyController : MonoBehaviour
     public bool spread = false;
     private float amountOfTicks;
     private float amountOfDps;
+    private float maxHealthDamage;
     private bool dead = false;
     private float currentHealth;
     protected int path;
-    [SerializeField] private float maxHealthPosion = 0.05f;
 
     public float MeleeDamage { get { return meleeDamage; } set { meleeDamage = value; } }
     public float Health { get { return health; } }
@@ -148,7 +148,7 @@ public abstract class EnemyController : MonoBehaviour
                 {
                     print("DamageTaken");
                     EnemyController eC = collision.gameObject.GetComponent<EnemyController>();
-                    eC.HitByPoison(amountOfTicks, amountOfDps, hitByPoisonEffect);
+                    eC.HitByPoison(amountOfTicks, hitByPoisonEffect, amountOfDps, maxHealthDamage);
                 }
             }
         }
@@ -162,20 +162,21 @@ public abstract class EnemyController : MonoBehaviour
         }
 	}
 
-	public void HitByPoison(float ticks, float dps, GameObject effect)
+	public void HitByPoison(float ticks, GameObject hitEffect, float dps, float currentHealthDamage)
     {
         amountOfTicks = ticks;
         amountOfDps = dps;
-        GameObject poisonEffect = Instantiate(effect, gameObject.transform);
+        maxHealthDamage = currentHealthDamage;
+        GameObject poisonEffect = Instantiate(hitEffect, gameObject.transform);
         Destroy(poisonEffect, ticks);
         if (poisonTickTimers.Count <= 0)
         {
             poisonTickTimers.Add(ticks);
-            StartCoroutine(PoisonTick(dps));
+            StartCoroutine(PoisonTick(dps, currentHealthDamage));
         }
     }
 
-    private IEnumerator PoisonTick(float dps)
+    private IEnumerator PoisonTick(float dps, float maxHealthDamage)
     {
         while (poisonTickTimers.Count > 0)
         {
@@ -184,7 +185,7 @@ public abstract class EnemyController : MonoBehaviour
                 poisonTickTimers[i]--;
             }
             TakeDamage(dps);
-            TakeDamage(health * maxHealthPosion); //Temp
+            TakeDamage(health * maxHealthDamage);
             poisonTickTimers.RemoveAll(i => i == 0);
             yield return new WaitForSeconds(0.75f);
         }
