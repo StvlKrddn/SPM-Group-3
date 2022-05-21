@@ -21,7 +21,7 @@ public class SpawnEffect : MonoBehaviour {
         ps = GetComponentInChildren <ParticleSystem>();
 
         var main = ps.main;
-        main.duration = spawnEffectTime;
+        //main.duration = spawnEffectTime;
 
         ps.Play();
 
@@ -29,6 +29,7 @@ public class SpawnEffect : MonoBehaviour {
 	
 	void Update ()
     {
+        /*
         if (timer < spawnEffectTime + pause)
         {
             timer += Time.deltaTime;
@@ -38,6 +39,7 @@ public class SpawnEffect : MonoBehaviour {
             ps.Play();
             timer = 0;
         }
+        */
 
 
         _renderer.material.SetFloat(shaderProperty, fadeIn.Evaluate( Mathf.InverseLerp(0, spawnEffectTime, timer)));

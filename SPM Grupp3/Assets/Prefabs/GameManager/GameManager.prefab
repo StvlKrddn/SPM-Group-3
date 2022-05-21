@@ -56,7 +56,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: -50
+  near clip plane: 0
   far clip plane: 100
   field of view: 60
   orthographic: 1
@@ -199,10 +199,16 @@ MonoBehaviour:
   baseHealth: 100
   material: 10
   money: 1400
-  colorGain: {r: 0.20376274, g: 0.6415094, b: 0, a: 1}
+  victoryPanel: {fileID: 0}
+  continueButton: {fileID: 0}
+  defeatPanel: {fileID: 0}
+  restartButton: {fileID: 0}
   startingMode: 0
+  Player1Color: {r: 0, g: 0, b: 0, a: 0}
+  Player2Color: {r: 0, g: 0, b: 0, a: 0}
   towersPlaced: []
-  selectedButton: {fileID: 0}
+  moneyCounterUI: {fileID: 0}
+  materialCounterUI: {fileID: 0}
 --- !u!114 &5574963424639874967
 MonoBehaviour:
   m_ObjectHideFlags: 0

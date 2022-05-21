@@ -8,7 +8,6 @@ public class FireGrenade : MonoBehaviour
     private SphereCollider sphereCollider;
     [SerializeField] private float timer;
 
-    [SerializeField] private int timer; 
 
     // Start is called before the first frame update
     void Start()
