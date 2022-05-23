@@ -15,7 +15,9 @@ public class MaterialTutorial : MonoBehaviour
 
 
     public GameObject objectToDisable;
-    public GameObject objectToEnable; 
+    public GameObject objectToEnable;
+
+    public GameObject anotherGameObjectToEnable; 
 
     private Vector3 originalPosition;
 
@@ -61,7 +63,7 @@ public class MaterialTutorial : MonoBehaviour
             gameManager.AddMaterial(amountOfMaterialGained);
             Destroy(gameObject);
             objectToDisable.SetActive(false);
-
+            anotherGameObjectToEnable.SetActive(true);
             objectToEnable.SetActive(true);
         }
 

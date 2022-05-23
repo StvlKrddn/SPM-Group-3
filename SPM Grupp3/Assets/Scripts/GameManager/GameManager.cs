@@ -4,41 +4,42 @@ using UnityEngine.UI;
 using System;
 using UnityEngine.InputSystem;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    //[Header("Stats: ")]
+    //[SerializeField] private float baseHealth = 100f;
+    //[SerializeField] private float material = 0f;
+    //[SerializeField] private float money = 350f;
+    [SerializeField] private BaseStats baseStats;
 
-    [Header("Stats: ")]
-    [SerializeField] private float baseHealth = 100f;
-    [SerializeField] private float material = 0f;
-    [SerializeField] private float money = 350f;
-
-    [Header("UI Elements: ")]
+    [Header("UI: ")]
     [SerializeField] private Text moneyCounterUI;
-    [SerializeField] private Text moneyChangerUI;
-    [Space]
     [SerializeField] private Text materialCounterUI;
-    [SerializeField] private Text materialChangerUI;
-    [SerializeField] private Slider livesSlider;
-    [Space]
-    [SerializeField] private Color colorGain;
-    [Space]
-    [SerializeField] private GameObject victoryUI;
-    [SerializeField] private GameObject defeatUI;
 
-    [Header("Spanwer for UI Elements")]
-    [SerializeField] private GameObject moneyUI;
-    [SerializeField] private GameObject materialUI;
-
-    [Header("Player")]
-    [SerializeField] private PlayerMode startingMode;
+    //[Header("Players: ")]
+    //[SerializeField] private PlayerMode startingMode;
+    [NonSerialized] public Color Player1Color;
+    [NonSerialized] public Color Player2Color;
 
     [Header("Other")]
-    public List<GameObject> towersPlaced = new List<GameObject>();
+    [NonSerialized] public List<GameObject> towersPlaced = new List<GameObject>();
+    
+    private GameObject victoryPanel;
+    private GameObject defeatPanel;
+    private GameObject waveCounter;
 
     private BuildManager buildManager;
     private GameObject damagingEnemy;
     private WaveManager waveManager;
+    private Canvas canvas;
+    private Slider livesSlider;
+
+    private float money;
+    private float material;
+    private float baseHealth;
+    private PlayerMode startingMode;
 
     private int currentWave = -1;
     private float currentBaseHealth;
@@ -46,7 +47,7 @@ public class GameManager : MonoBehaviour
     private int moneyCollected;
     private int materialCollected;
 
-    public float Money { get { return money; } set { money = value; } }
+    public int CurrentWave { get { return currentWave; } set { currentWave = value; } }
     public PlayerMode StartingMode { get { return startingMode; } }
     public int EnemiesKilled { get { return enemiesKilled; } set { enemiesKilled = value; } }
 
@@ -64,19 +65,84 @@ public class GameManager : MonoBehaviour
         } 
     }
 
+    void Awake() 
+    {
+        EventHandler.Instance.RegisterListener<SaveGameEvent>(SaveGame);
+        if (DataManager.FileExists(DataManager.SaveData))
+        {
+            LoadFromFile();
+        }
+        else 
+        {
+            LoadBase();
+        }
+    }
+
+    private void LoadFromFile()
+    {
+        SaveData data = (SaveData) DataManager.ReadFromFile(DataManager.SaveData);
+        money = data.money;
+        material = data.material;
+        currentWave = data.currentWave;
+        baseHealth = data.currentBaseHealth;
+        enemiesKilled = data.enemiesKilled;
+        moneyCollected = data.moneyCollected;
+        materialCollected = data.materialCollected;
+    }
+
+    private void LoadBase()
+    {
+        money = baseStats.money;
+        material = baseStats.material;
+        currentWave = -1;
+        baseHealth = baseStats.baseHealth;
+        
+        enemiesKilled = 0;
+        moneyCollected = 0;
+        materialCollected = 0;
+
+        Player1Color = baseStats.Player1Color;
+        Player2Color = baseStats.Player2Color;
+    }
+
+    [ContextMenu("Delete Save Data")]
+    public void DeleteSaveData()
+    {
+        DataManager.DeleteFile(DataManager.SaveData);
+    }
+
     private void Start()
     {
+        InitializeUIElements();
+
         buildManager = FindObjectOfType<BuildManager>();
         currentBaseHealth = baseHealth;
-        livesSlider.maxValue = currentBaseHealth;
-        livesSlider.value = baseHealth;
+        livesSlider.maxValue = baseStats.baseHealth;
+        livesSlider.value = currentBaseHealth;
 
         waveManager = GetComponent<WaveManager>();
 
-        UpdateResourcesUI();
+        canvas = UI.Canvas;
 
-        victoryUI.SetActive(false);
-        defeatUI.SetActive(false);
+        UpdateUI();
+
+        victoryPanel.SetActive(false);
+        defeatPanel.SetActive(false);
+    }
+
+    void InitializeUIElements()
+    {
+        Transform canvas = UI.Canvas.transform;
+        
+        Transform topPanel = canvas.GetChild(0);
+        waveCounter = topPanel.Find("WaveHolder").Find("WaveCounter").gameObject;
+        moneyCounterUI = topPanel.Find("MoneyHolder").Find("MoneyCounter").GetComponent<Text>();
+        materialCounterUI = topPanel.Find("MaterialHolder").Find("MaterialCounter").GetComponent<Text>();
+        
+        livesSlider = canvas.Find("LivesSlider").GetComponent<Slider>();
+
+        victoryPanel = canvas.Find("VictoryPanel").gameObject;        
+        defeatPanel = canvas.Find("DefeatPanel").gameObject;
     }
 
     private void Update()
@@ -102,7 +168,23 @@ public class GameManager : MonoBehaviour
                 material -= 50;
             }
         }
-        UpdateResourcesUI();
+        UpdateUI();
+    }
+
+    void SaveGame(SaveGameEvent eventInfo)
+    {
+        print("Game saved");
+        SaveData saveData = new SaveData(
+            currentWave,
+            enemiesKilled,
+            moneyCollected,
+            materialCollected,
+            money,
+            material,
+            currentBaseHealth,
+            currentScene: SceneManager.GetActiveScene().buildIndex
+        );
+        DataManager.WriteToFile(saveData, DataManager.SaveData);
     }
 
     public void TakeDamage(float damage, GameObject enemy)
@@ -116,11 +198,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void UpdateResourcesUI()
+    private void UpdateUI()
     {
-        float mon;
+        /*float mon;
         mon = money;
-        /*if (money / 1000 >= 1)
+        if (money / 1000 >= 1)
         {
             mon = money / 1000;
             Mathf.Round(mon);
@@ -129,32 +211,34 @@ public class GameManager : MonoBehaviour
             return;
         }*/
 
-        moneyCounterUI.text = ": " + mon.ToString();
+        moneyCounterUI.text = ": " + money;
         materialCounterUI.text = ": " + material;
+
+        waveCounter.GetComponent<Text>().text = (currentWave + 1) + "/" + GetComponent<WaveManager>().waves.Length;
     }
 
     public void AddMoney(float addMoney)
     {
-        moneyChangerUI.color = colorGain;
+/*        moneyChangerUI.color = colorGain;
         moneyChangerUI.text = "+" + addMoney;
 
-        Instantiate(moneyChangerUI, moneyUI.transform);
+        Instantiate(moneyChangerUI, moneyUI.transform);*/
 
         money += addMoney;
         moneyCollected += (int) addMoney;
-        UpdateResourcesUI();
+        UpdateUI();
     }
 
     public void AddMaterial(float addMaterial)
     {
-        materialChangerUI.color = colorGain;
+/*        materialChangerUI.color = colorGain;
         materialChangerUI.text = "+" + addMaterial;
 
-        Instantiate(materialChangerUI, materialUI.transform);
+        Instantiate(materialChangerUI, materialUI.transform);*/
 
         material += addMaterial;
         materialCollected += (int) addMaterial;
-        UpdateResourcesUI();
+        UpdateUI();
     }
 
     public bool SpendResources(float moneySpent, float materialSpent)
@@ -162,25 +246,34 @@ public class GameManager : MonoBehaviour
         if (moneySpent <= money && materialSpent <= material)
         {
             money -= moneySpent;
-            moneyChangerUI.color = Color.red;
-            moneyChangerUI.text = "-" + moneySpent;
+/*            moneyChangerUI.color = Color.red;
+            moneyChangerUI.text = "-" + moneySpent;*//*
 
-            Instantiate(moneyChangerUI, moneyUI.transform);
+            Instantiate(moneyChangerUI, moneyUI.transform);*/
 
             material -= materialSpent;
-            if (materialSpent > 0) 
+/*            if (materialSpent > 0) 
             {
                 materialChangerUI.color = Color.red;
                 materialChangerUI.text = "-" + materialSpent;
 
                 Instantiate(materialChangerUI, materialUI.transform);
-            }
+            }*/
                
 
-            UpdateResourcesUI();
+            UpdateUI();
             return true;
         }
         //Show Error
+        return false;
+    }
+
+    public bool CheckIfEnoughResources(Tower tower)
+    {
+        if (tower.cost < money && tower.materialCost < material)
+        {
+            return true;
+        }
         return false;
     }
 
@@ -193,8 +286,6 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Defeat");
 
-        waveManager.Restart();
-
         EventHandler.Instance.InvokeEvent(new DefeatEvent(
             description: "Defeat",
             wave: currentWave + 1,
@@ -202,40 +293,25 @@ public class GameManager : MonoBehaviour
             enemiesKilled: 0 
         ));
 
-        GameObject player1 = GameObject.Find("Player");
+        canvas.GetComponent<UI>().SetSelectedButton("Restart");
+        UI.OpenMenu();
 
-        GetComponent<PlayerManager>().TurnOnCursor();
+        waveManager.Restart();
        
-        defeatUI.SetActive(true);
+        defeatPanel.SetActive(true);
 
         buildManager.TowerToBuild = null;
 
-        Time.timeScale = 0;
-    }
-
-    private void ResetBaseHealth()
-    {
-        currentBaseHealth = baseHealth;
-        livesSlider.value = 100;
-    }
-
-    public void Restart()
-    {
-        Time.timeScale = 1;
-        money = 0;
-        material = 0;
-        UpdateResourcesUI();
-        defeatUI.SetActive(false);
-        ResetBaseHealth();
-        GetComponent<PlayerManager>().Restart();
     }
 
     public void Victory()
     {
         Debug.Log("Victory");
-        print("Money collected: " + moneyCollected);
+
+        // NOTE(August): Lite stats som kan vara kul att ha med på Victory Panel
+        /*print("Money collected: " + moneyCollected);
         print("Material collected: " + materialCollected);
-        print("Enemies killed: " + enemiesKilled);
+        print("Enemies killed: " + enemiesKilled);*/
 
         EventHandler.Instance.InvokeEvent(new VictoryEvent(
             description: "Victory",
@@ -245,30 +321,30 @@ public class GameManager : MonoBehaviour
             towersBuilt: 0
         ));
 
+        canvas.GetComponent<UI>().SetSelectedButton("Continue");
+        UI.OpenMenu();
+
         waveManager.Restart();
 
-        GetComponent<PlayerManager>().TurnOnCursor();
-
-        victoryUI.SetActive(true);
+        victoryPanel.SetActive(true);
 
         buildManager.TowerToBuild = null;
-
-        Time.timeScale = 0;
     }
-    
-    public void Continue()
+
+    private void ResetBaseHealth()
     {
-        Time.timeScale = 1;
-        ResetBaseHealth();
-        victoryUI.SetActive(false);
-        GetComponent<PlayerManager>().Restart();
+        currentBaseHealth = baseHealth;
+        livesSlider.value = currentBaseHealth;
     }
+}
 
-    public void Quit()
-    {
-        //UnityEditor.EditorApplication.isPlaying = false;
-        Application.Quit();
-        // Switch between the rows to build out
-    }
-
+[Serializable]
+public struct BaseStats
+{
+    public float money;
+    public float material;
+    public float baseHealth;
+    public Color Player1Color;
+    public Color Player2Color;
+    public PlayerMode startingMode;
 }

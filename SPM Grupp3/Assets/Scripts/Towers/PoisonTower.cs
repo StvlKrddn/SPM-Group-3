@@ -2,15 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class PoisonTower : Tower
 {
     [SerializeField] private float poisonTicks = 5;
     [SerializeField] private float poisonDamagePerTick = 25;
+    [SerializeField] private float maxHealthPerTick = 0.1f;
+    [SerializeField] private GameObject poisonPulse;
 
     [Header("Amount To Upgrade")]
     [SerializeField] private float upgradeAmountPoisonTicks = 5;
     [SerializeField] private float upgradeAmountPoisonDamagePerTick = 25;
-
+    [SerializeField] private float upgradeMaxHealthPoisonDamagePerTick = 0.01f;
+    [SerializeField] private float upgradeAttackSpeed = 0.1f;
     [Header("Poison Spreading")]
     [SerializeField] private bool poisonSpread = false;
 
@@ -21,15 +25,32 @@ public class PoisonTower : Tower
 
     private float fireCountdown = 0f;
 
+    public float costForUpgrade;
 
     public float PoisonTicks { get { return poisonTicks; } set { poisonTicks = value; } }
     public float PoisonDamagePerTick { get { return poisonDamagePerTick; } set { poisonDamagePerTick = value; } }
+
+    public override float UpgradeCostUpdate()
+    {
+        switch (tUC.GetUpgradesPurchased())
+        {
+            case 0:
+                costForUpgrade = level1Cost;
+                break;
+            case 1:
+                costForUpgrade = level2Cost;
+                break;
+            case 2:
+                costForUpgrade = level3Cost;
+                break;
+        }
+        return costForUpgrade;
+    }
 
     // Start is called before the first frame update
     void Start()
     {
         EventHandler.Instance.RegisterListener<TowerHitEvent>(HitTarget);
-        towerScript = this;
         radius.transform.localScale = new Vector3(range * 2f, 0.01f, range * 2f);
         radius.SetActive(false);
         InvokeRepeating("UpdateTarget", 0f, 0.5f);
@@ -38,7 +59,7 @@ public class PoisonTower : Tower
     // Update is called once per frame
     void Update()
     {      
-        LockOnTarget();
+       // LockOnTarget();
 
         if (target != null)
         {
@@ -82,60 +103,85 @@ public class PoisonTower : Tower
         {
             enemyTarget.spread = true;
         }
-        enemyTarget.HitByPoison(PoisonTicks,PoisonDamagePerTick, onHitEffect);
+        //enemyTarget.HitByPoison(PoisonTicks,PoisonDamagePerTick, onHitEffect, maxHealthPerTick);
     }
 
     protected void Shoot()
     {
-        GameObject bulletGO = Instantiate(shot, firePoint.position, firePoint.rotation);
-        bulletGO.transform.parent = transform;
-        bulletGO.SetActive(true);
-        bullet = bulletGO.GetComponent<Shot>();
+        
+        //     GameObject bulletGO = Instantiate(shot, firePoint.position, firePoint.rotation);
+        //     bulletGO.transform.parent = transform;
+        //     bulletGO.SetActive(true);
+        //     bullet = bulletGO.GetComponent<Shot>();
+        //
+        //     if (bullet != null)
+        //     {
+        //         bullet.Seek(target);
+        //     }
+        
 
-        if (bullet != null)
+        Collider[] colliders = Physics.OverlapSphere(transform.position, range);
+        foreach (Collider c in colliders)
         {
-            bullet.Seek(target);
+            if (c.GetComponent<EnemyController>())
+            {
+                GameObject effectInstance = Instantiate(poisonPulse, transform.position, transform.rotation);
+
+                ParticleSystem particleEffect = effectInstance.GetComponent<ParticleSystem>();
+                   
+            //    particleEffect.SetCustomParticleData = 5; //= radius;
+
+                Destroy(effectInstance, 1f);
+                EnemyController enemyontroller = c.GetComponent<EnemyController>();
+                enemyontroller.HitByPoison(PoisonTicks, onHitEffect, PoisonDamagePerTick, maxHealthPerTick);
+                //EnemyController enemyTarget = eventInfo.enemyHit.GetComponent<EnemyController>();
+                
+
+                
+             //   TypeOfShot(enemyontroller);
+            }
         }
     }
 
-    public override void ShowUpgradeUI(GameObject medium, GameObject infoView)
-    {    
-        if (infoView.transform.GetChild(3).gameObject.activeInHierarchy)
+    public override void ShowUpgradeUI(Transform towerMenu)
+    {
+        for (int i = 0; i < towerMenu.childCount; i++)
         {
-            infoView.transform.GetChild(3).gameObject.SetActive(false);
-            medium.SetActive(true);
-        }
-        else
-        {
-            infoView.transform.GetChild(3).gameObject.SetActive(true);
-            medium.SetActive(false);
+            if (towerMenu.GetChild(i).gameObject.name.Equals("UpgradePoisonPanel"))
+            {
+                GameObject menuToShow = towerMenu.GetChild(i).gameObject;
+                menuToShow.transform.position = transform.position;
+                menuToShow.SetActive(true);
+            }
         }
     }
 
-    public override void TowerLevel1()
+    protected override void TowerLevel1()
     {
         base.TowerLevel1();
-        if (gM.SpendResources(level1Cost, 0f) && tUC.GetUpgradesPurchased() == 0)
+        if (gM.SpendResources(level1Cost, 0f))
         {
             tUC.IncreaseUpgradesPurchased();
             PoisonTower pT = tUC.ClickedTower.GetComponent<PoisonTower>();            
             pT.poisonTicks += upgradeAmountPoisonTicks;                
         }
     }
-    public override void TowerLevel2()
+    protected override void TowerLevel2()
     {
         base.TowerLevel2();
-        if (gM.SpendResources(level2Cost, 0f) && tUC.GetUpgradesPurchased() == 1)
+        if (gM.SpendResources(level2Cost, 0f))
         {
             tUC.IncreaseUpgradesPurchased();
             PoisonTower pT = tUC.ClickedTower.GetComponent<PoisonTower>();          
-            pT.poisonDamagePerTick += upgradeAmountPoisonDamagePerTick;               
+            pT.poisonDamagePerTick += upgradeAmountPoisonDamagePerTick;
+            pT.maxHealthPerTick += upgradeMaxHealthPoisonDamagePerTick; 
+            pT.fireRate += upgradeAttackSpeed;
         }
     }
-    public override void TowerLevel3()
+    protected override void TowerLevel3()
     {
         base.TowerLevel3();
-        if (gM.SpendResources(level3Cost, 0f) && tUC.GetUpgradesPurchased() == 2)
+        if (gM.SpendResources(level3Cost, 0f))
         {
             tUC.IncreaseUpgradesPurchased();
             PoisonTower pT = tUC.ClickedTower.GetComponent<PoisonTower>();

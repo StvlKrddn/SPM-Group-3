@@ -7,14 +7,10 @@ using System;
 public class WaveManager : MonoBehaviour
 {
     [Header("Enemies: ")]
-    [SerializeField] private Transform spawnPosition;
-    [SerializeField] private Text waveUI;
     [SerializeField] private GameObject enemyContainer;
-
+    
+    [Space]
     public WaveInfo[] waves;
-
-    [Header("Wave Clear UI: ")]
-    [SerializeField] private GameObject waveClear;
 
     [Header("Debug")]
     [SerializeField] private int startingWave = 1;
@@ -27,14 +23,23 @@ public class WaveManager : MonoBehaviour
     private bool spawnEnemies = true;
     private int waveMoneyBonus;
     private List<GameObject> currentWaveEnemies = new List<GameObject>();
+    private Text waveUI;
+    private GameObject waveClear;
+    private Dictionary<int, float> changeSpawnRate = new Dictionary<int, float>();
 
     private void Awake()
     {
+        currentWave = GameManager.Instance.CurrentWave;
+
         if (startingWave != 1)
         {
             currentWave = startingWave - 2;
         }
 
+        Transform waveHolder = UI.Canvas.transform.GetChild(0).Find("WaveHolder");
+        waveUI = waveHolder.Find("WaveCounter").GetComponent<Text>();
+        waveClear = waveHolder.Find("WaveCleared").gameObject;
+        
         victoryWave = waves.Length;
         waveClear.SetActive(false);
         gameManager = GameManager.Instance;
@@ -42,9 +47,9 @@ public class WaveManager : MonoBehaviour
         EventHandler.Instance.RegisterListener<StartWaveEvent>(OnStartWave);
     }
 
-
     private void OnStartWave(StartWaveEvent eventInfo)
     {
+        currentWave = GameManager.Instance.CurrentWave;
         if (spawnEnemies)
         {
             SpawnWave();
@@ -54,6 +59,7 @@ public class WaveManager : MonoBehaviour
     private void SpawnWave()
     {
         currentWave++;
+        GameManager.Instance.CurrentWave = currentWave;
 
         EventHandler.Instance.InvokeEvent(new NewWaveEvent(
             description: "New wave started",
@@ -75,8 +81,12 @@ public class WaveManager : MonoBehaviour
     private void WaveConstructor(WaveInfo wave)
     {
         currentWaveEnemies.Clear();
+        changeSpawnRate.Clear();
+
+        spawnRate = wave.subWaves[0].spawnRate;
         foreach (SubWave subWave in wave.subWaves)
         {
+            changeSpawnRate.Add(currentWaveEnemies.Count - 1, subWave.spawnRate); //Adds in each subwaves spawnrate into the list
             List<GameObject> subWaveEnemies = new List<GameObject>(); //Goes through each subwave and shuffles it
             for (int i = 0; i < subWave.enemies.Length; i++)
             {
@@ -90,7 +100,6 @@ public class WaveManager : MonoBehaviour
         }
         waveMoneyBonus = wave.waveMoneyBonus;
         enemyCount = currentWaveEnemies.Count;
-        spawnRate = wave.waveDuration / currentWaveEnemies.Count; //Sverker säger delete 
     }
 
     void Shuffle(List<GameObject> list)
@@ -138,11 +147,40 @@ public class WaveManager : MonoBehaviour
     {
         for (int i = 0; i < currentWaveEnemies.Count; i++)
         {
-            GameObject g = Instantiate(currentWaveEnemies[i], spawnPosition.position, currentWaveEnemies[i].transform.rotation, enemyContainer.transform); //Spawn enemy and wait for time between enemy
-            g.SetActive(true);
+            int path = Waypoints.GivePath(); //Gives the enemy the right path
+            GameObject enemy = Instantiate(currentWaveEnemies[i], Waypoints.wayPoints[path][0].position, currentWaveEnemies[i].transform.rotation, enemyContainer.transform); //Spawn enemy and wait for time between enemy
+            enemy.GetComponent<EnemyController>().TakePath(path);
+            enemy.SetActive(true);
+
             yield return new WaitForSeconds(spawnRate);
+
+            if (changeSpawnRate.ContainsKey(i)) //The wave changes spawnrate after a subwave
+            {
+                spawnRate = changeSpawnRate[i];
+            }
         }
-        yield return false;
+        yield return null;
+    }
+
+    [ContextMenu("Calculate Wave Duration")]
+    public void CalculateWaveDuration()
+    {
+		for (int i = 0; i < waves.Length; i++)
+        {
+			WaveInfo waveInfo = waves[i];
+			waveInfo.waveDuration = 0;
+
+			for (int j = 0; j < waveInfo.subWaves.Length; j++)
+            {
+				SubWave subwave = waveInfo.subWaves[j];
+				for (int k = 0; k < subwave.enemies.Length; k++)
+                {
+					EnemyStruct enemy = subwave.enemies[k];
+                    waveInfo.waveDuration += enemy.amount * subwave.spawnRate;
+                }
+            }
+            print("Wave " + (i + 1) + " is " + waveInfo.waveDuration + " seconds long");
+        }
     }
 
     public void UpdateUI()
@@ -177,7 +215,7 @@ public struct WaveInfo
 public struct SubWave
 {
     public EnemyStruct[] enemies;
-    //public  float spawnRate 
+    public float spawnRate;
  
 }
 

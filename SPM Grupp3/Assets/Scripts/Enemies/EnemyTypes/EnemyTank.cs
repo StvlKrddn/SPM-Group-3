@@ -4,16 +4,18 @@ using UnityEngine;
 
 public class EnemyTank : EnemyController
 {
-	public float armor;
-	/*
+	public float armor = 5;
+	public float armorThreshold = 5;
 	public override void TakeDamage(float damage)
 	{
-		damage -= armor;
-		Debug.Log(damage);
-		if (damage > 0)
+		if (damage >= armorThreshold)
 		{
+			damage -= armor;
+			if	(damage < armorThreshold)
+			{
+				damage = armorThreshold;
+			}
 			base.TakeDamage(damage);
 		}
 	}
-	*/
 }

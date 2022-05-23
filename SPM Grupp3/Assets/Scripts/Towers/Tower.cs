@@ -14,10 +14,10 @@ public abstract class Tower : MonoBehaviour
     protected GameManager gM;
     public GameObject onHitEffect;
     protected TowerUpgradeCotroller tUC;
-    public Tower towerScript;
     public GameObject tower;
     public GameObject upgradeUI;
     public GameObject buildUI;
+	public GameObject towerPlacement;
 
     [Header("BaseStats")]
 
@@ -35,33 +35,40 @@ public abstract class Tower : MonoBehaviour
 
     public abstract void TypeOfShot(EnemyController enemyTarget);
     public abstract void HitTarget(TowerHitEvent eventInfo);
-    public abstract void ShowUpgradeUI(GameObject medium, GameObject infoView);
-    /*    public abstract void CheckLevels();*/
+    public abstract void ShowUpgradeUI(Transform towerMenu);
+    public abstract float UpgradeCostUpdate();
 
-    public virtual void TowerLevel1()
+    public void LevelUpTower()
+    {
+        tUC = TowerUpgradeCotroller.instance;
+        switch (tUC.GetUpgradesPurchased())
+        {
+            case 0:
+                TowerLevel1();
+                break;
+            case 1:
+                TowerLevel2();
+                break;
+            case 2:
+                TowerLevel3();
+                break;
+        }
+    }
+
+    protected virtual void TowerLevel1()
     {
         gM = GameManager.Instance;
         tUC = TowerUpgradeCotroller.instance;
     }
-    public virtual void TowerLevel2()
+    protected virtual void TowerLevel2()
     {
         gM = GameManager.Instance;
         tUC = TowerUpgradeCotroller.instance;
     }
-    public virtual void TowerLevel3()
+    protected virtual void TowerLevel3()
     {
         gM = GameManager.Instance;
         tUC = TowerUpgradeCotroller.instance;
-    }
-
-
-
-
-    /*    public abstract void HitTarget();*/
-
-    private void Start()
-    {
-        
     }
 
     void UpdateTarget()
@@ -102,13 +109,4 @@ public abstract class Tower : MonoBehaviour
   
         }
     }
-
-
-
-
-
-    
-
-
-
 }

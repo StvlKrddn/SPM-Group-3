@@ -7,13 +7,14 @@ public class BulletBehavior : MonoBehaviour
     [SerializeField] protected float damage;
     public bool penetrating;
     
-    GameObject tank;
+    private GameObject tank;
+    private WeaponSlot weapon;
 
-    public float bulletSpeed;
-    public float range;
+    [SerializeField] private float bulletSpeed;
+    [SerializeField] private float range;
     
     Vector3 originalPosition;
-    private int penetrationCount = 3;
+    [SerializeField] private int penetrationCount = 2;
     
     public float BulletDamage { get { return damage; } set { damage = value; } }
     public float BulletRange { get { return range; } set { range = value; } }
@@ -21,12 +22,14 @@ public class BulletBehavior : MonoBehaviour
     void Start()
     {
         // NOTE(August): Ändra från FindObjectOfType eftersom den körs varje gång en kula skjuts
-        tank = FindObjectOfType<TankState>().gameObject;
+        tank = GetComponentInParent<TankState>().gameObject;
+        weapon = tank.GetComponent<WeaponSlot>();
         originalPosition = transform.position;
-        bulletSpeed = tank.GetComponent<WeaponSlot>().BulletSpeed;
-        range = tank.GetComponent<WeaponSlot>().BulletRange;
-        damage = tank.GetComponent<WeaponSlot>().BulletDamage;
-        penetrating = tank.GetComponent<WeaponSlot>().BulletPenetration;
+        bulletSpeed = weapon.BulletSpeed;
+        range = weapon.BulletRange;
+        damage = weapon.BulletDamage;
+        penetrating = weapon.BulletPenetration; //The bullet gets the stats from their weapon
+        transform.parent = null;
     }
 
     void Update()
@@ -47,7 +50,7 @@ public class BulletBehavior : MonoBehaviour
     {
         if (other.CompareTag("Enemy"))
         {
-            if (penetrating == true && penetrationCount > 0)
+            if (penetrating == true && penetrationCount > 0) // Penetrating goes through the enemy
             {
                 penetrationCount--;
             }

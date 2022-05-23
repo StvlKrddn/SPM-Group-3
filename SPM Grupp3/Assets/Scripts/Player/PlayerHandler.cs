@@ -7,12 +7,16 @@ using UnityEngine.InputSystem.UI;
 
 public class PlayerHandler : MonoBehaviour
 {
+
+    [SerializeField] private GameObject tankMode;
+    [SerializeField] private GameObject buildMode;
+
+/*    [SerializeField] private GameObject tankMode;
+    [SerializeField] private GameObject buildMode;*/
+
     private PlayerMode currentMode;
     private GameObject canvas;
     private PlayerInput playerInput;
-    private GameObject tankMode;
-    private GameObject buildMode;
-    private GameObject buildMenu;
     private bool destroyed;
 
     public bool Destroyed { get { return destroyed; } set { destroyed = value; } }
@@ -22,17 +26,13 @@ public class PlayerHandler : MonoBehaviour
     {
         destroyed = false;
 
-        canvas = Camera.main.transform.Find("Canvas").gameObject;
-        buildMenu = canvas.transform.Find("Build_UI").gameObject;
+        canvas = UI.Canvas.gameObject;
 
         currentMode = GameManager.Instance.StartingMode;
 
         playerInput = GetComponent<PlayerInput>();
 
         playerInput.uiInputModule = GetComponent<InputSystemUIInputModule>();
-
-        tankMode = transform.Find("TankMode").gameObject;
-        buildMode = transform.Find("BuilderMode").gameObject;
 
         // First mode set up
         if (currentMode == PlayerMode.Build)
@@ -51,7 +51,6 @@ public class PlayerHandler : MonoBehaviour
     {
         // Disable Build
         buildMode.SetActive(false);
-        buildMenu.SetActive(false);
 
         // Enable Tank
         tankMode.SetActive(true);
@@ -69,10 +68,7 @@ public class PlayerHandler : MonoBehaviour
 
         currentMode = PlayerMode.Tank;
 
-        UpgradeController.Instance.FixUpgrades(gameObject); //Behöver ändras
-
-        //print("Entered tank mode");
-
+        UpgradeController.Instance.FixUpgrades(gameObject);
     }
 
     void EnterBuildMode()
@@ -82,7 +78,6 @@ public class PlayerHandler : MonoBehaviour
 
         // Enable Build
         buildMode.SetActive(true);
-        buildMenu.SetActive(true);
 
         EventHandler.Instance.InvokeEvent(new EnterBuildModeEvent(
             description: "Player entered build mode",
@@ -117,6 +112,15 @@ public class PlayerHandler : MonoBehaviour
         }
     }
 
+    public void RepairTank()
+    {
+        if (GameManager.Instance.SpendResources(500,20))
+        {
+            destroyed = false;
+            EnterTankMode();
+        }
+    }
+
     public void StartWave (InputAction.CallbackContext context)
     {
         if (context.performed)
@@ -127,4 +131,15 @@ public class PlayerHandler : MonoBehaviour
             ));
         }
     }
+
+    public void PauseGame (InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            UI ui = canvas.GetComponent<UI>();
+            ui.SetSelectedButton("Resume");
+            ui.PauseGame();
+        }
+    }
+
 }

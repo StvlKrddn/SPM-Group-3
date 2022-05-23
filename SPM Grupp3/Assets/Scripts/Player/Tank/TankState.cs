@@ -9,14 +9,17 @@ public class TankState : MonoBehaviour
     // Inspector variables
     [SerializeField] private float movementSpeed = 6f;
     [SerializeField] private float health = 50f;
-    [SerializeField] private int levelOfTank;
+    [SerializeField] private Animator animator;
+    public int levelOfTank;
+
+
 
     // Components
     Rigidbody rb;
     Transform turretObject;
 
     // Input components
-    InputAction moveGamepadAction;
+    InputAction moveAction;
     InputAction aimAction;
     InputAction abilityAction;
 
@@ -37,6 +40,8 @@ public class TankState : MonoBehaviour
     public TankUpgradeTree tankUpgradeTree;
     [SerializeField] private TankUpgradeTree tankUpgradeTreeOne;
     [SerializeField] private TankUpgradeTree tankUpgradeTreeTwo;
+    [SerializeField] private UnityEngine.Material player1Material;
+    [SerializeField] private UnityEngine.Material player2Material;
 
 
     // Getters and Setters
@@ -68,7 +73,7 @@ public class TankState : MonoBehaviour
     {
         InitializeInputSystem();
 
-        SetPlayerDiffrence();
+        SetPlayerDifference();
 
         FindGarage();
 
@@ -84,6 +89,8 @@ public class TankState : MonoBehaviour
         
         aimSpeed = standardSpeed * 5;
 
+        StartCoroutine(LockRotation());
+
         //Create isometric matrix
         isoMatrix = Matrix4x4.Rotate(Quaternion.Euler(0, 45, 0));
         /* Explanation of isometric translation can be found here: https://youtu.be/8ZxVBCvJDWk */
@@ -93,21 +100,38 @@ public class TankState : MonoBehaviour
 
     }
 
+    IEnumerator LockRotation()
+    {
+        yield return new WaitForSeconds(0.5f);
+        transform.rotation = Quaternion.Euler(0, transform.rotation.y, 0);
+
+        rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionY;
+    }
+
     void InitializeInputSystem()
     {
         playerInput = GetComponentInParent<PlayerInput>();
 
         playerID = playerInput.playerIndex;
 
-        moveGamepadAction = playerInput.actions["Move"];
+        moveAction = playerInput.actions["Move"];
         aimAction = playerInput.actions["Aim"];
         abilityAction = playerInput.actions["Ability"];
     }
 
-    void SetPlayerDiffrence()
+    void SetPlayerDifference()
     {
         Renderer renderer = GetComponent<Renderer>();
-        renderer.material.color = playerInput.playerIndex == 0 ? Color.blue : Color.red;
+        if (playerInput.playerIndex == 0)
+        {
+            renderer.material = player1Material;
+            transform.Find("TankBody").Find("Cube.004").GetComponent<Renderer>().material = player1Material;
+        }
+        else
+        {
+            renderer.material = player2Material;
+            transform.Find("TankBody").Find("Cube.004").GetComponent<Renderer>().material = player2Material;
+        }
         tankUpgradeTree = playerInput.playerIndex == 0 ? tankUpgradeTreeOne : tankUpgradeTreeTwo;
     }
 
@@ -119,7 +143,7 @@ public class TankState : MonoBehaviour
     }
     void Update()
     {
-        gamepadInputVector = moveGamepadAction.ReadValue<Vector2>();
+        gamepadInputVector = moveAction.ReadValue<Vector2>();
         aimInputVector = aimAction.ReadValue<Vector2>();
 
         RotateTurret();
@@ -131,6 +155,8 @@ public class TankState : MonoBehaviour
 
     void FixedUpdate()
     {
+        animator.SetBool("isMoving", moveAction.IsPressed());
+
         Move();
         //levelOfTank = UpgradeController.instance.currentUpgradeLevel;
     }
@@ -147,7 +173,7 @@ public class TankState : MonoBehaviour
 
         rb.MovePosition(transform.position + movement);
 
-        if (moveGamepadAction.IsPressed())
+        if (moveAction.IsPressed())
         {
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(skewedVector), Time.deltaTime * standardSpeed);
         }
@@ -173,10 +199,15 @@ public class TankState : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("EnemyBullet"))
+        if (other.CompareTag("EnemyBullet"))
         {
             EnemyBullet enemyBullet = other.gameObject.GetComponent<EnemyBullet>();
             TakeDamage(enemyBullet.damage);
+        }
+        else if (other.CompareTag("MortarBullet"))
+        {
+            EnemyMortarShot enemyMortarShot = other.gameObject.GetComponentInParent<EnemyMortarShot>();
+            TakeDamage(enemyMortarShot.damage);
         }
     }
 
@@ -189,7 +220,7 @@ public class TankState : MonoBehaviour
         }
 	}
 
-	private void Ability()
+    private void Ability()
     {
         if (tankUpgradeTree != null)
         {
@@ -211,6 +242,7 @@ public class TankState : MonoBehaviour
         print("Tank destroyed!");
         transform.position = spawnPoint.position;
         playerHandler.Destroyed = true;
+            
         EventHandler.Instance.InvokeEvent(new PlayerSwitchEvent(
             description: "Player switching mode",
             playerContainer: transform.parent.gameObject

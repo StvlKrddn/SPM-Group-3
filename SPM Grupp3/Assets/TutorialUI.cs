@@ -40,7 +40,10 @@ public class TutorialUI : MonoBehaviour
 
 
 
-    public GameObject lastWaveActivate; 
+    public GameObject lastWaveActivate;
+
+
+    public GameObject disableTankInstructions; 
 
 
     //private int whichWaveIsItOn; 
@@ -55,6 +58,8 @@ public class TutorialUI : MonoBehaviour
             child.gameObject.layer = 0; 
             listOfAllTiles.Add(child.gameObject) ; 
         }
+
+
 
 
    //     if(gameObjectsToStartDisabled.Count != 0 )
@@ -90,6 +95,7 @@ public class TutorialUI : MonoBehaviour
                 uiToActivate.SetActive(true);
                 firstEventNotStarted = false;
 
+            
                 EventHandler.Instance.InvokeEvent(new NewWaveEvent(
         description: "New wave started",
         currentWave: 0
@@ -112,37 +118,33 @@ public class TutorialUI : MonoBehaviour
         switch (whichWave)
         {
             case 0:
-
-                whichWave += 1; 
-                break;
-            case 1:
-
                 FirstWaveActivation.SetActive(true);
 
                 // Instantiate<>
 
                 materialToActivate.SetActive(true);
 
+                disableTankInstructions.SetActive(false);
+
                 tileToActivate.layer = LayerMask.NameToLayer("PlaceForTower");
 
-                whichWave += 1;
+        
                 break;
-            case 2:
+            case 1:
 
                 activateAfterSecondWave.SetActive(true);
 
-                whichWave += 1;
                 break;
-            case 3:
-
-                
-                break;
-            case 4:
+           
+            case 2:
                 lastWaveActivate.SetActive(true);
-                whichWave += 1;
+              
 
                 break;
+          
         }
+
+        whichWave += 1; 
     }
 
     
