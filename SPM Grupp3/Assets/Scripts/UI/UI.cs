@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class UI : MonoBehaviour
 {
@@ -15,6 +16,7 @@ public class UI : MonoBehaviour
     [SerializeField] private GameObject victoryPanel;
     [SerializeField] private GameObject defeatPanel;
     [SerializeField] private GameObject pauseMenu;
+    [SerializeField] private Text waveCounter;
 
     private GameObject resumeButton;
     private GameObject restartButton;
