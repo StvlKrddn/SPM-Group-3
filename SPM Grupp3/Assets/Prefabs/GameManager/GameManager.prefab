@@ -64,7 +64,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 16343
+    m_Bits: 49111
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -196,13 +196,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 865119aa34c06be41a3b49989bec82eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseHealth: 100
-  material: 10
-  money: 1400
-  colorGain: {r: 0.20376274, g: 0.6415094, b: 0, a: 1}
-  startingMode: 0
-  towersPlaced: []
-  selectedButton: {fileID: 0}
+  baseStats:
+    money: 525
+    material: 0
+    baseHealth: 100
+    Player1Color: {r: 0, g: 0.227451, b: 0.83921576, a: 1}
+    Player2Color: {r: 1, g: 0, b: 0, a: 1}
+    startingMode: 0
+  victoryPanel: {fileID: 0}
+  continueButton: {fileID: 0}
+  defeatPanel: {fileID: 0}
+  restartButton: {fileID: 0}
+  moneyCounterUI: {fileID: 0}
+  materialCounterUI: {fileID: 0}
 --- !u!114 &5574963424639874967
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -217,132 +223,130 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyContainer: {fileID: 3364076439075989338}
   waves:
-  - waveName: 
-    waveDuration: 3
-    waveMoneyBonus: 0
-    subWaves:
-    - enemies:
-      - enemyPrefab: {fileID: 5940178821907547970, guid: 3da10c386b23dcd4fb83590a6b67370e, type: 3}
-        amount: 3
-      spawnRate: 0.1
-  - waveName: 
-    waveDuration: 12
-    waveMoneyBonus: 0
-    subWaves:
-    - enemies:
-      - enemyPrefab: {fileID: 5940178821907547970, guid: 3da10c386b23dcd4fb83590a6b67370e, type: 3}
-        amount: 5
-      spawnRate: 0.1
-  - waveName: 
+  - waveName: "V\xE5g 1 excel"
     waveDuration: 10
-    waveMoneyBonus: 0
+    waveMoneyBonus: 650
+    subWaves:
+    - enemies:
+      - enemyPrefab: {fileID: 4264572846131703882, guid: 2d4349db505aec44a877c3bc1f47965b, type: 3}
+        amount: 20
+      - enemyPrefab: {fileID: 5940178821907547970, guid: 3da10c386b23dcd4fb83590a6b67370e, type: 3}
+        amount: 5
+      - enemyPrefab: {fileID: 5940178821907547970, guid: 2d58c5c9792dba04da822e43cf28112c, type: 3}
+        amount: 0
+      spawnRate: 1
+  - waveName: "v\xE5g 2 excel"
+    waveDuration: 12
+    waveMoneyBonus: 1075
+    subWaves:
+    - enemies:
+      - enemyPrefab: {fileID: 5940178821907547970, guid: 3da10c386b23dcd4fb83590a6b67370e, type: 3}
+        amount: 8
+      - enemyPrefab: {fileID: 4264572846131703882, guid: 2d4349db505aec44a877c3bc1f47965b, type: 3}
+        amount: 42
+      spawnRate: 0.66666
+  - waveName: "v\xE5g 3 excel"
+    waveDuration: 10
+    waveMoneyBonus: 1225
+    subWaves:
+    - enemies:
+      - enemyPrefab: {fileID: 5940178821907547970, guid: 3da10c386b23dcd4fb83590a6b67370e, type: 3}
+        amount: 7
+      - enemyPrefab: {fileID: 4264572846131703882, guid: 2d4349db505aec44a877c3bc1f47965b, type: 3}
+        amount: 70
+      - enemyPrefab: {fileID: 5940178821907547970, guid: b57826fc685def9419bc9115924fbf68, type: 3}
+        amount: 30
+      spawnRate: 0.5
+  - waveName: "v\xE5g 4 excel"
+    waveDuration: 20
+    waveMoneyBonus: 1275
     subWaves:
     - enemies:
       - enemyPrefab: {fileID: 5940178821907547970, guid: 3da10c386b23dcd4fb83590a6b67370e, type: 3}
         amount: 5
       - enemyPrefab: {fileID: 4264572846131703882, guid: 2d4349db505aec44a877c3bc1f47965b, type: 3}
-        amount: 5
-      spawnRate: 0.1
-  - waveName: 
+        amount: 250
+      - enemyPrefab: {fileID: 5940178821907547970, guid: b57826fc685def9419bc9115924fbf68, type: 3}
+        amount: 45
+      spawnRate: 0.35
+  - waveName: "v\xE5g 5 excel"
     waveDuration: 20
-    waveMoneyBonus: 0
+    waveMoneyBonus: 1275
     subWaves:
     - enemies:
       - enemyPrefab: {fileID: 5940178821907547970, guid: 3da10c386b23dcd4fb83590a6b67370e, type: 3}
         amount: 8
       - enemyPrefab: {fileID: 4264572846131703882, guid: 2d4349db505aec44a877c3bc1f47965b, type: 3}
-        amount: 8
-      spawnRate: 0.1
-  - waveName: 
-    waveDuration: 20
-    waveMoneyBonus: 0
-    subWaves:
-    - enemies:
-      - enemyPrefab: {fileID: 5940178821907547970, guid: 3da10c386b23dcd4fb83590a6b67370e, type: 3}
-        amount: 8
-      - enemyPrefab: {fileID: 4264572846131703882, guid: 2d4349db505aec44a877c3bc1f47965b, type: 3}
-        amount: 12
-      spawnRate: 0.1
-  - waveName: 
+        amount: 300
+      - enemyPrefab: {fileID: 5940178821907547970, guid: b57826fc685def9419bc9115924fbf68, type: 3}
+        amount: 60
+      spawnRate: 0.333
+  - waveName: "v\xE5g 6 excel"
     waveDuration: 1
-    waveMoneyBonus: 0
+    waveMoneyBonus: 1575
     subWaves:
     - enemies:
       - enemyPrefab: {fileID: 5940178821907547970, guid: 2d58c5c9792dba04da822e43cf28112c, type: 3}
-        amount: 1
-      spawnRate: 0.1
-  - waveName: 
+        amount: 5
+      - enemyPrefab: {fileID: 4264572846131703882, guid: 2d4349db505aec44a877c3bc1f47965b, type: 3}
+        amount: 300
+      - enemyPrefab: {fileID: 5940178821907547970, guid: 3da10c386b23dcd4fb83590a6b67370e, type: 3}
+        amount: 5
+      - enemyPrefab: {fileID: 5940178821907547970, guid: b57826fc685def9419bc9115924fbf68, type: 3}
+        amount: 100
+      spawnRate: 0.3
+  - waveName: "v\xE5g 8 excel"
     waveDuration: 15
-    waveMoneyBonus: 0
+    waveMoneyBonus: 1675
     subWaves:
     - enemies:
-      - enemyPrefab: {fileID: 5940178821907547970, guid: 2d58c5c9792dba04da822e43cf28112c, type: 3}
-        amount: 1
-      spawnRate: 0.1
-    - enemies:
-      - enemyPrefab: {fileID: 4264572846131703882, guid: 2d4349db505aec44a877c3bc1f47965b, type: 3}
-        amount: 5
-      spawnRate: 0.1
-    - enemies:
       - enemyPrefab: {fileID: 5940178821907547970, guid: 3da10c386b23dcd4fb83590a6b67370e, type: 3}
-        amount: 3
-      spawnRate: 0.1
-  - waveName: 
+        amount: 8
+      - enemyPrefab: {fileID: 5940178821907547970, guid: b57826fc685def9419bc9115924fbf68, type: 3}
+        amount: 120
+      - enemyPrefab: {fileID: 5940178821907547970, guid: 2d58c5c9792dba04da822e43cf28112c, type: 3}
+        amount: 10
+      - enemyPrefab: {fileID: 4264572846131703882, guid: 2d4349db505aec44a877c3bc1f47965b, type: 3}
+        amount: 360
+      spawnRate: 0.28
+  - waveName: "v\xE5g 9 excel"
     waveDuration: 20
-    waveMoneyBonus: 0
+    waveMoneyBonus: 2075
     subWaves:
     - enemies:
       - enemyPrefab: {fileID: 5940178821907547970, guid: 2d58c5c9792dba04da822e43cf28112c, type: 3}
-        amount: 2
-      spawnRate: 0
-    - enemies:
+        amount: 20
       - enemyPrefab: {fileID: 4264572846131703882, guid: 2d4349db505aec44a877c3bc1f47965b, type: 3}
-        amount: 3
-      spawnRate: 0
-    - enemies:
+        amount: 420
       - enemyPrefab: {fileID: 5940178821907547970, guid: b57826fc685def9419bc9115924fbf68, type: 3}
-        amount: 3
-      spawnRate: 0
-  - waveName: 
-    waveDuration: 30
-    waveMoneyBonus: 0
-    subWaves:
-    - enemies:
-      - enemyPrefab: {fileID: 5940178821907547970, guid: 2d58c5c9792dba04da822e43cf28112c, type: 3}
-        amount: 2
-      spawnRate: 0.1
-    - enemies:
-      - enemyPrefab: {fileID: 4264572846131703882, guid: 2d4349db505aec44a877c3bc1f47965b, type: 3}
-        amount: 6
+        amount: 160
       - enemyPrefab: {fileID: 5940178821907547970, guid: 3da10c386b23dcd4fb83590a6b67370e, type: 3}
-        amount: 3
-      spawnRate: 0.1
-    - enemies:
-      - enemyPrefab: {fileID: 5940178821907547970, guid: b57826fc685def9419bc9115924fbf68, type: 3}
-        amount: 6
-      spawnRate: 0.1
-  - waveName: 
+        amount: 8
+      spawnRate: 0.26
+  - waveName: "v\xE5g 10 excel"
     waveDuration: 30
-    waveMoneyBonus: 0
+    waveMoneyBonus: 2075
     subWaves:
     - enemies:
-      - enemyPrefab: {fileID: 5940178821907547970, guid: c746b2154d39e8544b1fb107223e7cb0, type: 3}
-        amount: 3
-      spawnRate: 0.1
-    - enemies:
       - enemyPrefab: {fileID: 5940178821907547970, guid: 2d58c5c9792dba04da822e43cf28112c, type: 3}
-        amount: 3
-      spawnRate: 0
+        amount: 25
+      - enemyPrefab: {fileID: 5940178821907547970, guid: b57826fc685def9419bc9115924fbf68, type: 3}
+        amount: 200
+      - enemyPrefab: {fileID: 4264572846131703882, guid: 2d4349db505aec44a877c3bc1f47965b, type: 3}
+        amount: 440
+      spawnRate: 0.22
+  - waveName: "v\xE5g 11 excel"
+    waveDuration: 30
+    waveMoneyBonus: 2075
+    subWaves:
     - enemies:
       - enemyPrefab: {fileID: 4264572846131703882, guid: 2d4349db505aec44a877c3bc1f47965b, type: 3}
-        amount: 5
-      spawnRate: 0.1
-    - enemies:
+        amount: 480
+      - enemyPrefab: {fileID: 5940178821907547970, guid: 2d58c5c9792dba04da822e43cf28112c, type: 3}
+        amount: 30
       - enemyPrefab: {fileID: 5940178821907547970, guid: b57826fc685def9419bc9115924fbf68, type: 3}
-        amount: 5
-      - enemyPrefab: {fileID: 5940178821907547970, guid: 3da10c386b23dcd4fb83590a6b67370e, type: 3}
-        amount: 5
-      spawnRate: 0.1
+        amount: 200
+      spawnRate: 0.2
   startingWave: 1
 --- !u!114 &2570363305664917266
 MonoBehaviour:
@@ -402,7 +406,7 @@ MonoBehaviour:
       m_SingletonActionBindings: []
       m_Flags: 0
     m_Reference: {fileID: 0}
-  m_PlayerPrefab: {fileID: 1555352807768005138, guid: 6364959b4060537488578e889cf8fbea, type: 3}
+  m_PlayerPrefab: {fileID: 705580133456242771, guid: 84213d05f2889da4e94a3f4c1c2e4f23, type: 3}
   m_SplitScreen: 0
   m_MaintainAspectRatioInSplitScreen: 0
   m_FixedNumberOfSplitScreens: -1

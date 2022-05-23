@@ -136,7 +136,9 @@ public class PlayerHandler : MonoBehaviour
     {
         if (context.performed)
         {
-            canvas.GetComponent<UI>().PauseGame();
+            UI ui = canvas.GetComponent<UI>();
+            ui.SetSelectedButton("Resume");
+            ui.PauseGame();
         }
     }
 
