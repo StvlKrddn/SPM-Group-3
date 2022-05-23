@@ -22,7 +22,11 @@ public class TutorialEnterGarage : MonoBehaviour
 
     private bool hasTriggered = false;
 
-    private GarageTrigger garageTrigger; 
+    private bool hasItBeenRightInput; 
+
+    private GarageTrigger garageTrigger;
+
+    public GameObject objectGarageTriggerEnable; 
 
     // Start is called before the first frame update
     void Start()
@@ -37,11 +41,11 @@ public class TutorialEnterGarage : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-       
+     //   trigger = acceptAction.IsPressed();
         if (other.CompareTag("Tank"))
         {
-            print("enablas den igen");
-            if (trigger && !hasTriggered)
+            print("vad är trigger " + trigger + " vad är hasTriggered " + hasTriggered);
+            if (hasItBeenRightInput && !hasTriggered)
             {
                 hasTriggered = true; 
 
@@ -53,6 +57,11 @@ public class TutorialEnterGarage : MonoBehaviour
 
                 arrowToShow.SetActive(true);
 
+
+                objectGarageTriggerEnable.SetActive(true);
+
+                
+
                 this.enabled = false;
             }
 
@@ -62,8 +71,13 @@ public class TutorialEnterGarage : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        trigger = acceptAction.IsPressed(); 
+        trigger = acceptAction.IsPressed();
 
+        
+
+        hasItBeenRightInput = trigger;
+
+        print(trigger);
 
     }
 }

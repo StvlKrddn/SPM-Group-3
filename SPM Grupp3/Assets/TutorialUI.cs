@@ -43,16 +43,18 @@ public class TutorialUI : MonoBehaviour
     public GameObject lastWaveActivate;
 
 
-    public GameObject disableTankInstructions; 
+    public GameObject disableTankInstructions;
 
+
+    bool disableStartWaveTankMode = false;
 
     //private int whichWaveIsItOn; 
-
+    private PlayerInput playerInput; 
 
     // Start is called before the first frame update
     void Start()
-    {   
-
+    {
+        playerInput = FindObjectOfType<PlayerInput>();
         foreach (Transform child in parentOfTiles.transform)
         {
             child.gameObject.layer = 0; 
@@ -85,6 +87,22 @@ public class TutorialUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        if(!disableStartWaveTankMode)
+        {
+
+            print(playerInput);
+
+
+            if(playerInput.currentActionMap.name == "Tank" )
+            {
+                playerInput.actions["StartWave"].Disable();
+
+                disableStartWaveTankMode = true;
+            }
+        }
+
+
         if (firstEventActivated && firstEventNotStarted)
         {   
             timerForFirstEvent -= 1;
@@ -124,7 +142,7 @@ public class TutorialUI : MonoBehaviour
 
                 materialToActivate.SetActive(true);
 
-                disableTankInstructions.SetActive(false);
+                disableTankInstructions.SetActive(false); 
 
                 tileToActivate.layer = LayerMask.NameToLayer("PlaceForTower");
 
