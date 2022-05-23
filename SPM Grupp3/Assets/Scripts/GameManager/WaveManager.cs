@@ -29,6 +29,8 @@ public class WaveManager : MonoBehaviour
 
     private void Awake()
     {
+        currentWave = GameManager.Instance.CurrentWave;
+
         if (startingWave != 1)
         {
             currentWave = startingWave - 2;
@@ -42,13 +44,12 @@ public class WaveManager : MonoBehaviour
         waveClear.SetActive(false);
         gameManager = GameManager.Instance;
 
-
         EventHandler.Instance.RegisterListener<StartWaveEvent>(OnStartWave);
     }
 
-
     private void OnStartWave(StartWaveEvent eventInfo)
-    {       
+    {
+        currentWave = GameManager.Instance.CurrentWave;
         if (spawnEnemies)
         {
             SpawnWave();
@@ -58,6 +59,7 @@ public class WaveManager : MonoBehaviour
     private void SpawnWave()
     {
         currentWave++;
+        GameManager.Instance.CurrentWave = currentWave;
 
         EventHandler.Instance.InvokeEvent(new NewWaveEvent(
             description: "New wave started",
@@ -146,9 +148,9 @@ public class WaveManager : MonoBehaviour
         for (int i = 0; i < currentWaveEnemies.Count; i++)
         {
             int path = Waypoints.GivePath(); //Gives the enemy the right path
-            GameObject g = Instantiate(currentWaveEnemies[i], Waypoints.wayPoints[path][0].position, currentWaveEnemies[i].transform.rotation, enemyContainer.transform); //Spawn enemy and wait for time between enemy
-            g.GetComponent<EnemyController>().TakePath(path);
-            g.SetActive(true);
+            GameObject enemy = Instantiate(currentWaveEnemies[i], Waypoints.wayPoints[path][0].position, currentWaveEnemies[i].transform.rotation, enemyContainer.transform); //Spawn enemy and wait for time between enemy
+            enemy.GetComponent<EnemyController>().TakePath(path);
+            enemy.SetActive(true);
 
             yield return new WaitForSeconds(spawnRate);
 
@@ -157,7 +159,7 @@ public class WaveManager : MonoBehaviour
                 spawnRate = changeSpawnRate[i];
             }
         }
-        yield return false;
+        yield return null;
     }
 
     [ContextMenu("Calculate Wave Duration")]

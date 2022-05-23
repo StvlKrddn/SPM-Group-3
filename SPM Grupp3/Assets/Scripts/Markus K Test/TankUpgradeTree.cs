@@ -57,7 +57,7 @@ public abstract class TankUpgradeTree : MonoBehaviour
         abilityReady = true;
     }
 
-    public void ResetColdown()
+    public void ResetCooldown()
     {
         abilityReady = true;
     }

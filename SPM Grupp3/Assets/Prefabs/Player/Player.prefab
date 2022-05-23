@@ -3153,8 +3153,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64740c98d26739d4e99b2e747e0dcad9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moneyCost: 500
-  materialCost: 0
+  moneyCost: 0
+  materialCost: 10
 --- !u!23 &705580133456242780
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -11983,8 +11983,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3141392934154749893}
-  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -29.34, y: -12.69, z: 12.27}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.8, y: 0.8, z: 0.8}
   m_Children:
   - {fileID: 3610436171266129479}
@@ -11993,7 +11993,7 @@ Transform:
   - {fileID: 705580134563855939}
   m_Father: {fileID: 705580133456242769}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &3141392934154749901
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -12109,9 +12109,9 @@ MonoBehaviour:
   abilityCD: 2
   abilityReady: 0
   range: 25
-  fireRateFirst: 1.2
+  fireRateFirst: 1
   fireRateSecond: 0.5
-  damage: 50
+  damage: 90
   sniperAbility: {fileID: 5158456270458876578, guid: 96e8ed1d1989e8f448a69b5c76916339, type: 3}
 --- !u!114 &3141392934154749894
 MonoBehaviour:
@@ -20165,7 +20165,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5216370096436784857
 RectTransform:
   m_ObjectHideFlags: 0
@@ -21872,8 +21872,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5340816267476896237}
-  m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: -0.025, y: 0.729, z: -0.248}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.025, y: 0.729, z: -0.124}
   m_LocalScale: {x: 0.012499997, y: 0.012499999, z: 0.012499997}
   m_Children:
   - {fileID: 4699376924991914331}
@@ -36011,6 +36011,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 513951308009687257}
     m_Modifications:
+    - target: {fileID: 335223642769956459, guid: 0b55b9743ddee4e45a915776750bde2c, type: 3}
+      propertyPath: damage
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 1353581416514619505, guid: 0b55b9743ddee4e45a915776750bde2c, type: 3}
       propertyPath: m_Name
       value: Flamethrower

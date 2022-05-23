@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
@@ -19,7 +20,10 @@ public class MainMenu : MonoBehaviour
         
         if (DataManager.FileExists(DataManager.SaveData))
         {
-            mainMenu.transform.Find("Continue").gameObject.SetActive(true);
+            GameObject continueButton = mainMenu.transform.Find("Continue").gameObject;
+            continueButton.SetActive(true);
+            EventSystem.current.SetSelectedGameObject(null);
+            EventSystem.current.SetSelectedGameObject(continueButton);
         }
     }
     

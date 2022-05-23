@@ -45,8 +45,7 @@ public class WaveEndSystem : MonoBehaviour
 
         if(tank != null)
         {
-            print("resettar den coldown");
-            tank.ResetColdown();
+            tank.ResetCooldown();
         }
     }
 
