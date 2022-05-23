@@ -17,6 +17,9 @@ public class UI : MonoBehaviour
     [SerializeField] private GameObject pauseMenu;
 
     private GameObject resumeButton;
+    private GameObject restartButton;
+    private GameObject continueButton;
+
     private static Canvas canvas;
 
     public static Canvas Canvas
@@ -35,6 +38,8 @@ public class UI : MonoBehaviour
     {
         canvas = GetComponent<Canvas>();
         resumeButton = pauseMenu.transform.Find("Resume").gameObject;
+        continueButton = victoryPanel.transform.Find("Buttons").Find("ContinueButton").gameObject;        
+        restartButton = defeatPanel.transform.Find("Buttons").Find("RestartButton").gameObject;
     }
 
     public void PauseGame()
@@ -106,17 +111,26 @@ public class UI : MonoBehaviour
         Time.timeScale = 1f;
     }
 
+    public void SetSelectedButton(string buttonName)
+    {
+        switch (buttonName)
+        {
+            case "Resume":
+                SetSelectedButton(resumeButton);
+                break;
+            case "Continue":
+                SetSelectedButton(continueButton);
+                break;
+            case "Restart":
+                SetSelectedButton(continueButton);
+                break;
+        }
+    }
+
     public void SetSelectedButton(GameObject button)
     {
         eventSystem.SetSelectedGameObject(null);
         eventSystem.SetSelectedGameObject(button);
     }
 
-    public void SetSelectedButton(string buttonName)
-    {
-        if (buttonName.Equals("Resume"))
-        {
-            SetSelectedButton(resumeButton);
-        }
-    }
 }

@@ -15,10 +15,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private BaseStats baseStats;
 
     [Header("UI: ")]
-    [SerializeField] private GameObject victoryPanel;
-    [SerializeField] private GameObject continueButton;
-    [SerializeField] private GameObject defeatPanel;
-    [SerializeField] private GameObject restartButton;
+    [SerializeField] private Text moneyCounterUI;
+    [SerializeField] private Text materialCounterUI;
 
     //[Header("Players: ")]
     //[SerializeField] private PlayerMode startingMode;
@@ -27,13 +25,14 @@ public class GameManager : MonoBehaviour
 
     [Header("Other")]
     [NonSerialized] public List<GameObject> towersPlaced = new List<GameObject>();
+    
+    private GameObject victoryPanel;
+    private GameObject defeatPanel;
 
     private BuildManager buildManager;
     private GameObject damagingEnemy;
     private WaveManager waveManager;
     private Canvas canvas;
-    [SerializeField] private Text moneyCounterUI;
-    [SerializeField] private Text materialCounterUI;
     private Slider livesSlider;
 
     private float money;
@@ -132,13 +131,13 @@ public class GameManager : MonoBehaviour
         Transform canvas = UI.Canvas.transform;
         
         Transform currencyPanel = canvas.GetChild(0);
-        //moneyCounterUI = currencyPanel.Find("MoneyHolder").Find("MoneyCounter").GetComponent<Text>();
-        //materialCounterUI = currencyPanel.Find("MaterialHolder").Find("MaterialCounter").GetComponent<Text>();
+        moneyCounterUI = currencyPanel.Find("MoneyHolder").Find("MoneyCounter").GetComponent<Text>();
+        materialCounterUI = currencyPanel.Find("MaterialHolder").Find("MaterialCounter").GetComponent<Text>();
         
         livesSlider = canvas.Find("LivesSlider").GetComponent<Slider>();
 
+        victoryPanel = canvas.Find("VictoryPanel").gameObject;        
         defeatPanel = canvas.Find("DefeatPanel").gameObject;
-        victoryPanel = canvas.Find("VictoryPanel").gameObject;
     }
 
     private void Update()
@@ -196,9 +195,9 @@ public class GameManager : MonoBehaviour
 
     private void UpdateResourcesUI()
     {
-        float mon;
+        /*float mon;
         mon = money;
-        /*if (money / 1000 >= 1)
+        if (money / 1000 >= 1)
         {
             mon = money / 1000;
             Mathf.Round(mon);
@@ -207,8 +206,8 @@ public class GameManager : MonoBehaviour
             return;
         }*/
 
-        moneyCounterUI.text = ": " + mon.ToString();
-        materialCounterUI.text = ": " + material.ToString();
+        moneyCounterUI.text = ": " + money;
+        materialCounterUI.text = ": " + material;
     }
 
     public void AddMoney(float addMoney)
@@ -287,7 +286,7 @@ public class GameManager : MonoBehaviour
             enemiesKilled: 0 
         ));
 
-        canvas.GetComponent<UI>().SetSelectedButton(restartButton);
+        canvas.GetComponent<UI>().SetSelectedButton("Restart");
         UI.OpenMenu();
 
         waveManager.Restart();
@@ -315,7 +314,7 @@ public class GameManager : MonoBehaviour
             towersBuilt: 0
         ));
 
-        canvas.GetComponent<UI>().SetSelectedButton(continueButton);
+        canvas.GetComponent<UI>().SetSelectedButton("Continue");
         UI.OpenMenu();
 
         waveManager.Restart();
