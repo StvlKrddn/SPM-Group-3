@@ -204,6 +204,11 @@ public class TankState : MonoBehaviour
             EnemyBullet enemyBullet = other.gameObject.GetComponent<EnemyBullet>();
             TakeDamage(enemyBullet.damage);
         }
+        else if (other.CompareTag("MortarBullet"))
+        {
+            EnemyMortarShot enemyMortarShot = other.GetComponent<EnemyMortarShot>();
+            TakeDamage(enemyMortarShot.damage);
+        }
     }
 
 	private void OnCollisionEnter(Collision collision)
@@ -212,15 +217,6 @@ public class TankState : MonoBehaviour
         {
             EnemyController enemy = collision.gameObject.GetComponent<EnemyController>();
             TakeDamage(enemy.MeleeDamage);
-        }
-	}
-
-	private void OnParticleCollision(GameObject other)
-	{
-        if (other.CompareTag("MortarBullet"))
-        {
-            EnemyMortarShot enemyMortarShot = other.GetComponent<EnemyMortarShot>();
-            TakeDamage(enemyMortarShot.damage);
         }
 	}
 

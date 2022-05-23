@@ -9,11 +9,14 @@ public class EnemyMortarShot : MonoBehaviour
     private Transform target;
     private SphereCollider sphereCollider;
     public float damage;
+    [SerializeField] private GameObject radius;
+    private ParticleSystem[] particle;
 
     // Start is called before the first frame update
     void Start()
     {
         sphereCollider = GetComponent<SphereCollider>();
+        particle = GetComponentsInChildren<ParticleSystem>();
         sphereCollider.enabled = false;
     }
 
@@ -38,7 +41,6 @@ public class EnemyMortarShot : MonoBehaviour
         {
             if (FindObjectOfType<TankState>())
             {
-                phase = 2;
                 TankState[] tanks;
                 tanks = FindObjectsOfType<TankState>();
                 foreach (TankState tank in tanks)
@@ -48,7 +50,11 @@ public class EnemyMortarShot : MonoBehaviour
                         target = tank.transform;
                     }
                 }
-                Shot();
+                if (radius.transform.parent != null)
+                {
+                    Shot();
+                }
+                phase = 2;
             }
             else
             {
@@ -60,7 +66,13 @@ public class EnemyMortarShot : MonoBehaviour
     private void Shot()
     {
         sphereCollider.enabled = true;
+        radius.SetActive(true);
         transform.position = new Vector3(target.position.x, transform.position.y + 10, target.position.z);
+        radius.transform.position = new Vector3(target.position.x, target.position.y, target.position.z);
+        if (radius.transform.parent != null)
+        {
+            radius.transform.parent = null;
+        }
     }
 
     private void OnTriggerEnter(Collider collider)
@@ -69,6 +81,7 @@ public class EnemyMortarShot : MonoBehaviour
         {
             if (collider.gameObject.CompareTag("PlaceForTower") || collider.gameObject.CompareTag("Road") || collider.gameObject.CompareTag("Tank"))
             {
+                Destroy(radius);
                 StartCoroutine(Particle());
             }
         }
@@ -79,7 +92,7 @@ public class EnemyMortarShot : MonoBehaviour
     {
         phase = 3;
         GetComponent<MeshRenderer>().enabled = false;
-        ParticleSystem[] particle = GetComponentsInChildren<ParticleSystem>();
+        particle[0].transform.GetComponent<SphereCollider>().enabled = true;
         foreach (ParticleSystem p in particle)
         {
             p.Play();
