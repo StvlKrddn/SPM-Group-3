@@ -5,6 +5,7 @@ using UnityEngine;
 public class EnemyBullet : MonoBehaviour
 {
     public float speed = 5f;
+    private Transform target;
     private TankState[] tanks;
     Vector3 direction;
     public float bulletTime = 5f;
@@ -12,9 +13,25 @@ public class EnemyBullet : MonoBehaviour
     public float damage = 5;
     // Start is called before the first frame update
 
-
-    public void SetTarget(Transform target)
+    void Start()
     {
+        //Checks who is closer between tank1 and tank2
+        if (FindObjectOfType<TankState>())
+        {
+            tanks = FindObjectsOfType<TankState>();
+            foreach (TankState tank in tanks)
+            {
+                if (target == null || Vector2.Distance(tank.transform.position, transform.position) < Vector3.Distance(target.position, transform.position))
+                {
+                    target = tank.transform;
+                }
+            }
+
+        }
+        else
+        {
+            target = FindObjectOfType<GarageTrigger>().gameObject.transform;
+        }
         direction = target.position - transform.position; //Checks direction
         direction.Normalize();
         direction.y = 0;

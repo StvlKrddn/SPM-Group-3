@@ -1,0 +1,56 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+using UnityEngine;
+
+public class DataManager : MonoBehaviour
+{
+    private static DataManager instance;
+
+    public static DataManager Instance 
+    {
+        get 
+        {
+            if (instance == null)
+            {
+                instance = FindObjectOfType<DataManager>();
+            }
+            return instance;
+        }
+    }
+
+    /// <summary> Pass in a data structure and save it to a binary file in the default path </summary>
+    /// <param name="dataStructure"> Any struct or class that contains data </param>
+    /// <param name="fileName"> The name of the file, excluding file type, to save to </param>
+    public void Save(object dataStructure, string fileName)
+    {
+        BinaryFormatter formatter = new BinaryFormatter();
+        FileStream file = File.Open(Application.persistentDataPath + "/" + fileName + ".dat", FileMode.OpenOrCreate);
+
+        formatter.Serialize(file, dataStructure);
+        file.Close();
+    }
+
+    /// <summary> Returns a data structure from a binary file </summary>
+    /// <param name="fileName"> The name of the file, excluding file type, to load from </param>
+    public object Load(string fileName)
+    {
+        string path = Application.persistentDataPath + "/" + fileName + ".dat";
+        object dataStructure = null;
+        if (File.Exists(path))
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            FileStream file = File.Open(path, FileMode.Open);
+
+            dataStructure = formatter.Deserialize(file);
+            file.Close();
+        }
+        else
+        {
+            Debug.LogError("File: \"" + path + "\" does not exist or cannot be found!");
+        }
+        return dataStructure;
+    }
+}

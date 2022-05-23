@@ -89,6 +89,8 @@ public class TankState : MonoBehaviour
         
         aimSpeed = standardSpeed * 5;
 
+        StartCoroutine(LockRotation());
+
         //Create isometric matrix
         isoMatrix = Matrix4x4.Rotate(Quaternion.Euler(0, 45, 0));
         /* Explanation of isometric translation can be found here: https://youtu.be/8ZxVBCvJDWk */
@@ -96,6 +98,14 @@ public class TankState : MonoBehaviour
         // Subscribe to events
         EventHandler.Instance.RegisterListener<WaveEndEvent>(OnWaveEnd);
 
+    }
+
+    IEnumerator LockRotation()
+    {
+        yield return new WaitForSeconds(0.5f);
+        transform.rotation = Quaternion.Euler(0, transform.rotation.y, 0);
+
+        rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionY;
     }
 
     void InitializeInputSystem()
@@ -189,7 +199,7 @@ public class TankState : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("EnemyBullet"))
+        if (other.CompareTag("EnemyBullet"))
         {
             EnemyBullet enemyBullet = other.gameObject.GetComponent<EnemyBullet>();
             TakeDamage(enemyBullet.damage);
@@ -205,7 +215,16 @@ public class TankState : MonoBehaviour
         }
 	}
 
-	private void Ability()
+	private void OnParticleCollision(GameObject other)
+	{
+        if (other.CompareTag("MortarBullet"))
+        {
+            EnemyMortarShot enemyMortarShot = other.GetComponent<EnemyMortarShot>();
+            TakeDamage(enemyMortarShot.damage);
+        }
+	}
+
+    private void Ability()
     {
         if (tankUpgradeTree != null)
         {

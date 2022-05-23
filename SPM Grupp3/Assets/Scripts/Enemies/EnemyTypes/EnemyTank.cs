@@ -11,15 +11,11 @@ public class EnemyTank : EnemyController
 		if (damage >= armorThreshold)
 		{
 			damage -= armor;
-			if (damage < armorThreshold)
+			if	(damage < armorThreshold)
 			{
 				damage = armorThreshold;
 			}
+			base.TakeDamage(damage);
 		}
-		else
-		{
-			damage = 1;
-		}
-		base.TakeDamage(damage);
 	}
 }
