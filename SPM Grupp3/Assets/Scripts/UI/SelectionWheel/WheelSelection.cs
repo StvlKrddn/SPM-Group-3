@@ -195,6 +195,7 @@ public class WheelSelection : MonoBehaviour
         if (isPressed)
         {
             selectedItem.GetComponent<ButtonClick>().Click();
+            EventHandler.Instance.InvokeEvent(new BoughtInUIEvent("Something is bought in UI"));
         }
         else
         {

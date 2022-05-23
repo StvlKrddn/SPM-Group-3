@@ -12117,9 +12117,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 807725073}
     - target: {fileID: 5574963424639874961, guid: f38755517d96a124d80b16613eb953a3, type: 3}
+      propertyPath: defeatPanel
+      value: 
+      objectReference: {fileID: 1221435320}
+    - target: {fileID: 5574963424639874961, guid: f38755517d96a124d80b16613eb953a3, type: 3}
       propertyPath: livesSlider
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 5574963424639874961, guid: f38755517d96a124d80b16613eb953a3, type: 3}
+      propertyPath: victoryPanel
+      value: 
+      objectReference: {fileID: 1549915127}
     - target: {fileID: 5574963424639874961, guid: f38755517d96a124d80b16613eb953a3, type: 3}
       propertyPath: restartButton
       value: 
@@ -12157,13 +12165,17 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5574963424639874961, guid: f38755517d96a124d80b16613eb953a3, type: 3}
+      propertyPath: continueButton
+      value: 
+      objectReference: {fileID: 1080208956}
+    - target: {fileID: 5574963424639874961, guid: f38755517d96a124d80b16613eb953a3, type: 3}
       propertyPath: moneyChangerUI
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 5574963424639874961, guid: f38755517d96a124d80b16613eb953a3, type: 3}
       propertyPath: moneyCounterUI
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1594786846}
     - target: {fileID: 5574963424639874961, guid: f38755517d96a124d80b16613eb953a3, type: 3}
       propertyPath: selectedButton
       value: 
@@ -12175,7 +12187,7 @@ PrefabInstance:
     - target: {fileID: 5574963424639874961, guid: f38755517d96a124d80b16613eb953a3, type: 3}
       propertyPath: materialCounterUI
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1022235921}
     - target: {fileID: 5574963424639874962, guid: f38755517d96a124d80b16613eb953a3, type: 3}
       propertyPath: m_RootOrder
       value: 11
@@ -30531,6 +30543,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 460696669}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &461783294 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 838778965751764206, guid: 921e6aa14a6947c4d8c3a7e35244ca12, type: 3}
+  m_PrefabInstance: {fileID: 1512373283}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &463299750
 GameObject:
   m_ObjectHideFlags: 0
@@ -66342,6 +66359,17 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1021947794}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1022235921 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2805306751251233882, guid: 921e6aa14a6947c4d8c3a7e35244ca12, type: 3}
+  m_PrefabInstance: {fileID: 1512373283}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1022617430
 GameObject:
   m_ObjectHideFlags: 0
@@ -78021,6 +78049,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 3923325845311691986, guid: d3f54f8ff917dfb41831ee2d886965de, type: 3}
   m_PrefabInstance: {fileID: 1217140869}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1221435320 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2805306751363345787, guid: 921e6aa14a6947c4d8c3a7e35244ca12, type: 3}
+  m_PrefabInstance: {fileID: 1512373283}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1222434045
 GameObject:
@@ -96023,6 +96056,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1549215588}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1549915127 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2805306752044981859, guid: 921e6aa14a6947c4d8c3a7e35244ca12, type: 3}
+  m_PrefabInstance: {fileID: 1512373283}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1550132165
 GameObject:
   m_ObjectHideFlags: 0
@@ -99385,6 +99423,17 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1593417112}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1594786846 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2805306751997085633, guid: 921e6aa14a6947c4d8c3a7e35244ca12, type: 3}
+  m_PrefabInstance: {fileID: 1512373283}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1594931096
 GameObject:
   m_ObjectHideFlags: 0
@@ -134440,6 +134489,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Garage
       objectReference: {fileID: 0}
+    - target: {fileID: 4206621434703794901, guid: 4f95bb92a89cca74587a804b809bab20, type: 3}
+      propertyPath: hintEnterUI
+      value: 
+      objectReference: {fileID: 461783294}
     - target: {fileID: 5420155341043529199, guid: 4f95bb92a89cca74587a804b809bab20, type: 3}
       propertyPath: m_Enabled
       value: 0
