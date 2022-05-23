@@ -9,6 +9,7 @@ public class EnemyMortarShot : MonoBehaviour
     private Transform target;
     public float damage;
     [SerializeField] private GameObject radius;
+    private Vector3 direction;
     private ParticleSystem[] particle;
 
     // Start is called before the first frame update
@@ -23,13 +24,18 @@ public class EnemyMortarShot : MonoBehaviour
         switch (phase)
         {
             case 1:
-            transform.Translate(speed * Time.deltaTime * Vector3.up, Space.World);
+            direction = Vector3.up;
             break;
 
             case 2:
-            transform.Translate(speed * Time.deltaTime * Vector3.down, Space.World);
+            direction = Vector3.down;
+            break;
+
+            case 3:
+            direction = Vector3.zero;
             break;
         }
+        transform.Translate(speed * Time.deltaTime * direction, Space.World);
     }
 
 	private void OnBecameInvisible()
@@ -40,13 +46,7 @@ public class EnemyMortarShot : MonoBehaviour
             {
                 TankState[] tanks;
                 tanks = FindObjectsOfType<TankState>();
-                foreach (TankState tank in tanks)
-                {
-                    if (target == null || Vector2.Distance(tank.transform.position, transform.position) < Vector3.Distance(target.position, transform.position))
-                    {
-                        target = tank.transform;
-                    }
-                }
+                target = tanks[Random.Range(0, tanks.Length)].transform;
                 if (radius.transform.parent != null)
                 {
                     Shot();
