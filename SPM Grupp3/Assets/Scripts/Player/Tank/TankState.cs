@@ -206,7 +206,7 @@ public class TankState : MonoBehaviour
         }
         else if (other.CompareTag("MortarBullet"))
         {
-            EnemyMortarShot enemyMortarShot = other.GetComponent<EnemyMortarShot>();
+            EnemyMortarShot enemyMortarShot = other.gameObject.GetComponentInParent<EnemyMortarShot>();
             TakeDamage(enemyMortarShot.damage);
         }
     }

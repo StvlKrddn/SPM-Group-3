@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class EnemyPortal : EnemyController
 {
-	private float timer = 0;
 	[SerializeField] private float spawnDuration;
 	private bool opened = false;
 	private BoxCollider boxCollider;

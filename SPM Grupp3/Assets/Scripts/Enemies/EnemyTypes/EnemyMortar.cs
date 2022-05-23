@@ -7,6 +7,8 @@ public class EnemyMortar : EnemyController
     public float timer = 2;
     public int cd = 5;
     public GameObject mortarShot;
+    public bool shooting;
+    public float stayDuration;
 
     // Update is called once per frame
     protected override void Awake()
@@ -17,14 +19,27 @@ public class EnemyMortar : EnemyController
 
     protected override void Update()
     {
-
-        MoveStep();
         timer += Time.deltaTime;
         if (timer >= cd)
         {
-            ShootPlayer();
+            StartCoroutine(ShootMortar());
             timer = 0;
         }
+
+        if (shooting == false)
+        {
+            MoveStep();
+        }
+
+    }
+
+    private IEnumerator ShootMortar()
+    {
+        shooting = true;
+        yield return new WaitForSeconds(stayDuration);
+        ShootPlayer();
+        yield return new WaitForSeconds(stayDuration / 2);
+        shooting = false;
     }
 
     private void ShootPlayer()

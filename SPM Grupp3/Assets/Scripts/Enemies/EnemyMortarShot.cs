@@ -7,7 +7,6 @@ public class EnemyMortarShot : MonoBehaviour
     [SerializeField] private float speed = 20;
     private int phase = 1;
     private Transform target;
-    private SphereCollider sphereCollider;
     public float damage;
     [SerializeField] private GameObject radius;
     private ParticleSystem[] particle;
@@ -15,9 +14,7 @@ public class EnemyMortarShot : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        sphereCollider = GetComponent<SphereCollider>();
         particle = GetComponentsInChildren<ParticleSystem>();
-        sphereCollider.enabled = false;
     }
 
     // Update is called once per frame
@@ -65,7 +62,6 @@ public class EnemyMortarShot : MonoBehaviour
 
     private void Shot()
     {
-        sphereCollider.enabled = true;
         radius.SetActive(true);
         transform.position = new Vector3(target.position.x, transform.position.y + 10, target.position.z);
         radius.transform.position = new Vector3(target.position.x, target.position.y, target.position.z);
