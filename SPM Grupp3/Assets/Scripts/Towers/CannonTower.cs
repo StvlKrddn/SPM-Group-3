@@ -28,13 +28,10 @@ public class CannonTower : Tower
     // Start is called before the first frame update
     void Start()
     {
-
-        /*        CheckLevels();*/
         EventHandler.Instance.RegisterListener<TowerHitEvent>(HitTarget);
         InvokeRepeating("UpdateTarget", 0f, 0.5f);
         radius.transform.localScale = new Vector3(range * 2f, 0.01f, range * 2f);
         radius.SetActive(false);
-        towerScript = this;
     }
 
     // Update is called once per frame
@@ -136,7 +133,7 @@ public class CannonTower : Tower
         }
     }
 
-    public override void TowerLevel1()
+    protected override void TowerLevel1()
     {
         base.TowerLevel1();
 
@@ -148,7 +145,7 @@ public class CannonTower : Tower
         }      
     }
 
-    public override void TowerLevel2()
+    protected override void TowerLevel2()
     {
         base.TowerLevel2();
 
@@ -167,7 +164,7 @@ public class CannonTower : Tower
         }
     }
 
-    public override void TowerLevel3()
+    protected override void TowerLevel3()
     {
         base.TowerLevel3();
 

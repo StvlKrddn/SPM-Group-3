@@ -430,9 +430,9 @@ public class BuilderController : MonoBehaviour
                     
                 selectedTower.ShowUpgradeUI(towerMenu);
 
-            cursorTransform.gameObject.SetActive(false);
+                cursorTransform.gameObject.SetActive(false);
 
-            EventHandler.Instance.InvokeEvent(new TowerClickedEvent("Tower Is clicked", selectedTower.gameObject));
+                EventHandler.Instance.InvokeEvent(new TowerClickedEvent("Tower Is clicked", selectedTower.gameObject));
                 tankUpgrade.transform.position = towerHit.transform.position;
                 hintsPanel.transform.position = towerHit.transform.position;
                 hintsPanel.SetActive(true);

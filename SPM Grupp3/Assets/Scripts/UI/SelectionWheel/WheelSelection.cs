@@ -129,8 +129,7 @@ public class WheelSelection : MonoBehaviour
     void HighlightItem(int index)
     {
         if (numberOfMenuItems <= 0)
-        {
-            
+        {          
             return;
         }
         for (int i = 0; i < numberOfMenuItems; i++)
@@ -151,7 +150,6 @@ public class WheelSelection : MonoBehaviour
                     {
                         builderController.GhostTower(towerToDisplay);
                     }
-
                 }
                 
                     
