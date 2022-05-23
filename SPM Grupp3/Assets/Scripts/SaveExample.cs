@@ -10,19 +10,18 @@ public class SaveExample : MonoBehaviour
 
     void Awake()
     {
-        dataManager = DataManager.Instance;
         TestStruct test = new TestStruct();
         test.Text = "Hello World";
         test.Integer = 42;
 
-        dataManager.Save(test, fileName);
+        //DataManager.WriteToFile(test, fileName);
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.O))
+        if (Input.GetKeyDown(KeyCode.O) && DataManager.FileExists(fileName))
         {
-            TestStruct test = (TestStruct) dataManager.Load(fileName);
+            TestStruct test = (TestStruct) DataManager.ReadFromFile(fileName);
 
             print("Text: " + test.Text);
             print("Integer: " + test.Integer);

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class UI : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class UI : MonoBehaviour
     [SerializeField] private GameObject defeatPanel;
     [SerializeField] private GameObject pauseMenu;
 
-
+    private GameObject resumeButton;
     private static Canvas canvas;
 
     public static Canvas Canvas
@@ -33,6 +34,7 @@ public class UI : MonoBehaviour
     void Awake() 
     {
         canvas = GetComponent<Canvas>();
+        resumeButton = pauseMenu.transform.Find("Resume").gameObject;
     }
 
     public void PauseGame()
@@ -54,22 +56,35 @@ public class UI : MonoBehaviour
         Resume();
         victoryPanel.SetActive(false);
         defeatPanel.SetActive(false);
-        GameManager.Instance.RestartGame();
+        GameManager.Instance.DeleteSaveData();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void Continue()
     {
         Resume();
         victoryPanel.SetActive(false);
-        GameManager.Instance.Continue();
+        
+        int sceneIndex = SceneManager.GetActiveScene().buildIndex;
+        
+        if ((sceneIndex + 1) > 3)
+        {
+            SceneManager.LoadScene(0);
+        }
+        else
+        {
+            SceneManager.LoadScene(sceneIndex + 1);
+        }
     }
 
     public void Quit()
     {
         // NOTE(August): "Are you sure you want to quit?..." prompt?
-
-        UnityEditor.EditorApplication.isPlaying = false;
-        //Application.Quit();
+        EventHandler.Instance.InvokeEvent(new SaveGameEvent(
+            description: "Game is saving"
+        ));
+        Resume();
+        SceneManager.LoadScene(0);
     }
 
     public void Resume()
@@ -95,5 +110,13 @@ public class UI : MonoBehaviour
     {
         eventSystem.SetSelectedGameObject(null);
         eventSystem.SetSelectedGameObject(button);
+    }
+
+    public void SetSelectedButton(string buttonName)
+    {
+        if (buttonName.Equals("Resume"))
+        {
+            SetSelectedButton(resumeButton);
+        }
     }
 }
