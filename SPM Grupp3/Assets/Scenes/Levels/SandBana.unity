@@ -11502,7 +11502,7 @@ PrefabInstance:
     - target: {fileID: 5574963424639874961, guid: f38755517d96a124d80b16613eb953a3, type: 3}
       propertyPath: defeatPanel
       value: 
-      objectReference: {fileID: 2139557003}
+      objectReference: {fileID: 0}
     - target: {fileID: 5574963424639874961, guid: f38755517d96a124d80b16613eb953a3, type: 3}
       propertyPath: livesSlider
       value: 
@@ -11510,7 +11510,7 @@ PrefabInstance:
     - target: {fileID: 5574963424639874961, guid: f38755517d96a124d80b16613eb953a3, type: 3}
       propertyPath: victoryPanel
       value: 
-      objectReference: {fileID: 1395017120}
+      objectReference: {fileID: 0}
     - target: {fileID: 5574963424639874961, guid: f38755517d96a124d80b16613eb953a3, type: 3}
       propertyPath: restartButton
       value: 
@@ -11558,7 +11558,7 @@ PrefabInstance:
     - target: {fileID: 5574963424639874961, guid: f38755517d96a124d80b16613eb953a3, type: 3}
       propertyPath: moneyCounterUI
       value: 
-      objectReference: {fileID: 237628412}
+      objectReference: {fileID: 0}
     - target: {fileID: 5574963424639874961, guid: f38755517d96a124d80b16613eb953a3, type: 3}
       propertyPath: selectedButton
       value: 
@@ -51865,10 +51865,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 816475736}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &816829059 stripped
+--- !u!114 &816829059
 MonoBehaviour:
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 2805306751251233882, guid: 921e6aa14a6947c4d8c3a7e35244ca12, type: 3}
-  m_PrefabInstance: {fileID: 1512373283}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
@@ -51876,6 +51877,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 0}
+    m_FontSize: 14
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 10
+    m_MaxSize: 40
+    m_Alignment: 0
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: 
 --- !u!1 &817503118
 GameObject:
   m_ObjectHideFlags: 0
@@ -82389,11 +82412,6 @@ Transform:
   m_Father: {fileID: 1564108954}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1395017120 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2805306752044981859, guid: 921e6aa14a6947c4d8c3a7e35244ca12, type: 3}
-  m_PrefabInstance: {fileID: 1512373283}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1397746639
 GameObject:
   m_ObjectHideFlags: 0
@@ -125709,11 +125727,6 @@ Transform:
   m_Father: {fileID: 1187610791}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2094300505 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 838778965751764206, guid: 921e6aa14a6947c4d8c3a7e35244ca12, type: 3}
-  m_PrefabInstance: {fileID: 1512373283}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2094606545
 GameObject:
   m_ObjectHideFlags: 0
@@ -128122,11 +128135,6 @@ Transform:
   m_Father: {fileID: 1090529317}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2139557003 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2805306751363345787, guid: 921e6aa14a6947c4d8c3a7e35244ca12, type: 3}
-  m_PrefabInstance: {fileID: 1512373283}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2140451830
 GameObject:
   m_ObjectHideFlags: 0
@@ -129951,7 +129959,7 @@ PrefabInstance:
     - target: {fileID: 4206621434703794901, guid: 4f95bb92a89cca74587a804b809bab20, type: 3}
       propertyPath: hintEnterUI
       value: 
-      objectReference: {fileID: 2094300505}
+      objectReference: {fileID: 0}
     - target: {fileID: 5420155341043529199, guid: 4f95bb92a89cca74587a804b809bab20, type: 3}
       propertyPath: m_Enabled
       value: 0
