@@ -85,9 +85,13 @@ public class GameManager : MonoBehaviour
         material = data.material;
         currentWave = data.currentWave;
         baseHealth = data.currentBaseHealth;
+
         enemiesKilled = data.enemiesKilled;
         moneyCollected = data.moneyCollected;
         materialCollected = data.materialCollected;
+
+        Player1Color = data.player1Color;
+        Player2Color = data.player2Color;
     }
 
     private void LoadBase()
@@ -192,7 +196,10 @@ public class GameManager : MonoBehaviour
             material,
             currentBaseHealth,
             currentScene: SceneManager.GetActiveScene().buildIndex,
-            startingMode
+            Player1Color,
+            Player2Color,
+            startingMode,
+            towersPlaced
         );
         DataManager.WriteToFile(saveData, DataManager.SaveData);
     }

@@ -454,6 +454,8 @@ public class BuilderController : MonoBehaviour
                     
                 selectedTower.ShowUpgradeUI(towerMenu);
 
+                //print(selectedTower.name + " | Level:  " + selectedTower.level);
+
                 cursorTransform.gameObject.SetActive(false);
 
                 EventHandler.Instance.InvokeEvent(new TowerClickedEvent("Tower Is clicked", selectedTower.gameObject));

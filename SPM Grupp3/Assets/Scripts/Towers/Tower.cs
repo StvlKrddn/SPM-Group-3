@@ -26,6 +26,7 @@ public abstract class Tower : MonoBehaviour
     [SerializeField] private float shotDamage = 5000f;
     public float cost = 150f;
     public float materialCost;
+    [System.NonSerialized] public int level = 0;
 
     public float ShotDamage { get { return shotDamage; } set { shotDamage = value; } }
 

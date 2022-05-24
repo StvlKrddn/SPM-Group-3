@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8684089241741131458}
   m_Layer: 8
   m_Name: MissileTower
-  m_TagString: Untagged
+  m_TagString: Tower
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -65,7 +65,6 @@ MonoBehaviour:
   firePoint: {fileID: 1569145758683705722}
   radius: {fileID: 1569145758455605305}
   onHitEffect: {fileID: 6970288597742466642, guid: a61e722881e7d9d48b3435d574f938a1, type: 3}
-  towerScript: {fileID: 0}
   tower: {fileID: 1569145756733406200}
   upgradeUI: {fileID: 0}
   buildUI: {fileID: 0}
@@ -75,6 +74,7 @@ MonoBehaviour:
   shotDamage: 5
   cost: 1200
   materialCost: 0
+  level: 0
   splashRadius: 4
   splashDamage: 2
   amountUpgradeSplashRadius: 2
