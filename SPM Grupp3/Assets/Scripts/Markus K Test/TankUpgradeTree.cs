@@ -33,7 +33,15 @@ public abstract class TankUpgradeTree : MonoBehaviour
         gameManager = FindObjectOfType<GameManager>(); 
 	}
 
-    public abstract void UpgradeOne();
+	private void OnEnable()
+	{
+        if (UpgradeController.currentUpgradeLevel == 3 && abilityReady == false)
+        {
+            StartCoroutine(ResetAbility());
+        }
+	}
+
+	public abstract void UpgradeOne();
 
     public virtual void UpgradeTwo()
     {
