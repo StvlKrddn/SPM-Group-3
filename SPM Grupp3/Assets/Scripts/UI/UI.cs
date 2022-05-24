@@ -87,9 +87,6 @@ public class UI : MonoBehaviour
     public void Quit()
     {
         // NOTE(August): "Are you sure you want to quit?..." prompt?
-        EventHandler.Instance.InvokeEvent(new SaveGameEvent(
-            description: "Game is saving"
-        ));
         Resume();
         SceneManager.LoadScene(0);
     }
