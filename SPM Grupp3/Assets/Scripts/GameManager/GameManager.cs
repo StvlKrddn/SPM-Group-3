@@ -96,6 +96,7 @@ public class GameManager : MonoBehaviour
         material = baseStats.material;
         currentWave = -1;
         baseHealth = baseStats.baseHealth;
+        startingMode = baseStats.startingMode;
         
         enemiesKilled = 0;
         moneyCollected = 0;
@@ -190,7 +191,8 @@ public class GameManager : MonoBehaviour
             money,
             material,
             currentBaseHealth,
-            currentScene: SceneManager.GetActiveScene().buildIndex
+            currentScene: SceneManager.GetActiveScene().buildIndex,
+            startingMode
         );
         DataManager.WriteToFile(saveData, DataManager.SaveData);
     }
