@@ -150,6 +150,11 @@ public class TankState : MonoBehaviour
         {
             Ability();
         }
+
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            DestroyTank();
+        }
     }
 
     void FixedUpdate()
