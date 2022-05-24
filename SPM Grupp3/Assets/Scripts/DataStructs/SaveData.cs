@@ -28,11 +28,11 @@ public struct SaveData
         this.player2Color = player2Color;
 
         this.startingMode = startingMode;
-
         towerData = new List<TowerData>();
+        /*
         foreach (GameObject tower in towersPlaced)
         {
             towerData.Add(new TowerData());
-        }
+        }*/
     }
 }

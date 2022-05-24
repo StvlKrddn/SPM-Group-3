@@ -181,6 +181,10 @@ public class GameManager : MonoBehaviour
         {
             CurrentWave = 5; 
         }
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            EventHandler.Instance.InvokeEvent(new SaveGameEvent("Debug Save"));
+        }
         UpdateUI();
     }
 
