@@ -17,28 +17,20 @@ public abstract class TankUpgradeTree : MonoBehaviour
 
     private UpgradeController uC;
 
-	private void OnEnable()
-	{
-        if (UpgradeController.currentUpgradeLevel == 3)
+    private void OnEnable()
+    {
+        if (UpgradeController.currentUpgradeLevel == 3 && abilityReady == false)
         {
-            ResetCooldown();
+            StartCoroutine(ResetAbility());
         }
-	}
+    }
 
-	protected virtual void Start()
+    protected virtual void Start()
 	{   
         uC = UpgradeController.Instance;
         tankState = GetComponent<TankState>();
         weapon = GetComponent<WeaponSlot>();
         gameManager = FindObjectOfType<GameManager>(); 
-	}
-
-	private void OnEnable()
-	{
-        if (UpgradeController.currentUpgradeLevel == 3 && abilityReady == false)
-        {
-            StartCoroutine(ResetAbility());
-        }
 	}
 
 	public abstract void UpgradeOne();
