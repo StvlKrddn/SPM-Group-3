@@ -50,8 +50,6 @@ public abstract class EnemyController : MonoBehaviour
         currentHealth = health;
         gM = GameManager.Instance;
         healthBar = GetComponent<Health>();
-        path = Waypoints.currentPath;
-        target = Waypoints.wayPoints[path][currWaypointIndex];
         //Change to right tank when done with tanks
     }
 

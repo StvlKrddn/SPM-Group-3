@@ -31,8 +31,6 @@ public class WaveManager : MonoBehaviour
 
     private void Awake()
     {
-        currentWave = GameManager.Instance.CurrentWave;
-
         if (startingWave != 1)
         {
             currentWave = startingWave - 2;
@@ -46,12 +44,13 @@ public class WaveManager : MonoBehaviour
         waveClear.SetActive(false);
         gameManager = GameManager.Instance;
 
+
         EventHandler.Instance.RegisterListener<StartWaveEvent>(OnStartWave);
     }
 
+
     private void OnStartWave(StartWaveEvent eventInfo)
-    {
-        currentWave = GameManager.Instance.CurrentWave;
+    {       
         if (spawnEnemies)
         {
             SpawnWave();
@@ -61,7 +60,6 @@ public class WaveManager : MonoBehaviour
     private void SpawnWave()
     {
         currentWave++;
-        GameManager.Instance.CurrentWave = currentWave;
 
         EventHandler.Instance.InvokeEvent(new NewWaveEvent(
             description: "New wave started",
@@ -123,7 +121,7 @@ public class WaveManager : MonoBehaviour
     {
         for (int i = 0; i < poolCount; i++)
         {
-            if (currentWaveEnemies.Count - 1> i)
+            if (currentWaveEnemies.Count - 1 > i)
             {
                 GameObject g = Instantiate(currentWaveEnemies[i], enemyContainer.transform);
                 g.SetActive(false);
@@ -191,7 +189,7 @@ public class WaveManager : MonoBehaviour
                 spawnRate = changeSpawnRate[i];
             }
         }
-        yield return null;
+        yield return false;
     }
 
     [ContextMenu("Calculate Wave Duration")]
