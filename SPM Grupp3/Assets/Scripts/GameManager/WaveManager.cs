@@ -23,9 +23,11 @@ public class WaveManager : MonoBehaviour
     private bool spawnEnemies = true;
     private int waveMoneyBonus;
     private List<GameObject> currentWaveEnemies = new List<GameObject>();
+    private static List<GameObject> poolOfEnemies = new List<GameObject>();
     private Text waveUI;
     private GameObject waveClear;
     private Dictionary<int, float> changeSpawnRate = new Dictionary<int, float>();
+    [SerializeField] private int poolCount = 20;
 
     private void Awake()
     {
@@ -80,6 +82,7 @@ public class WaveManager : MonoBehaviour
     {
         currentWaveEnemies.Clear();
         changeSpawnRate.Clear();
+        poolOfEnemies.Clear();
 
         spawnRate = wave.subWaves[0].spawnRate;
         foreach (SubWave subWave in wave.subWaves)
@@ -96,6 +99,7 @@ public class WaveManager : MonoBehaviour
             Shuffle(subWaveEnemies);
             currentWaveEnemies.AddRange(subWaveEnemies); //Then adds the shuffled subwave to the wave
         }
+        SetupPool();
         waveMoneyBonus = wave.waveMoneyBonus;
         enemyCount = currentWaveEnemies.Count;
     }
@@ -113,6 +117,19 @@ public class WaveManager : MonoBehaviour
         }
     }
 
+    private void SetupPool()
+    {
+        for (int i = 0; i < poolCount; i++)
+        {
+            if (currentWaveEnemies.Count - 1> i)
+            {
+                GameObject g = Instantiate(currentWaveEnemies[i], enemyContainer.transform);
+                g.SetActive(false);
+                poolOfEnemies.Add(g);
+            }
+        }
+    }
+
     public void WaveUpdate()
     {
         enemyCount--;
@@ -126,7 +143,11 @@ public class WaveManager : MonoBehaviour
             else
             {
                 waveClear.SetActive(true);
-
+                foreach (GameObject g in poolOfEnemies)
+                {
+                    Destroy(g);
+                }
+                poolOfEnemies.Clear();
                 spawnEnemies = true;
                 Debug.Log("Wave " + currentWave + " cleared");
                 GameManager.Instance.AddMoney(waveMoneyBonus);
@@ -145,10 +166,21 @@ public class WaveManager : MonoBehaviour
     {
         for (int i = 0; i < currentWaveEnemies.Count; i++)
         {
-            int path = Waypoints.GivePath(); //Gives the enemy the right path
-            GameObject g = Instantiate(currentWaveEnemies[i], Waypoints.wayPoints[path][0].position, currentWaveEnemies[i].transform.rotation, enemyContainer.transform); //Spawn enemy and wait for time between enemy
-            g.GetComponent<EnemyController>().TakePath(path);
-            g.SetActive(true);
+            GameObject enemy = GetPooledEnemy(currentWaveEnemies[i]);
+            int givenPath = Waypoints.GivePath(); //Gives the enemy the right path
+            if (enemy != null)
+            {
+                EnemyController enemyController = enemy.GetComponent<EnemyController>();
+                enemyController.path = givenPath;
+                enemyController.transform.position = Waypoints.wayPoints[enemyController.path][0].position;
+                enemyController.gameObject.SetActive(true);
+            }
+            else
+            {
+                GameObject g = Instantiate(currentWaveEnemies[i], Waypoints.wayPoints[givenPath][0].position, currentWaveEnemies[i].transform.rotation, enemyContainer.transform);
+                poolOfEnemies.Add(g);
+            }
+             //Spawn enemy and wait for time between enemy
 
             yield return new WaitForSeconds(spawnRate);
 
@@ -179,6 +211,21 @@ public class WaveManager : MonoBehaviour
             }
             print("Wave " + (i + 1) + " is " + waveInfo.waveDuration + " seconds long");
         }
+    }
+
+    public GameObject GetPooledEnemy(GameObject enemy)
+    {
+        for (int i = 0; i < poolOfEnemies.Count; i++)
+        {
+            if (poolOfEnemies[i].activeSelf == false)
+            {
+                if (poolOfEnemies[i].GetComponent<EnemyController>().GetType() == enemy.GetComponent<EnemyController>().GetType())
+                {
+                    return poolOfEnemies[i];
+                }
+            }
+        }
+        return null;
     }
 
     public void UpdateUI()
