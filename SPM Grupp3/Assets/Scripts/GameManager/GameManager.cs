@@ -168,6 +168,14 @@ public class GameManager : MonoBehaviour
                 material -= 50;
             }
         }
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            CurrentWave = 4;
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            CurrentWave = 5; 
+        }
         UpdateUI();
     }
 
