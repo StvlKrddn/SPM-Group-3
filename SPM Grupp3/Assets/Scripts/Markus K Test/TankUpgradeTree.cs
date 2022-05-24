@@ -17,7 +17,15 @@ public abstract class TankUpgradeTree : MonoBehaviour
 
     private UpgradeController uC;
 
-    protected virtual void Start()
+	private void OnEnable()
+	{
+        if (UpgradeController.currentUpgradeLevel == 3)
+        {
+            ResetCooldown();
+        }
+	}
+
+	protected virtual void Start()
 	{   
         uC = UpgradeController.Instance;
         tankState = GetComponent<TankState>();
@@ -39,15 +47,12 @@ public abstract class TankUpgradeTree : MonoBehaviour
 
     public virtual bool Ability()
     {
-        print(abilityReady);
         if (abilityReady == true)
         {
             abilityReady = false;
-   //         StartCoroutine(ResetAbility());
+            StartCoroutine(ResetAbility());
             return true;
         }
-
-        print(abilityReady);
         return false;
     }
 

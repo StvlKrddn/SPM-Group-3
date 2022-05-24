@@ -72,6 +72,5 @@ public class EnemyPortal : EnemyController
 		opened = true;
 		boxCollider.enabled = true;
 		canvas.enabled = true;
-		yield return null;
 	}
 }

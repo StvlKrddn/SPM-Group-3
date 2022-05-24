@@ -149,7 +149,6 @@ public class WaveManager : MonoBehaviour
         {
             int path = Waypoints.GivePath(); //Gives the enemy the right path
             GameObject enemy = Instantiate(currentWaveEnemies[i], Waypoints.wayPoints[path][0].position, currentWaveEnemies[i].transform.rotation, enemyContainer.transform); //Spawn enemy and wait for time between enemy
-            enemy.GetComponent<EnemyController>().TakePath(path);
             enemy.SetActive(true);
 
             yield return new WaitForSeconds(spawnRate);

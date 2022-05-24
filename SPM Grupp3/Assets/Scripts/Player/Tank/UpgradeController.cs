@@ -30,7 +30,7 @@ public class UpgradeController : MonoBehaviour
 
     public void IncreaseUpgradesPurchased()
     {
-        if (GameManager.Instance.SpendResources(moneyCost, materialCost))
+        if (GameManager.Instance.SpendResources(moneyCost, materialCost) && currentUpgradeLevel < 3)
         {
             currentUpgradeLevel++;
             if(FindObjectOfType<TankState>())
