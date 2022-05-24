@@ -27,14 +27,24 @@ public abstract class EnemyController : MonoBehaviour
     private float maxHealthDamage;
     private bool dead = false;
     private float currentHealth;
-    protected int path;
+    public int path;
 
     public float MeleeDamage { get { return meleeDamage; } set { meleeDamage = value; } }
     public float Health { get { return health; } }
 
-    // Start is called before the first frame update
+	// Start is called before the first frame update
+	protected virtual void OnEnable()
+	{
+        currentHealth = health;
+        currWaypointIndex = 0;
+        poisonTickTimers.Clear();
+        dead = false;
+        healthBar.ResetHealth();
+        SlowDuration();
+        target = Waypoints.wayPoints[path][0];
+    }
 
-    protected virtual void Awake()
+	protected virtual void Awake()
     {
         defaultSpeed = speed;
         currentHealth = health;
@@ -53,7 +63,7 @@ public abstract class EnemyController : MonoBehaviour
         MoveStep();   
     }
 
-    public void MoveStep()
+	public void MoveStep()
     {
         //WIP Enemy moves right direction
         Vector3 direction = target.position - transform.position;
@@ -66,7 +76,7 @@ public abstract class EnemyController : MonoBehaviour
         gM.TakeDamage(damageBase, gameObject);
         DieEvent dieEvent = new DieEvent("död från bas", gameObject, null, null);
         EventHandler.Instance.InvokeEvent(dieEvent);
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -104,7 +114,7 @@ public abstract class EnemyController : MonoBehaviour
         }
         DieEvent dieEvent = new DieEvent("d�d", gameObject, null, null);
         EventHandler.Instance.InvokeEvent(dieEvent);
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 
     public void HitBySlow(float slowProc, float radius, bool areaOfEffect)

@@ -16,6 +16,5 @@ public class DeathSystem : MonoBehaviour
     private void OnObjectExploded(DieEvent eventInfo)
     {
         waveManager.WaveUpdate();
-        Destroy(eventInfo.Invoker);
     }
 }

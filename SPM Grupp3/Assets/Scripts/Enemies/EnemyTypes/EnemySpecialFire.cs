@@ -8,7 +8,14 @@ public class EnemySpecialFire : EnemyController
     public float iceRestiance = 0.5f;
     [SerializeField] private GameObject iceShield;
 
-    public override void TakeDamage(float damage)
+	protected override void OnEnable()
+	{
+		base.OnEnable();
+        iceShield.SetActive(true);
+        iceShieldOn = true;
+    }
+
+	public override void TakeDamage(float damage)
     {
         if (iceShieldOn == true)
         {
