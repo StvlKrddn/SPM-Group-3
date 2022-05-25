@@ -15,11 +15,9 @@ public abstract class Tower : MonoBehaviour
     public GameObject onHitEffect;
     protected TowerUpgradeController tUC;
     public GameObject tower;
-    public Tower towerScript;
     public GameObject upgradeUI;
     public GameObject buildUI;
 	public GameObject towerPlacement;
-    public Tower towerScript;
 
     [Header("BaseStats")]
 

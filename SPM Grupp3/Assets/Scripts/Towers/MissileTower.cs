@@ -28,18 +28,6 @@ public class MissileTower : Tower
     public float SplashRadius { get { return splashRadius; } set { splashRadius = value; } }
     public float SplashDamage { get { return splashDamage; } set { splashDamage = value; } }
 
-    public Tower TowerScript 
-    {
-        get 
-        {
-            if (towerScript == null)
-            {
-                towerScript = this;
-            }
-            return towerScript;
-        }
-    }
-
     public override float UpgradeCostUpdate()
     {
         base.TowerLevel1();

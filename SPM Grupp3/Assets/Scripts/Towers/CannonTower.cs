@@ -21,22 +21,9 @@ public class CannonTower : Tower
 
     private float fireCountdown = 0f;
 
-    public Tower TowerScript 
-    {
-        get 
-        {
-            if (towerScript == null)
-            {
-                towerScript = this;
-            }
-            return towerScript;
-        }
-    }
-
     // Start is called before the first frame update
     void Start()
     {
-        towerScript = this;
         EventHandler.Instance.RegisterListener<TowerHitEvent>(HitTarget);
         InvokeRepeating("UpdateTarget", 0f, 0.5f);
         radius.transform.localScale = new Vector3(range * 2f, 0.01f, range * 2f);

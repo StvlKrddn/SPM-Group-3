@@ -31,18 +31,6 @@ public class PoisonTower : Tower
     public float PoisonDamagePerTick { get { return poisonDamagePerTick; } set { poisonDamagePerTick = value; } }
     public float MaxHealthPerTick { get { return maxHealthPerTick; } set { maxHealthPerTick = value; } }
 
-    public Tower TowerScript 
-    {
-        get 
-        {
-            if (towerScript == null)
-            {
-                towerScript = this;
-            }
-            return towerScript;
-        }
-    }
-
     public override float UpgradeCostUpdate()
     {
         base.TowerLevel1();

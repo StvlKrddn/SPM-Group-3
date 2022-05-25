@@ -153,7 +153,7 @@ public class WheelSelection : MonoBehaviour
                         materialText.text = tower.materialCost.ToString(); //if needed
                     }
 
-                    TowerUpgradeCotroller tUC = TowerUpgradeCotroller.instance;
+                    TowerUpgradeController tUC = TowerUpgradeController.Instance;
                     if (tUC.ClickedTower != null) //Checks upgrade and changes the UI based on upgradelevel
                     {
                         UpgradeHighlighted(moneyText, materialText, tUC);
@@ -187,7 +187,7 @@ public class WheelSelection : MonoBehaviour
         }
     }
 
-    private void UpgradeHighlighted(Text moneyText, Text materialText, TowerUpgradeCotroller tUC)
+    private void UpgradeHighlighted(Text moneyText, Text materialText, TowerUpgradeController tUC)
     {
         Tower tower;
         tower = tUC.ClickedTower.GetComponent<Tower>();

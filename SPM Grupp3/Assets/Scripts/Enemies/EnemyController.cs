@@ -42,7 +42,7 @@ public abstract class EnemyController : MonoBehaviour
         poisonTickTimers.Clear();
         dead = false;
         healthBar.ResetHealth();
-        SlowDuration();
+        
         path = Waypoints.GivePath();
         target = Waypoints.wayPoints[path][currWaypointIndex];
     }

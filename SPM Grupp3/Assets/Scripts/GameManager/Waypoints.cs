@@ -8,10 +8,6 @@ public class Waypoints : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        if (instance == null)
-        {
-            instance = this;
-        }
         for (int i = 0; i < transform.childCount; i++) // Foreach path, add the path to the list
         {
             Transform[] path = new Transform[transform.GetChild(i).childCount];

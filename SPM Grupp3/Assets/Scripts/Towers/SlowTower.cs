@@ -35,18 +35,6 @@ public class SlowTower : Tower
     public float CurrentShots { get { return currentShots; } set { currentShots = value; } }
     public bool AreaOfEffect { get { return areaOfEffect; } set { areaOfEffect = value; } }
 
-    public Tower TowerScript 
-    {
-        get 
-        {
-            if (towerScript == null)
-            {
-                towerScript = this;
-            }
-            return towerScript;
-        }
-    }
-
 
     public override float UpgradeCostUpdate()
     {
