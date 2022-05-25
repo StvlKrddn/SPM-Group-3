@@ -156,11 +156,11 @@ public class WheelSelection : MonoBehaviour
                     }
                     else
                     {
-                        TowerUpgradeCotroller tUC = TowerUpgradeCotroller.instance;
-                        if (tUC.ClickedTower != null) //Checks upgrade and changes the UI based on upgradelevel
-                        {
-                            UpgradeHighlighted(moneyText, materialText, tUC);
-                        }
+                  //     TowerUpgradeCotroller tUC = TowerUpgradeCotroller.instance;
+                  //     if (tUC.ClickedTower != null) //Checks upgrade and changes the UI based on upgradelevel
+                  //     {
+                  //         UpgradeHighlighted(moneyText, materialText, tUC);
+                  //     }
                     }
 
                     DecideTowerToBuild(MenuItems[i].name);
