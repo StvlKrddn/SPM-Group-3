@@ -68,7 +68,14 @@ public class PlayerHandler : MonoBehaviour
 
         currentMode = PlayerMode.Tank;
 
-        UpgradeController.Instance.FixUpgrades(gameObject);
+
+        StartCoroutine(FixUpgradeDelay(gameObject));
+    }
+
+    private IEnumerator FixUpgradeDelay(GameObject tank)
+    {
+        yield return new WaitForSeconds(0.1f);
+        UpgradeController.Instance.FixUpgrades(tank);
     }
 
     void EnterBuildMode()
@@ -136,7 +143,9 @@ public class PlayerHandler : MonoBehaviour
     {
         if (context.performed)
         {
-            canvas.GetComponent<UI>().PauseGame();
+            UI ui = canvas.GetComponent<UI>();
+            ui.SetSelectedButton("Resume");
+            ui.PauseGame();
         }
     }
 

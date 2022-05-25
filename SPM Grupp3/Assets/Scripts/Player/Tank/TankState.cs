@@ -199,10 +199,15 @@ public class TankState : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("EnemyBullet"))
+        if (other.CompareTag("EnemyBullet"))
         {
             EnemyBullet enemyBullet = other.gameObject.GetComponent<EnemyBullet>();
             TakeDamage(enemyBullet.damage);
+        }
+        else if (other.CompareTag("MortarBullet"))
+        {
+            EnemyMortarShot enemyMortarShot = other.gameObject.GetComponentInParent<EnemyMortarShot>();
+            TakeDamage(enemyMortarShot.damage);
         }
     }
 
@@ -215,7 +220,7 @@ public class TankState : MonoBehaviour
         }
 	}
 
-	private void Ability()
+    private void Ability()
     {
         if (tankUpgradeTree != null)
         {

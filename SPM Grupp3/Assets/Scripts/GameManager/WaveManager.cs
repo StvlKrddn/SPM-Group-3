@@ -8,12 +8,14 @@ public class WaveManager : MonoBehaviour
 {
     [Header("Enemies: ")]
     [SerializeField] private GameObject enemyContainer;
+    [SerializeField] private int poolCount = 20;
     
     [Space]
     public WaveInfo[] waves;
 
     [Header("Debug")]
     [SerializeField] private int startingWave = 1;
+
 
     private int enemyCount;
     private GameManager gameManager;
@@ -23,6 +25,7 @@ public class WaveManager : MonoBehaviour
     private bool spawnEnemies = true;
     private int waveMoneyBonus;
     private List<GameObject> currentWaveEnemies = new List<GameObject>();
+    private List<GameObject> poolOfEnemies = new List<GameObject>();
     private Text waveUI;
     private GameObject waveClear;
     private Dictionary<int, float> changeSpawnRate = new Dictionary<int, float>();
@@ -51,14 +54,12 @@ public class WaveManager : MonoBehaviour
     {       
         if (spawnEnemies)
         {
-            print("Run?");
             SpawnWave();
         }
     }
 
     private void SpawnWave()
     {
-        print("Run 1?");
         currentWave++;
 
         EventHandler.Instance.InvokeEvent(new NewWaveEvent(
@@ -71,7 +72,6 @@ public class WaveManager : MonoBehaviour
 
     public void StartWave(int currentWave)
     {
-        print("Run 2?");
         waveClear.SetActive(false);
         this.currentWave = currentWave;
         WaveConstructor(waves[currentWave]);
@@ -116,20 +116,48 @@ public class WaveManager : MonoBehaviour
         }
     }
 
+    private void ClearInactive()
+    {
+        for (int i = poolOfEnemies.Count - 1; i > -1; i--)
+        {
+            if (poolOfEnemies.Count > poolCount && poolOfEnemies[i].activeSelf == false)
+            {
+                Destroy(poolOfEnemies[i]);
+                poolOfEnemies.RemoveAt(i);
+            }
+        }
+    }
+
+    private int FindEmptyPool()
+    {
+        for (int i = 0; i < poolCount; i++)
+        {
+            if (poolOfEnemies.Count > i && poolOfEnemies[i] == null)
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     public void WaveUpdate()
     {
         enemyCount--;
         gameManager.EnemiesKilled++;
         if (enemyCount == 0)
         {
+
             if (currentWave >= victoryWave - 1)
             {
                 gameManager.Victory();
             }
             else
             {
+                if (poolOfEnemies.Count > poolCount) 
+                {
+                    ClearInactive();
+                }
                 waveClear.SetActive(true);
-
                 spawnEnemies = true;
                 Debug.Log("Wave " + currentWave + " cleared");
                 GameManager.Instance.AddMoney(waveMoneyBonus);
@@ -148,10 +176,22 @@ public class WaveManager : MonoBehaviour
     {
         for (int i = 0; i < currentWaveEnemies.Count; i++)
         {
-            int path = Waypoints.GivePath(); //Gives the enemy the right path
-            GameObject g = Instantiate(currentWaveEnemies[i], Waypoints.wayPoints[path][0].position, currentWaveEnemies[i].transform.rotation, enemyContainer.transform); //Spawn enemy and wait for time between enemy
-            g.GetComponent<EnemyController>().TakePath(path);
-            g.SetActive(true);
+            if (poolOfEnemies.Count > poolCount) //Clear inactive enemies
+            {
+                ClearInactive();
+            }
+            GameObject enemy = GetPooledEnemy(currentWaveEnemies[i]);
+            int givenPath = Waypoints.GiveNewPath(); //Gives the enemy the right path
+            if (enemy != null)
+            {
+                UseInactive(enemy, givenPath);
+            }
+            else
+            {
+                AddEnemy(currentWaveEnemies[i], givenPath);
+            }
+            //Spawn enemy and wait for time between enemy
+
 
             yield return new WaitForSeconds(spawnRate);
 
@@ -161,6 +201,29 @@ public class WaveManager : MonoBehaviour
             }
         }
         yield return false;
+    }
+
+    private void UseInactive(GameObject enemy, int givenPath)
+    {
+        EnemyController enemyController = enemy.GetComponent<EnemyController>();
+        enemyController.path = givenPath;
+        enemyController.transform.position = Waypoints.wayPoints[enemyController.path][0].position;
+        enemyController.gameObject.SetActive(true);
+    }
+
+    private void AddEnemy(GameObject enemy, int givenPath)
+    {
+        GameObject g = Instantiate(enemy, Waypoints.wayPoints[givenPath][0].position, enemy.transform.rotation, enemyContainer.transform);
+        int index = FindEmptyPool();
+
+        if (index > -1)
+        {
+            poolOfEnemies[index] = g;
+        }
+        else
+        {
+            poolOfEnemies.Add(g);
+        }
     }
 
     [ContextMenu("Calculate Wave Duration")]
@@ -184,6 +247,21 @@ public class WaveManager : MonoBehaviour
         }
     }
 
+    public GameObject GetPooledEnemy(GameObject enemy)
+    {
+        for (int i = 0; i < poolOfEnemies.Count; i++)
+        {
+            if (poolOfEnemies[i] != null && poolOfEnemies[i].activeSelf == false)
+            {
+                if (poolOfEnemies[i].GetComponent<EnemyController>().GetType() == enemy.GetComponent<EnemyController>().GetType())
+                {
+                    return poolOfEnemies[i];
+                }
+            }
+        }
+        return null;
+    }
+
     public void UpdateUI()
     {
         waveUI.text = (currentWave + 1) + "/" + victoryWave;
@@ -192,10 +270,6 @@ public class WaveManager : MonoBehaviour
     public void Restart()
     {
         currentWave = -1;
-        foreach (Transform enemy in enemyContainer.transform)
-        {
-            Destroy(enemy.gameObject);
-        }
         StopCoroutine(SpawnCurrentWave());
         currentWaveEnemies.Clear();
         UpdateUI();

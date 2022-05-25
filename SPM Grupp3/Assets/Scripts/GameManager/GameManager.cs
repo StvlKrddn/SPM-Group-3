@@ -4,35 +4,42 @@ using UnityEngine.UI;
 using System;
 using UnityEngine.InputSystem;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    [Header("Stats: ")]
-    [SerializeField] private float baseHealth = 100f;
-    [SerializeField] private float material = 0f;
-    [SerializeField] private float money = 350f;
+    //[Header("Stats: ")]
+    //[SerializeField] private float baseHealth = 100f;
+    //[SerializeField] private float material = 0f;
+    //[SerializeField] private float money = 350f;
+    [SerializeField] private BaseStats baseStats;
 
     [Header("UI: ")]
-    [SerializeField] private GameObject victoryPanel;
-    [SerializeField] private GameObject continueButton;
-    [SerializeField] private GameObject defeatPanel;
-    [SerializeField] private GameObject restartButton;
+    [SerializeField] private Text moneyCounterUI;
+    [SerializeField] private Text materialCounterUI;
 
-    [Header("Players: ")]
-    [SerializeField] private PlayerMode startingMode;
-    public Color Player1Color;
-    public Color Player2Color;
+    //[Header("Players: ")]
+    //[SerializeField] private PlayerMode startingMode;
+    [NonSerialized] public Color Player1Color;
+    [NonSerialized] public Color Player2Color;
 
     [Header("Other")]
-    public List<GameObject> towersPlaced = new List<GameObject>();
+    [NonSerialized] public List<GameObject> towersPlaced = new List<GameObject>();
+    
+    private GameObject victoryPanel;
+    private GameObject defeatPanel;
+    private GameObject waveCounter;
 
     private BuildManager buildManager;
     private GameObject damagingEnemy;
     private WaveManager waveManager;
     private Canvas canvas;
-    [SerializeField] private Text moneyCounterUI;
-    [SerializeField] private Text materialCounterUI;
     private Slider livesSlider;
+
+    private float money;
+    private float material;
+    private float baseHealth;
+    private PlayerMode startingMode;
 
     private int currentWave = -1;
     private float currentBaseHealth;
@@ -40,7 +47,7 @@ public class GameManager : MonoBehaviour
     private int moneyCollected;
     private int materialCollected;
 
-    public float Money { get { return money; } set { money = value; } }
+    public int CurrentWave { get { return currentWave; } set { currentWave = value; } }
     public PlayerMode StartingMode { get { return startingMode; } }
     public int EnemiesKilled { get { return enemiesKilled; } set { enemiesKilled = value; } }
 
@@ -58,20 +65,67 @@ public class GameManager : MonoBehaviour
         } 
     }
 
+    void Awake() 
+    {
+        EventHandler.Instance.RegisterListener<SaveGameEvent>(SaveGame);
+        if (DataManager.FileExists(DataManager.SaveData))
+        {
+            LoadFromFile();
+        }
+        else 
+        {
+            LoadBase();
+        }
+    }
+
+    private void LoadFromFile()
+    {
+        SaveData data = (SaveData) DataManager.ReadFromFile(DataManager.SaveData);
+        money = data.money;
+        material = data.material;
+        currentWave = data.currentWave;
+        baseHealth = data.currentBaseHealth;
+        enemiesKilled = data.enemiesKilled;
+        moneyCollected = data.moneyCollected;
+        materialCollected = data.materialCollected;
+    }
+
+    private void LoadBase()
+    {
+        money = baseStats.money;
+        material = baseStats.material;
+        currentWave = -1;
+        baseHealth = baseStats.baseHealth;
+        startingMode = baseStats.startingMode;
+        
+        enemiesKilled = 0;
+        moneyCollected = 0;
+        materialCollected = 0;
+
+        Player1Color = baseStats.Player1Color;
+        Player2Color = baseStats.Player2Color;
+    }
+
+    [ContextMenu("Delete Save Data")]
+    public void DeleteSaveData()
+    {
+        DataManager.DeleteFile(DataManager.SaveData);
+    }
+
     private void Start()
     {
         InitializeUIElements();
 
         buildManager = FindObjectOfType<BuildManager>();
         currentBaseHealth = baseHealth;
-        livesSlider.maxValue = currentBaseHealth;
-        livesSlider.value = baseHealth;
+        livesSlider.maxValue = baseStats.baseHealth;
+        livesSlider.value = currentBaseHealth;
 
         waveManager = GetComponent<WaveManager>();
 
         canvas = UI.Canvas;
 
-        UpdateResourcesUI();
+        UpdateUI();
 
         victoryPanel.SetActive(false);
         defeatPanel.SetActive(false);
@@ -81,14 +135,15 @@ public class GameManager : MonoBehaviour
     {
         Transform canvas = UI.Canvas.transform;
         
-        Transform currencyPanel = canvas.GetChild(0);
-        //moneyCounterUI = currencyPanel.Find("MoneyHolder").Find("MoneyCounter").GetComponent<Text>();
-        //materialCounterUI = currencyPanel.Find("MaterialHolder").Find("MaterialCounter").GetComponent<Text>();
+        Transform topPanel = canvas.GetChild(0);
+        waveCounter = topPanel.Find("WaveHolder").Find("WaveCounter").gameObject;
+        moneyCounterUI = topPanel.Find("MoneyHolder").Find("MoneyCounter").GetComponent<Text>();
+        materialCounterUI = topPanel.Find("MaterialHolder").Find("MaterialCounter").GetComponent<Text>();
         
         livesSlider = canvas.Find("LivesSlider").GetComponent<Slider>();
 
+        victoryPanel = canvas.Find("VictoryPanel").gameObject;        
         defeatPanel = canvas.Find("DefeatPanel").gameObject;
-        victoryPanel = canvas.Find("VictoryPanel").gameObject;
     }
 
     private void Update()
@@ -114,7 +169,32 @@ public class GameManager : MonoBehaviour
                 material -= 50;
             }
         }
-        UpdateResourcesUI();
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            CurrentWave = 4;
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            CurrentWave = 5; 
+        }
+        UpdateUI();
+    }
+
+    void SaveGame(SaveGameEvent eventInfo)
+    {
+        print("Game saved");
+        SaveData saveData = new SaveData(
+            currentWave,
+            enemiesKilled,
+            moneyCollected,
+            materialCollected,
+            money,
+            material,
+            currentBaseHealth,
+            currentScene: SceneManager.GetActiveScene().buildIndex,
+            startingMode
+        );
+        DataManager.WriteToFile(saveData, DataManager.SaveData);
     }
 
     public void TakeDamage(float damage, GameObject enemy)
@@ -128,11 +208,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void UpdateResourcesUI()
+    private void UpdateUI()
     {
-        float mon;
+        /*float mon;
         mon = money;
-        /*if (money / 1000 >= 1)
+        if (money / 1000 >= 1)
         {
             mon = money / 1000;
             Mathf.Round(mon);
@@ -141,8 +221,10 @@ public class GameManager : MonoBehaviour
             return;
         }*/
 
-        moneyCounterUI.text = ": " + mon.ToString();
-        materialCounterUI.text = ": " + material.ToString();
+        moneyCounterUI.text = ": " + money;
+        materialCounterUI.text = ": " + material;
+
+        waveCounter.GetComponent<Text>().text = (currentWave + 1) + "/" + GetComponent<WaveManager>().waves.Length;
     }
 
     public void AddMoney(float addMoney)
@@ -154,7 +236,7 @@ public class GameManager : MonoBehaviour
 
         money += addMoney;
         moneyCollected += (int) addMoney;
-        UpdateResourcesUI();
+        UpdateUI();
     }
 
     public void AddMaterial(float addMaterial)
@@ -166,7 +248,7 @@ public class GameManager : MonoBehaviour
 
         material += addMaterial;
         materialCollected += (int) addMaterial;
-        UpdateResourcesUI();
+        UpdateUI();
     }
 
     public bool SpendResources(float moneySpent, float materialSpent)
@@ -189,7 +271,7 @@ public class GameManager : MonoBehaviour
             }*/
                
 
-            UpdateResourcesUI();
+            UpdateUI();
             return true;
         }
         //Show Error
@@ -221,9 +303,7 @@ public class GameManager : MonoBehaviour
             enemiesKilled: 0 
         ));
 
-        GameObject player1 = GameObject.Find("Player");
-
-        canvas.GetComponent<UI>().SetSelectedButton(restartButton);
+        canvas.GetComponent<UI>().SetSelectedButton("Restart");
         UI.OpenMenu();
 
         waveManager.Restart();
@@ -251,7 +331,7 @@ public class GameManager : MonoBehaviour
             towersBuilt: 0
         ));
 
-        canvas.GetComponent<UI>().SetSelectedButton(continueButton);
+        canvas.GetComponent<UI>().SetSelectedButton("Continue");
         UI.OpenMenu();
 
         waveManager.Restart();
@@ -260,27 +340,21 @@ public class GameManager : MonoBehaviour
 
         buildManager.TowerToBuild = null;
     }
-    
-    public void Continue()
-    {
-        ResetBaseHealth();
-        victoryPanel.SetActive(false);
-        GetComponent<PlayerManager>().Restart();
-    }
-
-    public void RestartGame()
-    {
-        money = 0;
-        material = 0;
-        UpdateResourcesUI();
-        defeatPanel.SetActive(false);
-        ResetBaseHealth();
-        GetComponent<PlayerManager>().Restart();
-    }
 
     private void ResetBaseHealth()
     {
         currentBaseHealth = baseHealth;
-        livesSlider.value = 100;
+        livesSlider.value = currentBaseHealth;
     }
+}
+
+[Serializable]
+public struct BaseStats
+{
+    public float money;
+    public float material;
+    public float baseHealth;
+    public Color Player1Color;
+    public Color Player2Color;
+    public PlayerMode startingMode;
 }

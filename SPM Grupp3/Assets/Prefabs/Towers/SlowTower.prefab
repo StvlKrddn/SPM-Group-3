@@ -96,10 +96,10 @@ MonoBehaviour:
   firePoint: {fileID: 1661001488551145419}
   radius: {fileID: 1661001488928329828}
   onHitEffect: {fileID: 642787401388277777, guid: 3357ce08713e69546935a0aec49f6be9, type: 3}
-  towerScript: {fileID: 0}
   tower: {fileID: 1661001488874270945}
   upgradeUI: {fileID: 0}
   buildUI: {fileID: 0}
+  towerPlacement: {fileID: 0}
   range: 5
   fireRate: 1
   shotDamage: 0
@@ -108,7 +108,7 @@ MonoBehaviour:
   slowProc: 0.5
   slowRadius: 1
   areaOfEffect: 0
-  shotsBeforeStun: 4
+  shotsBeforeStun: 2
   upgradeAmountSlowProc: 0.2
   upgradeAmountSlowRadius: 3
   stunEnemiesPeriodically: 0
@@ -117,6 +117,7 @@ MonoBehaviour:
   level1Cost: 600
   level2Cost: 1500
   level3Cost: 2000
+  costForUpgrade: 0
 --- !u!1 &1661001488928329828
 GameObject:
   m_ObjectHideFlags: 0

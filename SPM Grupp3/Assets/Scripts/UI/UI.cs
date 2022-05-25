@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class UI : MonoBehaviour
 {
@@ -14,7 +16,11 @@ public class UI : MonoBehaviour
     [SerializeField] private GameObject victoryPanel;
     [SerializeField] private GameObject defeatPanel;
     [SerializeField] private GameObject pauseMenu;
+    [SerializeField] private Text waveCounter;
 
+    private GameObject resumeButton;
+    private GameObject restartButton;
+    private GameObject continueButton;
 
     private static Canvas canvas;
 
@@ -33,6 +39,9 @@ public class UI : MonoBehaviour
     void Awake() 
     {
         canvas = GetComponent<Canvas>();
+        resumeButton = pauseMenu.transform.Find("Resume").gameObject;
+        continueButton = victoryPanel.transform.Find("Buttons").Find("ContinueButton").gameObject;        
+        restartButton = defeatPanel.transform.Find("Buttons").Find("RestartButton").gameObject;
     }
 
     public void PauseGame()
@@ -54,22 +63,32 @@ public class UI : MonoBehaviour
         Resume();
         victoryPanel.SetActive(false);
         defeatPanel.SetActive(false);
-        GameManager.Instance.RestartGame();
+        GameManager.Instance.DeleteSaveData();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void Continue()
     {
         Resume();
         victoryPanel.SetActive(false);
-        GameManager.Instance.Continue();
+        
+        int sceneIndex = SceneManager.GetActiveScene().buildIndex;
+        
+        if ((sceneIndex + 1) > 3)
+        {
+            SceneManager.LoadScene(0);
+        }
+        else
+        {
+            SceneManager.LoadScene(sceneIndex + 1);
+        }
     }
 
     public void Quit()
     {
         // NOTE(August): "Are you sure you want to quit?..." prompt?
-
-        UnityEditor.EditorApplication.isPlaying = false;
-        //Application.Quit();
+        Resume();
+        SceneManager.LoadScene(0);
     }
 
     public void Resume()
@@ -91,9 +110,26 @@ public class UI : MonoBehaviour
         Time.timeScale = 1f;
     }
 
+    public void SetSelectedButton(string buttonName)
+    {
+        switch (buttonName)
+        {
+            case "Resume":
+                SetSelectedButton(resumeButton);
+                break;
+            case "Continue":
+                SetSelectedButton(continueButton);
+                break;
+            case "Restart":
+                SetSelectedButton(continueButton);
+                break;
+        }
+    }
+
     public void SetSelectedButton(GameObject button)
     {
         eventSystem.SetSelectedGameObject(null);
         eventSystem.SetSelectedGameObject(button);
     }
+
 }

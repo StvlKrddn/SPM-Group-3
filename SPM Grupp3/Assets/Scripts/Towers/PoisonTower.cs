@@ -51,7 +51,6 @@ public class PoisonTower : Tower
     void Start()
     {
         EventHandler.Instance.RegisterListener<TowerHitEvent>(HitTarget);
-        towerScript = this;
         radius.transform.localScale = new Vector3(range * 2f, 0.01f, range * 2f);
         radius.SetActive(false);
         InvokeRepeating("UpdateTarget", 0f, 0.5f);
@@ -157,7 +156,7 @@ public class PoisonTower : Tower
         }
     }
 
-    public override void TowerLevel1()
+    protected override void TowerLevel1()
     {
         base.TowerLevel1();
         if (gM.SpendResources(level1Cost, 0f))
@@ -167,7 +166,7 @@ public class PoisonTower : Tower
             pT.poisonTicks += upgradeAmountPoisonTicks;                
         }
     }
-    public override void TowerLevel2()
+    protected override void TowerLevel2()
     {
         base.TowerLevel2();
         if (gM.SpendResources(level2Cost, 0f))
@@ -179,7 +178,7 @@ public class PoisonTower : Tower
             pT.fireRate += upgradeAttackSpeed;
         }
     }
-    public override void TowerLevel3()
+    protected override void TowerLevel3()
     {
         base.TowerLevel3();
         if (gM.SpendResources(level3Cost, 0f))

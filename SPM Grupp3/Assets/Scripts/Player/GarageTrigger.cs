@@ -7,8 +7,13 @@ using UnityEngine.InputSystem;
 public class GarageTrigger : MonoBehaviour
 {
     private InputAction acceptAction;
-    [SerializeField] private GameObject hintEnterUI;
+    private GameObject hintEnterUI;
     private bool limit = false;
+
+    void Awake() 
+    {
+        hintEnterUI = UI.Canvas.transform.Find("EnterGarageHint").gameObject;
+    }
 
     private void OnTriggerEnter(Collider other)
     {

@@ -17,6 +17,14 @@ public abstract class TankUpgradeTree : MonoBehaviour
 
     private UpgradeController uC;
 
+    private void OnEnable()
+    {
+        if (UpgradeController.currentUpgradeLevel == 3 && abilityReady == false)
+        {
+            StartCoroutine(ResetAbility());
+        }
+    }
+
     protected virtual void Start()
 	{   
         uC = UpgradeController.Instance;
@@ -25,7 +33,7 @@ public abstract class TankUpgradeTree : MonoBehaviour
         gameManager = FindObjectOfType<GameManager>(); 
 	}
 
-    public abstract void UpgradeOne();
+	public abstract void UpgradeOne();
 
     public virtual void UpgradeTwo()
     {
@@ -39,15 +47,12 @@ public abstract class TankUpgradeTree : MonoBehaviour
 
     public virtual bool Ability()
     {
-        print(abilityReady);
         if (abilityReady == true)
         {
             abilityReady = false;
-   //         StartCoroutine(ResetAbility());
+            StartCoroutine(ResetAbility());
             return true;
         }
-
-        print(abilityReady);
         return false;
     }
 
@@ -57,7 +62,7 @@ public abstract class TankUpgradeTree : MonoBehaviour
         abilityReady = true;
     }
 
-    public void ResetColdown()
+    public void ResetCooldown()
     {
         abilityReady = true;
     }

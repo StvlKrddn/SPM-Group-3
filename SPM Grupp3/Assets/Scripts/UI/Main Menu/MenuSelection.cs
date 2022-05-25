@@ -6,16 +6,20 @@ using UnityEngine.EventSystems;
 public class MenuSelection : MonoBehaviour
 {
     [SerializeField] private GameObject firstSelectedButton;
-    [SerializeField] private GameObject nextSelectedButton;
+
     void Awake()
     {
-        EventSystem.current.SetSelectedGameObject(null);
-        EventSystem.current.SetSelectedGameObject(firstSelectedButton);
+        if (transform.Find("Continue") && transform.Find("Continue").gameObject.activeSelf)
+        {
+            GameObject continueButton = transform.Find("Continue").gameObject;
+            SelectButton(continueButton);  
+        }
+        SelectButton(firstSelectedButton);
     }
 
-    public void SelectButton()
+    public void SelectButton(GameObject button)
     {
         EventSystem.current.SetSelectedGameObject(null);
-        EventSystem.current.SetSelectedGameObject(nextSelectedButton);
+        EventSystem.current.SetSelectedGameObject(button);
     }
 }

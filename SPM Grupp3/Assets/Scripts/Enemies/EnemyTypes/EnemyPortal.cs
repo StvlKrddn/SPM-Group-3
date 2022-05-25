@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class EnemyPortal : EnemyController
 {
-	private float timer = 0;
 	[SerializeField] private float spawnDuration;
 	private bool opened = false;
 	private BoxCollider boxCollider;
@@ -15,9 +14,28 @@ public class EnemyPortal : EnemyController
 	private MeshRenderer meshRenderer;
 	private ParticleSystem[] pS;
 
+	protected override void OnEnable()
+	{
+		base.OnEnable();
+		spawnDuration /= randomWaypoint;
+		color = new Color(color.r, color.g, color.b, 0);
+		meshRenderer.material.color = color;
+		opened = false;
+		Spawn();
+	}
+
 	protected override void Awake()
 	{
 		base.Awake();
+		boxCollider = GetComponent<BoxCollider>();
+		canvas = GetComponentInChildren<Canvas>();
+		meshRenderer = GetComponent<MeshRenderer>();
+		pS = GetComponentsInChildren<ParticleSystem>();
+		Spawn();
+	}
+
+	private void Spawn()
+	{
 		RandomizeTargets();
 		MakePortal();
 		StartCoroutine(OpenPortal());
@@ -25,16 +43,13 @@ public class EnemyPortal : EnemyController
 
 	private void MakePortal()
 	{
-		boxCollider = GetComponent<BoxCollider>();
 		boxCollider.enabled = false;
-		canvas = GetComponentInChildren<Canvas>();
 		canvas.enabled = false;
-		meshRenderer = GetComponent<MeshRenderer>();
 		color = meshRenderer.material.color;
 		color = new Color(color.r, color.g, color.b, 0);
-		pS = GetComponentsInChildren<ParticleSystem>();
 		foreach (ParticleSystem particle in pS)
 		{
+			particle.Stop();
 			var main = particle.main;
 			main.duration = spawnDuration - 0.5f;
 		}
@@ -69,10 +84,13 @@ public class EnemyPortal : EnemyController
 
 	private IEnumerator OpenPortal()
 	{
+		foreach (ParticleSystem particle in pS)
+		{
+			particle.Play();
+		}
 		yield return new WaitForSeconds(spawnDuration);
 		opened = true;
 		boxCollider.enabled = true;
 		canvas.enabled = true;
-		yield return null;
 	}
 }

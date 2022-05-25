@@ -30,7 +30,7 @@ public class UpgradeController : MonoBehaviour
 
     public void IncreaseUpgradesPurchased()
     {
-        if (GameManager.Instance.SpendResources(moneyCost, materialCost))
+        if (currentUpgradeLevel < 3 && GameManager.Instance.SpendResources(moneyCost, materialCost))
         {
             currentUpgradeLevel++;
             if(FindObjectOfType<TankState>())
@@ -59,6 +59,7 @@ public class UpgradeController : MonoBehaviour
     public void FixUpgrades(GameObject player)
     {
         TankState tS = player.GetComponentInChildren<TankState>();
+        print(tS);
         for (int i = tS.levelOfTank; i < currentUpgradeLevel; i++)
         {
             tS.levelOfTank++;

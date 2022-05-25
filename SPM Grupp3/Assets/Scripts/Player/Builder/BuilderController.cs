@@ -49,6 +49,7 @@ public class BuilderController : MonoBehaviour
     private bool stopHover = false;
     private bool stopMouse = false;
     private bool placementClicked = false;
+    private bool purchasedInUI = false;
 
     void Start()
     {
@@ -69,6 +70,7 @@ public class BuilderController : MonoBehaviour
         tankUpgrade = towerMenu.Find("TankPanel").gameObject;
 
         buildManager = GetComponentInParent<BuildManager>();
+        EventHandler.Instance.RegisterListener<BoughtInUIEvent>(SetBoughtInUI);
 
         InitializeInputSystem();
         InitializeCursor();
@@ -252,8 +254,25 @@ public class BuilderController : MonoBehaviour
         }
         if (!stopMouse)
         {
-            newPosition = MoveMouse();
-            UpdateCursorImage(newPosition);
+            if (purchasedInUI)
+            {
+                if (pointerAction.ReadValue<Vector2>().x > 0.2f || pointerAction.ReadValue<Vector2>().y > 0.2f)
+                {
+                    return;
+                }
+                else
+                {
+                    newPosition = MoveMouse();
+                    UpdateCursorImage(newPosition);
+                    purchasedInUI = false;
+                }
+            }
+            else
+            {
+                newPosition = MoveMouse();
+                UpdateCursorImage(newPosition);
+            }
+            
         }
 
         RaycastHit hit = CastRayFromCamera(placeForTowerLayerMask);
@@ -262,6 +281,11 @@ public class BuilderController : MonoBehaviour
         {
             Hover(hit);
         }        
+    }
+
+    void SetBoughtInUI(BoughtInUIEvent eventInfo)
+    {
+        purchasedInUI = true;
     }
 
     Vector2 MoveMouse()
@@ -430,9 +454,9 @@ public class BuilderController : MonoBehaviour
                     
                 selectedTower.ShowUpgradeUI(towerMenu);
 
-            cursorTransform.gameObject.SetActive(false);
+                cursorTransform.gameObject.SetActive(false);
 
-            EventHandler.Instance.InvokeEvent(new TowerClickedEvent("Tower Is clicked", selectedTower.gameObject));
+                EventHandler.Instance.InvokeEvent(new TowerClickedEvent("Tower Is clicked", selectedTower.gameObject));
                 tankUpgrade.transform.position = towerHit.transform.position;
                 hintsPanel.transform.position = towerHit.transform.position;
                 hintsPanel.SetActive(true);
@@ -440,9 +464,7 @@ public class BuilderController : MonoBehaviour
                 stopHover = true;
                 stopMouse = true;
                 placementClicked = true;
-                }           
-            
-
+            }                     
         }
     }
 
