@@ -141,6 +141,21 @@ public class CannonTower : Tower
         }      
     }
 
+    // protected override void Level1()
+    // {
+    //     throw new System.NotImplementedException();
+    // }
+
+    // protected override void Level2()
+    // {
+    //     throw new System.NotImplementedException();
+    // }
+
+    // protected override void Level3()
+    // {
+    //     throw new System.NotImplementedException();
+    // }
+
     protected override void TowerLevel2()
     {
         base.TowerLevel2();

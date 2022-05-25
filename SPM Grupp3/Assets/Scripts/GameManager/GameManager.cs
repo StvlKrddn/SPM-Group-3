@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
     [NonSerialized] public Color Player2Color;
 
     [Header("Other")]
-    [NonSerialized] public List<GameObject> towersPlaced = new List<GameObject>();
+    [NonSerialized] public List<PlacedTower> towersPlaced = new List<PlacedTower>();
     
     private GameObject victoryPanel;
     private GameObject defeatPanel;
@@ -92,6 +92,10 @@ public class GameManager : MonoBehaviour
 
         Player1Color = data.player1Color;
         Player2Color = data.player2Color;
+
+        List<TowerData> towerData = new List<TowerData>(data.towerData);
+
+        LoadSavedTowers(towerData);
     }
 
     private void LoadBase()
@@ -114,6 +118,34 @@ public class GameManager : MonoBehaviour
     public void DeleteSaveData()
     {
         DataManager.DeleteFile(DataManager.SaveData);
+    }
+
+    private void LoadSavedTowers(List<TowerData> towerData)
+    {
+        GameObject newTower;
+        foreach (TowerData tower in towerData)
+        {
+            GameObject towerPrefab = GetTowerByType(tower.towerType);
+            newTower = Instantiate(towerPrefab, tower.position, Quaternion.identity);
+            AddPlacedTower(new PlacedTower(newTower, tower.level));
+        }
+
+        GameObject GetTowerByType(string towerType)
+        {
+            switch (towerType)
+            {
+                case "CannonTower":
+                    return buildManager.cannonTowerPrefab;
+                case "MissileTower":
+                    return buildManager.missileTowerPrefab;
+                case "SlowTower":
+                    return buildManager.slowTowerPrefab;
+                case "PoisonTower":
+                    return buildManager.poisonTowerPrefab;
+                default:
+                    return null;
+            }
+        }
     }
 
     private void Start()
@@ -298,7 +330,7 @@ public class GameManager : MonoBehaviour
         return false;
     }
 
-    public void AddPlacedTower(GameObject tower)
+    public void AddPlacedTower(PlacedTower tower)
     {
         towersPlaced.Add(tower); 
     }

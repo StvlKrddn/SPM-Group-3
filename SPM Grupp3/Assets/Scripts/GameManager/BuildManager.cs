@@ -58,9 +58,9 @@ public class BuildManager : MonoBehaviour
             return;
         }
 
-        foreach (GameObject towerPlaced in gM.towersPlaced)
+        foreach (PlacedTower towerPlaced in gM.towersPlaced)
         {
-            if (towerPlaced == clickedArea)
+            if (towerPlaced.tower == clickedArea)
             {
                 return;
             }
@@ -75,8 +75,7 @@ public class BuildManager : MonoBehaviour
 
 			ClickedArea = null;
 
-            TowerUpgradeCotroller.instance.PlaceTowerInUpgradeList(placedTower);
-            gM.AddPlacedTower(placedTower);
+            gM.AddPlacedTower(new PlacedTower(placedTower, 0));
 
             return;
         }

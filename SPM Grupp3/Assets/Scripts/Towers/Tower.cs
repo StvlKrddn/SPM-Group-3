@@ -13,7 +13,7 @@ public abstract class Tower : MonoBehaviour
     [SerializeField] protected GameObject radius;
     protected GameManager gM;
     public GameObject onHitEffect;
-    protected TowerUpgradeCotroller tUC;
+    protected TowerUpgradeController tUC;
     public GameObject tower;
     public GameObject upgradeUI;
     public GameObject buildUI;
@@ -26,7 +26,6 @@ public abstract class Tower : MonoBehaviour
     [SerializeField] private float shotDamage = 5000f;
     public float cost = 150f;
     public float materialCost;
-    [System.NonSerialized] public int level = 0;
 
     public float ShotDamage { get { return shotDamage; } set { shotDamage = value; } }
 
@@ -41,7 +40,7 @@ public abstract class Tower : MonoBehaviour
 
     public void LevelUpTower()
     {
-        tUC = TowerUpgradeCotroller.instance;
+        tUC = TowerUpgradeController.Instance;
         switch (tUC.GetUpgradesPurchased())
         {
             case 0:
@@ -56,21 +55,38 @@ public abstract class Tower : MonoBehaviour
         }
     }
 
+    void LoadTowerLevel()
+    {
+        tUC = TowerUpgradeController.Instance;
+        int level = tUC.GetUpgradesPurchased();
+        for (int i = 0; i < level; i++)
+        {
+            if (i == 0)
+            {
+
+            }
+        }
+    }
+
     protected virtual void TowerLevel1()
     {
         gM = GameManager.Instance;
-        tUC = TowerUpgradeCotroller.instance;
+        tUC = TowerUpgradeController.Instance;
     }
     protected virtual void TowerLevel2()
     {
         gM = GameManager.Instance;
-        tUC = TowerUpgradeCotroller.instance;
+        tUC = TowerUpgradeController.Instance;
     }
     protected virtual void TowerLevel3()
     {
         gM = GameManager.Instance;
-        tUC = TowerUpgradeCotroller.instance;
+        tUC = TowerUpgradeController.Instance;
     }
+
+    // protected abstract void Level1();
+    // protected abstract void Level2();
+    // protected abstract void Level3();
 
     void UpdateTarget()
     {
