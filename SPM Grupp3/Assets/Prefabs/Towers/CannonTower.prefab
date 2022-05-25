@@ -67,10 +67,10 @@ MonoBehaviour:
   firePoint: {fileID: 6433795424573960498}
   radius: {fileID: 6559027840814895499}
   onHitEffect: {fileID: 5202362185975563897, guid: afc452a4019ab8b47ac2ea888849a086, type: 3}
-  towerScript: {fileID: 0}
   tower: {fileID: 6433795423722352152}
   upgradeUI: {fileID: 4649296799169425345, guid: 1ba4dea646629164c94da1eb4ee62503, type: 3}
   buildUI: {fileID: 1244981537908834648, guid: 9c16f0f1001d7a841b130781a7ae7c4f, type: 3}
+  towerPlacement: {fileID: 0}
   range: 5
   fireRate: 1
   shotDamage: 10
@@ -83,6 +83,7 @@ MonoBehaviour:
   level1Cost: 700
   level2Cost: 1200
   level3Cost: 2000
+  costForUpgrade: 0
 --- !u!1 &6433795424573960509
 GameObject:
   m_ObjectHideFlags: 0

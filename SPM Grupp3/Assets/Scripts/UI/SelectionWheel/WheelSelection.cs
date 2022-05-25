@@ -129,7 +129,7 @@ public class WheelSelection : MonoBehaviour
     void HighlightItem(int index)
     {
         if (numberOfMenuItems <= 0)
-        {          
+        {
             return;
         }
         for (int i = 0; i < numberOfMenuItems; i++)
@@ -140,24 +140,42 @@ public class WheelSelection : MonoBehaviour
                 MenuItems[i].transform.GetChild(0).GetComponent<Image>().color = highLight;
                 if (MenuItems[i].transform.Find("Cost"))
                 {
-                    MenuItems[i].transform.Find("Cost").gameObject.SetActive(true);
-                }
-                
-                DecideTowerToBuild(MenuItems[i].name);
-                if (towerToDisplay != null)
-                {
-                    if (GameManager.Instance.CheckIfEnoughResources(towerToDisplay.GetComponent<Tower>()))
+                    GameObject menuItem = MenuItems[i].transform.Find("Cost").gameObject;
+                    menuItem.SetActive(true);
+                    Text moneyText = menuItem.transform.Find("MoneyCost").GetComponentInChildren<Text>();
+                    Text materialText = menuItem.transform.Find("MaterialCost").GetComponentInChildren<Text>();
+                    Tower tower;
+
+                    if (towerToDisplay != null)
                     {
-                        builderController.GhostTower(towerToDisplay);
+                        tower = towerToDisplay.GetComponent<Tower>();
+                        moneyText.text = tower.cost.ToString();
+                        materialText.text = tower.materialCost.ToString(); //if needed
                     }
+
+                    TowerUpgradeCotroller tUC = TowerUpgradeCotroller.instance;
+                    if (tUC.ClickedTower != null) //Checks upgrade and changes the UI based on upgradelevel
+                    {
+                        UpgradeHighlighted(moneyText, materialText, tUC);
+                    }
+
+                    DecideTowerToBuild(MenuItems[i].name);
+                    if (towerToDisplay != null)
+                    {
+                        if (GameManager.Instance.CheckIfEnoughResources(towerToDisplay.GetComponent<Tower>()))
+                        {
+                            builderController.GhostTower(towerToDisplay);
+                        }
+                    }
+
+
+                    selectHint.SetActive(true);
+                    //infoHint.SetActive(true);
                 }
-                
-                    
-                selectHint.SetActive(true);
-                //infoHint.SetActive(true);
             }
             else
             {
+                print("weeeeeeeeeeeee");
                 // Remove hover effect from all other items
                 MenuItems[i].transform.GetChild(0).GetComponent<Image>().color = hidden;
                 if (MenuItems[i].transform.Find("Cost"))
@@ -169,23 +187,42 @@ public class WheelSelection : MonoBehaviour
         }
     }
 
+    private void UpgradeHighlighted(Text moneyText, Text materialText, TowerUpgradeCotroller tUC)
+    {
+        Tower tower;
+        tower = tUC.ClickedTower.GetComponent<Tower>();
+        if (tUC.GetUpgradesPurchased() == 3)
+        {
+            moneyText.text = "MAX";
+            materialText.text = "MAX";
+        }
+        else
+        {
+            moneyText.text = tower.UpgradeCostUpdate().ToString();
+            materialText.text = tower.materialCost.ToString();
+        }
+    }
+
     public void DecideTowerToBuild(string name)
     {
         switch (name)
         {
             case "Cannon":
-                towerToDisplay = buildManager.cannonTowerPrefab;
-                break;
+            towerToDisplay = buildManager.cannonTowerPrefab;
+            break;
+
             case "Missile":
-                towerToDisplay = buildManager.missileTowerPrefab;
-                break;
+            towerToDisplay = buildManager.missileTowerPrefab;
+            break;
+
             case "Slow":
-                towerToDisplay = buildManager.slowTowerPrefab;
-                break;
+            towerToDisplay = buildManager.slowTowerPrefab;
+            break;
+
             case "Poison":
-                towerToDisplay = buildManager.poisonTowerPrefab;
-                break;
-        }
+            towerToDisplay = buildManager.poisonTowerPrefab;
+            break;
+         }
     }
 
     void SelectItem(int index)
@@ -199,7 +236,7 @@ public class WheelSelection : MonoBehaviour
         }
         else
         {
-            /*MenuItems[index].color = Color.green;*/
+                /*MenuItems[index].color = Color.green;*/
         }
     }
 }

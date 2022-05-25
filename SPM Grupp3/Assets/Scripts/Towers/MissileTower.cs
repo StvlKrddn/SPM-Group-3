@@ -30,6 +30,7 @@ public class MissileTower : Tower
 
     public override float UpgradeCostUpdate()
     {
+        base.TowerLevel1();
         switch (tUC.GetUpgradesPurchased())
         {
             case 0:
