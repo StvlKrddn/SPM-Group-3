@@ -10,8 +10,15 @@ public class EnemyMortar : EnemyController
     public bool shooting;
     public float stayDuration;
 
-    // Update is called once per frame
-    protected override void Awake()
+	// Update is called once per frame
+	protected override void OnEnable()
+	{
+		base.OnEnable();
+        shooting = true;
+        timer = Random.Range(timer, cd - 1);
+    }
+
+	protected override void Awake()
     {
         base.Awake();
         timer = Random.Range(timer, cd - 1);

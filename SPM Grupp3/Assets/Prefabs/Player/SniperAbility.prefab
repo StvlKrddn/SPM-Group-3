@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5251513164533592096}
   - component: {fileID: 1517886363431165350}
   - component: {fileID: 367582727046285982}
+  - component: {fileID: -4174696520084777281}
   m_Layer: 0
   m_Name: SniperAbility
   m_TagString: PlayerShots
@@ -131,3 +132,21 @@ MonoBehaviour:
   range: 0
   penetrationCount: 0
   damageOfAbility: 10
+--- !u!114 &-4174696520084777281
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5158456270458876578}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 0, g: 1, b: 1, a: 1}
+  outlineWidth: 3
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
