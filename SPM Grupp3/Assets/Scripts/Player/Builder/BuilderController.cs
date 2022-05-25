@@ -209,7 +209,7 @@ public class BuilderController : MonoBehaviour
             towerMenu.GetChild(i).gameObject.SetActive(false);
         }
 
-        if (towerHit != null && placementHit.layer == LayerMask.NameToLayer("Ignore Raycast"))
+        if (placementHit != null && placementHit.layer == LayerMask.NameToLayer("Ignore Raycast"))
         {
             placementHit.layer = LayerMask.NameToLayer("PlaceForTower");
         }
