@@ -196,7 +196,7 @@ public class WheelSelection : MonoBehaviour
         }
     }
 
-    private void UpgradeHighlighted(Text moneyText, Text materialText, TowerUpgradeCotroller tUC)
+    private void UpgradeHighlighted(Text moneyText, Text materialText, TowerUpgradeController tUC)
     {
         Tower tower;
         tower = tUC.ClickedTower.GetComponent<Tower>();
