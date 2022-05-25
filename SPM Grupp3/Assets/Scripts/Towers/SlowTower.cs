@@ -7,13 +7,12 @@ public class SlowTower : Tower
     [SerializeField] private float slowProc = 0.7f;
     [SerializeField] private float slowRadius = 1f;
     [SerializeField] private bool areaOfEffect = false;
-
-    [SerializeField] private int shotsBeforeStun;
+    public bool stunActive = false;
+    [SerializeField] private float shotsBeforeStun;
 
     [Header("Amount To Upgrade")]
     [SerializeField] private float upgradeAmountSlowProc;
     [SerializeField] private float upgradeAmountSlowRadius;
-    [SerializeField] private bool stunEnemiesPeriodically = false;
     [SerializeField] private float stunDuration;
     [SerializeField] private float stunTimer;
 
@@ -22,9 +21,9 @@ public class SlowTower : Tower
     [SerializeField] private float level2Cost;
     [SerializeField] private float level3Cost;
 
-    private int currentShots = 0;
+    private float currentShots = 0;
 
-    private bool stunActive = false;
+    
 
     public float costForUpgrade;
 
@@ -32,6 +31,9 @@ public class SlowTower : Tower
     private float timer;
 
     public float SlowProc { get { return slowProc; } set { slowProc = value; } }
+    public float ShotsBeforeStun { get { return shotsBeforeStun; } set { shotsBeforeStun = value; } }
+    public float CurrentShots { get { return currentShots; } set { currentShots = value; } }
+    public bool AreaOfEffect { get { return areaOfEffect; } set { areaOfEffect = value; } }
 
 
     public override float UpgradeCostUpdate()
@@ -74,14 +76,6 @@ public class SlowTower : Tower
             {
                 Shoot();
             }
-            if (stunEnemiesPeriodically)
-            {
-                if (timer >= stunTimer)
-                {
-                    StunEnemies();
-                }
-                timer += Time.deltaTime;
-            }
         }
     }
 
@@ -91,12 +85,7 @@ public class SlowTower : Tower
         {
             if (target != null)
             {
-                EnemyController enemyTarget = eventInfo.enemyHit.GetComponent<EnemyController>();
-             //   GameObject effectInstance = Instantiate(eventInfo.hitEffect, enemyTarget.transform.position, enemyTarget.transform.rotation);
-
-              //  Destroy(effectInstance, 1f);
-                TypeOfShot(enemyTarget);
-                /*Destroy(bullet.gameObject, 2f);*/
+                bullet.DecideTypeOfShot("Slow");
             }
         }
         
@@ -113,20 +102,16 @@ public class SlowTower : Tower
         return false;
     }
 
-    public override void TypeOfShot(EnemyController enemyTarget)
-    {
-        enemyTarget.HitBySlow(SlowProc, slowRadius, false);
-    }
+
     private void Shoot()
-    {   if (!areaOfEffect)
+    {   
+        if (!areaOfEffect)
         {
             GameObject bulletGO = Instantiate(shot, firePoint.position, firePoint.rotation);
             bulletGO.transform.parent = transform;
             bulletGO.SetActive(true);
             bullet = bulletGO.GetComponent<Shot>();
 
-            /*        GameObject effectInstance = Instantiate(onHitEffect, transform.position, transform.rotation);
-                    Destroy(effectInstance, 1f);*/
             if (bullet != null)
             {
                 bullet.Seek(target);
@@ -134,58 +119,34 @@ public class SlowTower : Tower
         }
         else
         {
-            float amountToSlow;
-            if (currentShots <= 0 && stunActive)
-            {
-                amountToSlow = 0;
-
-
-                print("kommer den hit");
-                currentShots = shotsBeforeStun;
-            }
-            else
-            {
-                 amountToSlow = slowProc;
-
-                currentShots -= 1; 
-            }
-
-            
-
-            Collider[] colliders = Physics.OverlapSphere(transform.position, range);
-            foreach (Collider c in colliders)
-            {
-                if (c.GetComponent<EnemyController>())
-                {
-                    GameObject effectInstance = Instantiate(onHitEffect, transform.position, transform.rotation);
-
-                    ParticleSystem particleEffect = effectInstance.GetComponent<ParticleSystem>();
-
-                    //    particleEffect.SetCustomParticleData = 5; //= radius;
-
-                    Destroy(effectInstance, 1f);
-                    EnemyController enemyontroller = c.GetComponent<EnemyController>();
-                    enemyontroller.HitBySlow(amountToSlow, slowRadius, false);
-                    //EnemyController enemyTarget = eventInfo.enemyHit.GetComponent<EnemyController>();
-
-
-
-                    //   TypeOfShot(enemyontroller);
-                }
-            }
+            AOESlow();
         }
     }
 
-    private void StunEnemies()
+    private void  AOESlow()
     {
-/*        Collider[] colliders = Physics.OverlapSphere(transform.position, radius);
-        foreach (Collider c in colliders)
+        if (currentShots <= 0 && stunActive)
         {
-            if (c.GetComponent<EnemyController>())
-            {
-                c.GetComponent<EnemyController>().TakeDamage(splashDamage);
-            }
-        }*/
+            currentShots = shotsBeforeStun;
+        }
+        else
+        {
+            currentShots -= 1;
+        }
+
+        GameObject effectInstance = Instantiate(onHitEffect, transform.position, transform.rotation);
+        Destroy(effectInstance, 1f);
+        
+
+        if (stunActive && CurrentShots <= 0f)
+        {
+            GetComponent<SlowTowerEffect>().HitBySlow(SlowProc, range, AreaOfEffect, true);
+        }
+        else
+        {
+            GetComponent<SlowTowerEffect>().HitBySlow(SlowProc, range, AreaOfEffect, false);
+        }
+
     }
 
     public override void ShowUpgradeUI(Transform towerMenu)
