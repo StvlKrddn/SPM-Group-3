@@ -209,7 +209,7 @@ public class BuilderController : MonoBehaviour
             towerMenu.GetChild(i).gameObject.SetActive(false);
         }
 
-        if (towerHit != null && placementHit.layer == LayerMask.NameToLayer("Ignore Raycast"))
+        if (placementHit != null && placementHit.layer == LayerMask.NameToLayer("Ignore Raycast"))
         {
             placementHit.layer = LayerMask.NameToLayer("PlaceForTower");
         }
@@ -217,7 +217,7 @@ public class BuilderController : MonoBehaviour
         {
             towerHit.layer = LayerMask.NameToLayer("Towers");
         }
-        else if (garageHit.layer == LayerMask.NameToLayer("Ignore Raycast"))
+        else if (garageHit != null && garageHit.layer == LayerMask.NameToLayer("Ignore Raycast"))
         {
             garageHit.layer = LayerMask.NameToLayer("Garage");
         }
