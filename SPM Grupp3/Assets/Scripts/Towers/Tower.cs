@@ -33,7 +33,6 @@ public abstract class Tower : MonoBehaviour
 
     protected Shot bullet;
 
-    public abstract void TypeOfShot(EnemyController enemyTarget);
     public abstract void HitTarget(TowerHitEvent eventInfo);
     public abstract void ShowUpgradeUI(Transform towerMenu);
     public abstract float UpgradeCostUpdate();

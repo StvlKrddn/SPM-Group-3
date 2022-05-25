@@ -29,6 +29,7 @@ public class PoisonTower : Tower
 
     public float PoisonTicks { get { return poisonTicks; } set { poisonTicks = value; } }
     public float PoisonDamagePerTick { get { return poisonDamagePerTick; } set { poisonDamagePerTick = value; } }
+    public float MaxHealthPerTick { get { return maxHealthPerTick; } set { maxHealthPerTick = value; } }
 
     public override float UpgradeCostUpdate()
     {
@@ -81,7 +82,7 @@ public class PoisonTower : Tower
                 GameObject effectInstance = Instantiate(eventInfo.hitEffect, enemyTarget.transform.position, enemyTarget.transform.rotation);
 
                 Destroy(effectInstance, 1f);
-                TypeOfShot(enemyTarget);
+                bullet.DecideTypeOfShot("Poison");
             }
         }
     }
@@ -97,50 +98,13 @@ public class PoisonTower : Tower
         return false;
     }
 
-    public override void TypeOfShot(EnemyController enemyTarget)
-    {
-        if (poisonSpread)
-        {
-            enemyTarget.spread = true;
-        }
-        //enemyTarget.HitByPoison(PoisonTicks,PoisonDamagePerTick, onHitEffect, maxHealthPerTick);
-    }
-
     protected void Shoot()
     {
-        
-        //     GameObject bulletGO = Instantiate(shot, firePoint.position, firePoint.rotation);
-        //     bulletGO.transform.parent = transform;
-        //     bulletGO.SetActive(true);
-        //     bullet = bulletGO.GetComponent<Shot>();
-        //
-        //     if (bullet != null)
-        //     {
-        //         bullet.Seek(target);
-        //     }
-        
+        GameObject effectInstance = Instantiate(poisonPulse, transform.position, transform.rotation);
+        Destroy(effectInstance, 1f);
 
-        Collider[] colliders = Physics.OverlapSphere(transform.position, range);
-        foreach (Collider c in colliders)
-        {
-            if (c.GetComponent<EnemyController>())
-            {
-                GameObject effectInstance = Instantiate(poisonPulse, transform.position, transform.rotation);
-
-                ParticleSystem particleEffect = effectInstance.GetComponent<ParticleSystem>();
-                   
-            //    particleEffect.SetCustomParticleData = 5; //= radius;
-
-                Destroy(effectInstance, 1f);
-                EnemyController enemyontroller = c.GetComponent<EnemyController>();
-                enemyontroller.HitByPoison(PoisonTicks, onHitEffect, PoisonDamagePerTick, maxHealthPerTick);
-                //EnemyController enemyTarget = eventInfo.enemyHit.GetComponent<EnemyController>();
-                
-
-                
-             //   TypeOfShot(enemyontroller);
-            }
-        }
+        //För att tornet är AOE, Då skjuter den inte ut nåt skott
+        GetComponent<PoisonTowerEffect>().HitByPoison(PoisonTicks, onHitEffect, PoisonDamagePerTick, MaxHealthPerTick, range);
     }
 
     public override void ShowUpgradeUI(Transform towerMenu)

@@ -81,8 +81,7 @@ public class CannonTower : Tower
                 GameObject effectInstance = Instantiate(eventInfo.hitEffect, enemyTarget.transform.position, enemyTarget.transform.rotation);
 
                 Destroy(effectInstance, 1f);
-                TypeOfShot(enemyTarget);
-                /*Destroy(bullet.gameObject, 2f);*/
+                bullet.DecideTypeOfShot("Cannon");
             }
         }
     }
@@ -98,11 +97,6 @@ public class CannonTower : Tower
         return false;
     }
 
-
-    public override void TypeOfShot(EnemyController enemyTarget)
-    {
-        enemyTarget.TakeDamage(ShotDamage);
-    }
     protected void Shoot()
     {
         GameObject bulletGO = Instantiate(shot, firePoint.position, firePoint.rotation);

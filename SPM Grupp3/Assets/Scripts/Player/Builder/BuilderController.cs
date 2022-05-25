@@ -46,6 +46,10 @@ public class BuilderController : MonoBehaviour
     private GameObject hintsPanel;
     private GameObject tankUpgrade;
 
+    private GameObject towerHit;
+    private GameObject placementHit;
+    private GameObject garageHit;
+
     private bool stopHover = false;
     private bool stopMouse = false;
     private bool placementClicked = false;
@@ -204,6 +208,20 @@ public class BuilderController : MonoBehaviour
         {
             towerMenu.GetChild(i).gameObject.SetActive(false);
         }
+
+        if (towerHit != null && placementHit.layer == LayerMask.NameToLayer("Ignore Raycast"))
+        {
+            placementHit.layer = LayerMask.NameToLayer("PlaceForTower");
+        }
+        else if (towerHit != null && towerHit.layer == LayerMask.NameToLayer("Ignore Raycast"))
+        {
+            towerHit.layer = LayerMask.NameToLayer("Towers");
+        }
+        else if (garageHit.layer == LayerMask.NameToLayer("Ignore Raycast"))
+        {
+            garageHit.layer = LayerMask.NameToLayer("Garage");
+        }
+        
         hintsPanel.SetActive(false);
         cursorTransform.gameObject.SetActive(true);
         stopHover = false;
@@ -419,7 +437,7 @@ public class BuilderController : MonoBehaviour
             RaycastHit hit = CastRayFromCamera(placeForTowerLayerMask);
             if (hit.collider != null)
             {
-                GameObject placementHit = hit.collider.gameObject;
+                placementHit = hit.collider.gameObject;
                 if (placementHit.CompareTag("PlaceForTower"))
                 {
                     buildManager.ClickedArea = _selection.gameObject;
@@ -428,7 +446,7 @@ public class BuilderController : MonoBehaviour
 
                     cursorTransform.gameObject.SetActive(false);
 
-
+                    placementHit.layer = LayerMask.NameToLayer("Ignore Raycast");
 
                     buildPanel.SetActive(true);
                     hintsPanel.SetActive(true);
@@ -446,12 +464,12 @@ public class BuilderController : MonoBehaviour
         RaycastHit hit = CastRayFromCamera(towerLayerMask);
         if (hit.collider != null)
         {
-            GameObject towerHit = hit.collider.gameObject;
+            towerHit = hit.collider.gameObject;
 
             if (towerHit != null && preTower == null)
             {
                 selectedTower = towerHit.GetComponent<Tower>();
-                    
+                towerHit.layer = LayerMask.NameToLayer("Ignore Raycast");
                 selectedTower.ShowUpgradeUI(towerMenu);
 
                 //print(selectedTower.name + " | Level:  " + selectedTower.level);
@@ -485,12 +503,16 @@ public class BuilderController : MonoBehaviour
         RaycastHit hit = CastRayFromCamera(garageLayer);
         if (hit.collider != null)
         {
-            cursorTransform.gameObject.SetActive(false);
+            garageHit = hit.collider.gameObject;
+            garageHit.layer = LayerMask.NameToLayer("Ignore Raycast");
+            
+            tankUpgrade.transform.position = garageHit.transform.position;
+            hintsPanel.transform.position = garageHit.transform.position;
 
-            tankUpgrade.transform.position = hit.collider.transform.position;
-            hintsPanel.transform.position = hit.collider.transform.position;
+            cursorTransform.gameObject.SetActive(false);
             tankUpgrade.SetActive(true);
             hintsPanel.SetActive(true);
+
             stopHover = true;
             stopMouse = true;
             placementClicked = true;
