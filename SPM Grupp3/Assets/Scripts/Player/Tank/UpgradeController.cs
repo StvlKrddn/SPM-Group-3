@@ -59,6 +59,7 @@ public class UpgradeController : MonoBehaviour
     public void FixUpgrades(GameObject player)
     {
         TankState tS = player.GetComponentInChildren<TankState>();
+        print(tS);
         for (int i = tS.levelOfTank; i < currentUpgradeLevel; i++)
         {
             tS.levelOfTank++;

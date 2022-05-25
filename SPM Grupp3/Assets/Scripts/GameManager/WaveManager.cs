@@ -23,7 +23,7 @@ public class WaveManager : MonoBehaviour
     private bool spawnEnemies = true;
     private int waveMoneyBonus;
     private List<GameObject> currentWaveEnemies = new List<GameObject>();
-    private static List<GameObject> poolOfEnemies = new List<GameObject>();
+    public List<GameObject> poolOfEnemies = new List<GameObject>();
     private Text waveUI;
     private GameObject waveClear;
     private Dictionary<int, float> changeSpawnRate = new Dictionary<int, float>();
@@ -82,7 +82,6 @@ public class WaveManager : MonoBehaviour
     {
         currentWaveEnemies.Clear();
         changeSpawnRate.Clear();
-        poolOfEnemies.Clear();
 
         spawnRate = wave.subWaves[0].spawnRate;
         foreach (SubWave subWave in wave.subWaves)
@@ -99,7 +98,6 @@ public class WaveManager : MonoBehaviour
             Shuffle(subWaveEnemies);
             currentWaveEnemies.AddRange(subWaveEnemies); //Then adds the shuffled subwave to the wave
         }
-        SetupPool();
         waveMoneyBonus = wave.waveMoneyBonus;
         enemyCount = currentWaveEnemies.Count;
     }
@@ -117,17 +115,28 @@ public class WaveManager : MonoBehaviour
         }
     }
 
-    private void SetupPool()
+    private void ClearInactive()
+    {
+        for (int i = poolOfEnemies.Count - 1; i > -1; i--)
+        {
+            if (poolOfEnemies.Count > poolCount && poolOfEnemies[i].activeSelf == false)
+            {
+                Destroy(poolOfEnemies[i]);
+                poolOfEnemies.RemoveAt(i);
+            }
+        }
+    }
+
+    private int FindEmptyPool()
     {
         for (int i = 0; i < poolCount; i++)
         {
-            if (currentWaveEnemies.Count - 1 > i)
+            if (poolOfEnemies.Count > i && poolOfEnemies[i] == null)
             {
-                GameObject g = Instantiate(currentWaveEnemies[i], enemyContainer.transform);
-                g.SetActive(false);
-                poolOfEnemies.Add(g);
+                return i;
             }
         }
+        return -1;
     }
 
     public void WaveUpdate()
@@ -136,18 +145,18 @@ public class WaveManager : MonoBehaviour
         gameManager.EnemiesKilled++;
         if (enemyCount == 0)
         {
+
             if (currentWave >= victoryWave - 1)
             {
                 gameManager.Victory();
             }
             else
             {
-                waveClear.SetActive(true);
-                foreach (GameObject g in poolOfEnemies)
+                if (poolOfEnemies.Count > poolCount) //Clear inactive enemies
                 {
-                    Destroy(g);
+                    ClearInactive();
                 }
-                poolOfEnemies.Clear();
+                waveClear.SetActive(true);
                 spawnEnemies = true;
                 Debug.Log("Wave " + currentWave + " cleared");
                 GameManager.Instance.AddMoney(waveMoneyBonus);
@@ -166,21 +175,22 @@ public class WaveManager : MonoBehaviour
     {
         for (int i = 0; i < currentWaveEnemies.Count; i++)
         {
+            if (poolOfEnemies.Count > poolCount) //Clear inactive enemies
+            {
+                ClearInactive();
+            }
             GameObject enemy = GetPooledEnemy(currentWaveEnemies[i]);
             int givenPath = Waypoints.GivePath(); //Gives the enemy the right path
             if (enemy != null)
             {
-                EnemyController enemyController = enemy.GetComponent<EnemyController>();
-                enemyController.path = givenPath;
-                enemyController.transform.position = Waypoints.wayPoints[enemyController.path][0].position;
-                enemyController.gameObject.SetActive(true);
+                UseInactive(enemy, givenPath);
             }
             else
             {
-                GameObject g = Instantiate(currentWaveEnemies[i], Waypoints.wayPoints[givenPath][0].position, currentWaveEnemies[i].transform.rotation, enemyContainer.transform);
-                poolOfEnemies.Add(g);
+                AddEnemy(currentWaveEnemies[i], givenPath);
             }
-             //Spawn enemy and wait for time between enemy
+            //Spawn enemy and wait for time between enemy
+
 
             yield return new WaitForSeconds(spawnRate);
 
@@ -190,6 +200,29 @@ public class WaveManager : MonoBehaviour
             }
         }
         yield return false;
+    }
+
+    private void UseInactive(GameObject enemy, int givenPath)
+    {
+        EnemyController enemyController = enemy.GetComponent<EnemyController>();
+        enemyController.path = givenPath;
+        enemyController.transform.position = Waypoints.wayPoints[enemyController.path][0].position;
+        enemyController.gameObject.SetActive(true);
+    }
+
+    private void AddEnemy(GameObject enemy, int givenPath)
+    {
+        GameObject g = Instantiate(enemy, Waypoints.wayPoints[givenPath][0].position, enemy.transform.rotation, enemyContainer.transform);
+        int index = FindEmptyPool();
+
+        if (index > -1)
+        {
+            poolOfEnemies[index] = g;
+        }
+        else
+        {
+            poolOfEnemies.Add(g);
+        }
     }
 
     [ContextMenu("Calculate Wave Duration")]
@@ -217,7 +250,7 @@ public class WaveManager : MonoBehaviour
     {
         for (int i = 0; i < poolOfEnemies.Count; i++)
         {
-            if (poolOfEnemies[i].activeSelf == false)
+            if (poolOfEnemies[i] != null && poolOfEnemies[i].activeSelf == false)
             {
                 if (poolOfEnemies[i].GetComponent<EnemyController>().GetType() == enemy.GetComponent<EnemyController>().GetType())
                 {
@@ -236,10 +269,6 @@ public class WaveManager : MonoBehaviour
     public void Restart()
     {
         currentWave = -1;
-        foreach (Transform enemy in enemyContainer.transform)
-        {
-            Destroy(enemy.gameObject);
-        }
         StopCoroutine(SpawnCurrentWave());
         currentWaveEnemies.Clear();
         UpdateUI();
