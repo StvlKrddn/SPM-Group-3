@@ -70,12 +70,13 @@ public class GameManager : MonoBehaviour
         EventHandler.Instance.RegisterListener<SaveGameEvent>(SaveGame);
         if (DataManager.FileExists(DataManager.SaveData))
         {
-            LoadFromFile();
+         //   LoadFromFile();
         }
         else 
         {
-            LoadBase();
+        //    LoadBase();
         }
+        LoadBase();
     }
 
     private void LoadFromFile()
@@ -176,7 +177,23 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha5))
         {
             CurrentWave = 5; 
+
+
         }
+        if (Input.GetKeyDown(KeyCode.Alpha6))
+        {
+            CurrentWave = 6;
+
+
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            CurrentWave = 9;
+
+
+        }
+
+
         UpdateUI();
     }
 

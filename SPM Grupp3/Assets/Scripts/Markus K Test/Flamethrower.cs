@@ -6,8 +6,8 @@ using UnityEngine.ParticleSystemJobs;
 
 public class Flamethrower : MonoBehaviour
 {
-    public static int FireDamage;
-    [SerializeField] private int damage;
+    public static float FireDamage;
+    [SerializeField] private float damage;
     //private CapsuleCollider capsuleCollider;
     private TankState state;
     private PlayerInput playerInput;
