@@ -40,7 +40,13 @@ public class EnemyBullet : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
 	{
-        if (!other.CompareTag("Enemy"))
+    //    if (!other.CompareTag("Enemy"))
+    //    {
+    //        Destroy(gameObject, Mathf.Epsilon);
+    //    }
+
+
+        if(other.CompareTag("Player"))
         {
             Destroy(gameObject, Mathf.Epsilon);
         }

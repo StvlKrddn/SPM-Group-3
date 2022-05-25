@@ -192,6 +192,23 @@ public class WaveManager : MonoBehaviour
         }
     }
 
+    [ContextMenu("Calculate Total money")]
+    public void CalculateMoney()
+    {
+
+        int totalMoney = 0; 
+
+        for (int i = 0; i < waves.Length; i++)
+        {
+            WaveInfo waveInfo = waves[i];
+
+            totalMoney += waveInfo.waveMoneyBonus; 
+        }
+
+        print(totalMoney);
+    }
+
+
     public void UpdateUI()
     {
         waveUI.text = (currentWave + 1) + "/" + victoryWave;
