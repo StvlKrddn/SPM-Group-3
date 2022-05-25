@@ -329,11 +329,6 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Victory");
 
-        // NOTE(August): Lite stats som kan vara kul att ha med på Victory Panel
-        /*print("Money collected: " + moneyCollected);
-        print("Material collected: " + materialCollected);
-        print("Enemies killed: " + enemiesKilled);*/
-
         EventHandler.Instance.InvokeEvent(new VictoryEvent(
             description: "Victory",
             money: (int) moneyCollected,

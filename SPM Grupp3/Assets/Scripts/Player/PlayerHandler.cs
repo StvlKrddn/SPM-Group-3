@@ -105,7 +105,6 @@ public class PlayerHandler : MonoBehaviour
         {
             EnterTankMode();
         }
-
         if (destroyed)
         {
             print("Your tank is destroyed! Wait until next wave");
