@@ -8486,6 +8486,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2044353065039595136}
   - component: {fileID: 2044353065039595137}
+  - component: {fileID: 8857776865859208248}
   m_Layer: 9
   m_Name: TankBody
   m_TagString: Untagged
@@ -8599,6 +8600,24 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &8857776865859208248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2044353065039595143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 2
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 3
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &2049532832734278649
 GameObject:
   m_ObjectHideFlags: 0
@@ -12038,10 +12057,11 @@ MonoBehaviour:
   movementSpeed: 6
   health: 50
   animator: {fileID: 2044353065039595137}
+  destroyEffect: {fileID: 1568777644074540593, guid: 24f34cdca04d9e849a7b851c0ea12e23, type: 3}
   levelOfTank: 0
   tankUpgradeTree: {fileID: 0}
-  tankUpgradeTreeOne: {fileID: 3141392934154749895}
-  tankUpgradeTreeTwo: {fileID: 3141392934154749894}
+  tankUpgradeTreeOne: {fileID: 3141392934154749894}
+  tankUpgradeTreeTwo: {fileID: 3141392934154749895}
   player1Material: {fileID: 2100000, guid: 01aae526bb793a44baf805549a70aed9, type: 2}
   player2Material: {fileID: 2100000, guid: 08e7a51c6091aef41833dac7e1a7d9ab, type: 2}
 --- !u!114 &3141392934154749890
@@ -15923,6 +15943,7 @@ GameObject:
   - component: {fileID: 4699376924991914331}
   - component: {fileID: 4578399752372639792}
   - component: {fileID: 7520050831549199960}
+  - component: {fileID: 504024704774778167}
   m_Layer: 9
   m_Name: CanonBarrel
   m_TagString: Untagged
@@ -15993,6 +16014,24 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &504024704774778167
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4355613284464399526}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &4371944258967752628
 GameObject:
   m_ObjectHideFlags: 0

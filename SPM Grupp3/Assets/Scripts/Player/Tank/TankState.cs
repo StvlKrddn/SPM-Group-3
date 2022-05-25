@@ -10,9 +10,8 @@ public class TankState : MonoBehaviour
     [SerializeField] private float movementSpeed = 6f;
     [SerializeField] private float health = 50f;
     [SerializeField] private Animator animator;
+    [SerializeField] private GameObject destroyEffect;
     public int levelOfTank;
-
-
 
     // Components
     Rigidbody rb;
@@ -151,6 +150,11 @@ public class TankState : MonoBehaviour
         {
             Ability();
         }
+
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            DestroyTank();
+        }
     }
 
     void FixedUpdate()
@@ -231,7 +235,7 @@ public class TankState : MonoBehaviour
     public void TakeDamage(float damage)
     {
         currentHealth -= damage;
-        if (currentHealth <= 0)
+        if (currentHealth <= 0 && !playerHandler.Destroyed)
         {
             DestroyTank();
         }
@@ -240,6 +244,8 @@ public class TankState : MonoBehaviour
     void DestroyTank()
     {
         print("Tank destroyed!");
+        Instantiate(destroyEffect, transform.position, Quaternion.identity);
+
         transform.position = spawnPoint.position;
         playerHandler.Destroyed = true;
             

@@ -894,9 +894,9 @@ GameObject:
   - component: {fileID: 7387365811087306890}
   - component: {fileID: 4538765400709618084}
   - component: {fileID: 800683908608653557}
-  - component: {fileID: 2601202569929992160}
+  - component: {fileID: 5453625943865719948}
   m_Layer: 7
-  m_Name: Enemy_Melee
+  m_Name: EnemyMelee
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -963,7 +963,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f2e4d9832fb14845b2f95ca7b6aeb21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2601202569929992160
+--- !u!114 &5453625943865719948
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -972,7 +972,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4264572846131703882}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2972d638bc5665943b947e47bfcf7e4e, type: 3}
+  m_Script: {fileID: 11500000, guid: d17f8bb1119438a43ab2fa371cdad4d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
@@ -984,6 +984,7 @@ MonoBehaviour:
   materialDrop: 0
   material: {fileID: 2880112694638519676, guid: ad4ab04936b9afa45a48c743a72df55b, type: 3}
   spread: 0
+  path: 0
 --- !u!1 &4791161376655656328
 GameObject:
   m_ObjectHideFlags: 0

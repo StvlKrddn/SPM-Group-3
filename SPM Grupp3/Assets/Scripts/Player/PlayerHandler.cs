@@ -68,7 +68,14 @@ public class PlayerHandler : MonoBehaviour
 
         currentMode = PlayerMode.Tank;
 
-        UpgradeController.Instance.FixUpgrades(gameObject);
+
+        StartCoroutine(FixUpgradeDelay(gameObject));
+    }
+
+    private IEnumerator FixUpgradeDelay(GameObject tank)
+    {
+        yield return new WaitForSeconds(Mathf.Epsilon);
+        UpgradeController.Instance.FixUpgrades(tank);
     }
 
     void EnterBuildMode()
@@ -105,7 +112,6 @@ public class PlayerHandler : MonoBehaviour
         {
             EnterTankMode();
         }
-
         if (destroyed)
         {
             print("Your tank is destroyed! Wait until next wave");
@@ -134,7 +140,7 @@ public class PlayerHandler : MonoBehaviour
 
     public void PauseGame (InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && !UI.MenuOpen)
         {
             UI ui = canvas.GetComponent<UI>();
             ui.SetSelectedButton("Resume");

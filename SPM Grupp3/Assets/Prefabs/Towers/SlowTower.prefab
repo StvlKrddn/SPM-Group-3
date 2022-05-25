@@ -41,6 +41,7 @@ GameObject:
   - component: {fileID: 1661001488874270944}
   - component: {fileID: 3806152538368000115}
   - component: {fileID: 5067175041666526826}
+  - component: {fileID: -4432665115789053617}
   m_Layer: 8
   m_Name: SlowTower
   m_TagString: Tower
@@ -108,16 +109,28 @@ MonoBehaviour:
   slowProc: 0.5
   slowRadius: 1
   areaOfEffect: 0
-  shotsBeforeStun: 2
+  stunActive: 0
+  shotsBeforeStun: 4
   upgradeAmountSlowProc: 0.2
   upgradeAmountSlowRadius: 3
-  stunEnemiesPeriodically: 0
   stunDuration: 0
   stunTimer: 0
   level1Cost: 600
   level2Cost: 1500
   level3Cost: 2000
   costForUpgrade: 0
+--- !u!114 &-4432665115789053617
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1661001488874270945}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 871ff6d53d487ac46b88ef6c7bf0bcd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1661001488928329828
 GameObject:
   m_ObjectHideFlags: 0

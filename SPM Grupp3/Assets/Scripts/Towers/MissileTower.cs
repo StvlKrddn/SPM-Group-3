@@ -12,7 +12,7 @@ public class MissileTower : Tower
     [SerializeField] private float amountUpgradeSplashDamage;
 
     [Header("ThirdShot Dubble Damage")]
-    [SerializeField] private bool thirdShot = false;
+    public bool thirdShot = false;
 
     [Header("Upgrade Cost")]
     [SerializeField] private float level1Cost;
@@ -21,15 +21,16 @@ public class MissileTower : Tower
 
     private float fireCountdown = 0f;
     private float shotsFired = 0;
+    private bool shotAlready = false;
 
     public float costForUpgrade;
-
+    public float ShotsFired { get { return shotsFired; } set { shotsFired = value; } }
     public float SplashRadius { get { return splashRadius; } set { splashRadius = value; } }
     public float SplashDamage { get { return splashDamage; } set { splashDamage = value; } }
 
-
     public override float UpgradeCostUpdate()
     {
+        base.TowerLevel1();
         switch (tUC.GetUpgradesPurchased())
         {
             case 0:
@@ -67,7 +68,6 @@ public class MissileTower : Tower
             }
         }
     }
-    private bool shotAlready = false;
     public override void HitTarget(TowerHitEvent eventInfo)
     {
         if (eventInfo.towerGO == gameObject)
@@ -81,7 +81,7 @@ public class MissileTower : Tower
                 
                 if (!shotAlready)
                 {
-                    TypeOfShot(enemyTarget);
+                    bullet.DecideTypeOfShot("Missile");
                     shotAlready = true;
                 }
                 Invoke("Coldown", 0.3f);
@@ -104,19 +104,6 @@ public class MissileTower : Tower
         return false;
     }
 
-    public override void TypeOfShot(EnemyController enemyTarget)
-    {
-        if (thirdShot && shotsFired % 3 == 0)
-        {
-            enemyTarget.HitBySplash(SplashRadius, SplashDamage * 2);
-            enemyTarget.TakeDamage(ShotDamage * 2);
-        }
-        else
-        {
-            enemyTarget.HitBySplash(SplashRadius, SplashDamage);
-            enemyTarget.TakeDamage(ShotDamage);
-        }
-    }
     protected void Shoot()
     {
         shotsFired++;
@@ -150,7 +137,7 @@ public class MissileTower : Tower
         {
             tUC.IncreaseUpgradesPurchased();
             MissileTower mT = tUC.ClickedTower.GetComponent<MissileTower>();
-            mT.splashRadius += amountUpgradeSplashRadius;
+            Level1(mT.gameObject);
         }
     }
     protected override void TowerLevel2()
@@ -160,7 +147,7 @@ public class MissileTower : Tower
         {
             tUC.IncreaseUpgradesPurchased();
             MissileTower mT = tUC.ClickedTower.GetComponent<MissileTower>();
-            mT.splashDamage += amountUpgradeSplashDamage;
+            Level2(mT.gameObject);
         }
         
     }
@@ -171,7 +158,23 @@ public class MissileTower : Tower
         {
             tUC.IncreaseUpgradesPurchased();
             MissileTower mT = tUC.ClickedTower.GetComponent<MissileTower>();
-            mT.thirdShot = true;
+            Level3(mT.gameObject);
         }
+    }
+
+    protected override void Level1(GameObject tower)
+    {
+        tower.GetComponent<MissileTower>().splashRadius += amountUpgradeSplashRadius;
+    }
+
+    protected override void Level2(GameObject tower)
+    {
+        tower.GetComponent<MissileTower>().splashDamage += amountUpgradeSplashDamage;
+    }
+
+    protected override void Level3(GameObject tower)
+    {   
+        
+        tower.GetComponent<MissileTower>().thirdShot = true;
     }
 }
