@@ -82,7 +82,7 @@ public class Shop : MonoBehaviour
 
     private void UpdateCostUI(float moneyCost, float materialCost)
     {
-/*        moneyCostUI.color = Color.red;
+/*       moneyCostUI.color = Color.red;
         moneyCostUI.text = "-" + moneyCost;
 
         if (materialCost > 0)

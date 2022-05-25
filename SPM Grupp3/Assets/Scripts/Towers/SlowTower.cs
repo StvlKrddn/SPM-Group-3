@@ -36,6 +36,7 @@ public class SlowTower : Tower
 
     public override float UpgradeCostUpdate()
     {
+        base.TowerLevel1();
         switch (tUC.GetUpgradesPurchased())
         {
             case 0:
