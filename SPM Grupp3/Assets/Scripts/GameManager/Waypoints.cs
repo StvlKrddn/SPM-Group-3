@@ -4,10 +4,16 @@ using System.Collections.Generic;
 public class Waypoints : MonoBehaviour
 {
     public static List<Transform[]> wayPoints = new List<Transform[]>();
+
+    public static Waypoints instance;
     public static int currentPath = -1;
-    // Start is called before the first frame update
+    
     void Awake()
     {
+        if (instance == null)
+        {
+            instance = this;
+        }
         for (int i = 0; i < transform.childCount; i++) // Foreach path, add the path to the list
         {
             Transform[] path = new Transform[transform.GetChild(i).childCount];

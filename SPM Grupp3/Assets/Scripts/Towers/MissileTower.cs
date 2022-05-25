@@ -28,6 +28,17 @@ public class MissileTower : Tower
     public float SplashRadius { get { return splashRadius; } set { splashRadius = value; } }
     public float SplashDamage { get { return splashDamage; } set { splashDamage = value; } }
 
+    public Tower TowerScript 
+    {
+        get 
+        {
+            if (towerScript == null)
+            {
+                towerScript = this;
+            }
+            return towerScript;
+        }
+    }
 
     public override float UpgradeCostUpdate()
     {
@@ -137,7 +148,7 @@ public class MissileTower : Tower
         {
             tUC.IncreaseUpgradesPurchased();
             MissileTower mT = tUC.ClickedTower.GetComponent<MissileTower>();
-            mT.splashRadius += amountUpgradeSplashRadius;
+            Level1(mT.gameObject);
         }
     }
     protected override void TowerLevel2()
@@ -147,7 +158,7 @@ public class MissileTower : Tower
         {
             tUC.IncreaseUpgradesPurchased();
             MissileTower mT = tUC.ClickedTower.GetComponent<MissileTower>();
-            mT.splashDamage += amountUpgradeSplashDamage;
+            Level2(mT.gameObject);
         }
         
     }
@@ -158,7 +169,23 @@ public class MissileTower : Tower
         {
             tUC.IncreaseUpgradesPurchased();
             MissileTower mT = tUC.ClickedTower.GetComponent<MissileTower>();
-            mT.thirdShot = true;
+            Level3(mT.gameObject);
         }
+    }
+
+    protected override void Level1(GameObject tower)
+    {
+        tower.GetComponent<MissileTower>().splashRadius += amountUpgradeSplashRadius;
+    }
+
+    protected override void Level2(GameObject tower)
+    {
+        tower.GetComponent<MissileTower>().splashDamage += amountUpgradeSplashDamage;
+    }
+
+    protected override void Level3(GameObject tower)
+    {   
+        
+        tower.GetComponent<MissileTower>().thirdShot = true;
     }
 }

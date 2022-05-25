@@ -15,6 +15,7 @@ public abstract class Tower : MonoBehaviour
     public GameObject onHitEffect;
     protected TowerUpgradeController tUC;
     public GameObject tower;
+    public Tower towerScript;
     public GameObject upgradeUI;
     public GameObject buildUI;
 	public GameObject towerPlacement;
@@ -54,15 +55,21 @@ public abstract class Tower : MonoBehaviour
         }
     }
 
-    void LoadTowerLevel()
+    public void LoadTowerLevel(PlacedTower tower)
     {
-        tUC = TowerUpgradeController.Instance;
-        int level = tUC.GetUpgradesPurchased();
-        for (int i = 0; i < level; i++)
+        for (int i = 0; i < tower.upgradesPurchased; i++)
         {
-            if (i == 0)
+            switch(i)
             {
-
+                case 0:
+                    Level1(tower.tower);
+                    break;
+                case 1:
+                    Level2(tower.tower);
+                    break;
+                case 2:
+                    Level3(tower.tower);
+                    break;
             }
         }
     }
@@ -83,9 +90,9 @@ public abstract class Tower : MonoBehaviour
         tUC = TowerUpgradeController.Instance;
     }
 
-    // protected abstract void Level1();
-    // protected abstract void Level2();
-    // protected abstract void Level3();
+    protected abstract void Level1(GameObject tower);
+    protected abstract void Level2(GameObject tower);
+    protected abstract void Level3(GameObject tower);
 
     void UpdateTarget()
     {

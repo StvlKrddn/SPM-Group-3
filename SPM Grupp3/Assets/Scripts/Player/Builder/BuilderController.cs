@@ -217,7 +217,7 @@ public class BuilderController : MonoBehaviour
         {
             towerHit.layer = LayerMask.NameToLayer("Towers");
         }
-        else if (garageHit.layer == LayerMask.NameToLayer("Ignore Raycast"))
+        else if (garageHit != null && garageHit.layer == LayerMask.NameToLayer("Ignore Raycast"))
         {
             garageHit.layer = LayerMask.NameToLayer("Garage");
         }
@@ -466,13 +466,11 @@ public class BuilderController : MonoBehaviour
         {
             towerHit = hit.collider.gameObject;
 
-            if (towerHit != null && preTower == null)
+            if (towerHit != null && preTower == null && towerHit.GetComponent<Tower>())
             {
                 selectedTower = towerHit.GetComponent<Tower>();
                 towerHit.layer = LayerMask.NameToLayer("Ignore Raycast");
                 selectedTower.ShowUpgradeUI(towerMenu);
-
-                //print(selectedTower.name + " | Level:  " + selectedTower.level);
 
                 cursorTransform.gameObject.SetActive(false);
 

@@ -68,6 +68,7 @@ public class GameManager : MonoBehaviour
     void Awake() 
     {
         EventHandler.Instance.RegisterListener<SaveGameEvent>(SaveGame);
+        buildManager = FindObjectOfType<BuildManager>();
         if (DataManager.FileExists(DataManager.SaveData))
         {
             LoadFromFile();
@@ -92,6 +93,8 @@ public class GameManager : MonoBehaviour
 
         Player1Color = data.player1Color;
         Player2Color = data.player2Color;
+
+        startingMode = data.startingMode;
 
         List<TowerData> towerData = new List<TowerData>(data.towerData);
 
@@ -127,20 +130,23 @@ public class GameManager : MonoBehaviour
         {
             GameObject towerPrefab = GetTowerByType(tower.towerType);
             newTower = Instantiate(towerPrefab, tower.position, Quaternion.identity);
-            AddPlacedTower(new PlacedTower(newTower, tower.level));
+            PlacedTower placedTower = new PlacedTower(newTower, tower.level);
+            Tower towerScript = newTower.GetComponent<Tower>();
+            towerScript.LoadTowerLevel(placedTower);
+            AddPlacedTower(placedTower);
         }
 
         GameObject GetTowerByType(string towerType)
         {
             switch (towerType)
             {
-                case "CannonTower":
+                case "CannonTower(Clone)":
                     return buildManager.cannonTowerPrefab;
-                case "MissileTower":
+                case "MissileTower(Clone)":
                     return buildManager.missileTowerPrefab;
-                case "SlowTower":
+                case "SlowTower(Clone)":
                     return buildManager.slowTowerPrefab;
-                case "PoisonTower":
+                case "PoisonTower(Clone)":
                     return buildManager.poisonTowerPrefab;
                 default:
                     return null;
@@ -152,7 +158,6 @@ public class GameManager : MonoBehaviour
     {
         InitializeUIElements();
 
-        buildManager = FindObjectOfType<BuildManager>();
         currentBaseHealth = baseHealth;
         livesSlider.maxValue = baseStats.baseHealth;
         livesSlider.value = currentBaseHealth;

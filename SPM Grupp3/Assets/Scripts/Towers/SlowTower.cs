@@ -35,6 +35,18 @@ public class SlowTower : Tower
     public float CurrentShots { get { return currentShots; } set { currentShots = value; } }
     public bool AreaOfEffect { get { return areaOfEffect; } set { areaOfEffect = value; } }
 
+    public Tower TowerScript 
+    {
+        get 
+        {
+            if (towerScript == null)
+            {
+                towerScript = this;
+            }
+            return towerScript;
+        }
+    }
+
 
     public override float UpgradeCostUpdate()
     {
@@ -169,8 +181,7 @@ public class SlowTower : Tower
         {
             tUC.IncreaseUpgradesPurchased();
             SlowTower sT = tUC.ClickedTower.GetComponent<SlowTower>();
-            sT.slowRadius += upgradeAmountSlowRadius;
-                         
+            Level1(sT.gameObject);    
         }        
     }
     protected override void TowerLevel2()
@@ -180,11 +191,8 @@ public class SlowTower : Tower
         {
             tUC.IncreaseUpgradesPurchased();
             SlowTower sT = tUC.ClickedTower.GetComponent<SlowTower>();
-            sT.areaOfEffect = true;
-            sT.transform.rotation = Quaternion.Euler(0, 0, 0);
+            Level2(sT.gameObject);
         }
-    
-        
     }
     protected override void TowerLevel3()
     {
@@ -193,8 +201,24 @@ public class SlowTower : Tower
         {
             tUC.IncreaseUpgradesPurchased();
             SlowTower sT = tUC.ClickedTower.GetComponent<SlowTower>();
-            sT.stunActive = true; 
+            Level3(sT.gameObject);
         }
     }
 
+    protected override void Level1(GameObject tower)
+    {
+        tower.GetComponent<SlowTower>().slowRadius += upgradeAmountSlowRadius;
+    }
+
+    protected override void Level2(GameObject tower)
+    {
+        SlowTower sT = tower.GetComponent<SlowTower>();
+        sT.areaOfEffect = true;
+        sT.transform.rotation = Quaternion.Euler(0, 0, 0);
+    }
+
+    protected override void Level3(GameObject tower)
+    {
+        tower.GetComponent<SlowTower>().stunActive = true; 
+    }
 }
