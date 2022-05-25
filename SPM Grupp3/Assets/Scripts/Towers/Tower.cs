@@ -13,8 +13,9 @@ public abstract class Tower : MonoBehaviour
     [SerializeField] protected GameObject radius;
     protected GameManager gM;
     public GameObject onHitEffect;
-    protected TowerUpgradeCotroller tUC;
+    protected TowerUpgradeController tUC;
     public GameObject tower;
+    public Tower towerScript;
     public GameObject upgradeUI;
     public GameObject buildUI;
 	public GameObject towerPlacement;
@@ -33,14 +34,13 @@ public abstract class Tower : MonoBehaviour
 
     protected Shot bullet;
 
-    public abstract void TypeOfShot(EnemyController enemyTarget);
     public abstract void HitTarget(TowerHitEvent eventInfo);
     public abstract void ShowUpgradeUI(Transform towerMenu);
     public abstract float UpgradeCostUpdate();
 
     public void LevelUpTower()
     {
-        tUC = TowerUpgradeCotroller.instance;
+        tUC = TowerUpgradeController.Instance;
         switch (tUC.GetUpgradesPurchased())
         {
             case 0:
@@ -55,21 +55,44 @@ public abstract class Tower : MonoBehaviour
         }
     }
 
+    public void LoadTowerLevel(PlacedTower tower)
+    {
+        for (int i = 0; i < tower.upgradesPurchased; i++)
+        {
+            switch(i)
+            {
+                case 0:
+                    Level1(tower.tower);
+                    break;
+                case 1:
+                    Level2(tower.tower);
+                    break;
+                case 2:
+                    Level3(tower.tower);
+                    break;
+            }
+        }
+    }
+
     protected virtual void TowerLevel1()
     {
         gM = GameManager.Instance;
-        tUC = TowerUpgradeCotroller.instance;
+        tUC = TowerUpgradeController.Instance;
     }
     protected virtual void TowerLevel2()
     {
         gM = GameManager.Instance;
-        tUC = TowerUpgradeCotroller.instance;
+        tUC = TowerUpgradeController.Instance;
     }
     protected virtual void TowerLevel3()
     {
         gM = GameManager.Instance;
-        tUC = TowerUpgradeCotroller.instance;
+        tUC = TowerUpgradeController.Instance;
     }
+
+    protected abstract void Level1(GameObject tower);
+    protected abstract void Level2(GameObject tower);
+    protected abstract void Level3(GameObject tower);
 
     void UpdateTarget()
     {

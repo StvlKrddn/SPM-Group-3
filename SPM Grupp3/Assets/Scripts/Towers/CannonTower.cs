@@ -21,9 +21,17 @@ public class CannonTower : Tower
 
     private float fireCountdown = 0f;
 
-
-
-
+    public Tower TowerScript 
+    {
+        get 
+        {
+            if (towerScript == null)
+            {
+                towerScript = this;
+            }
+            return towerScript;
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -86,8 +94,7 @@ public class CannonTower : Tower
                 GameObject effectInstance = Instantiate(eventInfo.hitEffect, enemyTarget.transform.position, enemyTarget.transform.rotation);
 
                 Destroy(effectInstance, 1f);
-                TypeOfShot(enemyTarget);
-                /*Destroy(bullet.gameObject, 2f);*/
+                bullet.DecideTypeOfShot("Cannon");
             }
         }
     }
@@ -103,11 +110,6 @@ public class CannonTower : Tower
         return false;
     }
 
-
-    public override void TypeOfShot(EnemyController enemyTarget)
-    {
-        enemyTarget.TakeDamage(ShotDamage);
-    }
     protected void Shoot()
     {
         GameObject bulletGO = Instantiate(shot, firePoint.position, firePoint.rotation);
@@ -142,8 +144,13 @@ public class CannonTower : Tower
         {
             tUC.IncreaseUpgradesPurchased();
             CannonTower cT = tUC.ClickedTower.GetComponent<CannonTower>();
-            cT.fireRate += upgradeFireRateAmount;
+            Level1(cT.gameObject);
         }      
+    }
+
+    protected override void Level1(GameObject tower)
+    {
+        tower.GetComponent<CannonTower>().fireRate += upgradeFireRateAmount;
     }
 
     protected override void TowerLevel2()
@@ -154,16 +161,24 @@ public class CannonTower : Tower
         {
             tUC.IncreaseUpgradesPurchased();
             CannonTower cT = tUC.ClickedTower.GetComponent<CannonTower>();
-
-            cT.ShotDamage = upgradeDamageAmount;
-
-            GameObject towerUpgradeVisual1 = cT.gameObject.transform.GetChild(1).gameObject;
-            GameObject towerUpgradeVisual2 = cT.gameObject.transform.GetChild(2).gameObject;
-
-            towerUpgradeVisual1.SetActive(false);
-            towerUpgradeVisual2.SetActive(true);
+            Level2(cT.gameObject);
         }
     }
+
+    protected override void Level2(GameObject tower)
+    {
+        CannonTower cT = tower.GetComponent<CannonTower>();
+
+        cT.ShotDamage = upgradeDamageAmount;
+
+        GameObject towerUpgradeVisual1 = cT.gameObject.transform.GetChild(1).gameObject;
+        GameObject towerUpgradeVisual2 = cT.gameObject.transform.GetChild(2).gameObject;
+
+        towerUpgradeVisual1.SetActive(false);
+        towerUpgradeVisual2.SetActive(true);
+    }
+
+    
 
     protected override void TowerLevel3()
     {
@@ -173,7 +188,13 @@ public class CannonTower : Tower
         {
             tUC.IncreaseUpgradesPurchased();
             CannonTower cT = tUC.ClickedTower.GetComponent<CannonTower>();
-            cT.shootTwice = true;
+            Level3(cT.gameObject);
         }     
+    }
+
+    protected override void Level3(GameObject tower)
+    {
+        CannonTower cT = tower.GetComponent<CannonTower>();
+        cT.shootTwice = true;
     }
 }
