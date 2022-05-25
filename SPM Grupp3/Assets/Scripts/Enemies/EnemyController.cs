@@ -41,7 +41,8 @@ public abstract class EnemyController : MonoBehaviour
         dead = false;
         healthBar.ResetHealth();
         SlowDuration();
-        target = Waypoints.wayPoints[path][0];
+        path = Waypoints.GivePath();
+        target = Waypoints.wayPoints[path][currWaypointIndex];
     }
 
 	protected virtual void Awake()

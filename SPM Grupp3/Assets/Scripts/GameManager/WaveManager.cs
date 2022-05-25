@@ -8,12 +8,14 @@ public class WaveManager : MonoBehaviour
 {
     [Header("Enemies: ")]
     [SerializeField] private GameObject enemyContainer;
+    [SerializeField] private int poolCount = 20;
     
     [Space]
     public WaveInfo[] waves;
 
     [Header("Debug")]
     [SerializeField] private int startingWave = 1;
+
 
     private int enemyCount;
     private GameManager gameManager;
@@ -23,11 +25,10 @@ public class WaveManager : MonoBehaviour
     private bool spawnEnemies = true;
     private int waveMoneyBonus;
     private List<GameObject> currentWaveEnemies = new List<GameObject>();
-    public List<GameObject> poolOfEnemies = new List<GameObject>();
+    private List<GameObject> poolOfEnemies = new List<GameObject>();
     private Text waveUI;
     private GameObject waveClear;
     private Dictionary<int, float> changeSpawnRate = new Dictionary<int, float>();
-    [SerializeField] private int poolCount = 20;
 
     private void Awake()
     {
@@ -152,7 +153,7 @@ public class WaveManager : MonoBehaviour
             }
             else
             {
-                if (poolOfEnemies.Count > poolCount) //Clear inactive enemies
+                if (poolOfEnemies.Count > poolCount) 
                 {
                     ClearInactive();
                 }
@@ -180,7 +181,7 @@ public class WaveManager : MonoBehaviour
                 ClearInactive();
             }
             GameObject enemy = GetPooledEnemy(currentWaveEnemies[i]);
-            int givenPath = Waypoints.GivePath(); //Gives the enemy the right path
+            int givenPath = Waypoints.GiveNewPath(); //Gives the enemy the right path
             if (enemy != null)
             {
                 UseInactive(enemy, givenPath);
