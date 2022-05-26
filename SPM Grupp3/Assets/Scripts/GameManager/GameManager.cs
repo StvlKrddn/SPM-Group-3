@@ -210,18 +210,6 @@ public class GameManager : MonoBehaviour
 
 
         }
-
-
-
-        if(Input.GetKeyDown(KeyCode.U))
-        {
-            CurrentWave += 1;
-        }
-        if (Input.GetKeyDown(KeyCode.I))
-        {
-            CurrentWave -= 1;
-        }
-
         UpdateUI();
     }
 
@@ -256,28 +244,41 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // Modifiy the values to two decimals when it is more than 1000 unites /Noah
     private void UpdateUI()
     {
-        /*float mon;
-        mon = money;
-        if (money / 1000 >= 1)
-        {
-            mon = money / 1000;
-            Mathf.Round(mon);
-            moneyCounterUI.text = mon.ToString() + " K";
-            materialCounterUI.text = ": " + material;
-            return;
-        }*/
+        float mon = money;
 
-        moneyCounterUI.text = ": " + money;
-        materialCounterUI.text = ": " + material;
+        if(mon >= 1000)
+        {
+            int holeNumb = (int) mon/1000;
+            int deciNumb = (int)(mon % 1000) / 10;
+            moneyCounterUI.text = ": " + holeNumb.ToString() + "," + deciNumb.ToString() + "K";
+        }
+        else
+        {
+            moneyCounterUI.text = ": " + money.ToString();
+        }
+
+        float mat = material;
+
+        if(mat >= 1000)
+        {
+            int holeNumb = (int) mat / 1000;
+            int deciNumb = (int)(mat % 1000) / 10;
+            materialCounterUI.text = ": " + holeNumb.ToString() + "," + deciNumb.ToString() + "K";
+        }
+        else
+        {
+            materialCounterUI.text = ": " + material.ToString();
+        }
 
         waveCounter.GetComponent<Text>().text = (currentWave + 1) + "/" + GetComponent<WaveManager>().waves.Length;
     }
 
     public void AddMoney(float addMoney)
     {
-/*        moneyChangerUI.color = colorGain;
+/*      moneyChangerUI.color = colorGain;
         moneyChangerUI.text = "+" + addMoney;
 
         Instantiate(moneyChangerUI, moneyUI.transform);*/
@@ -289,7 +290,7 @@ public class GameManager : MonoBehaviour
 
     public void AddMaterial(float addMaterial)
     {
-/*        materialChangerUI.color = colorGain;
+/*      materialChangerUI.color = colorGain;
         materialChangerUI.text = "+" + addMaterial;
 
         Instantiate(materialChangerUI, materialUI.transform);*/
@@ -304,7 +305,7 @@ public class GameManager : MonoBehaviour
         if (moneySpent <= money && materialSpent <= material)
         {
             money -= moneySpent;
-/*            moneyChangerUI.color = Color.red;
+/*          moneyChangerUI.color = Color.red;
             moneyChangerUI.text = "-" + moneySpent;*//*
 
             Instantiate(moneyChangerUI, moneyUI.transform);*/

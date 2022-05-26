@@ -52,6 +52,16 @@ public class WaveManager : MonoBehaviour
         EventHandler.RegisterListener<StartWaveEvent>(OnStartWave);
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            currentWave += 1;
+        }
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            currentWave -= 1;
+        }
     private void Start()
     {
         wayPoints = Waypoints.instance;

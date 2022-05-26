@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public abstract class EnemyController : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public abstract class EnemyController : MonoBehaviour
     [SerializeField] private float meleeDamage;
     private GameManager gM;
     private Transform target;
-    private Health healthBar;
+    private HealthBar healthBar;
     protected int currWaypointIndex = 0;
     public int damageBase = 10;
     public int moneyDrop = 10;
@@ -28,7 +29,9 @@ public abstract class EnemyController : MonoBehaviour
     private bool dead = false;
     private float currentHealth;
     public int path;
-    protected List<Transform[]> wayPoints;
+
+    public GameObject changerText;
+    [SerializeField] private Transform spawnTextPosition;
 
     public List<float> PoisonTickTimers { get { return poisonTickTimers; } set { poisonTickTimers = value; } }
     public float DefaultSpeed {  get { return defaultSpeed; } set { defaultSpeed = value; } }
@@ -42,11 +45,11 @@ public abstract class EnemyController : MonoBehaviour
         currWaypointIndex = 0;
         poisonTickTimers.Clear();
         dead = false;
-        healthBar.ResetHealth();
-        
-        path = Waypoints.instance.GivePath();
-        wayPoints = Waypoints.instance.GetWaypoints();
-        target = wayPoints[path][currWaypointIndex].transform;
+        //healthBar.ResetHealth();
+        healthBar.slider.maxValue = health;
+        healthBar.slider.value = health;
+        path = Waypoints.GivePath();
+        target = Waypoints.wayPoints[path][currWaypointIndex];
     }
 
 	protected virtual void Awake()
@@ -54,7 +57,9 @@ public abstract class EnemyController : MonoBehaviour
         defaultSpeed = speed;
         currentHealth = health;
         gM = GameManager.Instance;
-        healthBar = GetComponent<Health>();
+        healthBar = GetComponentInChildren<HealthBar>();
+        healthBar.slider.maxValue = health;
+        healthBar.slider.value = health;
         //Change to right tank when done with tanks
     }
 
@@ -86,21 +91,36 @@ public abstract class EnemyController : MonoBehaviour
     {
         if (other.CompareTag("Waypoint"))
         {
-            if (wayPoints[path].Length - 1 <= currWaypointIndex) // Changes waypoint to til the enemy reaches the last waypoint
+            if (Waypoints.wayPoints[path].Length - 1 <= currWaypointIndex) // Changes waypoint to til the enemy reaches the last waypoint
             {
                 EnemyDeathBase();
                 return;
             }
             currWaypointIndex++;
-            target = wayPoints[path][currWaypointIndex];
+            target = Waypoints.wayPoints[path][currWaypointIndex];
             transform.LookAt(target);
+        }
+
+        if (other.gameObject.CompareTag("Bullet"))
+        {
+            GameObject towerBullet = other.gameObject;
+            Tower tower = towerBullet.GetComponent<Shot>().getTowerShotCameFrom();
+
+            TakeDamage(tower.ShotDamage);
+        }
+
+        if (other.gameObject.CompareTag("PlayerShots"))
+        {
+            BulletBehavior playerBullet = other.GetComponent<BulletBehavior>();
+
+            TakeDamage(playerBullet.BulletDamage);
         }
     }
 
     public virtual void TakeDamage(float damage)
     {
         currentHealth -= damage;
-        healthBar.ModifyHealth(damage);
+        healthBar.HandleHealthChanged(currentHealth);
         if (currentHealth <= 0 && dead == false)
         {
             dead = true;
@@ -111,6 +131,22 @@ public abstract class EnemyController : MonoBehaviour
     public void EnemyDeath()
     {
         gM.AddMoney(moneyDrop); // add money and spawn material
+        
+        // Spawns a changerText for indikation for gaining money
+        if (changerText != null)
+        {
+            changerText.GetComponentInChildren<Text>().text = moneyDrop.ToString();
+            changerText.GetComponentInChildren<Text>().color = Color.yellow;
+
+            if(spawnTextPosition != null)
+                Instantiate(changerText, spawnTextPosition.position, spawnTextPosition.rotation);
+            else
+            {
+                Instantiate(changerText);
+                print("No transform-point for changerText");
+            }
+        }
+
         if (materialDrop == true)
         {
             Instantiate(material, transform.position, transform.rotation);
