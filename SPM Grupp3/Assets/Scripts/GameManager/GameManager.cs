@@ -106,6 +106,14 @@ public class GameManager : MonoBehaviour
         {
             AddPlacedTower(buildManager.LoadTower(tower));
         }
+        UpgradeController.currentUpgradeLevel = data.tankUpgradeLevel;
+        Invoke(nameof(FixUpgradeDelay), Mathf.Epsilon);
+    }
+
+    private void FixUpgradeDelay(GameObject tank)
+    {
+        UpgradeController.Instance.FixUpgrades(FindObjectOfType<TankState>().gameObject);
+        UpgradeController.Instance.FixUpgrades(tank);
     }
 
     private void LoadBase()
@@ -230,7 +238,8 @@ public class GameManager : MonoBehaviour
             Player1Color,
             Player2Color,
             startingMode,
-            towersPlaced
+            towersPlaced,
+            UpgradeController.currentUpgradeLevel
         );
         DataManager.WriteToFile(saveData, DataManager.SaveData);
     }

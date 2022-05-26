@@ -40,7 +40,7 @@ public class ChangerBehaviour : MonoBehaviour
             yield return null;
         }
 
-        Destroy(transform.parent);
+        Destroy(transform.parent.gameObject);
     }
 
     // Update is called once per frame

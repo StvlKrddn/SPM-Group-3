@@ -42,7 +42,8 @@ public class TankState : MonoBehaviour
     [SerializeField] private UnityEngine.Material player2Material;
     [SerializeField] private HealthBar healthBar;
 
-    private int hurMangaGangerDamage = 0; 
+    private int hurMangaGangerDamage = 0;
+    private bool invincibilityFrame = false;
 
 
     // Getters and Setters
@@ -94,7 +95,6 @@ public class TankState : MonoBehaviour
         
         aimSpeed = standardSpeed * 5;
 
-        StartCoroutine(LockRotation());
 
         //Create isometric matrix
         isoMatrix = Matrix4x4.Rotate(Quaternion.Euler(0, 45, 0));
@@ -102,15 +102,11 @@ public class TankState : MonoBehaviour
 
         // Subscribe to events
         EventHandler.RegisterListener<WaveEndEvent>(OnWaveEnd);
-
     }
 
-    IEnumerator LockRotation()
+    private void OnEnable()
     {
-        yield return new WaitForSeconds(0.5f);
-        transform.rotation = Quaternion.Euler(0, transform.rotation.y, 0);
-
-        rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionY;
+        invincibilityFrame = false;
     }
 
     void InitializeInputSystem()
@@ -143,7 +139,7 @@ public class TankState : MonoBehaviour
     void FindGarage()
     {
         garage = GameObject.FindGameObjectWithTag("Garage").transform;
-        spawnPoint = garage.Find("PlayerSpawn");
+        spawnPoint = garage.Find("SpawnPoints").GetChild(playerInput.playerIndex);
         transform.position = spawnPoint.position;
     }
     void Update()
@@ -243,12 +239,23 @@ public class TankState : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        currentHealth -= damage;
-        healthBar.HandleHealthChanged(currentHealth);
-        if (currentHealth <= 0 && !playerHandler.Destroyed)
+
+        if (!invincibilityFrame)
         {
-            DestroyTank();
+            Invoke(nameof(InvincibilityDuration), 0.15f);
+            invincibilityFrame = true;
+            currentHealth -= damage;
+            healthBar.HandleHealthChanged(currentHealth);
+            if (currentHealth <= 0 && !playerHandler.Destroyed)
+            {
+                DestroyTank();
+            }
         }
+    }
+
+    public void InvincibilityDuration()
+    {
+        invincibilityFrame = false;
     }
 
     void DestroyTank()

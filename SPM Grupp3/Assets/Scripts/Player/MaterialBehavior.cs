@@ -55,22 +55,20 @@ public class MaterialBehavior : MonoBehaviour
 
         Vector3 destination = new Vector3(Random.Range(xValues[0], xValues[1]), 0, Random.Range(zValues[0], zValues[1]));
 
-
-       
-
-            xMovement = ((destination.x - transform.position.x ) / 49);
-            zMovement = (( destination.z - transform.position.z) / 49);
+        xMovement = (destination.x - transform.position.x) / 150;
+        yMovement = -(secondsBeforeLanding / 150);
+        zMovement = (destination.z - transform.position.z) / 150;
 
         tempVector = new Vector3(xMovement, yMovement, zMovement);
         
         gameManager = FindObjectOfType<GameManager>();
         rb = GetComponent<Rigidbody>();
 		direction = Random.insideUnitSphere.normalized;
-		while ((x > 0.25f && x < -0.25f) || (z > 0.25f && z < -0.25f))
+		/*while ((x > 0.25f && x < -0.25f) || (z > 0.25f && z < -0.25f))
 		{
 		}
-			//x = Random.Range(-0.35f, 0.35f);
-			//z = Random.Range(-0.26f, 0.26f);
+			x = Random.Range(-0.35f, 0.35f);
+			z = Random.Range(-0.26f, 0.26f);*/
         direction = new Vector3(-3f, 0, 0);
 
     }
@@ -107,7 +105,6 @@ public class MaterialBehavior : MonoBehaviour
         originalPosition = transform.position;
 		originalPosition.y += 1;
 
-        print(howManyTimes);
         landed = true;
 		StartCoroutine(SelfDestruct());
 	}
