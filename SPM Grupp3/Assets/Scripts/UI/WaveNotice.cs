@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class WaveNotice : MonoBehaviour
 {
@@ -17,12 +18,14 @@ public class WaveNotice : MonoBehaviour
 
     void NewWave(StartWaveEvent eventInfo)
     {
-        transform.GetChild(0).gameObject.SetActive(true);
+        //transform.GetChild(0).gameObject.SetActive(true);
+        transform.GetComponentInChildren<Image>().enabled = true;
         Invoke(nameof(Duration), 3f);
     }
 
     void Duration()
     {
-        transform.GetChild(0).gameObject.SetActive(false);
+        //transform.GetChild(0).gameObject.SetActive(false);
+        transform.GetComponentInChildren<Image>().enabled = false;
     }
 }

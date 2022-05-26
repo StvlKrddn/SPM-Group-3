@@ -22,9 +22,17 @@ public class HealthBar : MonoBehaviour
         //GetComponentInParent<Health>().UpdateHealthBar += HandleHealthChanged;
     }
 
+    private void OnDestroy()
+    {
+        StopAllCoroutines();
+    }
+
     public void HandleHealthChanged(float currentHealth)
     {
-        StartCoroutine(UpdateHealthBar(currentHealth));
+        if (currentHealth > 0)
+        {
+            StartCoroutine(UpdateHealthBar(currentHealth));
+        }
         //UpdateHealthBar(currentHealth);
     }
 

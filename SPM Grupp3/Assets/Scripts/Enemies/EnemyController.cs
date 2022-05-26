@@ -103,14 +103,6 @@ public abstract class EnemyController : MonoBehaviour
             transform.LookAt(target);
         }
 
-        if (other.gameObject.CompareTag("Bullet"))
-        {
-            GameObject towerBullet = other.gameObject;
-            Tower tower = towerBullet.GetComponent<Shot>().getTowerShotCameFrom();
-
-            TakeDamage(tower.ShotDamage);
-        }
-
         if (other.gameObject.CompareTag("PlayerShots"))
         {
             BulletBehavior playerBullet = other.GetComponent<BulletBehavior>();
@@ -141,7 +133,9 @@ public abstract class EnemyController : MonoBehaviour
             changerText.GetComponentInChildren<Text>().color = Color.yellow;
 
             if(spawnTextPosition != null)
-                Instantiate(changerText, spawnTextPosition.position, spawnTextPosition.rotation);
+            {
+                Destroy(Instantiate(changerText, spawnTextPosition.position, spawnTextPosition.rotation), 3);
+            }
             else
             {
                 Instantiate(changerText);

@@ -4,10 +4,9 @@ using UnityEngine;
 
 public class NewWaveEvent : Event
 {
-    public int CurrentWave;
-
-    public NewWaveEvent(string description, int currentWave) : base(description)
+    // Används för att starta en ny wave
+    public NewWaveEvent(string description) : base(description)
     {
-        CurrentWave = currentWave;
+
     }
 }

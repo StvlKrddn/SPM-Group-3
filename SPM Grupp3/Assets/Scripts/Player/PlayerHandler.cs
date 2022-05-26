@@ -131,9 +131,8 @@ public class PlayerHandler : MonoBehaviour
     {
         if (context.performed)
         {
-            EventHandler.InvokeEvent(new StartWaveEvent(
-                description: "Player started new wave",
-                invoker: gameObject
+            EventHandler.InvokeEvent(new NewWaveEvent(
+                description: "Player started new wave"
             ));
         }
     }

@@ -36,6 +36,7 @@ public class WaveManager : MonoBehaviour
 
     private void Awake()
     {
+        EventHandler.RegisterListener<NewWaveEvent>(OnStartWave);
         if (startingWave != 1)
         {
             currentWave = startingWave - 2;
@@ -47,9 +48,17 @@ public class WaveManager : MonoBehaviour
         victoryWave = waves.Length;
         waveClear.SetActive(false);
         gameManager = GameManager.Instance;
+        currentWave = gameManager.CurrentWave;
 
+    }
 
-        EventHandler.RegisterListener<StartWaveEvent>(OnStartWave);
+    private void OnEnable()
+    {
+    }
+
+    private void OnDestroy()
+    {
+        EventHandler.UnregisterListener<NewWaveEvent>(OnStartWave);
     }
 
     private void Update()
@@ -70,8 +79,7 @@ public class WaveManager : MonoBehaviour
         wayPostions = wayPoints.GetWaypoints();
     }
 
-
-    private void OnStartWave(StartWaveEvent eventInfo)
+    private void OnStartWave(NewWaveEvent eventInfo)
     {       
         if (spawnEnemies)
         {
@@ -83,21 +91,12 @@ public class WaveManager : MonoBehaviour
     {
         currentWave++;
 
-        EventHandler.InvokeEvent(new NewWaveEvent(
-            description: "New wave started",
-            currentWave: currentWave
-            ));
-
-        spawnEnemies = false;
-    }
-
-    public void StartWave(int currentWave)
-    {
         waveClear.SetActive(false);
-        this.currentWave = currentWave;
         WaveConstructor(waves[currentWave]);
         StartCoroutine(SpawnCurrentWave());
         UpdateUI();
+
+        spawnEnemies = false;
     }
 
     private void WaveConstructor(WaveInfo wave)

@@ -115,9 +115,8 @@ public class TutorialUI : MonoBehaviour
 
             
                 EventHandler.InvokeEvent(new NewWaveEvent(
-        description: "New wave started",
-        currentWave: 0
-        ));
+                    description: "New wave started"
+                ));
             }
         }
 
