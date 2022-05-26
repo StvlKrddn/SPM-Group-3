@@ -41,8 +41,8 @@ ParticleSystem:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1353581416514619505}
   serializedVersion: 7
-  lengthInSec: 1
-  simulationSpeed: 1
+  lengthInSec: 0.05
+  simulationSpeed: 1.5
   stopAction: 0
   cullingMode: 0
   ringBufferMode: 0
@@ -285,7 +285,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 3
+      scalar: 2
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -4876,5 +4876,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4946d4179f13aa546b03e74f3fbfe1e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 2
+  damage: 3.3333
   fireParticles: {fileID: 816355809326549357}

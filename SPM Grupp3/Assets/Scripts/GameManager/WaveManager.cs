@@ -30,6 +30,8 @@ public class WaveManager : MonoBehaviour
     private GameObject waveClear;
     private Dictionary<int, float> changeSpawnRate = new Dictionary<int, float>();
 
+    //public int timeToWaitBetweenWave; 
+
     private void Awake()
     {
         if (startingWave != 1)
@@ -94,6 +96,8 @@ public class WaveManager : MonoBehaviour
                 for (int j = 0; j < subWave.enemies[i].amount; j++)
                 {
                     subWaveEnemies.Add(subWave.enemies[i].enemyPrefab);
+
+
                 }
             }
             Shuffle(subWaveEnemies);
@@ -198,6 +202,12 @@ public class WaveManager : MonoBehaviour
             if (changeSpawnRate.ContainsKey(i)) //The wave changes spawnrate after a subwave
             {
                 spawnRate = changeSpawnRate[i];
+
+
+
+
+
+                
             }
         }
         yield return false;
@@ -262,6 +272,23 @@ public class WaveManager : MonoBehaviour
         return null;
     }
 
+    [ContextMenu("Calculate Total money")]
+    public void CalculateMoney()
+    {
+
+        int totalMoney = 0; 
+
+        for (int i = 0; i < waves.Length; i++)
+        {
+            WaveInfo waveInfo = waves[i];
+
+            totalMoney += waveInfo.waveMoneyBonus; 
+        }
+
+        print(totalMoney);
+    }
+
+
     public void UpdateUI()
     {
         waveUI.text = (currentWave + 1) + "/" + victoryWave;
@@ -291,6 +318,11 @@ public struct SubWave
 {
     public EnemyStruct[] enemies;
     public float spawnRate;
+ //   public bool waitBetweenWave;
+  //  public int timeToWait;
+    //public bool waitBetweenWave; 
+
+
  
 }
 

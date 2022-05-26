@@ -42,6 +42,8 @@ public class TankState : MonoBehaviour
     [SerializeField] private UnityEngine.Material player1Material;
     [SerializeField] private UnityEngine.Material player2Material;
 
+    private int hurMangaGangerDamage = 0; 
+
 
     // Getters and Setters
     public float StandardSpeed { 
@@ -210,8 +212,11 @@ public class TankState : MonoBehaviour
         }
         else if (other.CompareTag("MortarBullet"))
         {
+            hurMangaGangerDamage += 1; 
             EnemyMortarShot enemyMortarShot = other.gameObject.GetComponentInParent<EnemyMortarShot>();
             TakeDamage(enemyMortarShot.damage);
+
+            print("Tar man damage flera gångar?" + hurMangaGangerDamage);
         }
     }
 
