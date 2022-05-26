@@ -237,18 +237,6 @@ public class GameManager : MonoBehaviour
 
 
         }
-
-
-
-        if(Input.GetKeyDown(KeyCode.U))
-        {
-            CurrentWave += 1;
-        }
-        if (Input.GetKeyDown(KeyCode.I))
-        {
-            CurrentWave -= 1;
-        }
-
         UpdateUI();
     }
 

@@ -103,7 +103,7 @@ public class EnemyMortarShot : MonoBehaviour
         {
             p.Play();
         }
-        yield return new WaitForSeconds(particle[0].main.duration + 0.1f);
+        yield return new WaitForSeconds(particle[0].main.duration);
         Destroy(gameObject);
     }
 }

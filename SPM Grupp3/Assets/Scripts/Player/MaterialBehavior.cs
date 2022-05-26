@@ -18,11 +18,42 @@ public class MaterialBehavior : MonoBehaviour
 	float z;
 
 
+    public float[] xValues = new float[2];
+    public float[] zValues = new float[2];
+
+    private int timeModifier;
+
 	private Vector3 originalPosition;
 
+    private float xMovement;
+
+
+    public float secondsBeforeLanding = 3; 
+
+    public float yMovement =-0.016666666f;
+
+    private float zMovement;
+
+
+    private int howManyTimes; 
+
+    Vector3 tempVector;
     void Start()
     {
-        transform.position = new Vector3(transform.position.x, transform.position.y + 2, transform.position.z);
+        //  transform.position = new Vector3(transform.position.x, transform.position.y + 2, transform.position.z);
+        transform.position = new Vector3(transform.position.x, 3, transform.position.z);
+
+
+        Vector3 destination = new Vector3(Random.Range(xValues[0], xValues[1]), 0, Random.Range(zValues[0], zValues[1]));
+
+
+       
+
+            xMovement = ((destination.x - transform.position.x ) / 49);
+            zMovement = (( destination.z - transform.position.z) / 49);
+
+        tempVector = new Vector3(xMovement, yMovement, zMovement);
+        
         gameManager = FindObjectOfType<GameManager>();
         rb = GetComponent<Rigidbody>();
 		direction = Random.insideUnitSphere.normalized;
@@ -37,30 +68,52 @@ public class MaterialBehavior : MonoBehaviour
 
     void Update()
     {
-		if (landed == true)
-		{
-			Bobbing();
-		}
-		else
-		{
-			Throw();
-		}
+	//	if (landed == true)
+	//	{
+	//		Bobbing();
+	//	}
+	//	else
+	//	{
+	//		Throw();
+	//	}
     }
+
+    private void FixedUpdate()
+    {
+        if (landed == true)
+        {
+
+            
+            Bobbing();
+        }
+        else
+        {
+            Throw();
+        }
+    }
+
 
     private void Landed()
     {
         originalPosition = transform.position;
 		originalPosition.y += 1;
+
+        print(howManyTimes);
         landed = true;
 		StartCoroutine(SelfDestruct());
 	}
 
     private void Throw()
     {
-        transform.position += (direction * Time.fixedDeltaTime);
-		//transform.Translate(transform.position * x * Time.smoothDeltaTime);
-		//transform.Translate(transform.position * z * Time.smoothDeltaTime);
-		//transform.Translate(transform.up * 5 * Time.smoothDeltaTime);
+        howManyTimes += 1;
+
+
+        transform.position += tempVector;
+       //     transform.Translate(xMovement, yMovement, zMovement);
+       //   transform.position += (direction * Time.fixedDeltaTime);
+       //transform.Translate(transform.position * x * Time.smoothDeltaTime);
+       //transform.Translate(transform.position * z * Time.smoothDeltaTime);
+       //transform.Translate(transform.up * 5 * Time.smoothDeltaTime);
     }
 
     private void Bobbing()
