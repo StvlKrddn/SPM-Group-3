@@ -105,22 +105,27 @@ public abstract class EnemyController : MonoBehaviour
 
         if (other.gameObject.CompareTag("Bullet"))
         {
+            print("hur många blev träffade ");
+            //other.GetComponent<SphereCollider>().enabled = false;
             GameObject towerBullet = other.gameObject;
             Tower tower = towerBullet.GetComponent<Shot>().getTowerShotCameFrom();
-
+            
             TakeDamage(tower.ShotDamage);
         }
 
         if (other.gameObject.CompareTag("PlayerShots"))
         {
+         //   print("hur m¨ånga rfäddade");
+            other.GetComponent<BoxCollider>().enabled = false;
             BulletBehavior playerBullet = other.GetComponent<BulletBehavior>();
-
+            
             TakeDamage(playerBullet.BulletDamage);
         }
     }
 
     public virtual void TakeDamage(float damage)
     {
+        print(currentHealth);
         currentHealth -= damage;
         healthBar.HandleHealthChanged(currentHealth);
         if (currentHealth <= 0 && dead == false)
