@@ -30,6 +30,8 @@ public class GarageTrigger : MonoBehaviour
             
             if (acceptAction.IsPressed() && limit == false)
             {
+
+                print("kommer den hit");
                 hintEnterUI.SetActive(false);
                 EventHandler.InvokeEvent(new PlayerSwitchEvent(
                     description: "A player switched mode",

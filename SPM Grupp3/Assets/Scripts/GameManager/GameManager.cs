@@ -277,7 +277,7 @@ public class GameManager : MonoBehaviour
             materialCounterUI.text = ": " + material.ToString();
         }
 
-        print("vad är wave counter " + waveCounter);
+        //print("vad är wave counter " + waveCounter);
 
         waveCounter.GetComponent<Text>().text = (currentWave + 1) + "/" + GetComponent<WaveManager>().waves.Length;
     }

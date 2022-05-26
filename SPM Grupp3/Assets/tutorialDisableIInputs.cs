@@ -37,9 +37,9 @@ public class tutorialDisableIInputs : MonoBehaviour
         playerInput = FindObjectOfType<PlayerInput>();
         foreach (string name in inputsToDisableUpdate)
         {
-            print(playerInput.actions[name]);
+           // print(playerInput.actions[name]);
 
-         //   playerInput.actions[name].Disable();
+            playerInput.actions[name].Disable();
 
         }
         foreach (string name in inputsToEnableStart)
@@ -90,7 +90,7 @@ public class tutorialDisableIInputs : MonoBehaviour
         //playerInput = FindObjectOfType<PlayerInput>();
         foreach (string name in inputsToDisableUpdate)
         {
-            print(playerInput.actions[name]);
+            
 
              playerInput.actions[name].Disable();
 
