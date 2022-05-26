@@ -29,6 +29,8 @@ public abstract class EnemyController : MonoBehaviour
     private float currentHealth;
     public int path;
 
+    public List<float> PoisonTickTimers { get { return poisonTickTimers; } set { poisonTickTimers = value; } }
+    public float DefaultSpeed {  get { return defaultSpeed; } set { defaultSpeed = value; } }
     public float MeleeDamage { get { return meleeDamage; } set { meleeDamage = value; } }
     public float Health { get { return health; } }
 
@@ -40,7 +42,7 @@ public abstract class EnemyController : MonoBehaviour
         poisonTickTimers.Clear();
         dead = false;
         healthBar.ResetHealth();
-        SlowDuration();
+        
         path = Waypoints.GivePath();
         target = Waypoints.wayPoints[path][currWaypointIndex];
     }
@@ -116,7 +118,20 @@ public abstract class EnemyController : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public void HitBySlow(float slowProc, float radius, bool areaOfEffect)
+    private void OnParticleCollision(GameObject other)
+    {
+        if (other.CompareTag("Flamethrower"))
+        {
+            HitByFire(Flamethrower.FireDamage * Time.fixedDeltaTime);
+        }
+    }
+
+    public virtual void HitByFire(float damage)
+	{
+		TakeDamage(damage);
+	}
+
+/*    public void HitBySlow(float slowProc, float radius, bool areaOfEffect)
     {
         if (!areaOfEffect)
         {
@@ -135,7 +150,7 @@ public abstract class EnemyController : MonoBehaviour
                     eC.Invoke(nameof(SlowDuration), 3f);
                 }
             }
-        }       
+        }
     }
 
     private void SlowDuration()
@@ -159,15 +174,9 @@ public abstract class EnemyController : MonoBehaviour
         }
     }
 
-	private void OnParticleCollision(GameObject other)
-	{
-        if (other.CompareTag("Flamethrower"))
-        {
-            HitByFire(Flamethrower.FireDamage * Time.fixedDeltaTime);
-        }
-	}
 
-	public void HitByPoison(float ticks, GameObject hitEffect, float dps, float currentHealthDamage)
+
+    public void HitByPoison(float ticks, GameObject hitEffect, float dps, float currentHealthDamage)
     {
         amountOfTicks = ticks;
         amountOfDps = dps;
@@ -206,10 +215,5 @@ public abstract class EnemyController : MonoBehaviour
                 c.GetComponent<EnemyController>().TakeDamage(splashDamage);
             }
         }
-    }
-
-	public virtual void HitByFire(float damage)
-	{
-		TakeDamage(damage);
-	}
+    }*/
 }

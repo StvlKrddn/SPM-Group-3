@@ -38,6 +38,7 @@ public class WheelSelection : MonoBehaviour
     private InputAction stickAction;
     private InputAction selectAction;
     private Vector2 stickInput;
+    private InputAction infoAction;
 
     private GameObject towerToDisplay;
 
@@ -60,12 +61,13 @@ public class WheelSelection : MonoBehaviour
         playerInput.SwitchCurrentActionMap("Builder");
         stickAction = playerInput.actions["LeftStick"];
         selectAction = playerInput.actions["Accept"];
+        infoAction = playerInput.actions["Information"];
     }
 
     private void Update() 
     {
         selectHint.SetActive(false);
-        //infoHint.SetActive(false);
+        infoHint.SetActive(false);
 
         builderController.DestroyPreTower();
 
@@ -152,11 +154,13 @@ public class WheelSelection : MonoBehaviour
                         moneyText.text = tower.cost.ToString();
                         materialText.text = tower.materialCost.ToString(); //if needed
                     }
-
-                    TowerUpgradeCotroller tUC = TowerUpgradeCotroller.instance;
-                    if (tUC.ClickedTower != null) //Checks upgrade and changes the UI based on upgradelevel
+                    else
                     {
-                        UpgradeHighlighted(moneyText, materialText, tUC);
+                        TowerUpgradeCotroller tUC = TowerUpgradeCotroller.instance;
+                        if (tUC.ClickedTower != null) //Checks upgrade and changes the UI based on upgradelevel
+                        {
+                            UpgradeHighlighted(moneyText, materialText, tUC);
+                        }
                     }
 
                     DecideTowerToBuild(MenuItems[i].name);
@@ -168,14 +172,19 @@ public class WheelSelection : MonoBehaviour
                         }
                     }
 
+                    if (infoAction.triggered)
+                    {
+                        print("WEEEEEEEEEEEEEE");
+                        //InfoPanel();
+                    }
+
 
                     selectHint.SetActive(true);
-                    //infoHint.SetActive(true);
+                    infoHint.SetActive(true);
                 }
             }
             else
             {
-                print("weeeeeeeeeeeee");
                 // Remove hover effect from all other items
                 MenuItems[i].transform.GetChild(0).GetComponent<Image>().color = hidden;
                 if (MenuItems[i].transform.Find("Cost"))
@@ -187,7 +196,7 @@ public class WheelSelection : MonoBehaviour
         }
     }
 
-    private void UpgradeHighlighted(Text moneyText, Text materialText, TowerUpgradeCotroller tUC)
+    private void UpgradeHighlighted(Text moneyText, Text materialText, TowerUpgradeController tUC)
     {
         Tower tower;
         tower = tUC.ClickedTower.GetComponent<Tower>();
