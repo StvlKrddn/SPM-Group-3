@@ -46,7 +46,8 @@ public abstract class EnemyController : MonoBehaviour
         poisonTickTimers.Clear();
         dead = false;
         //healthBar.ResetHealth();
-        
+        healthBar.slider.maxValue = health;
+        healthBar.slider.value = health;
         path = Waypoints.GivePath();
         target = Waypoints.wayPoints[path][currWaypointIndex];
     }

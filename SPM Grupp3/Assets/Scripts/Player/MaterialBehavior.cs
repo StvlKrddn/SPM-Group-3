@@ -16,6 +16,8 @@ public class MaterialBehavior : MonoBehaviour
     [SerializeField] private GameObject changerText;
     [SerializeField] private Transform spawnTextPosition;
 
+    [SerializeField] private Color dropTextColor;
+
     private GameManager gameManager;
     private Rigidbody rb;
     private bool landed = false;
@@ -89,7 +91,7 @@ public class MaterialBehavior : MonoBehaviour
             if (changerText != null)
             {
                 changerText.GetComponentInChildren<Text>().text = materialValue.ToString();
-                changerText.GetComponentInChildren<Text>().color = Color.grey;
+                changerText.GetComponentInChildren<Text>().color = dropTextColor;
 
                 if (spawnTextPosition != null)
                     Instantiate(changerText, spawnTextPosition.position, spawnTextPosition.rotation);
