@@ -30,6 +30,7 @@ public abstract class EnemyController : MonoBehaviour
     private float currentHealth;
     public int path;
 
+    private Color moneyColor = new Color(255, 100, 0, 255);
     public GameObject changerText;
     [SerializeField] private Transform spawnTextPosition;
 
@@ -41,6 +42,7 @@ public abstract class EnemyController : MonoBehaviour
 	// Start is called before the first frame update
 	protected virtual void OnEnable()
 	{
+        
         currentHealth = health;
         currWaypointIndex = 0;
         poisonTickTimers.Clear();
@@ -136,7 +138,7 @@ public abstract class EnemyController : MonoBehaviour
         if (changerText != null)
         {
             changerText.GetComponentInChildren<Text>().text = moneyDrop.ToString();
-            changerText.GetComponentInChildren<Text>().color = Color.yellow;
+            changerText.GetComponentInChildren<Text>().color = moneyColor;
 
             if(spawnTextPosition != null)
                 Instantiate(changerText, spawnTextPosition.position, spawnTextPosition.rotation);

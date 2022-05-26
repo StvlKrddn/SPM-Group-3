@@ -73,30 +73,34 @@ public class WheelSelection : MonoBehaviour
 
         stickInput = stickAction.ReadValue<Vector2>();
 
-        if (stickAction.IsPressed())
+        if (!builderController.purchasedTower)
         {
-            float signedAngle = Vector2.SignedAngle(Vector2.up, stickInput);
-            if (signedAngle <= 0)
+            if (stickAction.IsPressed())
             {
-                signedAngle += 360;
+                float signedAngle = Vector2.SignedAngle(Vector2.up, stickInput);
+                if (signedAngle <= 0)
+                {
+                    signedAngle += 360;
+                }
+
+                // Get angle of stick
+                pointingAngle = signedAngle;
+
+                selectedIndex = GetIndex(pointingAngle);
+            }
+            else
+            {
+                selectedIndex = -1;
             }
 
-            // Get angle of stick
-            pointingAngle = signedAngle;
-            
-            selectedIndex = GetIndex(pointingAngle);
-        }
-        else 
-        {
-            selectedIndex = -1;
-        }
+            HighlightItem(selectedIndex);
 
-        HighlightItem(selectedIndex);
-
-        if (selectAction.triggered && selectedIndex != -1)
-        {
-            SelectItem(selectedIndex);
+            if (selectAction.triggered && selectedIndex != -1)
+            {
+                SelectItem(selectedIndex);
+            }
         }
+        
     }
 
     // Returns index of item based on angle
@@ -148,24 +152,14 @@ public class WheelSelection : MonoBehaviour
                     Text materialText = menuItem.transform.Find("MaterialCost").GetComponentInChildren<Text>();
                     Tower tower;
 
+                    DecideTowerToBuild(MenuItems[i].name);
+
                     if (towerToDisplay != null)
                     {
                         tower = towerToDisplay.GetComponent<Tower>();
                         moneyText.text = tower.cost.ToString();
                         materialText.text = tower.materialCost.ToString(); //if needed
-                    }
-                    else
-                    {
-                        TowerUpgradeController tUC = TowerUpgradeController.Instance;
-                        if (tUC.ClickedTower != null) //Checks upgrade and changes the UI based on upgradelevel
-                        {
-                            UpgradeHighlighted(moneyText, materialText, tUC);
-                        }
-                    }
 
-                    DecideTowerToBuild(MenuItems[i].name);
-                    if (towerToDisplay != null)
-                    {
                         if (GameManager.Instance.CheckIfEnoughResources(towerToDisplay.GetComponent<Tower>()))
                         {
                             moneyText.color = Color.black;
@@ -174,6 +168,14 @@ public class WheelSelection : MonoBehaviour
                         else
                         {
                             moneyText.color = Color.red;
+                        }
+                    }
+                    else
+                    {
+                        TowerUpgradeController tUC = TowerUpgradeController.Instance;
+                        if (tUC.ClickedTower != null) //Checks upgrade and changes the UI based on upgradelevel
+                        {
+                            UpgradeHighlighted(moneyText, materialText, tUC);
                         }
                     }
 
@@ -218,30 +220,26 @@ public class WheelSelection : MonoBehaviour
         float money = GameManager.Instance.Money;
         float material = GameManager.Instance.Material;
 
-        if (GameManager.Instance.CheckIfEnoughResources(tower))
-        {
-             moneyText.color = Color.black;
-             materialText.color = Color.black;
-        }
-        else if (money < tower.cost)
+        if(money < tower.UpgradeCostUpdate())
         {
             moneyText.color = Color.red;
-            materialText.color = Color.black;
-        }
-        else if (material < tower.materialCost)
-        {
-            moneyText.color = Color.black;
-            materialText.color = Color.red;   
         }
         else
         {
-            moneyText.color = Color.red;
+            moneyText.color = Color.black;
+        }
+
+        if(material < tower.materialCost)
+        {
             materialText.color = Color.red;
+        }
+        else
+        {
+            materialText.color = Color.black;
         }
 
         moneyText.text = tower.UpgradeCostUpdate().ToString();
         materialText.text = tower.materialCost.ToString();
-        
     }
 
     public void DecideTowerToBuild(string name)
@@ -249,20 +247,24 @@ public class WheelSelection : MonoBehaviour
         switch (name)
         {
             case "Cannon":
-            towerToDisplay = buildManager.cannonTowerPrefab;
-            break;
+                towerToDisplay = buildManager.cannonTowerPrefab;
+                break;
 
             case "Missile":
-            towerToDisplay = buildManager.missileTowerPrefab;
-            break;
+                towerToDisplay = buildManager.missileTowerPrefab;
+                break;
 
             case "Slow":
-            towerToDisplay = buildManager.slowTowerPrefab;
-            break;
+                towerToDisplay = buildManager.slowTowerPrefab;
+                break;
 
             case "Poison":
-            towerToDisplay = buildManager.poisonTowerPrefab;
-            break;
+                towerToDisplay = buildManager.poisonTowerPrefab;
+                break;
+
+            default:
+                towerToDisplay = null;
+                break;
          }
     }
 
@@ -274,6 +276,7 @@ public class WheelSelection : MonoBehaviour
         {
             selectedItem.GetComponent<ButtonClick>().Click();
             EventHandler.Instance.InvokeEvent(new BoughtInUIEvent("Something is bought in UI"));
+            stickInput = Vector2.zero;
         }
         else
         {

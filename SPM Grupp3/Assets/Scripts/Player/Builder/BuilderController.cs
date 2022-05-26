@@ -45,6 +45,7 @@ public class BuilderController : MonoBehaviour
     private GameObject buildPanel;
     private GameObject hintsPanel;
     private GameObject tankUpgrade;
+    public bool purchasedTower = false;
 
     private GameObject towerHit;
     private GameObject placementHit;
@@ -221,7 +222,8 @@ public class BuilderController : MonoBehaviour
         {
             garageHit.layer = LayerMask.NameToLayer("Garage");
         }
-        
+
+        purchasedTower = false;
         hintsPanel.SetActive(false);
         cursorTransform.gameObject.SetActive(true);
         stopHover = false;
@@ -441,7 +443,7 @@ public class BuilderController : MonoBehaviour
                 if (placementHit.CompareTag("PlaceForTower"))
                 {
                     buildManager.ClickedArea = _selection.gameObject;
-                    buildPanel.transform.position = buildManager.ClickedArea.transform.position;
+                    buildPanel.transform.position = buildManager.ClickedArea.transform.position + new Vector3(0f,0.2f,0f);
                     hintsPanel.transform.position = buildManager.ClickedArea.transform.position;
 
                     cursorTransform.gameObject.SetActive(false);
@@ -474,8 +476,9 @@ public class BuilderController : MonoBehaviour
 
                 cursorTransform.gameObject.SetActive(false);
 
+                
                 EventHandler.Instance.InvokeEvent(new TowerClickedEvent("Tower Is clicked", selectedTower.gameObject));
-                tankUpgrade.transform.position = towerHit.transform.position;
+                tankUpgrade.transform.position = towerHit.transform.position + new Vector3(100f, 5f, 5f);
                 hintsPanel.transform.position = towerHit.transform.position;
                 hintsPanel.SetActive(true);
                 buildManager.TowerToBuild = null;

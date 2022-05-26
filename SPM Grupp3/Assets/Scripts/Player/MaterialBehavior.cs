@@ -16,7 +16,7 @@ public class MaterialBehavior : MonoBehaviour
     [SerializeField] private GameObject changerText;
     [SerializeField] private Transform spawnTextPosition;
 
-    [SerializeField] private Color dropTextColor;
+    private Color dropTextColor = new Color(164,164,164,255);
 
     private GameManager gameManager;
     private Rigidbody rb;

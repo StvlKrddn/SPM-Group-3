@@ -3136,6 +3136,10 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 85f0d07f-0371-4b67-bc4a-aadd4513b71e
     m_ActionName: MenuNav/Cancel[/DualShock4GamepadHID/buttonEast,/DualShock4GamepadHID1/buttonEast]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 709fd5fe-f67f-432a-82ce-5b581de1d907
+    m_ActionName: Builder/Information[/XInputControllerWindows/buttonNorth,/XInputControllerWindows1/buttonNorth]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Gamepad
   m_DefaultActionMap: Tank
@@ -3334,6 +3338,7 @@ MonoBehaviour:
     m_Bits: 32768
   hoverColor: {r: 0.026329346, g: 0.24528301, b: 0, a: 1}
   towerPreview: {r: 1, g: 1, b: 1, a: 0.38431373}
+  purchasedTower: 0
 --- !u!1 &719792206982169220
 GameObject:
   m_ObjectHideFlags: 0
@@ -12362,7 +12367,6 @@ GameObject:
   - component: {fileID: 3141392934154749891}
   - component: {fileID: 3141392934154749890}
   - component: {fileID: 3141392934154749889}
-  - component: {fileID: 3141392934154749888}
   - component: {fileID: 3141392934154749895}
   - component: {fileID: 3141392934154749894}
   - component: {fileID: 3141392934154749902}
@@ -12442,6 +12446,7 @@ MonoBehaviour:
   tankUpgradeTreeTwo: {fileID: 3141392934154749895}
   player1Material: {fileID: 2100000, guid: 01aae526bb793a44baf805549a70aed9, type: 2}
   player2Material: {fileID: 2100000, guid: 08e7a51c6091aef41833dac7e1a7d9ab, type: 2}
+  healthBar: {fileID: 0}
 --- !u!114 &3141392934154749890
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12479,18 +12484,6 @@ MonoBehaviour:
   boostCooldownTime: 5
   boosters: {fileID: 3742325137359796505}
   animator: {fileID: 2044353065039595137}
---- !u!114 &3141392934154749888
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3141392934154749893}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f2e4d9832fb14845b2f95ca7b6aeb21, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &3141392934154749895
 MonoBehaviour:
   m_ObjectHideFlags: 0
