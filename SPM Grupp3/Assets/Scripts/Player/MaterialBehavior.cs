@@ -2,13 +2,20 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class MaterialBehavior : MonoBehaviour
 {
+    [SerializeField] private float materialValue = 1;
+
     [SerializeField] private float bobbingSpeed = 5f;
     [SerializeField] private float bobbingStrength = 0.2f;
     [SerializeField] private float duration = 5f;
+
+    [SerializeField] private GameObject changerText;
+    [SerializeField] private Transform spawnTextPosition;
+
     private GameManager gameManager;
     private Rigidbody rb;
     private bool landed = false;
@@ -77,7 +84,21 @@ public class MaterialBehavior : MonoBehaviour
 		}
 		if (other.gameObject.CompareTag("Tank"))
         {
-            gameManager.AddMaterial(1);
+            gameManager.AddMaterial(materialValue);
+
+            if (changerText != null)
+            {
+                changerText.GetComponentInChildren<Text>().text = materialValue.ToString();
+                changerText.GetComponentInChildren<Text>().color = Color.grey;
+
+                if (spawnTextPosition != null)
+                    Instantiate(changerText, spawnTextPosition.position, spawnTextPosition.rotation);
+                else
+                {
+                    Instantiate(changerText);
+                    print("No transform-point for changerText");
+                }
+            }
             Destroy(gameObject);
         }
     }

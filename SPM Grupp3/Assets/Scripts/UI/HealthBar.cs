@@ -11,22 +11,21 @@ public class HealthBar : MonoBehaviour
     //[SerializeField] private GameObject FollowPlayer;
     [SerializeField] private bool faceCamera = true;
     private float fillAmount;
+
     public float FillAmount { get { return fillAmount; } set { fillAmount = value; } }
 
     private void Awake()
     {
         lookAt = GameObject.FindGameObjectWithTag("Look").transform;
         slider = GetComponentInChildren<Slider>();
-        GetComponentInParent<Health>().UpdateHealthBar += HandleHealthChanged;
+        //GetComponentInParent<Health>().UpdateHealthBar += HandleHealthChanged;
+        //GetComponentInParent<Health>().UpdateHealthBar += HandleHealthChanged;
     }
 
-    private void HandleHealthChanged(float currentHealth)
+    public void HandleHealthChanged(float currentHealth)
     {
-        if (currentHealth <= 0)
-        {
-            return;
-        }
         StartCoroutine(UpdateHealthBar(currentHealth));
+        //UpdateHealthBar(currentHealth);
     }
 
     private IEnumerator UpdateHealthBar(float currentHealth)
@@ -46,7 +45,12 @@ public class HealthBar : MonoBehaviour
         slider.value = currentHealth;
     }
 
-    
+/*    public void UpdateHealthBar(float currentHealth)
+    {
+        print(currentHealth);
+        slider.value = currentHealth;
+    }*/
+
     private void LateUpdate()
     {
         if (faceCamera)
