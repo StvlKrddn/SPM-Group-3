@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class ChangerBehaviour : MonoBehaviour
 {
-
     private bool mFaded = false;
     private Transform lookAt;
 
@@ -13,10 +12,9 @@ public class ChangerBehaviour : MonoBehaviour
 
     public float moveSpeed = 1;
 
-    public Color color;
-
     private void Start()
     {
+       
         lookAt = GameObject.FindGameObjectWithTag("Look").transform;
         Faded();
     }
@@ -42,7 +40,7 @@ public class ChangerBehaviour : MonoBehaviour
             yield return null;
         }
 
-        Destroy(this);
+        Destroy(transform.parent);
     }
 
     // Update is called once per frame

@@ -45,6 +45,7 @@ public class BuilderController : MonoBehaviour
     private GameObject buildPanel;
     private GameObject hintsPanel;
     private GameObject tankUpgrade;
+    public bool purchasedTower = false;
 
     private GameObject towerHit;
     private GameObject placementHit;
@@ -226,6 +227,7 @@ public class BuilderController : MonoBehaviour
         {
             selectedTower.radius.SetActive(false);
         }
+        purchasedTower = false;
         hintsPanel.SetActive(false);
         cursorTransform.gameObject.SetActive(true);
         stopHover = false;
@@ -442,7 +444,7 @@ public class BuilderController : MonoBehaviour
                 if (placementHit.CompareTag("PlaceForTower"))
                 {
                     buildManager.ClickedArea = _selection.gameObject;
-                    buildPanel.transform.position = buildManager.ClickedArea.transform.position;
+                    buildPanel.transform.position = buildManager.ClickedArea.transform.position + new Vector3(0f,0.2f,0f);
                     hintsPanel.transform.position = buildManager.ClickedArea.transform.position;
 
                     cursorTransform.gameObject.SetActive(false);
