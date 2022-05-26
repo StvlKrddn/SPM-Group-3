@@ -58,6 +58,15 @@ public class tutorialLoadingTextBox : MonoBehaviour
             textBox.text += textToLoad[i];
 
             yield return new WaitForSeconds(speedOfTextLoad);
+
+            if(Gamepad.current.aButton.wasPressedThisFrame)
+            {
+                isTextLoading = false;
+                audioSource.Stop();
+                textBox.text = textToLoad;
+
+                yield break;
+            }
         }
 
         audioSource.Stop();
@@ -81,15 +90,23 @@ public class tutorialLoadingTextBox : MonoBehaviour
         {
             if(isTextLoading)
             {
+
+                print("kallar den denna funktion");
                 StopCoroutine(loadTextBox());
 
+                
+                StopAllCoroutines();
                 isTextLoading = false;
                 audioSource.Stop();
                 textBox.text = textToLoad;
             }
             else
             {
-                buttonToActivate.loadNextDialogue();
+                if(buttonToActivate != null)
+                {
+                    buttonToActivate.loadNextDialogue();
+                }
+             
             }
         }
     }
