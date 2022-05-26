@@ -23,7 +23,7 @@ public class TutorialUI : MonoBehaviour
 
     public WaveManager scriptToActivate;
     public GameObject uiToActivate;
-    private int timerForFirstEvent = 600;
+    private int timerForFirstEvent = 900;
     private bool firstEventActivated = false;
     private bool firstEventNotStarted = true;
 
@@ -46,7 +46,12 @@ public class TutorialUI : MonoBehaviour
     public GameObject disableTankInstructions;
 
 
-    bool disableStartWaveTankMode = false;
+    public List<string> modesToDisableTankMode;
+
+
+
+    public List<string> modesToDisableBuildMode;
+
 
     //private int whichWaveIsItOn; 
     private PlayerInput playerInput; 
@@ -61,6 +66,8 @@ public class TutorialUI : MonoBehaviour
             listOfAllTiles.Add(child.gameObject) ; 
         }
 
+
+        
 
 
 
@@ -88,20 +95,37 @@ public class TutorialUI : MonoBehaviour
     void Update()
     {
 
-        if(!disableStartWaveTankMode)
+    //   if(!disableStartWaveTankMode)
+    //   {
+    //
+    //       print(playerInput);
+    //
+    //
+    //       if(playerInput.currentActionMap.name == "Tank" )
+    //       {
+    //           playerInput.actions["StartWave"].Disable();
+    //
+    //           disableStartWaveTankMode = true;
+    //       }
+    //   }
+
+
+        foreach(string obj in modesToDisableTankMode)
         {
-
-            print(playerInput);
-
-
-            if(playerInput.currentActionMap.name == "Tank" )
+            if(playerInput.currentActionMap.name == "Tank")
             {
-                playerInput.actions["StartWave"].Disable();
-
-                disableStartWaveTankMode = true;
+                playerInput.actions[obj].Disable();
             }
         }
 
+
+        foreach(string obj in modesToDisableBuildMode)
+        {
+            if(playerInput.currentActionMap.name == "Builder")
+            {
+                playerInput.actions[obj].Disable();
+            }
+        }
 
         if (firstEventActivated && firstEventNotStarted)
         {   
