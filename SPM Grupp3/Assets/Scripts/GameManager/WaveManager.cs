@@ -62,6 +62,8 @@ public class WaveManager : MonoBehaviour
         {
             currentWave -= 1;
         }
+
+    }
     private void Start()
     {
         wayPoints = Waypoints.instance;

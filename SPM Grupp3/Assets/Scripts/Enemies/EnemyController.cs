@@ -29,6 +29,7 @@ public abstract class EnemyController : MonoBehaviour
     private bool dead = false;
     private float currentHealth;
     public int path;
+    protected List<Transform[]> wayPoints;
 
     public GameObject changerText;
     [SerializeField] private Transform spawnTextPosition;
@@ -48,11 +49,11 @@ public abstract class EnemyController : MonoBehaviour
         //healthBar.ResetHealth();
         healthBar.slider.maxValue = health;
         healthBar.slider.value = health;
-        path = Waypoints.GivePath();
-        target = Waypoints.wayPoints[path][currWaypointIndex];
+        path = Waypoints.instance.GivePath();
+        target = wayPoints[path][currWaypointIndex];
     }
 
-	protected virtual void Awake()
+	protected virtual void Awake() 
     {
         defaultSpeed = speed;
         currentHealth = health;
@@ -60,6 +61,7 @@ public abstract class EnemyController : MonoBehaviour
         healthBar = GetComponentInChildren<HealthBar>();
         healthBar.slider.maxValue = health;
         healthBar.slider.value = health;
+        wayPoints = Waypoints.instance.GetWaypoints();
         //Change to right tank when done with tanks
     }
 
@@ -91,13 +93,13 @@ public abstract class EnemyController : MonoBehaviour
     {
         if (other.CompareTag("Waypoint"))
         {
-            if (Waypoints.wayPoints[path].Length - 1 <= currWaypointIndex) // Changes waypoint to til the enemy reaches the last waypoint
+            if (wayPoints[path].Length - 1 <= currWaypointIndex) // Changes waypoint to til the enemy reaches the last waypoint
             {
                 EnemyDeathBase();
                 return;
             }
             currWaypointIndex++;
-            target = Waypoints.wayPoints[path][currWaypointIndex];
+            target = wayPoints[path][currWaypointIndex];
             transform.LookAt(target);
         }
 
