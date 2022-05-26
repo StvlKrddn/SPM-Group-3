@@ -16,6 +16,7 @@ public class BulletBehavior : MonoBehaviour
     Vector3 originalPosition;
     [SerializeField] private int penetrationCount = 2;
     
+
     public float BulletDamage { get { return damage; } set { damage = value; } }
     public float BulletRange { get { return range; } set { range = value; } }
 
