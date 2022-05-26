@@ -156,7 +156,7 @@ public class WheelSelection : MonoBehaviour
                     }
                     else
                     {
-                        TowerUpgradeCotroller tUC = TowerUpgradeCotroller.instance;
+                        TowerUpgradeController tUC = TowerUpgradeController.Instance;
                         if (tUC.ClickedTower != null) //Checks upgrade and changes the UI based on upgradelevel
                         {
                             UpgradeHighlighted(moneyText, materialText, tUC);

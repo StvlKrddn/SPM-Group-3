@@ -256,15 +256,15 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // Modifiy the values to two decimals when it is more than 1000 unites /Noah
     private void UpdateUI()
     {
         float mon = money;
 
         if(mon >= 1000)
         {
-            float holeNumb = mon/1000;
-            float deciNumb = Mathf.RoundToInt((mon % 1000));
-            deciNumb = Mathf.Round(deciNumb * 10);
+            int holeNumb = (int) mon/1000;
+            int deciNumb = (int)(mon % 1000) / 10;
             moneyCounterUI.text = ": " + holeNumb.ToString() + "," + deciNumb.ToString() + "K";
         }
         else
@@ -276,8 +276,8 @@ public class GameManager : MonoBehaviour
 
         if(mat >= 1000)
         {
-            float holeNumb = Mathf.Round(mat / 1000);
-            float deciNumb = Mathf.Round((mat / 100) % 10);
+            int holeNumb = (int) mat / 1000;
+            int deciNumb = (int)(mat % 1000) / 10;
             materialCounterUI.text = ": " + holeNumb.ToString() + "," + deciNumb.ToString() + "K";
         }
         else
@@ -290,7 +290,7 @@ public class GameManager : MonoBehaviour
 
     public void AddMoney(float addMoney)
     {
-/*        moneyChangerUI.color = colorGain;
+/*      moneyChangerUI.color = colorGain;
         moneyChangerUI.text = "+" + addMoney;
 
         Instantiate(moneyChangerUI, moneyUI.transform);*/
@@ -302,7 +302,7 @@ public class GameManager : MonoBehaviour
 
     public void AddMaterial(float addMaterial)
     {
-/*        materialChangerUI.color = colorGain;
+/*      materialChangerUI.color = colorGain;
         materialChangerUI.text = "+" + addMaterial;
 
         Instantiate(materialChangerUI, materialUI.transform);*/
@@ -317,7 +317,7 @@ public class GameManager : MonoBehaviour
         if (moneySpent <= money && materialSpent <= material)
         {
             money -= moneySpent;
-/*            moneyChangerUI.color = Color.red;
+/*          moneyChangerUI.color = Color.red;
             moneyChangerUI.text = "-" + moneySpent;*//*
 
             Instantiate(moneyChangerUI, moneyUI.transform);*/
