@@ -29,6 +29,8 @@ public class WaveManager : MonoBehaviour
     private Text waveUI;
     private GameObject waveClear;
     private Dictionary<int, float> changeSpawnRate = new Dictionary<int, float>();
+    private Waypoints wayPoints;
+    private List<Transform[]> wayPostions;
 
     private void Awake()
     {
@@ -36,7 +38,6 @@ public class WaveManager : MonoBehaviour
         {
             currentWave = startingWave - 2;
         }
-
         Transform waveHolder = UI.Canvas.transform.GetChild(0).Find("WaveHolder");
         waveUI = waveHolder.Find("WaveCounter").GetComponent<Text>();
         waveClear = waveHolder.Find("WaveCleared").gameObject;
@@ -47,6 +48,12 @@ public class WaveManager : MonoBehaviour
 
 
         EventHandler.Instance.RegisterListener<StartWaveEvent>(OnStartWave);
+    }
+
+    private void Start()
+    {
+        wayPoints = Waypoints.instance;
+        wayPostions = wayPoints.GetWaypoints();
     }
 
 
@@ -181,7 +188,7 @@ public class WaveManager : MonoBehaviour
                 ClearInactive();
             }
             GameObject enemy = GetPooledEnemy(currentWaveEnemies[i]);
-            int givenPath = Waypoints.GiveNewPath(); //Gives the enemy the right path
+            int givenPath = wayPoints.GiveNewPath(); //Gives the enemy the right path
             if (enemy != null)
             {
                 UseInactive(enemy, givenPath);
@@ -207,13 +214,13 @@ public class WaveManager : MonoBehaviour
     {
         EnemyController enemyController = enemy.GetComponent<EnemyController>();
         enemyController.path = givenPath;
-        enemyController.transform.position = Waypoints.wayPoints[enemyController.path][0].position;
+        enemyController.transform.position = wayPostions[enemyController.path][0].position;
         enemyController.gameObject.SetActive(true);
     }
 
     private void AddEnemy(GameObject enemy, int givenPath)
     {
-        GameObject g = Instantiate(enemy, Waypoints.wayPoints[givenPath][0].position, enemy.transform.rotation, enemyContainer.transform);
+        GameObject g = Instantiate(enemy, wayPostions[givenPath][0].position, enemy.transform.rotation, enemyContainer.transform);
         int index = FindEmptyPool();
 
         if (index > -1)

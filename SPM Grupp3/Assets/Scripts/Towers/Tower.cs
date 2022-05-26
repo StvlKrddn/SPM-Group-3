@@ -17,7 +17,7 @@ public abstract class Tower : MonoBehaviour
     public GameObject tower;
     public GameObject upgradeUI;
     public GameObject buildUI;
-	public GameObject towerPlacement;
+    public GameObject towerPlacement;
 
     [Header("BaseStats")]
 

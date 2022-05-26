@@ -36,6 +36,8 @@ public class GameManager : MonoBehaviour
     private Canvas canvas;
     private Slider livesSlider;
 
+    private SaveData data;
+
     private float money;
     private float material;
     private float baseHealth;
@@ -81,7 +83,7 @@ public class GameManager : MonoBehaviour
 
     private void LoadFromFile()
     {
-        SaveData data = (SaveData) DataManager.ReadFromFile(DataManager.SaveData);
+        data = (SaveData) DataManager.ReadFromFile(DataManager.SaveData);
         money = data.money;
         material = data.material;
         currentWave = data.currentWave;
@@ -98,7 +100,10 @@ public class GameManager : MonoBehaviour
 
         List<TowerData> towerData = new List<TowerData>(data.towerData);
 
-        LoadSavedTowers(towerData);
+        foreach (TowerData tower in towerData)
+        {
+            AddPlacedTower(buildManager.LoadTower(tower));
+        }
     }
 
     private void LoadBase()
@@ -121,37 +126,6 @@ public class GameManager : MonoBehaviour
     public void DeleteSaveData()
     {
         DataManager.DeleteFile(DataManager.SaveData);
-    }
-
-    private void LoadSavedTowers(List<TowerData> towerData)
-    {
-        GameObject newTower;
-        foreach (TowerData tower in towerData)
-        {
-            GameObject towerPrefab = GetTowerByType(tower.towerType);
-            newTower = Instantiate(towerPrefab, tower.position, Quaternion.identity);
-            PlacedTower placedTower = new PlacedTower(newTower, tower.level);
-            Tower towerScript = newTower.GetComponent<Tower>();
-            towerScript.LoadTowerLevel(placedTower);
-            AddPlacedTower(placedTower);
-        }
-
-        GameObject GetTowerByType(string towerType)
-        {
-            switch (towerType)
-            {
-                case "CannonTower(Clone)":
-                    return buildManager.cannonTowerPrefab;
-                case "MissileTower(Clone)":
-                    return buildManager.missileTowerPrefab;
-                case "SlowTower(Clone)":
-                    return buildManager.slowTowerPrefab;
-                case "PoisonTower(Clone)":
-                    return buildManager.poisonTowerPrefab;
-                default:
-                    return null;
-            }
-        }
     }
 
     private void Start()
@@ -222,6 +196,15 @@ public class GameManager : MonoBehaviour
         {
             EventHandler.Instance.InvokeEvent(new SaveGameEvent("Debug Save"));
         }
+
+        /*if (data.towerData != null)
+        {
+            foreach (TowerData tower in data.towerData)
+            {
+                Debug.DrawRay(tower.position, Vector3.down * 100);
+            }
+        }*/
+
         UpdateUI();
     }
 

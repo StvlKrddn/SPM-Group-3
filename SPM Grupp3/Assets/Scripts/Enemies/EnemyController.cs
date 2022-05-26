@@ -28,6 +28,7 @@ public abstract class EnemyController : MonoBehaviour
     private bool dead = false;
     private float currentHealth;
     public int path;
+    protected List<Transform[]> wayPoints;
 
     public List<float> PoisonTickTimers { get { return poisonTickTimers; } set { poisonTickTimers = value; } }
     public float DefaultSpeed {  get { return defaultSpeed; } set { defaultSpeed = value; } }
@@ -43,8 +44,9 @@ public abstract class EnemyController : MonoBehaviour
         dead = false;
         healthBar.ResetHealth();
         
-        path = Waypoints.GivePath();
-        target = Waypoints.wayPoints[path][currWaypointIndex];
+        path = Waypoints.instance.GivePath();
+        wayPoints = Waypoints.instance.GetWaypoints();
+        target = wayPoints[path][currWaypointIndex].transform;
     }
 
 	protected virtual void Awake()
@@ -84,13 +86,13 @@ public abstract class EnemyController : MonoBehaviour
     {
         if (other.CompareTag("Waypoint"))
         {
-            if (Waypoints.wayPoints[path].Length - 1 <= currWaypointIndex) // Changes waypoint to til the enemy reaches the last waypoint
+            if (wayPoints[path].Length - 1 <= currWaypointIndex) // Changes waypoint to til the enemy reaches the last waypoint
             {
                 EnemyDeathBase();
                 return;
             }
             currWaypointIndex++;
-            target = Waypoints.wayPoints[path][currWaypointIndex];
+            target = wayPoints[path][currWaypointIndex];
             transform.LookAt(target);
         }
     }
