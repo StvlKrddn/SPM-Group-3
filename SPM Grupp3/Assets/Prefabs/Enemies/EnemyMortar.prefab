@@ -122,8 +122,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6145e6b6d2ee97a448139c5e1e820185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
-  health: 100
+  speed: 7
+  health: 30
   hitEffect: {fileID: 5202362185975563897, guid: afc452a4019ab8b47ac2ea888849a086, type: 3}
   meleeDamage: 0
   damageBase: 10
@@ -134,6 +134,8 @@ MonoBehaviour:
   timer: 2
   cd: 5
   mortarShot: {fileID: 1373595079946574775, guid: 5db1957be983ffb44897d984b5942274, type: 3}
+  shooting: 0
+  stayDuration: 0
 --- !u!1001 &7925164086081398665
 PrefabInstance:
   m_ObjectHideFlags: 0

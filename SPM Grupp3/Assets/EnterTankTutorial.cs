@@ -19,13 +19,18 @@ public class EnterTankTutorial : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       if(Gamepad.current.yButton.isPressed)
+       if(Gamepad.current.bButton.isPressed)
         {
             this.gameObject.SetActive(false);
 
             ScriptToCallFunction.activateFirstEvent();
 
             instructionsToDisplay.SetActive(true);
+
+
+
+
+     //       FindObjectOfType<PlayerInput>().actio
         }
     }
 }

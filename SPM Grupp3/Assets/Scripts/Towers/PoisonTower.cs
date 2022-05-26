@@ -29,9 +29,11 @@ public class PoisonTower : Tower
 
     public float PoisonTicks { get { return poisonTicks; } set { poisonTicks = value; } }
     public float PoisonDamagePerTick { get { return poisonDamagePerTick; } set { poisonDamagePerTick = value; } }
+    public float MaxHealthPerTick { get { return maxHealthPerTick; } set { maxHealthPerTick = value; } }
 
     public override float UpgradeCostUpdate()
     {
+        base.TowerLevel1();
         switch (tUC.GetUpgradesPurchased())
         {
             case 0:
@@ -81,7 +83,7 @@ public class PoisonTower : Tower
                 GameObject effectInstance = Instantiate(eventInfo.hitEffect, enemyTarget.transform.position, enemyTarget.transform.rotation);
 
                 Destroy(effectInstance, 1f);
-                TypeOfShot(enemyTarget);
+                bullet.DecideTypeOfShot("Poison");
             }
         }
     }
@@ -97,50 +99,13 @@ public class PoisonTower : Tower
         return false;
     }
 
-    public override void TypeOfShot(EnemyController enemyTarget)
-    {
-        if (poisonSpread)
-        {
-            enemyTarget.spread = true;
-        }
-        //enemyTarget.HitByPoison(PoisonTicks,PoisonDamagePerTick, onHitEffect, maxHealthPerTick);
-    }
-
     protected void Shoot()
     {
-        
-        //     GameObject bulletGO = Instantiate(shot, firePoint.position, firePoint.rotation);
-        //     bulletGO.transform.parent = transform;
-        //     bulletGO.SetActive(true);
-        //     bullet = bulletGO.GetComponent<Shot>();
-        //
-        //     if (bullet != null)
-        //     {
-        //         bullet.Seek(target);
-        //     }
-        
+        GameObject effectInstance = Instantiate(poisonPulse, transform.position, transform.rotation);
+        Destroy(effectInstance, 1f);
 
-        Collider[] colliders = Physics.OverlapSphere(transform.position, range);
-        foreach (Collider c in colliders)
-        {
-            if (c.GetComponent<EnemyController>())
-            {
-                GameObject effectInstance = Instantiate(poisonPulse, transform.position, transform.rotation);
-
-                ParticleSystem particleEffect = effectInstance.GetComponent<ParticleSystem>();
-                   
-            //    particleEffect.SetCustomParticleData = 5; //= radius;
-
-                Destroy(effectInstance, 1f);
-                EnemyController enemyontroller = c.GetComponent<EnemyController>();
-                enemyontroller.HitByPoison(PoisonTicks, onHitEffect, PoisonDamagePerTick, maxHealthPerTick);
-                //EnemyController enemyTarget = eventInfo.enemyHit.GetComponent<EnemyController>();
-                
-
-                
-             //   TypeOfShot(enemyontroller);
-            }
-        }
+        //F�r att tornet �r AOE, D� skjuter den inte ut n�t skott
+        GetComponent<PoisonTowerEffect>().HitByPoison(PoisonTicks, onHitEffect, PoisonDamagePerTick, MaxHealthPerTick, range);
     }
 
     public override void ShowUpgradeUI(Transform towerMenu)
@@ -163,7 +128,7 @@ public class PoisonTower : Tower
         {
             tUC.IncreaseUpgradesPurchased();
             PoisonTower pT = tUC.ClickedTower.GetComponent<PoisonTower>();            
-            pT.poisonTicks += upgradeAmountPoisonTicks;                
+            Level1(pT.gameObject);
         }
     }
     protected override void TowerLevel2()
@@ -173,9 +138,7 @@ public class PoisonTower : Tower
         {
             tUC.IncreaseUpgradesPurchased();
             PoisonTower pT = tUC.ClickedTower.GetComponent<PoisonTower>();          
-            pT.poisonDamagePerTick += upgradeAmountPoisonDamagePerTick;
-            pT.maxHealthPerTick += upgradeMaxHealthPoisonDamagePerTick; 
-            pT.fireRate += upgradeAttackSpeed;
+            Level2(pT.gameObject);
         }
     }
     protected override void TowerLevel3()
@@ -185,7 +148,25 @@ public class PoisonTower : Tower
         {
             tUC.IncreaseUpgradesPurchased();
             PoisonTower pT = tUC.ClickedTower.GetComponent<PoisonTower>();
-            pT.poisonSpread = true;               
+            Level3(pT.gameObject);
         }
+    }
+
+    protected override void Level1(GameObject tower)
+    {
+        tower.GetComponent<PoisonTower>().poisonTicks += upgradeAmountPoisonTicks;  
+    }
+
+    protected override void Level2(GameObject tower)
+    {
+        PoisonTower pT = tower.GetComponent<PoisonTower>();
+        pT.poisonDamagePerTick += upgradeAmountPoisonDamagePerTick;
+        pT.maxHealthPerTick += upgradeMaxHealthPoisonDamagePerTick; 
+        pT.fireRate += upgradeAttackSpeed;
+    }
+
+    protected override void Level3(GameObject tower)
+    {
+        tower.GetComponent<PoisonTower>().poisonSpread = true;
     }
 }

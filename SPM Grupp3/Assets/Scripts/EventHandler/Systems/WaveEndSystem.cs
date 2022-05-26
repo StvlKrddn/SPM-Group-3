@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class WaveEndSystem : MonoBehaviour
 {
-    // Start is called before the first frame update
     private WaveManager waveManager;
 
     private TankUpgradeTree tank;
@@ -47,6 +46,9 @@ public class WaveEndSystem : MonoBehaviour
         {
             tank.ResetCooldown();
         }
+        EventHandler.Instance.InvokeEvent(new SaveGameEvent(
+            description: "Game is saving"
+        ));
     }
 
 }

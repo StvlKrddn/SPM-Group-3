@@ -10,6 +10,7 @@ using UnityEngine.UI;
 public class UI : MonoBehaviour
 {
     public static bool IsPaused;
+    public static bool MenuOpen;
     
     [SerializeField] private EventSystem eventSystem;
     [Space]
@@ -56,11 +57,13 @@ public class UI : MonoBehaviour
         {
             Resume();
         }
+        
     }
     
     public void Restart()
     {
         Resume();
+        CloseMenu();
         victoryPanel.SetActive(false);
         defeatPanel.SetActive(false);
         GameManager.Instance.DeleteSaveData();
@@ -70,6 +73,7 @@ public class UI : MonoBehaviour
     public void Continue()
     {
         Resume();
+        CloseMenu();
         victoryPanel.SetActive(false);
         
         int sceneIndex = SceneManager.GetActiveScene().buildIndex;
@@ -87,10 +91,8 @@ public class UI : MonoBehaviour
     public void Quit()
     {
         // NOTE(August): "Are you sure you want to quit?..." prompt?
-        EventHandler.Instance.InvokeEvent(new SaveGameEvent(
-            description: "Game is saving"
-        ));
         Resume();
+        CloseMenu();
         SceneManager.LoadScene(0);
     }
 
@@ -103,13 +105,13 @@ public class UI : MonoBehaviour
 
     public static void OpenMenu()
     {
-        IsPaused = true;
+        MenuOpen = true;
         Time.timeScale = 0f;
     }
 
     public static void CloseMenu()
     {
-        IsPaused = false;
+        MenuOpen = false;
         Time.timeScale = 1f;
     }
 
@@ -124,7 +126,7 @@ public class UI : MonoBehaviour
                 SetSelectedButton(continueButton);
                 break;
             case "Restart":
-                SetSelectedButton(continueButton);
+                SetSelectedButton(restartButton);
                 break;
         }
     }

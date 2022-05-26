@@ -9,6 +9,12 @@ public class EnemyArcher : EnemyController
     public GameObject shot;
 
 	// Update is called once per frame
+	protected override void OnEnable()
+	{
+		base.OnEnable();
+        timer = Random.Range(timer, cd - 1);
+    }
+
 	protected override void Awake()
 	{
         base.Awake();

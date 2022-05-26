@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
     [NonSerialized] public Color Player2Color;
 
     [Header("Other")]
-    [NonSerialized] public List<GameObject> towersPlaced = new List<GameObject>();
+    [NonSerialized] public List<PlacedTower> towersPlaced = new List<PlacedTower>();
     
     private GameObject victoryPanel;
     private GameObject defeatPanel;
@@ -68,6 +68,7 @@ public class GameManager : MonoBehaviour
     void Awake() 
     {
         EventHandler.Instance.RegisterListener<SaveGameEvent>(SaveGame);
+        buildManager = FindObjectOfType<BuildManager>();
         if (DataManager.FileExists(DataManager.SaveData))
         {
             LoadFromFile();
@@ -85,9 +86,19 @@ public class GameManager : MonoBehaviour
         material = data.material;
         currentWave = data.currentWave;
         baseHealth = data.currentBaseHealth;
+
         enemiesKilled = data.enemiesKilled;
         moneyCollected = data.moneyCollected;
         materialCollected = data.materialCollected;
+
+        Player1Color = data.player1Color;
+        Player2Color = data.player2Color;
+
+        startingMode = data.startingMode;
+
+        List<TowerData> towerData = new List<TowerData>(data.towerData);
+
+        LoadSavedTowers(towerData);
     }
 
     private void LoadBase()
@@ -96,6 +107,7 @@ public class GameManager : MonoBehaviour
         material = baseStats.material;
         currentWave = -1;
         baseHealth = baseStats.baseHealth;
+        startingMode = baseStats.startingMode;
         
         enemiesKilled = 0;
         moneyCollected = 0;
@@ -111,11 +123,41 @@ public class GameManager : MonoBehaviour
         DataManager.DeleteFile(DataManager.SaveData);
     }
 
+    private void LoadSavedTowers(List<TowerData> towerData)
+    {
+        GameObject newTower;
+        foreach (TowerData tower in towerData)
+        {
+            GameObject towerPrefab = GetTowerByType(tower.towerType);
+            newTower = Instantiate(towerPrefab, tower.position, Quaternion.identity);
+            PlacedTower placedTower = new PlacedTower(newTower, tower.level);
+            Tower towerScript = newTower.GetComponent<Tower>();
+            towerScript.LoadTowerLevel(placedTower);
+            AddPlacedTower(placedTower);
+        }
+
+        GameObject GetTowerByType(string towerType)
+        {
+            switch (towerType)
+            {
+                case "CannonTower(Clone)":
+                    return buildManager.cannonTowerPrefab;
+                case "MissileTower(Clone)":
+                    return buildManager.missileTowerPrefab;
+                case "SlowTower(Clone)":
+                    return buildManager.slowTowerPrefab;
+                case "PoisonTower(Clone)":
+                    return buildManager.poisonTowerPrefab;
+                default:
+                    return null;
+            }
+        }
+    }
+
     private void Start()
     {
         InitializeUIElements();
 
-        buildManager = FindObjectOfType<BuildManager>();
         currentBaseHealth = baseHealth;
         livesSlider.maxValue = baseStats.baseHealth;
         livesSlider.value = currentBaseHealth;
@@ -168,6 +210,18 @@ public class GameManager : MonoBehaviour
                 material -= 50;
             }
         }
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            CurrentWave = 4;
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            CurrentWave = 5; 
+        }
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            EventHandler.Instance.InvokeEvent(new SaveGameEvent("Debug Save"));
+        }
         UpdateUI();
     }
 
@@ -182,7 +236,11 @@ public class GameManager : MonoBehaviour
             money,
             material,
             currentBaseHealth,
-            currentScene: SceneManager.GetActiveScene().buildIndex
+            currentScene: SceneManager.GetActiveScene().buildIndex,
+            Player1Color,
+            Player2Color,
+            startingMode,
+            towersPlaced
         );
         DataManager.WriteToFile(saveData, DataManager.SaveData);
     }
@@ -277,7 +335,7 @@ public class GameManager : MonoBehaviour
         return false;
     }
 
-    public void AddPlacedTower(GameObject tower)
+    public void AddPlacedTower(PlacedTower tower)
     {
         towersPlaced.Add(tower); 
     }
@@ -307,11 +365,6 @@ public class GameManager : MonoBehaviour
     public void Victory()
     {
         Debug.Log("Victory");
-
-        // NOTE(August): Lite stats som kan vara kul att ha med på Victory Panel
-        /*print("Money collected: " + moneyCollected);
-        print("Material collected: " + materialCollected);
-        print("Enemies killed: " + enemiesKilled);*/
 
         EventHandler.Instance.InvokeEvent(new VictoryEvent(
             description: "Victory",

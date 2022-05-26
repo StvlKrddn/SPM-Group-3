@@ -9,14 +9,11 @@ public class WaveSystem : MonoBehaviour
     private void Start()
     {
         waveManager = FindObjectOfType<WaveManager>();
-        // If any DebugEvent is invoked, call the PrintMessage-method
         EventHandler.Instance.RegisterListener<NewWaveEvent>(NextWave);
     }
 
     void NextWave(NewWaveEvent newWaveEvent)
     {
-        
-
         waveManager.StartWave(newWaveEvent.CurrentWave);
     }
 }
