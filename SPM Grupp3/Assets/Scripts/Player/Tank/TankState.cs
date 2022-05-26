@@ -42,7 +42,8 @@ public class TankState : MonoBehaviour
     [SerializeField] private UnityEngine.Material player2Material;
     [SerializeField] private HealthBar healthBar;
 
-    private int hurMangaGangerDamage = 0; 
+    private int hurMangaGangerDamage = 0;
+    private bool invincibilityFrame = false;
 
 
     // Getters and Setters
@@ -101,6 +102,11 @@ public class TankState : MonoBehaviour
 
         // Subscribe to events
         EventHandler.RegisterListener<WaveEndEvent>(OnWaveEnd);
+    }
+
+    private void OnEnable()
+    {
+        invincibilityFrame = false;
     }
 
     void InitializeInputSystem()
@@ -233,12 +239,23 @@ public class TankState : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        currentHealth -= damage;
-        healthBar.HandleHealthChanged(currentHealth);
-        if (currentHealth <= 0 && !playerHandler.Destroyed)
+
+        if (!invincibilityFrame)
         {
-            DestroyTank();
+            Invoke(nameof(InvincibilityDuration), 0.15f);
+            invincibilityFrame = true;
+            currentHealth -= damage;
+            healthBar.HandleHealthChanged(currentHealth);
+            if (currentHealth <= 0 && !playerHandler.Destroyed)
+            {
+                DestroyTank();
+            }
         }
+    }
+
+    public void InvincibilityDuration()
+    {
+        invincibilityFrame = false;
     }
 
     void DestroyTank()
