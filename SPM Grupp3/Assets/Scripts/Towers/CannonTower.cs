@@ -29,6 +29,11 @@ public class CannonTower : Tower
         radius.transform.localScale = new Vector3(range * 2f, 0.01f, range * 2f);
     }
 
+    void OnDestroy()
+    {
+        EventHandler.Instance.UnregisterListener<TowerHitEvent>(HitTarget);
+    }
+
     // Update is called once per frame
     void LateUpdate()
     {
@@ -99,8 +104,7 @@ public class CannonTower : Tower
 
     protected void Shoot()
     {
-        GameObject bulletGO = Instantiate(shot, firePoint.position, firePoint.rotation);
-        bulletGO.transform.parent = transform;
+        GameObject bulletGO = Instantiate(shot, firePoint.position, firePoint.rotation, transform);
         bulletGO.SetActive(true);
         bullet = bulletGO.GetComponent<Shot>();
 

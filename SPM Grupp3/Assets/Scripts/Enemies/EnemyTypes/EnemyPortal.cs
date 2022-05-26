@@ -58,10 +58,10 @@ public class EnemyPortal : EnemyController
 
 	private void RandomizeTargets()
 	{
-		randomWaypoint = Random.Range(1, Waypoints.wayPoints[path].Length - 2); //For balancing reasons (and not last target)
+		randomWaypoint = Random.Range(1, wayPoints[path].Length - 2); //For balancing reasons (and not last target)
 		spawnDuration *= randomWaypoint;
 		currWaypointIndex = randomWaypoint;
-		transform.position = Waypoints.wayPoints[path][randomWaypoint].position;
+		transform.position = wayPoints[path][randomWaypoint].position;
 	}
 
     protected override void Update()

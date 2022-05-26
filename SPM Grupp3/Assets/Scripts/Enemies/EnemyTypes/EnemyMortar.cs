@@ -6,19 +6,12 @@ public class EnemyMortar : EnemyController
 {
     public float timer = 2;
     public int cd = 5;
-    public GameObject mortarShot;
-    public bool shooting;
-    public float stayDuration;
+    private TankState[] tanks;
+    private Transform explosionRadius = null;
+    public Rigidbody mortarRigidbody;
 
-	// Update is called once per frame
-	protected override void OnEnable()
-	{
-		base.OnEnable();
-        shooting = true;
-        timer = Random.Range(timer, cd - 1);
-    }
-
-	protected override void Awake()
+    // Update is called once per frame
+    protected override void Awake()
     {
         base.Awake();
         timer = Random.Range(timer, cd - 1);
@@ -26,31 +19,62 @@ public class EnemyMortar : EnemyController
 
     protected override void Update()
     {
+        MoveStep();
         timer += Time.deltaTime;
         if (timer >= cd)
         {
-            StartCoroutine(ShootMortar());
+            CalculateTarget();
+            if (explosionRadius != null)
+            {
+                CalculateVelocity(3);
+                LaunchShot();
+            }
             timer = 0;
+            explosionRadius = null;
         }
+    }
 
-        if (shooting == false)
+    private void CalculateTarget()
+    {
+        if (FindObjectOfType<TankState>())
         {
-            MoveStep();
+            tanks = FindObjectsOfType<TankState>();
+            foreach (TankState tank in tanks)
+            {
+                if (explosionRadius == null || Vector2.Distance(tank.transform.position, transform.position) < Vector3.Distance(explosionRadius.position, transform.position))
+                {
+                    explosionRadius = tank.transform;
+                }
+            }
+
         }
-
+        else
+        {
+            timer = 2;
+        }
     }
 
-    private IEnumerator ShootMortar()
+    private Vector3 CalculateVelocity(float duration)
     {
-        shooting = true;
-        yield return new WaitForSeconds(stayDuration);
-        ShootPlayer();
-        yield return new WaitForSeconds(stayDuration / 2);
-        shooting = false;
+        Vector3 distance = explosionRadius.position - transform.position;
+        Vector3 distanceXZ = new Vector3(distance.x, 0, distance.z);
+
+        float yDistance = distance.y;
+        float xzDistance = distanceXZ.magnitude;
+
+        float xzVelocity = xzDistance / duration;
+        float yVelocity = yDistance / duration + 0.5f * Mathf.Abs(Physics.gravity.y) * duration;
+
+        Vector3 result = distanceXZ.normalized;
+        result *= xzVelocity;
+        result.y = yVelocity;
+
+        return result;
     }
 
-    private void ShootPlayer()
+    private void LaunchShot()
     {
-        Instantiate(mortarShot, transform.position, Quaternion.identity);
+        Rigidbody rigidbody = Instantiate(mortarRigidbody, transform.position, Quaternion.identity);
+        rigidbody.velocity = explosionRadius.position;
     }
 }

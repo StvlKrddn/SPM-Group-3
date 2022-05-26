@@ -36,6 +36,8 @@ public class GameManager : MonoBehaviour
     private Canvas canvas;
     private Slider livesSlider;
 
+    private SaveData data;
+
     private float money;
     private float material;
     private float baseHealth;
@@ -71,18 +73,17 @@ public class GameManager : MonoBehaviour
         buildManager = FindObjectOfType<BuildManager>();
         if (DataManager.FileExists(DataManager.SaveData))
         {
-         //   LoadFromFile();
+            LoadFromFile();
         }
         else 
         {
-        //    LoadBase();
+            LoadBase();
         }
-        LoadBase();
     }
 
     private void LoadFromFile()
     {
-        SaveData data = (SaveData) DataManager.ReadFromFile(DataManager.SaveData);
+        data = (SaveData) DataManager.ReadFromFile(DataManager.SaveData);
         money = data.money;
         material = data.material;
         currentWave = data.currentWave;
@@ -99,7 +100,10 @@ public class GameManager : MonoBehaviour
 
         List<TowerData> towerData = new List<TowerData>(data.towerData);
 
-        LoadSavedTowers(towerData);
+        foreach (TowerData tower in towerData)
+        {
+            AddPlacedTower(buildManager.LoadTower(tower));
+        }
     }
 
     private void LoadBase()
@@ -122,37 +126,6 @@ public class GameManager : MonoBehaviour
     public void DeleteSaveData()
     {
         DataManager.DeleteFile(DataManager.SaveData);
-    }
-
-    private void LoadSavedTowers(List<TowerData> towerData)
-    {
-        GameObject newTower;
-        foreach (TowerData tower in towerData)
-        {
-            GameObject towerPrefab = GetTowerByType(tower.towerType);
-            newTower = Instantiate(towerPrefab, tower.position, Quaternion.identity);
-            PlacedTower placedTower = new PlacedTower(newTower, tower.level);
-            Tower towerScript = newTower.GetComponent<Tower>();
-            towerScript.LoadTowerLevel(placedTower);
-            AddPlacedTower(placedTower);
-        }
-
-        GameObject GetTowerByType(string towerType)
-        {
-            switch (towerType)
-            {
-                case "CannonTower(Clone)":
-                    return buildManager.cannonTowerPrefab;
-                case "MissileTower(Clone)":
-                    return buildManager.missileTowerPrefab;
-                case "SlowTower(Clone)":
-                    return buildManager.slowTowerPrefab;
-                case "PoisonTower(Clone)":
-                    return buildManager.poisonTowerPrefab;
-                default:
-                    return null;
-            }
-        }
     }
 
     private void Start()
@@ -271,28 +244,41 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // Modifiy the values to two decimals when it is more than 1000 unites /Noah
     private void UpdateUI()
     {
-        /*float mon;
-        mon = money;
-        if (money / 1000 >= 1)
-        {
-            mon = money / 1000;
-            Mathf.Round(mon);
-            moneyCounterUI.text = mon.ToString() + " K";
-            materialCounterUI.text = ": " + material;
-            return;
-        }*/
+        float mon = money;
 
-        moneyCounterUI.text = ": " + money;
-        materialCounterUI.text = ": " + material;
+        if(mon >= 1000)
+        {
+            int holeNumb = (int) mon/1000;
+            int deciNumb = (int)(mon % 1000) / 10;
+            moneyCounterUI.text = ": " + holeNumb.ToString() + "," + deciNumb.ToString() + "K";
+        }
+        else
+        {
+            moneyCounterUI.text = ": " + money.ToString();
+        }
+
+        float mat = material;
+
+        if(mat >= 1000)
+        {
+            int holeNumb = (int) mat / 1000;
+            int deciNumb = (int)(mat % 1000) / 10;
+            materialCounterUI.text = ": " + holeNumb.ToString() + "," + deciNumb.ToString() + "K";
+        }
+        else
+        {
+            materialCounterUI.text = ": " + material.ToString();
+        }
 
         waveCounter.GetComponent<Text>().text = (currentWave + 1) + "/" + GetComponent<WaveManager>().waves.Length;
     }
 
     public void AddMoney(float addMoney)
     {
-/*        moneyChangerUI.color = colorGain;
+/*      moneyChangerUI.color = colorGain;
         moneyChangerUI.text = "+" + addMoney;
 
         Instantiate(moneyChangerUI, moneyUI.transform);*/
@@ -304,7 +290,7 @@ public class GameManager : MonoBehaviour
 
     public void AddMaterial(float addMaterial)
     {
-/*        materialChangerUI.color = colorGain;
+/*      materialChangerUI.color = colorGain;
         materialChangerUI.text = "+" + addMaterial;
 
         Instantiate(materialChangerUI, materialUI.transform);*/
@@ -319,7 +305,7 @@ public class GameManager : MonoBehaviour
         if (moneySpent <= money && materialSpent <= material)
         {
             money -= moneySpent;
-/*            moneyChangerUI.color = Color.red;
+/*          moneyChangerUI.color = Color.red;
             moneyChangerUI.text = "-" + moneySpent;*//*
 
             Instantiate(moneyChangerUI, moneyUI.transform);*/
@@ -353,6 +339,12 @@ public class GameManager : MonoBehaviour
     public void AddPlacedTower(PlacedTower tower)
     {
         towersPlaced.Add(tower); 
+    }
+
+    public void RemovePlacedTower(GameObject tower)
+    {
+        PlacedTower clickedTower = TowerUpgradeController.Instance.GetPlacedTower(tower);
+        towersPlaced.Remove(clickedTower);
     }
 
     private void Defeat()

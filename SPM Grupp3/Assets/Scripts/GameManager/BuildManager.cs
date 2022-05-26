@@ -76,11 +76,60 @@ public class BuildManager : MonoBehaviour
             tower.radius.SetActive(false);
 			ClickedArea = null;
 
-            gM.AddPlacedTower(new PlacedTower(placedTower, 0));
+            gM.AddPlacedTower(new PlacedTower(placedTower, tower.towerPlacement, 0));
 
             return;
         }
         
         print("Get away you are too poor!");
+    }
+
+    public PlacedTower LoadTower(TowerData tower)
+    {
+        GameObject towerPrefab = GetTowerByType(tower.towerType);
+        GameObject newTower = Instantiate(towerPrefab, tower.position, Quaternion.identity);
+
+        Tower towerScript = newTower.GetComponent<Tower>();
+        GameObject placement = FindTile(towerScript);
+        placement.layer = LayerMask.NameToLayer("Road");
+
+        Instantiate(towerBase, placement.transform.position, placement.transform.rotation, newTower.transform);
+
+        PlacedTower placedTower = new PlacedTower(newTower, towerScript.towerPlacement, tower.level);
+        towerScript.radius.SetActive(false);
+        towerScript.LoadTowerLevel(placedTower);
+        return placedTower;
+    }
+
+    GameObject GetTowerByType(string towerType)
+    {
+        switch (towerType)
+        {
+            case "CannonTower(Clone)":
+                return cannonTowerPrefab;
+            case "MissileTower(Clone)":
+                return missileTowerPrefab;
+            case "SlowTower(Clone)":
+                return slowTowerPrefab;
+            case "PoisonTower(Clone)":
+                return poisonTowerPrefab;
+            default:
+                return null;
+        }
+    }
+
+    GameObject FindTile(Tower tower)
+    {
+        GameObject placement = null;
+        Collider[] colliders = Physics.OverlapBox(tower.transform.position, transform.localScale / 1.5f);
+        foreach (Collider c in colliders)
+        {
+            int layer = c.gameObject.layer;
+            if (layer == LayerMask.NameToLayer("PlaceForTower"))
+            {
+                placement = c.gameObject;
+            }
+        }
+        return placement;
     }
 }

@@ -247,7 +247,7 @@ public class BuilderController : MonoBehaviour
     void OnDisable()
     {
         InputSystem.onAfterUpdate -= UpdateVirtualMouse;
-        if (cursorTransform != null)
+        if (cursorTransform != null && virtualMouse != null)
         {
             ResetCursorPosition();
             cursorTransform.gameObject.SetActive(false);
@@ -475,7 +475,7 @@ public class BuilderController : MonoBehaviour
                 selectedTower.radius.SetActive(true);
                 cursorTransform.gameObject.SetActive(false);
 
-                EventHandler.Instance.InvokeEvent(new TowerClickedEvent("Tower Is clicked", selectedTower.gameObject));
+                EventHandler.Instance.InvokeEvent(new TowerClickedEvent("Tower Is clicked", selectedTower.gameObject, selectedTower.towerPlacement));
                 tankUpgrade.transform.position = towerHit.transform.position;
                 hintsPanel.transform.position = towerHit.transform.position;
                 hintsPanel.SetActive(true);
@@ -491,7 +491,8 @@ public class BuilderController : MonoBehaviour
 	{
 		if (selectedTower != null)
 		{
-			selectedTower.GetComponent<Tower>().towerPlacement.layer = 10;
+			selectedTower.towerPlacement.layer = LayerMask.NameToLayer("PlaceForTower");
+            GameManager.Instance.RemovePlacedTower(selectedTower.gameObject);
 			Destroy(selectedTower.gameObject);
 			Deselect();
 		}

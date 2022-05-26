@@ -62,7 +62,7 @@ public class PlayerHandler : MonoBehaviour
 
         playerInput.SwitchCurrentActionMap("Tank");
 
-        GetComponentInChildren<Health>().ResetHealth();
+        //GetComponentInChildren<HealthBar>().ResetHealth();
 
         //canvas.transform.Find("Build_UI").gameObject.SetActive(false);
 

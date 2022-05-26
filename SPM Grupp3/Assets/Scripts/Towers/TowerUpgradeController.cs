@@ -7,10 +7,11 @@ public class PlacedTower
 {
     public GameObject tower;
     public int upgradesPurchased;
-
-    public PlacedTower(GameObject t, int uP)
+    public GameObject towerPlacement;
+    public PlacedTower(GameObject t, GameObject towerPlacement, int uP)
     {
         tower = t;
+        this.towerPlacement = towerPlacement;
         upgradesPurchased = uP;
     }
 }
@@ -20,6 +21,7 @@ public class TowerUpgradeController : MonoBehaviour
     private GameObject clickedTower;
     private GameManager gameManager;
     private List<PlacedTower> placedTowers;
+    private GameObject placement;
 
     public GameObject ClickedTower { get { return clickedTower; } set { clickedTower = value; } }
     public static TowerUpgradeController Instance 
@@ -46,11 +48,12 @@ public class TowerUpgradeController : MonoBehaviour
     public void GetTowerClicked(TowerClickedEvent eventInfo)
     {
         clickedTower = eventInfo.towerClicked;
+        placement = eventInfo.placementClicked;
     }
 
     public void PlaceTowerInUpgradeList(GameObject placedTower)
     {
-        PlacedTower U = new PlacedTower(placedTower, 0);
+        PlacedTower U = new PlacedTower(placedTower, placement, 0);
         gameManager.AddPlacedTower(U);   
     }
 
@@ -65,6 +68,19 @@ public class TowerUpgradeController : MonoBehaviour
         }
         return 0;
     }
+
+    public PlacedTower GetPlacedTower(GameObject tower)
+    {
+        foreach (PlacedTower placedTower in placedTowers)
+        {
+            if (placedTower.tower.Equals(tower))
+            {
+                return placedTower;
+            }
+        }
+        return null;
+    }
+
     public void IncreaseUpgradesPurchased()
     {        
         for (int i = 0; i < placedTowers.Count; i++)
