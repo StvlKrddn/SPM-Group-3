@@ -77,6 +77,10 @@ public class BuildManager : MonoBehaviour
 			ClickedArea = null;
 
             gM.AddPlacedTower(new PlacedTower(placedTower, tower.towerPlacement, 0));
+            BuilderController buildController = transform.Find("BuilderMode").GetComponent<BuilderController>();
+            buildController.purchasedTower = true;
+
+
 
             return;
         }
