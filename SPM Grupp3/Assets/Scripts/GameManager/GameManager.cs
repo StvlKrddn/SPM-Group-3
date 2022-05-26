@@ -50,6 +50,8 @@ public class GameManager : MonoBehaviour
     public int CurrentWave { get { return currentWave; } set { currentWave = value; } }
     public PlayerMode StartingMode { get { return startingMode; } }
     public int EnemiesKilled { get { return enemiesKilled; } set { enemiesKilled = value; } }
+    public float Money { get { return money; } set { money = value; } }
+    public float Material { get { return material; } set { material = value; } }
 
     private static GameManager instance;
     public static GameManager Instance 
@@ -341,7 +343,7 @@ public class GameManager : MonoBehaviour
 
     public bool CheckIfEnoughResources(Tower tower)
     {
-        if (tower.cost < money && tower.materialCost < material)
+        if (tower.cost <= money && tower.materialCost <= material)
         {
             return true;
         }
