@@ -117,7 +117,6 @@ public abstract class EnemyController : MonoBehaviour
 
     public virtual void TakeDamage(float damage)
     {
-        print(currentHealth);
         currentHealth -= damage;
         healthBar.HandleHealthChanged(currentHealth);
         if (currentHealth <= 0 && dead == false)
@@ -139,12 +138,7 @@ public abstract class EnemyController : MonoBehaviour
 
             if(spawnTextPosition != null)
             {
-                Destroy(Instantiate(changerText, spawnTextPosition.position, spawnTextPosition.rotation), 3);
-            }
-            else
-            {
-                Instantiate(changerText);
-                print("No transform-point for changerText");
+                Instantiate(changerText, spawnTextPosition.position, spawnTextPosition.rotation);
             }
         }
 
