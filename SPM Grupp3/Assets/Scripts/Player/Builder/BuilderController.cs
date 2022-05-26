@@ -247,7 +247,7 @@ public class BuilderController : MonoBehaviour
     void OnDisable()
     {
         InputSystem.onAfterUpdate -= UpdateVirtualMouse;
-        if (cursorTransform != null)
+        if (cursorTransform != null && virtualMouse != null)
         {
             ResetCursorPosition();
             cursorTransform.gameObject.SetActive(false);
@@ -491,7 +491,8 @@ public class BuilderController : MonoBehaviour
 	{
 		if (selectedTower != null)
 		{
-			selectedTower.GetComponent<Tower>().towerPlacement.layer = 10;
+			selectedTower.towerPlacement.layer = LayerMask.NameToLayer("PlaceForTower");
+            GameManager.Instance.RemovePlacedTower(selectedTower.gameObject);
 			Destroy(selectedTower.gameObject);
 			Deselect();
 		}

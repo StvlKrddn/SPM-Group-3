@@ -73,13 +73,12 @@ public class GameManager : MonoBehaviour
         buildManager = FindObjectOfType<BuildManager>();
         if (DataManager.FileExists(DataManager.SaveData))
         {
-         //   LoadFromFile();
+            LoadFromFile();
         }
         else 
         {
-        //    LoadBase();
+            LoadBase();
         }
-        LoadBase();
     }
 
     private void LoadFromFile()
@@ -339,6 +338,12 @@ public class GameManager : MonoBehaviour
     public void AddPlacedTower(PlacedTower tower)
     {
         towersPlaced.Add(tower); 
+    }
+
+    public void RemovePlacedTower(GameObject tower)
+    {
+        PlacedTower clickedTower = TowerUpgradeController.Instance.GetPlacedTower(tower);
+        towersPlaced.Remove(clickedTower);
     }
 
     private void Defeat()

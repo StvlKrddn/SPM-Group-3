@@ -50,7 +50,7 @@ public class Shot : MonoBehaviour
                     towerGO: tower.gameObject,
                     hitEffect: tower.onHitEffect,
                     enemyHit: target.gameObject
-                    )) ;
+                    ));
             Destroy(gameObject);
         }
     }

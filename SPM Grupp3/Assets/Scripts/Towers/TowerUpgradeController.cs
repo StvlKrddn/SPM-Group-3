@@ -68,6 +68,19 @@ public class TowerUpgradeController : MonoBehaviour
         }
         return 0;
     }
+
+    public PlacedTower GetPlacedTower(GameObject tower)
+    {
+        foreach (PlacedTower placedTower in placedTowers)
+        {
+            if (placedTower.tower.Equals(tower))
+            {
+                return placedTower;
+            }
+        }
+        return null;
+    }
+
     public void IncreaseUpgradesPurchased()
     {        
         for (int i = 0; i < placedTowers.Count; i++)
