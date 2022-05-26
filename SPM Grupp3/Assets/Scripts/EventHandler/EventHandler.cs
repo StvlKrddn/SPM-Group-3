@@ -2,26 +2,12 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EventHandler : MonoBehaviour
+public static class EventHandler
 {
-    private static EventHandler instance;
-
     delegate void EventListener(Event info);
-    Dictionary<Type, List<EventListener>> eventListeners = new Dictionary<Type, List<EventListener>>();
+    static Dictionary<Type, List<EventListener>> eventListeners = new Dictionary<Type, List<EventListener>>();
 
-    public static EventHandler Instance { 
-        get 
-        {
-            // "Lazy loading" to prevent Unity load order error
-            if (instance == null)
-            {
-                instance = FindObjectOfType<EventHandler>();
-            }
-            return instance; 
-        } 
-    }
-
-    public void RegisterListener<TEventType>(Action<TEventType> listener) where TEventType : Event
+    public static void RegisterListener<TEventType>(Action<TEventType> listener) where TEventType : Event
     {
         // Get the type of Event
         Type eventType = typeof(TEventType);
@@ -45,7 +31,7 @@ public class EventHandler : MonoBehaviour
         eventListeners[eventType].Add(wrapper);
     }
 
-    public void UnregisterListener<TEventType>(Action<TEventType> listener) where TEventType : Event
+    public static void UnregisterListener<TEventType>(Action<TEventType> listener) where TEventType : Event
     {
         // Get the type of event passed in
         Type eventType = typeof(TEventType);
@@ -63,7 +49,7 @@ public class EventHandler : MonoBehaviour
         eventListeners[eventType].Remove(wrapper);
     }
 
-    public void InvokeEvent(Event eventInfo)
+    public static void InvokeEvent(Event eventInfo)
     {
         // Get the type of event
         Type eventClass = eventInfo.GetType();

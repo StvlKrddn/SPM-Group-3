@@ -45,7 +45,7 @@ public class PlayerHandlerTutorial : MonoBehaviour
         // Enable Tank
         tankMode.SetActive(true);
 
-        EventHandler.Instance.InvokeEvent(new EnterTankModeEvent(
+        EventHandler.InvokeEvent(new EnterTankModeEvent(
             description: "Player entered tank mode",
             playerContainer: gameObject
             ));
@@ -65,7 +65,7 @@ public class PlayerHandlerTutorial : MonoBehaviour
         // Enable Build
         buildMode.SetActive(true);
 
-        EventHandler.Instance.InvokeEvent(new EnterBuildModeEvent(
+        EventHandler.InvokeEvent(new EnterBuildModeEvent(
             description: "Player entered build mode",
             player: gameObject
             ));
@@ -95,7 +95,7 @@ public class PlayerHandlerTutorial : MonoBehaviour
     {
         if (context.performed)
         {
-            EventHandler.Instance.InvokeEvent(new StartWaveEvent(
+            EventHandler.InvokeEvent(new StartWaveEvent(
                 description: "Player started new wave",
                 invoker: gameObject
             ));

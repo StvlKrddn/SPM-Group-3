@@ -42,7 +42,7 @@ public class TowerUpgradeController : MonoBehaviour
         gameManager = GameManager.Instance;
         placedTowers = gameManager.towersPlaced;
 
-        EventHandler.Instance.RegisterListener<TowerClickedEvent>(GetTowerClicked);
+        EventHandler.RegisterListener<TowerClickedEvent>(GetTowerClicked);
     }
 
     public void GetTowerClicked(TowerClickedEvent eventInfo)

@@ -45,7 +45,7 @@ public class Shot : MonoBehaviour
         tower = gameObject.GetComponentInParent<Tower>();
         if (other.gameObject.CompareTag("Enemy"))
         {
-            EventHandler.Instance.InvokeEvent(new TowerHitEvent(
+            EventHandler.InvokeEvent(new TowerHitEvent(
                     description: "An enemy hit",
                     towerGO: tower.gameObject,
                     hitEffect: tower.onHitEffect,

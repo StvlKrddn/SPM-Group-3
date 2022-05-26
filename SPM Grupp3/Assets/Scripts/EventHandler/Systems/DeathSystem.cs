@@ -10,7 +10,7 @@ public class DeathSystem : MonoBehaviour
     {
         waveManager = FindObjectOfType<WaveManager>();
         // If any DieEvent is invoked, call the OnObjectExploded-method
-        EventHandler.Instance.RegisterListener<DieEvent>(OnObjectExploded);
+        EventHandler.RegisterListener<DieEvent>(OnObjectExploded);
     }
     
     private void OnObjectExploded(DieEvent eventInfo)

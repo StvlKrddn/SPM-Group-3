@@ -74,7 +74,7 @@ public class BuilderController : MonoBehaviour
         tankUpgrade = towerMenu.Find("TankPanel").gameObject;
 
         buildManager = GetComponentInParent<BuildManager>();
-        EventHandler.Instance.RegisterListener<BoughtInUIEvent>(SetBoughtInUI);
+        EventHandler.RegisterListener<BoughtInUIEvent>(SetBoughtInUI);
 
         InitializeInputSystem();
         InitializeCursor();
@@ -165,7 +165,7 @@ public class BuilderController : MonoBehaviour
             ClickedPlacement();
             ClickedTower();
             ClickedGarage();
-            EventHandler.Instance.InvokeEvent(new UIClickedEvent(
+            EventHandler.InvokeEvent(new UIClickedEvent(
                 description: "Accept button clicked",
                 clicker: transform.parent.gameObject
             ));
@@ -187,7 +187,7 @@ public class BuilderController : MonoBehaviour
         if (context.performed && !stopMouse)
         {
             Deselect();
-            EventHandler.Instance.InvokeEvent(new PlayerSwitchEvent(
+            EventHandler.InvokeEvent(new PlayerSwitchEvent(
                 description: "Player switched mode",
                 playerContainer: transform.parent.gameObject
             ));
@@ -400,20 +400,20 @@ public class BuilderController : MonoBehaviour
 
     public void GhostTower(GameObject towerToDisplay)
     {
-        if (towerToDisplay == null || buildManager.ClickedArea == null)
+        if (buildManager.ClickedArea == null)
         {
-            Destroy(preTower);
             return;
         }
-        
+
+        GameObject tower = towerToDisplay.transform.Find("Level1").gameObject;
         Transform placement = buildManager.ClickedArea.transform.GetChild(0).transform;
         Vector3 placeVec = placement.position;
         Vector3 towerPlace = new Vector3(placeVec.x, placeVec.y, placeVec.z);
 
-        preTower = Instantiate(towerToDisplay, towerPlace, placement.rotation);
-        GameObject radius = preTower.GetComponent<Tower>().radius;
+        preTower = Instantiate(tower, towerPlace, placement.rotation);
+        GameObject radius = preTower.transform.Find("Radius").gameObject;
         preTower.layer = 12;
-        preTower.transform.Find("Level1").GetComponent<Renderer>().material.color = towerPreview;
+        preTower.GetComponent<Renderer>().material.color = towerPreview;
 
         Tower tow = towerToDisplay.GetComponent<Tower>();       
         radius.transform.localScale = new Vector3(tow.range * 2f, 0.01f, tow.range * 2f);
@@ -475,7 +475,7 @@ public class BuilderController : MonoBehaviour
                 selectedTower.radius.SetActive(true);
                 cursorTransform.gameObject.SetActive(false);
 
-                EventHandler.Instance.InvokeEvent(new TowerClickedEvent("Tower Is clicked", selectedTower.gameObject, selectedTower.towerPlacement));
+                EventHandler.InvokeEvent(new TowerClickedEvent("Tower Is clicked", selectedTower.gameObject, selectedTower.towerPlacement));
                 tankUpgrade.transform.position = towerHit.transform.position;
                 hintsPanel.transform.position = towerHit.transform.position;
                 hintsPanel.SetActive(true);

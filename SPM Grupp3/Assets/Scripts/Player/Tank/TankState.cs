@@ -97,7 +97,7 @@ public class TankState : MonoBehaviour
         /* Explanation of isometric translation can be found here: https://youtu.be/8ZxVBCvJDWk */
 
         // Subscribe to events
-        EventHandler.Instance.RegisterListener<WaveEndEvent>(OnWaveEnd);
+        EventHandler.RegisterListener<WaveEndEvent>(OnWaveEnd);
 
     }
 
@@ -254,7 +254,7 @@ public class TankState : MonoBehaviour
         transform.position = spawnPoint.position;
         playerHandler.Destroyed = true;
             
-        EventHandler.Instance.InvokeEvent(new PlayerSwitchEvent(
+        EventHandler.InvokeEvent(new PlayerSwitchEvent(
             description: "Player switching mode",
             playerContainer: transform.parent.gameObject
         ));

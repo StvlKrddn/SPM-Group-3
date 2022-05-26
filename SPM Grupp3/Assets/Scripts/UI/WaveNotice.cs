@@ -4,10 +4,15 @@ using UnityEngine;
 
 public class WaveNotice : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+
+    private void OnEnable()
     {
-        EventHandler.Instance.RegisterListener<StartWaveEvent>(NewWave);
+        EventHandler.RegisterListener<StartWaveEvent>(NewWave);
+    }
+
+    private void OnDestroy()
+    {
+        EventHandler.UnregisterListener<StartWaveEvent>(NewWave);
     }
 
     void NewWave(StartWaveEvent eventInfo)

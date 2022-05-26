@@ -69,8 +69,6 @@ public class WheelSelection : MonoBehaviour
         selectHint.SetActive(false);
         infoHint.SetActive(false);
 
-        builderController.DestroyPreTower();
-
         stickInput = stickAction.ReadValue<Vector2>();
 
         if (stickAction.IsPressed())
@@ -102,6 +100,8 @@ public class WheelSelection : MonoBehaviour
     // Returns index of item based on angle
     private int GetIndex(float angle)
     {
+        builderController.DestroyPreTower();
+        
         // Check if there are any menu items
         if (numberOfMenuItems <= 0 || angle < 0)
         {
@@ -240,7 +240,7 @@ public class WheelSelection : MonoBehaviour
         if (isPressed)
         {
             selectedItem.GetComponent<ButtonClick>().Click();
-            EventHandler.Instance.InvokeEvent(new BoughtInUIEvent("Something is bought in UI"));
+            EventHandler.InvokeEvent(new BoughtInUIEvent("Something is bought in UI"));
         }
         else
         {

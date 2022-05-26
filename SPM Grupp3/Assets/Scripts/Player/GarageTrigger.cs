@@ -31,7 +31,7 @@ public class GarageTrigger : MonoBehaviour
             if (acceptAction.IsPressed() && limit == false)
             {
                 hintEnterUI.SetActive(false);
-                EventHandler.Instance.InvokeEvent(new PlayerSwitchEvent(
+                EventHandler.InvokeEvent(new PlayerSwitchEvent(
                     description: "A player switched mode",
                     playerContainer: other.transform.parent.gameObject
                     ));

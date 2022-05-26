@@ -12,7 +12,7 @@ public class PlayerManager : MonoBehaviour
 
     void Awake()
     {
-        EventHandler.Instance.RegisterListener<PlayerSwitchEvent>(SwitchPlayerMode);
+        EventHandler.RegisterListener<PlayerSwitchEvent>(SwitchPlayerMode);
         playerManager = GetComponent<PlayerInputManager>();
     }
 
@@ -23,7 +23,7 @@ public class PlayerManager : MonoBehaviour
         GameObject player = newPlayer.gameObject;
         players.Add(player.GetComponent<PlayerHandler>());
 
-        EventHandler.Instance.InvokeEvent(new PlayerJoinedEvent(
+        EventHandler.InvokeEvent(new PlayerJoinedEvent(
             description: "A player joined the game",
             newPlayerGO: player
         ));

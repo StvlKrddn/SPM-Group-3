@@ -69,7 +69,7 @@ public class GameManager : MonoBehaviour
 
     void Awake() 
     {
-        EventHandler.Instance.RegisterListener<SaveGameEvent>(SaveGame);
+        EventHandler.RegisterListener<SaveGameEvent>(SaveGame);
         buildManager = FindObjectOfType<BuildManager>();
         if (DataManager.FileExists(DataManager.SaveData))
         {
@@ -196,7 +196,7 @@ public class GameManager : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.P))
         {
-            EventHandler.Instance.InvokeEvent(new SaveGameEvent("Debug Save"));
+            EventHandler.InvokeEvent(new SaveGameEvent("Debug Save"));
         }
         if (Input.GetKeyDown(KeyCode.Alpha6))
         {
@@ -350,7 +350,7 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Defeat");
 
-        EventHandler.Instance.InvokeEvent(new DefeatEvent(
+        EventHandler.InvokeEvent(new DefeatEvent(
             description: "Defeat",
             wave: currentWave + 1,
             killedBy: damagingEnemy,
@@ -372,7 +372,7 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("Victory");
 
-        EventHandler.Instance.InvokeEvent(new VictoryEvent(
+        EventHandler.InvokeEvent(new VictoryEvent(
             description: "Victory",
             money: (int) moneyCollected,
             material: (int) materialCollected,

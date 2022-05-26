@@ -9,7 +9,7 @@ public class WaveSystem : MonoBehaviour
     private void Start()
     {
         waveManager = FindObjectOfType<WaveManager>();
-        EventHandler.Instance.RegisterListener<NewWaveEvent>(NextWave);
+        EventHandler.RegisterListener<NewWaveEvent>(NextWave);
     }
 
     void NextWave(NewWaveEvent newWaveEvent)

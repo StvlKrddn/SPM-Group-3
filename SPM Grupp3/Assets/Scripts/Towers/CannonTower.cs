@@ -24,14 +24,18 @@ public class CannonTower : Tower
     // Start is called before the first frame update
     void Start()
     {
-        EventHandler.Instance.RegisterListener<TowerHitEvent>(HitTarget);
         InvokeRepeating("UpdateTarget", 0f, 0.5f);
         radius.transform.localScale = new Vector3(range * 2f, 0.01f, range * 2f);
     }
 
+    private void OnEnable()
+    {
+        EventHandler.RegisterListener<TowerHitEvent>(HitTarget);
+    }
+
     void OnDestroy()
     {
-        EventHandler.Instance.UnregisterListener<TowerHitEvent>(HitTarget);
+        EventHandler.UnregisterListener<TowerHitEvent>(HitTarget);
     }
 
     // Update is called once per frame

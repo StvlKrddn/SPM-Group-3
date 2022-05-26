@@ -25,7 +25,7 @@ public class WaveEndSystem : MonoBehaviour
         }
 
         // If any DebugEvent is invoked, call the PrintMessage-method
-        EventHandler.Instance.RegisterListener<WaveEndEvent>(waveDone);
+        EventHandler.RegisterListener<WaveEndEvent>(waveDone);
 
 
         
@@ -46,7 +46,7 @@ public class WaveEndSystem : MonoBehaviour
         {
             tank.ResetCooldown();
         }
-        EventHandler.Instance.InvokeEvent(new SaveGameEvent(
+        EventHandler.InvokeEvent(new SaveGameEvent(
             description: "Game is saving"
         ));
     }

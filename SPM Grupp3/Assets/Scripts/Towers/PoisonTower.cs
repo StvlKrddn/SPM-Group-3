@@ -52,7 +52,7 @@ public class PoisonTower : Tower
     // Start is called before the first frame update
     void Start()
     {
-        EventHandler.Instance.RegisterListener<TowerHitEvent>(HitTarget);
+        EventHandler.RegisterListener<TowerHitEvent>(HitTarget);
         radius.transform.localScale = new Vector3(range * 2f, 0.01f, range * 2f);
         InvokeRepeating("UpdateTarget", 0f, 0.5f);
     }

@@ -78,7 +78,7 @@ public abstract class EnemyController : MonoBehaviour
     {
         gM.TakeDamage(damageBase, gameObject);
         DieEvent dieEvent = new DieEvent("död från bas", gameObject, null, null);
-        EventHandler.Instance.InvokeEvent(dieEvent);
+        EventHandler.InvokeEvent(dieEvent);
         gameObject.SetActive(false);
     }
 
@@ -116,7 +116,7 @@ public abstract class EnemyController : MonoBehaviour
             Instantiate(material, transform.position, transform.rotation);
         }
         DieEvent dieEvent = new DieEvent("d�d", gameObject, null, null);
-        EventHandler.Instance.InvokeEvent(dieEvent);
+        EventHandler.InvokeEvent(dieEvent);
         gameObject.SetActive(false);
     }
 

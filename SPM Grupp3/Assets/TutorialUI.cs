@@ -114,7 +114,7 @@ public class TutorialUI : MonoBehaviour
                 firstEventNotStarted = false;
 
             
-                EventHandler.Instance.InvokeEvent(new NewWaveEvent(
+                EventHandler.InvokeEvent(new NewWaveEvent(
         description: "New wave started",
         currentWave: 0
         ));

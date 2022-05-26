@@ -49,7 +49,7 @@ public class WaveManager : MonoBehaviour
         gameManager = GameManager.Instance;
 
 
-        EventHandler.Instance.RegisterListener<StartWaveEvent>(OnStartWave);
+        EventHandler.RegisterListener<StartWaveEvent>(OnStartWave);
     }
 
     private void Start()
@@ -71,7 +71,7 @@ public class WaveManager : MonoBehaviour
     {
         currentWave++;
 
-        EventHandler.Instance.InvokeEvent(new NewWaveEvent(
+        EventHandler.InvokeEvent(new NewWaveEvent(
             description: "New wave started",
             currentWave: currentWave
             ));
@@ -173,7 +173,7 @@ public class WaveManager : MonoBehaviour
                 Debug.Log("Wave " + currentWave + " cleared");
                 GameManager.Instance.AddMoney(waveMoneyBonus);
 
-                EventHandler.Instance.InvokeEvent(new WaveEndEvent(
+                EventHandler.InvokeEvent(new WaveEndEvent(
                     description: "wave ended",
                     currentWave: currentWave
                 ));
