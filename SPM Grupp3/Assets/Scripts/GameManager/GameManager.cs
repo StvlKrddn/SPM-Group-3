@@ -210,19 +210,32 @@ public class GameManager : MonoBehaviour
 
     private void UpdateUI()
     {
-        /*float mon;
-        mon = money;
-        if (money / 1000 >= 1)
-        {
-            mon = money / 1000;
-            Mathf.Round(mon);
-            moneyCounterUI.text = mon.ToString() + " K";
-            materialCounterUI.text = ": " + material;
-            return;
-        }*/
+        float mon = money;
 
-        moneyCounterUI.text = ": " + money;
-        materialCounterUI.text = ": " + material;
+        if(mon >= 1000)
+        {
+            float holeNumb = mon/1000;
+            float deciNumb = Mathf.RoundToInt((mon % 1000));
+            deciNumb = Mathf.Round(deciNumb * 10);
+            moneyCounterUI.text = ": " + holeNumb.ToString() + "," + deciNumb.ToString() + "K";
+        }
+        else
+        {
+            moneyCounterUI.text = ": " + money.ToString();
+        }
+
+        float mat = material;
+
+        if(mat >= 1000)
+        {
+            float holeNumb = Mathf.Round(mat / 1000);
+            float deciNumb = Mathf.Round((mat / 100) % 10);
+            materialCounterUI.text = ": " + holeNumb.ToString() + "," + deciNumb.ToString() + "K";
+        }
+        else
+        {
+            materialCounterUI.text = ": " + material.ToString();
+        }
 
         waveCounter.GetComponent<Text>().text = (currentWave + 1) + "/" + GetComponent<WaveManager>().waves.Length;
     }
