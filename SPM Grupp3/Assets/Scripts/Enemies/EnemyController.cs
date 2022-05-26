@@ -29,7 +29,6 @@ public abstract class EnemyController : MonoBehaviour
     private bool dead = false;
     private float currentHealth;
     public int path;
-    protected List<Transform[]> wayPoints;
 
     public GameObject changerText;
     [SerializeField] private Transform spawnTextPosition;
@@ -47,10 +46,10 @@ public abstract class EnemyController : MonoBehaviour
         poisonTickTimers.Clear();
         dead = false;
         //healthBar.ResetHealth();
-        
-        path = Waypoints.instance.GivePath();
-        wayPoints = Waypoints.instance.GetWaypoints();
-        target = wayPoints[path][currWaypointIndex].transform;
+        healthBar.slider.maxValue = health;
+        healthBar.slider.value = health;
+        path = Waypoints.GivePath();
+        target = Waypoints.wayPoints[path][currWaypointIndex];
     }
 
 	protected virtual void Awake()
@@ -92,13 +91,13 @@ public abstract class EnemyController : MonoBehaviour
     {
         if (other.CompareTag("Waypoint"))
         {
-            if (wayPoints[path].Length - 1 <= currWaypointIndex) // Changes waypoint to til the enemy reaches the last waypoint
+            if (Waypoints.wayPoints[path].Length - 1 <= currWaypointIndex) // Changes waypoint to til the enemy reaches the last waypoint
             {
                 EnemyDeathBase();
                 return;
             }
             currWaypointIndex++;
-            target = wayPoints[path][currWaypointIndex];
+            target = Waypoints.wayPoints[path][currWaypointIndex];
             transform.LookAt(target);
         }
 
