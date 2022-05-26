@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(Health))]
 public class TankState : MonoBehaviour
 {
     // Inspector variables
@@ -41,6 +40,7 @@ public class TankState : MonoBehaviour
     [SerializeField] private TankUpgradeTree tankUpgradeTreeTwo;
     [SerializeField] private UnityEngine.Material player1Material;
     [SerializeField] private UnityEngine.Material player2Material;
+    [SerializeField] private HealthBar healthBar;
 
 
     // Getters and Setters
@@ -83,6 +83,10 @@ public class TankState : MonoBehaviour
         rb = GetComponent<Rigidbody>();
 
         playerHandler = GetComponentInParent<PlayerHandler>();
+
+        healthBar = GetComponentInChildren<HealthBar>();
+        healthBar.slider.maxValue = health;
+        healthBar.HandleHealthChanged(health);
 
         turretObject = transform.GetChild(0);
         
@@ -235,6 +239,7 @@ public class TankState : MonoBehaviour
     public void TakeDamage(float damage)
     {
         currentHealth -= damage;
+        healthBar.HandleHealthChanged(currentHealth);
         if (currentHealth <= 0 && !playerHandler.Destroyed)
         {
             DestroyTank();
@@ -270,5 +275,11 @@ public class TankState : MonoBehaviour
     {
         standardSpeed += speedIncrease;
         GetComponent<BoostAbility>().ChangeSpeed();
+    }
+
+    public void ResetHealth()
+    {
+        currentHealth = health;
+        healthBar.HandleHealthChanged(currentHealth);
     }
 }
