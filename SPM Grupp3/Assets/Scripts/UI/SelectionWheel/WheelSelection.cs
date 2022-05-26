@@ -167,7 +167,12 @@ public class WheelSelection : MonoBehaviour
                     {
                         if (GameManager.Instance.CheckIfEnoughResources(towerToDisplay.GetComponent<Tower>()))
                         {
+                            moneyText.color = Color.black;
                             builderController.GhostTower(towerToDisplay);
+                        }
+                        else
+                        {
+                            moneyText.color = Color.red;
                         }
                     }
 
@@ -203,12 +208,39 @@ public class WheelSelection : MonoBehaviour
         {
             moneyText.text = "MAX";
             materialText.text = "MAX";
+
+            moneyText.color = Color.red;
+            materialText.color = Color.red;
+            return;
+        }
+        
+        float money = GameManager.Instance.Money;
+        float material = GameManager.Instance.Material;
+
+        if (GameManager.Instance.CheckIfEnoughResources(tower))
+        {
+             moneyText.color = Color.black;
+             materialText.color = Color.black;
+        }
+        else if (money < tower.cost)
+        {
+            moneyText.color = Color.red;
+            materialText.color = Color.black;
+        }
+        else if (material < tower.materialCost)
+        {
+            moneyText.color = Color.black;
+            materialText.color = Color.red;   
         }
         else
         {
-            moneyText.text = tower.UpgradeCostUpdate().ToString();
-            materialText.text = tower.materialCost.ToString();
+            moneyText.color = Color.red;
+            materialText.color = Color.red;
         }
+
+        moneyText.text = tower.UpgradeCostUpdate().ToString();
+        materialText.text = tower.materialCost.ToString();
+        
     }
 
     public void DecideTowerToBuild(string name)
