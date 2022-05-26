@@ -328,7 +328,7 @@ public class GameManager : MonoBehaviour
 
     public bool CheckIfEnoughResources(Tower tower)
     {
-        if (tower.cost < money && tower.materialCost < material)
+        if (tower.cost <= money && tower.materialCost <= material)
         {
             return true;
         }

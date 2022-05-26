@@ -70,9 +70,10 @@ public class BuildManager : MonoBehaviour
         {
             placedTower = Instantiate(TowerToBuild, ClickedArea.transform.GetChild(0).transform.position, ClickedArea.transform.GetChild(0).transform.rotation);
 			Instantiate(towerBase, ClickedArea.transform.GetChild(0).transform.position, ClickedArea.transform.GetChild(0).transform.rotation, placedTower.transform);
-			placedTower.GetComponent<Tower>().towerPlacement = ClickedArea;
+            Tower tower = placedTower.GetComponent<Tower>();
+			tower.towerPlacement = ClickedArea;
 			clickedArea.layer = 11;
-
+            tower.radius.SetActive(false);
 			ClickedArea = null;
 
             gM.AddPlacedTower(new PlacedTower(placedTower, 0));

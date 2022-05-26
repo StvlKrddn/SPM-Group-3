@@ -221,7 +221,11 @@ public class BuilderController : MonoBehaviour
         {
             garageHit.layer = LayerMask.NameToLayer("Garage");
         }
-        
+
+        if (selectedTower != null)
+        {
+            selectedTower.radius.SetActive(false);
+        }
         hintsPanel.SetActive(false);
         cursorTransform.gameObject.SetActive(true);
         stopHover = false;
@@ -401,22 +405,19 @@ public class BuilderController : MonoBehaviour
             Destroy(preTower);
             return;
         }
-        GameObject tower = towerToDisplay.transform.GetChild(1).gameObject;
         
         Transform placement = buildManager.ClickedArea.transform.GetChild(0).transform;
         Vector3 placeVec = placement.position;
         Vector3 towerPlace = new Vector3(placeVec.x, placeVec.y, placeVec.z);
 
-        preTower = Instantiate(tower, towerPlace, placement.rotation);
-        preTower.name = "IHAteMyLife";
-        GameObject radius = preTower.transform.GetChild(0).gameObject;
-        
+        preTower = Instantiate(towerToDisplay, towerPlace, placement.rotation);
+        GameObject radius = preTower.GetComponent<Tower>().radius;
         preTower.layer = 12;
-        preTower.GetComponent<Renderer>().material.color = towerPreview;
+        preTower.transform.Find("Level1").GetComponent<Renderer>().material.color = towerPreview;
 
-        Tower tow = tower.GetComponent<Tower>();       
-/*        radius.transform.localScale = new Vector3(tow.range * 2f, 0.01f, tow.range * 2f);*/
-        radius.SetActive(true);
+        Tower tow = towerToDisplay.GetComponent<Tower>();       
+        radius.transform.localScale = new Vector3(tow.range * 2f, 0.01f, tow.range * 2f);
+       // radius.SetActive(true);
     }
 
     public void DestroyPreTower()
@@ -471,7 +472,7 @@ public class BuilderController : MonoBehaviour
                 selectedTower = towerHit.GetComponent<Tower>();
                 towerHit.layer = LayerMask.NameToLayer("Ignore Raycast");
                 selectedTower.ShowUpgradeUI(towerMenu);
-
+                selectedTower.radius.SetActive(true);
                 cursorTransform.gameObject.SetActive(false);
 
                 EventHandler.Instance.InvokeEvent(new TowerClickedEvent("Tower Is clicked", selectedTower.gameObject));

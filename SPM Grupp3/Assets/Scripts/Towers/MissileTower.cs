@@ -51,7 +51,6 @@ public class MissileTower : Tower
     {
         EventHandler.Instance.RegisterListener<TowerHitEvent>(HitTarget);
         radius.transform.localScale = new Vector3(range * 2f, 0.01f, range * 2f);
-        radius.SetActive(false);
         InvokeRepeating("UpdateTarget", 0f, 0.5f);
     }
 

@@ -10,7 +10,7 @@ public abstract class Tower : MonoBehaviour
     [SerializeField] protected float turnSpeed = 10f;
     [SerializeField] protected GameObject shot;
     [SerializeField] protected Transform firePoint;
-    [SerializeField] protected GameObject radius;
+    public GameObject radius;
     protected GameManager gM;
     public GameObject onHitEffect;
     protected TowerUpgradeController tUC;

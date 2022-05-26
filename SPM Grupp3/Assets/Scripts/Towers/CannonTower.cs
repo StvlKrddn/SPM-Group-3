@@ -27,7 +27,6 @@ public class CannonTower : Tower
         EventHandler.Instance.RegisterListener<TowerHitEvent>(HitTarget);
         InvokeRepeating("UpdateTarget", 0f, 0.5f);
         radius.transform.localScale = new Vector3(range * 2f, 0.01f, range * 2f);
-        radius.SetActive(false);
     }
 
     // Update is called once per frame
@@ -159,8 +158,8 @@ public class CannonTower : Tower
 
         cT.ShotDamage = upgradeDamageAmount;
 
-        GameObject towerUpgradeVisual1 = cT.gameObject.transform.GetChild(1).gameObject;
-        GameObject towerUpgradeVisual2 = cT.gameObject.transform.GetChild(2).gameObject;
+        GameObject towerUpgradeVisual1 = cT.transform.Find("Level1").gameObject;
+        GameObject towerUpgradeVisual2 = cT.transform.Find("Level2").gameObject;
 
         towerUpgradeVisual1.SetActive(false);
         towerUpgradeVisual2.SetActive(true);
