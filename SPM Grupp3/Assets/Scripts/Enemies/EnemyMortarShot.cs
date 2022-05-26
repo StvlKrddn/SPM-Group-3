@@ -6,7 +6,7 @@ public class EnemyMortarShot : MonoBehaviour
 {
     [SerializeField] private float speed = 20;
     private int phase = 1;
-    private Transform target;
+    private Vector3 target;
     public float damage;
     [SerializeField] private GameObject radius;
     private Vector3 direction;
@@ -46,7 +46,17 @@ public class EnemyMortarShot : MonoBehaviour
             {
                 TankState[] tanks;
                 tanks = FindObjectsOfType<TankState>();
-                target = tanks[Random.Range(0, tanks.Length)].transform;
+
+                TankState tankToTarget = tanks[Random.Range(0, tanks.Length)];
+                Vector3 tempVector = new Vector3(tankToTarget.transform.position.x + Random.Range(-4, 4), tankToTarget.transform.position.y, tankToTarget.transform.position.z + Random.Range(-4, 4));
+                //Transform randomTransform = new Transform();
+
+                target =tempVector;
+
+
+             //   target.position = tempVector;
+
+
                 if (radius.transform.parent != null)
                 {
                     Shot();
@@ -63,8 +73,8 @@ public class EnemyMortarShot : MonoBehaviour
     private void Shot()
     {
         radius.SetActive(true);
-        transform.position = new Vector3(target.position.x, transform.position.y + 10, target.position.z);
-        radius.transform.position = new Vector3(target.position.x, target.position.y, target.position.z);
+        transform.position = new Vector3(target.x, transform.position.y + 10, target.z);
+        radius.transform.position = new Vector3(target.x, target.y, target.z);
         if (radius.transform.parent != null)
         {
             radius.transform.parent = null;

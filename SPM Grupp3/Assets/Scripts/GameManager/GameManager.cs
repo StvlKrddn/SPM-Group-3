@@ -73,12 +73,13 @@ public class GameManager : MonoBehaviour
         buildManager = FindObjectOfType<BuildManager>();
         if (DataManager.FileExists(DataManager.SaveData))
         {
-            LoadFromFile();
+         //   LoadFromFile();
         }
         else 
         {
-            LoadBase();
+        //    LoadBase();
         }
+        LoadBase();
     }
 
     private void LoadFromFile()
@@ -191,19 +192,36 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha5))
         {
             CurrentWave = 5; 
+
+
         }
         if (Input.GetKeyDown(KeyCode.P))
         {
             EventHandler.Instance.InvokeEvent(new SaveGameEvent("Debug Save"));
         }
-
-        /*if (data.towerData != null)
+        if (Input.GetKeyDown(KeyCode.Alpha6))
         {
-            foreach (TowerData tower in data.towerData)
-            {
-                Debug.DrawRay(tower.position, Vector3.down * 100);
-            }
-        }*/
+            CurrentWave = 6;
+
+
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha0))
+        {
+            CurrentWave = 9;
+
+
+        }
+
+
+
+        if(Input.GetKeyDown(KeyCode.U))
+        {
+            CurrentWave += 1;
+        }
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            CurrentWave -= 1;
+        }
 
         UpdateUI();
     }
