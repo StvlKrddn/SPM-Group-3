@@ -53,6 +53,11 @@ public class TutorialUI : MonoBehaviour
     public List<string> modesToDisableBuildMode;
 
 
+    public bool disableUpgradeButtonEachFrame = true;
+
+    public ButtonClick upgradeButton;
+
+
     //private int whichWaveIsItOn; 
     private PlayerInput playerInput; 
 
@@ -95,22 +100,25 @@ public class TutorialUI : MonoBehaviour
     void Update()
     {
 
-    //   if(!disableStartWaveTankMode)
-    //   {
-    //
-    //       print(playerInput);
-    //
-    //
-    //       if(playerInput.currentActionMap.name == "Tank" )
-    //       {
-    //           playerInput.actions["StartWave"].Disable();
-    //
-    //           disableStartWaveTankMode = true;
-    //       }
-    //   }
+        //   if(!disableStartWaveTankMode)
+        //   {
+        //
+        //       print(playerInput);
+        //
+        //
+        //       if(playerInput.currentActionMap.name == "Tank" )
+        //       {
+        //           playerInput.actions["StartWave"].Disable();
+        //
+        //           disableStartWaveTankMode = true;
+        //       }
+        //   }
+        if(disableUpgradeButtonEachFrame)
+        {
+            upgradeButton.enabled = false ;
+        }
 
-
-        foreach(string obj in modesToDisableTankMode)
+        foreach (string obj in modesToDisableTankMode)
         {
             if(playerInput.currentActionMap.name == "Tank")
             {
@@ -152,6 +160,14 @@ public class TutorialUI : MonoBehaviour
         }
         */
         
+    }
+
+
+    public void stopDisablingUpgradeButton()
+    {
+        disableUpgradeButtonEachFrame = false;
+
+        upgradeButton.enabled = true ;
     }
 
     public void waveEnded()

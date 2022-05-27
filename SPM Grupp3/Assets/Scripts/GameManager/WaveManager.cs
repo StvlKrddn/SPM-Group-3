@@ -297,7 +297,7 @@ public class WaveManager : MonoBehaviour
 
         int totalMoney = 0; 
 
-        for (int i = 0; i < waves.Length; i++)
+        for (int i = 0; i < waves.Length -1; i++)
         {
             WaveInfo waveInfo = waves[i];
 
@@ -305,6 +305,37 @@ public class WaveManager : MonoBehaviour
         }
 
         print(totalMoney);
+    }
+
+    [ContextMenu("Calculate total enemies")]
+    public void CalculateEnemies()
+    {
+        int totalEnemies = 0; 
+
+        for (int i = 0; i < waves.Length; i++)
+        {
+            WaveInfo waveInfo = waves[i];
+            waveInfo.waveDuration = 0;
+
+            for (int j = 0; j < waveInfo.subWaves.Length; j++)
+            {
+                SubWave subwave = waveInfo.subWaves[j];
+                for (int k = 0; k < subwave.enemies.Length; k++)
+                {
+                    EnemyStruct enemy = subwave.enemies[k];
+                    totalEnemies += enemy.amount;
+                }
+
+                
+            }
+
+            print("Såhär många fiender är det " + totalEnemies);
+
+            totalEnemies = 0;
+
+        }
+
+       // print(totalMoney);
     }
 
 
