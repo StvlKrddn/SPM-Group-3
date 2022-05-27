@@ -183,8 +183,8 @@ public class WaveManager : MonoBehaviour
                     ClearInactive();
                 }
                 waveClear.SetActive(true);
-                startHint.transform.position = waveClear.transform.position;
-                startHint.transform.position = new Vector3(0, 192f);
+                //startHint.transform.position = waveClear.transform.position;
+                startHint.transform.localPosition = new Vector3(startHint.transform.localPosition.x, -370, startHint.transform.localPosition.z);
                 startHint.SetActive(true);
                 spawnEnemies = true;
                 Debug.Log("Wave " + currentWave + " cleared");

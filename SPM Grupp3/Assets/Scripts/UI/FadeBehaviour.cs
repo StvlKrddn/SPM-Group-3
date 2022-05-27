@@ -5,34 +5,34 @@ using UnityEngine;
 public class FadeBehaviour : MonoBehaviour
 {
 
-    private bool mFaded = false;
-    private Transform lookAt;
+    private bool faded = false;
 
-    public float Duration = 0.4f;
+    public float duration = 0.4f;
 
-    public float moveSpeed = 1;
+    public bool destoryAfterFade = false;
 
-    /*public void mFaded()
+    public void Faded()
     {
         var canvasGroup = GetComponent<CanvasGroup>();
 
-        StartCoroutine(DoFade(canvasGroup, canvasGroup.alpha, FadeBehaviour.mFaded ? 1 : 0));
+        StartCoroutine(DoFade(canvasGroup, canvasGroup.alpha, faded ? 1 : 0));
 
-        mFaded = !mFaded;
+        faded = !faded;
     }
 
     private IEnumerator DoFade(CanvasGroup canvasGroup, float start, float end)
     {
         float counter = 0f;
 
-        while (counter < Duration)
+        while (counter < duration)
         {
             counter += Time.deltaTime;
-            canvasGroup.alpha = Mathf.Lerp(start, end, counter / Duration);
+            canvasGroup.alpha = Mathf.Lerp(start, end, counter / duration);
 
             yield return null;
         }
 
-        Destroy(transform.parent.gameObject);
-    }*/
+        if(destoryAfterFade)
+            Destroy(transform.parent.gameObject);
+    }
 }
