@@ -149,6 +149,7 @@ public class WaveManager : MonoBehaviour
             {
                 Destroy(poolOfEnemies[i]);
                 poolOfEnemies.RemoveAt(i);
+                break;
             }
         }
     }

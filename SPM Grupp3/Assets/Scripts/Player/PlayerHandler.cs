@@ -10,6 +10,7 @@ public class PlayerHandler : MonoBehaviour
 
     [SerializeField] private GameObject tankMode;
     [SerializeField] private GameObject buildMode;
+    [SerializeField] private GameObject cursor;
 
 /*    [SerializeField] private GameObject tankMode;
     [SerializeField] private GameObject buildMode;*/
@@ -51,6 +52,7 @@ public class PlayerHandler : MonoBehaviour
     {
         // Disable Build
         buildMode.SetActive(false);
+        cursor.SetActive(false);
 
         // Enable Tank
         tankMode.SetActive(true);
@@ -85,6 +87,7 @@ public class PlayerHandler : MonoBehaviour
 
         // Enable Build
         buildMode.SetActive(true);
+        cursor.SetActive(true);
 
         EventHandler.InvokeEvent(new EnterBuildModeEvent(
             description: "Player entered build mode",

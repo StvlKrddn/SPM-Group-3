@@ -21,6 +21,8 @@ public class BuilderController : MonoBehaviour
     [SerializeField] private LayerMask garageLayer;
     [SerializeField] private Color hoverColor;
     [SerializeField] private Color towerPreview;
+    [SerializeField] private GameObject playerCursor;
+
     private Color player1Color;
     private Color player2Color;
 
@@ -38,7 +40,6 @@ public class BuilderController : MonoBehaviour
     private bool previousMouseState;
     private bool previousYState;
     private GameObject preTower;
-    private GameObject playerCursor;
     private Tower selectedTower;
     private Transform playerUI;
     private Transform towerMenu;
@@ -92,9 +93,8 @@ public class BuilderController : MonoBehaviour
 
     void InitializeCursor()
     {
-        playerCursor = Instantiate(cursorPrefab, playerUI);
+        playerCursor.SetActive(true);
         SetCursorColor(playerCursor);
-        playerCursor.name = "Player " + (playerInput.playerIndex + 1) + " cursor";
         cursorTransform = playerCursor.GetComponent<RectTransform>();
         cursorTransform.gameObject.SetActive(true);
     }
@@ -195,7 +195,7 @@ public class BuilderController : MonoBehaviour
         }
     }
 
-    private void Deselect()
+    public void Deselect()
     {
         buildManager.TowerToBuild = null;
         Destroy(preTower);

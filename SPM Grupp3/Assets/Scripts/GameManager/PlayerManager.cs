@@ -44,20 +44,4 @@ public class PlayerManager : MonoBehaviour
             InBuildMode = players[0].CurrentMode == PlayerMode.Build || players[1].CurrentMode == PlayerMode.Build;
         }
     }
-
-    public void TurnOnCursor()
-    {
-        if (players[0].CurrentMode == PlayerMode.Tank)
-        {
-            players[0].SwitchMode();
-        }
-    }
-
-    public void Restart()
-    {
-        PlayerMode startingMode = GameManager.Instance.StartingMode;
-        if (startingMode == PlayerMode.Build || players[0].CurrentMode == PlayerMode.Build || players[1].CurrentMode == PlayerMode.Build)
-        {
-        }
-    }
 }

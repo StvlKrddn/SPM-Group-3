@@ -281,6 +281,11 @@ public class TankState : MonoBehaviour
     {
         playerHandler.Destroyed = false;
         currentHealth = health;
+
+        EventHandler.InvokeEvent(new PlayerSwitchEvent(
+            description: "Player switching mode",
+            playerContainer: transform.parent.gameObject
+        ));
     }
 
     public void IncreaseSpeed(float speedIncrease)
