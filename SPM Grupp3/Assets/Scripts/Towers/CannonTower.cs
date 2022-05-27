@@ -166,8 +166,8 @@ public class CannonTower : Tower
 
         cT.ShotDamage = upgradeDamageAmount;
 
-        GameObject towerUpgradeVisual1 = cT.transform.Find("Level1").gameObject;
-        GameObject towerUpgradeVisual2 = cT.transform.Find("Level2").gameObject;
+        GameObject towerUpgradeVisual1 = cT.transform.Find("Container").Find("Level1").gameObject;
+        GameObject towerUpgradeVisual2 = cT.transform.Find("Container").Find("Level2").gameObject;
 
         towerUpgradeVisual1.SetActive(false);
         towerUpgradeVisual2.SetActive(true);
@@ -189,7 +189,15 @@ public class CannonTower : Tower
 
     protected override void Level3(GameObject tower)
     {
+        
         CannonTower cT = tower.GetComponent<CannonTower>();
         cT.shootTwice = true;
+
+        GameObject towerUpgradeVisual2 = cT.transform.Find("Container").Find("Level2").gameObject;
+        GameObject towerUpgradeVisual3 = cT.transform.Find("Container").Find("Level3").gameObject;
+
+
+        towerUpgradeVisual2.SetActive(false);
+        towerUpgradeVisual3.SetActive(true);
     }
 }

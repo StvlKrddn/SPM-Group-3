@@ -407,7 +407,7 @@ public class BuilderController : MonoBehaviour
             return;
         }
 
-        GameObject tower = towerToDisplay.transform.Find("Level1").gameObject;
+        GameObject tower = towerToDisplay.transform.Find("Container").gameObject;
         Transform placement = buildManager.ClickedArea.transform.GetChild(0).transform;
         Vector3 placeVec = placement.position;
         Vector3 towerPlace = new Vector3(placeVec.x, placeVec.y, placeVec.z);
@@ -415,11 +415,11 @@ public class BuilderController : MonoBehaviour
         preTower = Instantiate(tower, towerPlace, placement.rotation);
         GameObject radius = preTower.transform.Find("Radius").gameObject;
         preTower.layer = 12;
-        preTower.GetComponent<Renderer>().material.color = towerPreview;
+        preTower.transform.Find("Level1").GetComponent<Renderer>().material.color = towerPreview;
 
         Tower tow = towerToDisplay.GetComponent<Tower>();       
         radius.transform.localScale = new Vector3(tow.range * 2f, 0.01f, tow.range * 2f);
-       // radius.SetActive(true);
+        //radius.SetActive(true);
     }
 
     public void DestroyPreTower()
