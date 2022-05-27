@@ -69,6 +69,8 @@ public class WheelSelection : MonoBehaviour
         selectHint.SetActive(false);
         infoHint.SetActive(false);
 
+        builderController.DestroyPreTower();
+
         stickInput = stickAction.ReadValue<Vector2>();
 
         if (!builderController.purchasedTower)
@@ -104,8 +106,6 @@ public class WheelSelection : MonoBehaviour
     // Returns index of item based on angle
     private int GetIndex(float angle)
     {
-        builderController.DestroyPreTower();
-        
         // Check if there are any menu items
         if (numberOfMenuItems <= 0 || angle < 0)
         {
