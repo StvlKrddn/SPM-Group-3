@@ -12,6 +12,8 @@ public class ChangerBehaviour : MonoBehaviour
 
     public float moveSpeed = 1;
 
+    public bool destroyAfterFade = true;
+
     private void Start()
     {
        
@@ -40,7 +42,8 @@ public class ChangerBehaviour : MonoBehaviour
             yield return null;
         }
 
-        Destroy(transform.parent.gameObject);
+        if(destroyAfterFade)
+            Destroy(transform.parent.gameObject);
     }
 
     // Update is called once per frame
