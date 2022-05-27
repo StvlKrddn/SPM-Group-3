@@ -107,8 +107,6 @@ public abstract class EnemyController : MonoBehaviour
 
         if (other.gameObject.CompareTag("PlayerShots"))
         {
-         //   print("hur m¨ånga rfäddade");
-            other.GetComponent<BoxCollider>().enabled = false;
             BulletBehavior playerBullet = other.GetComponent<BulletBehavior>();
             
             TakeDamage(playerBullet.BulletDamage);

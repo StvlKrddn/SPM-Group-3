@@ -17,7 +17,10 @@ public class GarageTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        hintEnterUI.SetActive(true);
+        if (other.CompareTag("Tank"))
+        {
+            hintEnterUI.SetActive(true);
+        }
     }
 
 
@@ -43,8 +46,11 @@ public class GarageTrigger : MonoBehaviour
         }
 
     private void OnTriggerExit(Collider other)
-    {      
-        hintEnterUI.SetActive(false);
+    {
+        if (other.CompareTag("Tank"))
+        {
+            hintEnterUI.SetActive(false);
+        }
     }
 
     public void ChangeLimit()

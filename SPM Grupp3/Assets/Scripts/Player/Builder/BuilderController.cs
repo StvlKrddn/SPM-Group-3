@@ -280,7 +280,7 @@ public class BuilderController : MonoBehaviour
         {
             if (purchasedInUI)
             {
-                if (pointerAction.ReadValue<Vector2>().x > 0.2f || pointerAction.ReadValue<Vector2>().y > 0.2f)
+                if (pointerAction.ReadValue<Vector2>().x > 0.2f || pointerAction.ReadValue<Vector2>().y > 0.2f || pointerAction.ReadValue<Vector2>().x < -0.2f || pointerAction.ReadValue<Vector2>().y < -0.2f)
                 {
                     return;
                 }

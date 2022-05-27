@@ -23,8 +23,6 @@ public class SlowTower : Tower
 
     private float currentShots = 0;
 
-    
-
     public float costForUpgrade;
 
     private float fireCountdown = 0f;
@@ -195,18 +193,34 @@ public class SlowTower : Tower
 
     protected override void Level1(GameObject tower)
     {
-        tower.GetComponent<SlowTower>().slowRadius += upgradeAmountSlowRadius;
+        SlowTower sT = tower.GetComponent<SlowTower>();
+        sT.slowRadius += upgradeAmountSlowRadius;
     }
 
     protected override void Level2(GameObject tower)
     {
         SlowTower sT = tower.GetComponent<SlowTower>();
+
+        GameObject towerUpgradeVisual1 = sT.transform.Find("Container").Find("Level1").gameObject;
+        GameObject towerUpgradeVisual2 = sT.transform.Find("Container").Find("Level2").gameObject;
+
+        towerUpgradeVisual1.SetActive(false);
+        towerUpgradeVisual2.SetActive(true);
+
         sT.areaOfEffect = true;
         sT.transform.rotation = Quaternion.Euler(0, 0, 0);
     }
 
     protected override void Level3(GameObject tower)
     {
-        tower.GetComponent<SlowTower>().stunActive = true; 
+        SlowTower sT = tower.GetComponent<SlowTower>();
+
+        sT.stunActive = true;
+
+        GameObject towerUpgradeVisual1 = sT.transform.Find("Container").Find("Level2").gameObject;
+        GameObject towerUpgradeVisual2 = sT.transform.Find("Container").Find("Level3").gameObject;
+
+        towerUpgradeVisual1.SetActive(false);
+        towerUpgradeVisual2.SetActive(true);
     }
 }
