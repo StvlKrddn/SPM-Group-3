@@ -284,7 +284,7 @@ public class GameManager : MonoBehaviour
             materialCounterUI.text = ": " + material.ToString();
         }
 
-        waveCounter.GetComponent<Text>().text = (currentWave + 1) + "/" + GetComponent<WaveManager>().waves.Length;
+        /*waveCounter.GetComponent<Text>().text = (currentWave + 1) + "/" + GetComponent<WaveManager>().waves.Length;*/
     }
 
     public void AddMoney(float addMoney)
