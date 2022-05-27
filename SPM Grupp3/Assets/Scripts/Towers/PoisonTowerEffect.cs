@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class PoisonTowerEffect : MonoBehaviour
 {
-    
-
-
     public void HitByPoison(float ticks, GameObject hitEffect, float dps, float currentHealthDamage, float range)
     {
         Collider[] colliders = Physics.OverlapSphere(transform.position, range);
@@ -23,7 +20,7 @@ public class PoisonTowerEffect : MonoBehaviour
                     StartCoroutine(PoisonTick(dps, currentHealthDamage, enemyController));
                 }
             }
-        }        
+        }
     }
 
     private IEnumerator PoisonTick(float dps, float maxHealthDamage, EnemyController enemyController)

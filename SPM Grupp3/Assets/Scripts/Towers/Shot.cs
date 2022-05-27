@@ -12,6 +12,8 @@ public class Shot : MonoBehaviour
     private Vector3 direction;
     private float distanceThisFrame;
 
+    private EnemyController enemy;
+
     public void Seek(Transform _target)
     {       
         target = _target;
@@ -59,9 +61,10 @@ public class Shot : MonoBehaviour
     // Under Muntan sa ni lärare att jag borde flytta all kod över vad som händer när de olika tornen träffar en fiende
     // Jag själv anser att det sättet jag hade tidigare var bättre då det var ett enklare system
     // Men jag har nu ändrat så att varje skott själv bestämmer vilken effekt den ska ha.
+
     public void DecideTypeOfShot(string towerType)
     {
-        EnemyController enemy = target.GetComponent<EnemyController>();
+        enemy = target.GetComponent<EnemyController>();
         switch (towerType)
         {
             case "Cannon":
@@ -84,7 +87,6 @@ public class Shot : MonoBehaviour
 
                 break;
             case "Slow":
-
                 SlowTower sT = tower.GetComponent<SlowTower>();
                 GetComponent<SlowTowerEffect>().HitBySlow(sT.SlowProc, sT.range, sT.AreaOfEffect, false);
 
@@ -95,7 +97,5 @@ public class Shot : MonoBehaviour
 
                 break;
         }
-
-
     }
 }
