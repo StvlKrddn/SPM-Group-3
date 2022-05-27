@@ -149,7 +149,6 @@ public class WaveManager : MonoBehaviour
             {
                 Destroy(poolOfEnemies[i]);
                 poolOfEnemies.RemoveAt(i);
-                break;
             }
         }
     }
@@ -178,11 +177,12 @@ public class WaveManager : MonoBehaviour
                 gameManager.Victory();
             }
             else
-            {
+            {   /*
                 if (poolOfEnemies.Count > poolCount) 
                 {
                     ClearInactive();
                 }
+                */
                 waveClear.SetActive(true);
                 //startHint.transform.position = waveClear.transform.position;
                 startHint.transform.localPosition = new Vector3(startHint.transform.localPosition.x, -370, startHint.transform.localPosition.z);
@@ -227,12 +227,6 @@ public class WaveManager : MonoBehaviour
             if (changeSpawnRate.ContainsKey(i)) //The wave changes spawnrate after a subwave
             {
                 spawnRate = changeSpawnRate[i];
-
-
-
-
-
-                
             }
         }
         yield return false;

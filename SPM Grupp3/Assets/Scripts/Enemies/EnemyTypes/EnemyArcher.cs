@@ -21,7 +21,7 @@ public class EnemyArcher : EnemyController
         timer = Random.Range(timer, cd - 1);
 	}
 
-	protected override void Update()
+	protected override void FixedUpdate()
     {
 
         MoveStep();

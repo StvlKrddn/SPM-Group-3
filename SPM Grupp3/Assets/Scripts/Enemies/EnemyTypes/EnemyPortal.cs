@@ -64,7 +64,7 @@ public class EnemyPortal : EnemyController
 		transform.position = wayPoints[path][randomWaypoint].position;
 	}
 
-    protected override void Update()
+    protected override void FixedUpdate()
 	{
 		if (opened)
 		{
