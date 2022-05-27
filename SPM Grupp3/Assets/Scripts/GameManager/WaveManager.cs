@@ -27,6 +27,7 @@ public class WaveManager : MonoBehaviour
     private List<GameObject> currentWaveEnemies = new List<GameObject>();
     private List<GameObject> poolOfEnemies = new List<GameObject>();
     private Text waveUI;
+    private GameObject startHint;
     private GameObject waveClear;
     private Dictionary<int, float> changeSpawnRate = new Dictionary<int, float>();
     private Waypoints wayPoints;
@@ -44,6 +45,7 @@ public class WaveManager : MonoBehaviour
         Transform waveHolder = UI.Canvas.transform.GetChild(0).Find("WaveHolder");
         waveUI = waveHolder.Find("WaveCounter").GetComponent<Text>();
         waveClear = waveHolder.Find("WaveCleared").gameObject;
+        startHint = waveHolder.Find("StartWaveHint").gameObject;
         
         victoryWave = waves.Length;
         waveClear.SetActive(false);
@@ -92,6 +94,7 @@ public class WaveManager : MonoBehaviour
         currentWave++;
 
         waveClear.SetActive(false);
+        startHint.SetActive(false);
         WaveConstructor(waves[currentWave]);
         StartCoroutine(SpawnCurrentWave());
         UpdateUI();
@@ -180,6 +183,9 @@ public class WaveManager : MonoBehaviour
                     ClearInactive();
                 }
                 waveClear.SetActive(true);
+                //startHint.transform.position = waveClear.transform.position;
+                startHint.transform.localPosition = new Vector3(startHint.transform.localPosition.x, -370, startHint.transform.localPosition.z);
+                startHint.SetActive(true);
                 spawnEnemies = true;
                 Debug.Log("Wave " + currentWave + " cleared");
                 GameManager.Instance.AddMoney(waveMoneyBonus);
