@@ -4,16 +4,13 @@ using UnityEngine;
 
 public class SlowTowerEffect : MonoBehaviour
 {
-    private EnemyController enemyController;
-
+    private EnemyController enemy;
     public void HitBySlow(float slowProc, float radius, bool areaOfEffect, bool stun)
-    {   
-
+    {
         if (!areaOfEffect)
-        {           
-            enemyController = gameObject.GetComponent<Shot>().target.GetComponent<EnemyController>(); 
-            enemyController.speed *= slowProc;
-            StartCoroutine(SlowDuration(enemyController));
+        {
+            enemy.speed *= slowProc;
+            StartCoroutine(SlowDuration(enemy));
         }
         else
         {
@@ -28,7 +25,7 @@ public class SlowTowerEffect : MonoBehaviour
                         enemyController.speed = 0;
                         StartCoroutine(SlowDuration(enemyController));
                         return;
-                    }                   
+                    }
                     enemyController.speed *= slowProc;
                     StartCoroutine(SlowDuration(enemyController));
                 }
@@ -39,6 +36,6 @@ public class SlowTowerEffect : MonoBehaviour
     private IEnumerator SlowDuration(EnemyController enemyController)
     {
         yield return new WaitForSeconds(3f);
-        enemyController.speed = enemyController.DefaultSpeed;        
+        enemyController.speed = enemyController.DefaultSpeed;
     }
 }

@@ -69,6 +69,28 @@ public class TowerUpgradeController : MonoBehaviour
         return 0;
     }
 
+    public string GetNameOfTowerClicked()
+    {
+        string nameOfTower = null;
+        if (clickedTower.GetComponent<CannonTower>())
+        {
+            nameOfTower = "Cannon Tower";
+        }
+        else if (clickedTower.GetComponent<MissileTower>())
+        {
+            nameOfTower = "Missile Tower";
+        }
+        else if(clickedTower.GetComponent<SlowTower>())
+        {
+            nameOfTower = "Slow Tower";
+        }
+        else if(clickedTower.GetComponent<PoisonTower>())
+        {
+            nameOfTower = "Poison Tower";
+        }
+        return nameOfTower;
+    }
+
     public PlacedTower GetPlacedTower(GameObject tower)
     {
         foreach (PlacedTower placedTower in placedTowers)
