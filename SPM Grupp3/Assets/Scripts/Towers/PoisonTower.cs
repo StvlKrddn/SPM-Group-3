@@ -106,6 +106,8 @@ public class PoisonTower : Tower
         else
         {
             effectInstance = shots[bulletIndex];
+            effectInstance.transform.position = transform.position;
+            effectInstance.transform.rotation = transform.rotation;
         }
         effectInstance.SetActive(true);
         StartCoroutine(DisableEffect(effectInstance));

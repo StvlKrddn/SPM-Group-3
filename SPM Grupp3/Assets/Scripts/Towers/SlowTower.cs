@@ -109,6 +109,8 @@ public class SlowTower : Tower
             else
             {
                 bulletGO = shots[shotIndex];
+                bulletGO.transform.position = firePoint.position;
+                bulletGO.transform.rotation = firePoint.rotation;
             }
             bulletGO.transform.parent = transform;
             bulletGO.SetActive(true);
@@ -144,6 +146,8 @@ public class SlowTower : Tower
         else
         {
             effectInstance = shots[shotIndex];
+            effectInstance.transform.position = transform.position;
+            effectInstance.transform.rotation = transform.rotation;
         }
 
         DisableEffect(effectInstance);
