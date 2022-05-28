@@ -98,9 +98,18 @@ public class SlowTower : Tower
 
     private void Shoot()
     {   
+        int shotIndex = FindShot();
         if (!areaOfEffect)
         {
-            GameObject bulletGO = Instantiate(shot, firePoint.position, firePoint.rotation);
+            GameObject bulletGO;
+            if (shotIndex < 0)
+            {
+                bulletGO = Instantiate(shot, firePoint.position, firePoint.rotation);
+            }
+            else
+            {
+                bulletGO = shots[shotIndex];
+            }
             bulletGO.transform.parent = transform;
             bulletGO.SetActive(true);
             bullet = bulletGO.GetComponent<Shot>();
@@ -112,11 +121,11 @@ public class SlowTower : Tower
         }
         else
         {
-            AOESlow();
+            AOESlow(shotIndex);
         }
     }
 
-    private void  AOESlow()
+    private void  AOESlow(int shotIndex)
     {
         if (currentShots <= 0 && stunActive)
         {
@@ -127,8 +136,17 @@ public class SlowTower : Tower
             currentShots -= 1;
         }
 
-        GameObject effectInstance = Instantiate(onHitEffect, transform.position, transform.rotation);
-        Destroy(effectInstance, 1f);
+        GameObject effectInstance;
+        if (shotIndex < 0)
+        {
+            effectInstance = Instantiate(onHitEffect, transform.position, transform.rotation);
+        }
+        else
+        {
+            effectInstance = shots[shotIndex];
+        }
+
+        DisableEffect(effectInstance);
         
 
         if (stunActive && CurrentShots <= 0f)
@@ -203,6 +221,7 @@ public class SlowTower : Tower
         towerUpgradeVisual2.SetActive(true);
 
         sT.areaOfEffect = true;
+        shots.Clear();
         sT.transform.rotation = Quaternion.Euler(0, 0, 0);
     }
 
@@ -218,4 +237,4 @@ public class SlowTower : Tower
         towerUpgradeVisual1.SetActive(false);
         towerUpgradeVisual2.SetActive(true);
     }
-}
+} 

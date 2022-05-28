@@ -22,7 +22,7 @@ public class Shot : MonoBehaviour
     {
         if (target == null)
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
             return;
         }
         if (target != null)
@@ -46,7 +46,7 @@ public class Shot : MonoBehaviour
         if (other.gameObject.CompareTag("Enemy"))
         {
             tower.HitTarget(other.gameObject, tower.onHitEffect);
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
 

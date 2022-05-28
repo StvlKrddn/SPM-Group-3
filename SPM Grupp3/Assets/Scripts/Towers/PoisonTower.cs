@@ -96,8 +96,19 @@ public class PoisonTower : Tower
 
     protected void Shoot()
     {
-        GameObject effectInstance = Instantiate(poisonPulse, transform.position, transform.rotation);
-        Destroy(effectInstance, 1f);
+        GameObject effectInstance;
+        int bulletIndex = FindShot();
+        if (bulletIndex < 0)
+        {
+            effectInstance = Instantiate(poisonPulse, transform.position, transform.rotation);
+            shots.Add(effectInstance);
+        }
+        else
+        {
+            effectInstance = shots[bulletIndex];
+            effectInstance.SetActive(true);
+        }
+        StartCoroutine(DisableEffect(effectInstance));
 
         //F�r att tornet �r AOE, D� skjuter den inte ut n�t skott
         GetComponent<PoisonTowerEffect>().HitByPoison(PoisonTicks, onHitEffect, PoisonDamagePerTick, MaxHealthPerTick, range);

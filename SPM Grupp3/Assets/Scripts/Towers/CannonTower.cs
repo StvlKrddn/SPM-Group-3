@@ -18,7 +18,6 @@ public class CannonTower : Tower
     [SerializeField] private float level3Cost;
 
     public float costForUpgrade;
-
     private float fireCountdown = 0f;
 
     // Start is called before the first frame update
@@ -95,9 +94,19 @@ public class CannonTower : Tower
 
     protected void Shoot()
     {
-        GameObject bulletGO = Instantiate(shot, firePoint.position, firePoint.rotation, transform);
-        bulletGO.SetActive(true);
-        bullet = bulletGO.GetComponent<Shot>();
+        int bulletIndex = FindShot();
+        if (bulletIndex < 0)
+        {
+            GameObject bulletGO = Instantiate(shot, firePoint.position, firePoint.rotation, transform);
+            bulletGO.SetActive(true);
+            bullet = bulletGO.GetComponent<Shot>();
+            shots.Add(bulletGO);
+        }
+        else
+        {
+            bullet = shots[bulletIndex].GetComponent<Shot>();
+            bullet.gameObject.SetActive(true);
+        }
 
         if (bullet != null)
         {
