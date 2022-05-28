@@ -106,8 +106,8 @@ public class PoisonTower : Tower
         else
         {
             effectInstance = shots[bulletIndex];
-            effectInstance.SetActive(true);
         }
+        effectInstance.SetActive(true);
         StartCoroutine(DisableEffect(effectInstance));
 
         //F�r att tornet �r AOE, D� skjuter den inte ut n�t skott
