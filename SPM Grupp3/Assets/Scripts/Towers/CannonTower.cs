@@ -28,16 +28,6 @@ public class CannonTower : Tower
         radius.transform.localScale = new Vector3(range * 2f, 0.01f, range * 2f);
     }
 
-    private void OnEnable()
-    {
-        EventHandler.RegisterListener<TowerHitEvent>(HitTarget);
-    }
-
-    void OnDestroy()
-    {
-        EventHandler.UnregisterListener<TowerHitEvent>(HitTarget);
-    }
-
     // Update is called once per frame
     void LateUpdate()
     {
@@ -80,18 +70,15 @@ public class CannonTower : Tower
         Shoot();
     }
 
-    public override void HitTarget(TowerHitEvent eventInfo)
+    public override void HitTarget(GameObject target, GameObject hitEffect)
     {
-        if (eventInfo.towerGO == gameObject)
+        if (target != null && target.GetComponent<EnemyController>())
         {
-            if (target != null)
-            {
-                EnemyController enemyTarget = eventInfo.enemyHit.GetComponent<EnemyController>();
-                GameObject effectInstance = Instantiate(eventInfo.hitEffect, enemyTarget.transform.position, enemyTarget.transform.rotation);
+            EnemyController enemyTarget = target.GetComponent<EnemyController>();
+            GameObject effectInstance = Instantiate(hitEffect, enemyTarget.transform.position, enemyTarget.transform.rotation);
 
-                Destroy(effectInstance, 1f);
-                bullet.DecideTypeOfShot("Cannon");
-            }
+            Destroy(effectInstance, 1f);
+            bullet.DecideTypeOfShot("Cannon");
         }
     }
 

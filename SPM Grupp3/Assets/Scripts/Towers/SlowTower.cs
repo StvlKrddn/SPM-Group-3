@@ -55,7 +55,6 @@ public class SlowTower : Tower
     // Start is called before the first frame update
     void Start()
     {  
-        EventHandler.RegisterListener<TowerHitEvent>(HitTarget);
         radius.transform.localScale = new Vector3(range * 2f, 0.01f, range * 2f);
         InvokeRepeating("UpdateTarget", 0f, 0.5f);
     }
@@ -77,16 +76,12 @@ public class SlowTower : Tower
         }
     }
 
-    public override void HitTarget(TowerHitEvent eventInfo)
+    public override void HitTarget(GameObject hit, GameObject hitEffect)
     {
-        if (eventInfo.towerGO == gameObject)
+        if (target != null)
         {
-            if (target != null)
-            {
-                bullet.DecideTypeOfShot("Slow");
-            }
+            bullet.DecideTypeOfShot("Slow");
         }
-        
     }
 
     private bool CanYouShoot()
