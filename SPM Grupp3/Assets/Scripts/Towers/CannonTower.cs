@@ -21,6 +21,8 @@ public class CannonTower : Tower
 
     private float fireCountdown = 0f;
 
+    public float FireRate { get { return fireRate; } set { fireRate = value; } }
+
     // Start is called before the first frame update
     void Start()
     {

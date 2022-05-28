@@ -194,7 +194,7 @@ public class SlowTower : Tower
     protected override void Level1(GameObject tower)
     {
         SlowTower sT = tower.GetComponent<SlowTower>();
-        sT.slowRadius += upgradeAmountSlowRadius;
+        sT.radius.transform.localScale = new Vector3((sT.range * 2f) + upgradeAmountSlowRadius, 0.01f, (sT.range * 2f) + upgradeAmountSlowRadius);
     }
 
     protected override void Level2(GameObject tower)
