@@ -43,10 +43,10 @@ public class WheelSelection : MonoBehaviour
     private GameObject towerToDisplay;
     private GameObject statisticPanel;
     private GameObject menuItem;
-    private Text upgradeTitleText;
-    private Text upgradeLevel1Text;
-    private Text upgradeLevel2Text;
-    private Text upgradeLevel3Text;
+    // private Text upgradeTitleText;
+    // private Text upgradeLevel1Text;
+    // private Text upgradeLevel2Text;
+    // private Text upgradeLevel3Text;
 
 
     private void Start() 
@@ -107,11 +107,6 @@ public class WheelSelection : MonoBehaviour
                 SelectItem(selectedIndex);
             }
         }
-
-
-
-
-        
     }
 
     // Returns index of item based on angle
@@ -165,10 +160,10 @@ public class WheelSelection : MonoBehaviour
             {
                 if (!MenuItems[i].transform.parent.name.Equals("BuildPanel"))
                 {
-                    upgradeTitleText = statisticPanel.transform.Find("Title").GetComponent<Text>();
-                    upgradeLevel1Text = upgradeTitleText.transform.Find("Level1").GetComponent<Text>();
-                    upgradeLevel2Text = upgradeTitleText.transform.Find("Level2").GetComponent<Text>();
-                    upgradeLevel3Text = upgradeTitleText.transform.Find("Level3").GetComponent<Text>();
+                    //upgradeTitleText = statisticPanel.transform.Find("Title").GetComponent<Text>();
+                    //upgradeLevel1Text = upgradeTitleText.transform.Find("Level1").GetComponent<Text>();
+                    //upgradeLevel2Text = upgradeTitleText.transform.Find("Level2").GetComponent<Text>();
+                    //upgradeLevel3Text = upgradeTitleText.transform.Find("Level3").GetComponent<Text>();
                 }
                 // Hover effect
                 MenuItems[i].transform.GetChild(0).GetComponent<Image>().color = highLight;
@@ -195,21 +190,21 @@ public class WheelSelection : MonoBehaviour
                     {
                         statisticPanel.SetActive(true);
 
-                        upgradeTitleText.text = tUC.GetNameOfTowerClicked() + " (Lv " + tUC.GetUpgradesPurchased() + ")";
+                        //upgradeTitleText.text = tUC.GetNameOfTowerClicked() + " (Lv " + tUC.GetUpgradesPurchased() + ")";
 
                         switch (tUC.GetUpgradesPurchased())
                         {
                             case 0:
-                                upgradeLevel1Text.color = Color.green;
+                                //upgradeLevel1Text.color = Color.green;
                                 break;
                             case 1:
-                                upgradeLevel2Text.color = Color.green;
+                                //upgradeLevel2Text.color = Color.green;
                                 break;
                             case 2:
-                                upgradeLevel3Text.color = Color.green;
+                                //upgradeLevel3Text.color = Color.green;
                                 break;
                             case 3:
-                                upgradeTitleText.text = tUC.GetNameOfTowerClicked() + " (Lv MAX)";
+                                //upgradeTitleText.text = tUC.GetNameOfTowerClicked() + " (Lv MAX)";
                                 break;
                         }
 
@@ -259,7 +254,6 @@ public class WheelSelection : MonoBehaviour
 
                 if (infoAction.triggered)
                 {
-                    print("WEEEEEEEEEEEEEE");
                     //InfoPanel();
                 }
 
@@ -280,9 +274,9 @@ public class WheelSelection : MonoBehaviour
                 }
                 else
                 {
-                    upgradeLevel1Text.color = Color.white;
-                    upgradeLevel2Text.color = Color.white;
-                    upgradeLevel3Text.color = Color.white;
+                    //upgradeLevel1Text.color = Color.white;
+                    //upgradeLevel2Text.color = Color.white;
+                    //upgradeLevel3Text.color = Color.white;
                 }
             }
         }
@@ -387,13 +381,13 @@ public class WheelSelection : MonoBehaviour
                 switch (tUC.GetUpgradesPurchased())
                 {
                     case 1:
-                        upgradeLevel1Text.text = "Basic Fire rate: " + cT.FireRate;
+                        //upgradeLevel1Text.text = "Basic Fire rate: " + cT.FireRate;
                         break;
                     case 2:
-                        upgradeLevel2Text.text = "Basic Damage: " + cT.ShotDamage;
+                        //upgradeLevel2Text.text = "Basic Damage: " + cT.ShotDamage;
                         break;
                     case 3:
-                        upgradeLevel3Text.text = "Double Shot: (Active)";
+                        //upgradeLevel3Text.text = "Double Shot: (Active)";
                         break;
                 }
 
@@ -403,13 +397,13 @@ public class WheelSelection : MonoBehaviour
                 switch (tUC.GetUpgradesPurchased())
                 {
                     case 1:
-                        upgradeLevel1Text.text = "Basic AoE Radius: " + mT.SplashRadius;
+                        //upgradeLevel1Text.text = "Basic AoE Radius: " + mT.SplashRadius;
                         break;
                     case 2:
-                        upgradeLevel2Text.text = "Basic AoE Damage: " + mT.SplashDamage;
+                        //upgradeLevel2Text.text = "Basic AoE Damage: " + mT.SplashDamage;
                         break;
                     case 3:
-                        upgradeLevel3Text.text = "Increased Third Missle Dmg (Active)";
+                        //upgradeLevel3Text.text = "Increased Third Missle Dmg (Active)";
                         break;
                 }
                 break;
@@ -418,13 +412,13 @@ public class WheelSelection : MonoBehaviour
                 switch (tUC.GetUpgradesPurchased())
                 {
                     case 1:
-                        upgradeLevel1Text.text = "Basic Range: " + sT.range;
+                        //upgradeLevel1Text.text = "Basic Range: " + sT.range;
                         break;
                     case 2:
-                        upgradeLevel2Text.text = "Basic Area Effect: (Active)";
+                        //upgradeLevel2Text.text = "Basic Area Effect: (Active)";
                         break;
                     case 3:
-                        upgradeLevel3Text.text = "Periodic Halts All Enemies: (Active)";
+                        //upgradeLevel3Text.text = "Periodic Halts All Enemies: (Active)";
                         break;
                 }
                 break;
@@ -433,13 +427,13 @@ public class WheelSelection : MonoBehaviour
                 switch (tUC.GetUpgradesPurchased())
                 {
                     case 1:
-                        upgradeLevel1Text.text = "Basic Poison Duration: " + pT.PoisonTicks;
+                        //upgradeLevel1Text.text = "Basic Poison Duration: " + pT.PoisonTicks;
                         break;
                     case 2:
-                        upgradeLevel2Text.text = "Basic DoT: " + pT.PoisonDamagePerTick;
+                        //upgradeLevel2Text.text = "Basic DoT: " + pT.PoisonDamagePerTick;
                         break;
                     case 3:
-                        upgradeLevel3Text.text = "Contagious: (Active)";
+                        //upgradeLevel3Text.text = "Contagious: (Active)";
                         break;
                 }
                 break;
