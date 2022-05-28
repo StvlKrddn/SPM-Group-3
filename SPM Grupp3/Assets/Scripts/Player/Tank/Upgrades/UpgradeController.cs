@@ -52,6 +52,10 @@ public class UpgradeController : MonoBehaviour
                     break;
                 }
                 print("Upgrade lvl" + player.levelOfTank + " instant");
+                if (player.GetComponent<WeaponSlot>())
+                {
+                    player.GetComponent<WeaponSlot>().UpgradeShots();
+                }
             }
         }
     }
@@ -76,6 +80,10 @@ public class UpgradeController : MonoBehaviour
                     tS.tankUpgradeTree.UpgradeThree();
                     break;
             }
+        }
+        if (tS.GetComponent<WeaponSlot>())
+        {
+            tS.GetComponent<WeaponSlot>().UpgradeShots();
         }
     }
 }

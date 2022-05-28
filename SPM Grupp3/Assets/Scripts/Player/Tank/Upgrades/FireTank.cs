@@ -16,6 +16,7 @@ public class FireTank : TankUpgradeTree
 	public override void UpgradeTwo()
 	{
 		base.UpgradeTwo();
+		weapon.ClearBullets();
 		weapon.enabled = false;
 		flameThrower.gameObject.SetActive(true);
 	}

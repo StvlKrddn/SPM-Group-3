@@ -15,6 +15,7 @@ public class SniperTank : TankUpgradeTree
 	public override void UpgradeOne()
 	{
 		weapon.MakeSniper(range, fireRateFirst, damage);
+		weapon.ClearBullets();
 		
 	}
 	public override void UpgradeTwo()

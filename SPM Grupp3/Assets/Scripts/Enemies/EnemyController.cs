@@ -55,6 +55,11 @@ public abstract class EnemyController : MonoBehaviour
         target = wayPoints[path][currWaypointIndex];
     }
 
+	private void OnDestroy()
+	{
+        Destroy(changerText.gameObject);
+	}
+
 	protected virtual void Awake() 
     {
         defaultSpeed = speed;
@@ -64,6 +69,10 @@ public abstract class EnemyController : MonoBehaviour
         healthBar.slider.maxValue = health;
         healthBar.slider.value = health;
         wayPoints = Waypoints.instance.GetWaypoints();
+        changerText.GetComponentInChildren<Text>().text = moneyDrop.ToString();
+        changerText.GetComponentInChildren<Text>().color = moneyColor;
+        changerText = Instantiate(changerText, spawnTextPosition.position, spawnTextPosition.rotation, GameManager.Instance.transform.Find("DropTexts"));
+        changerText.SetActive(false);
         //Change to right tank when done with tanks
     }
 
@@ -129,15 +138,12 @@ public abstract class EnemyController : MonoBehaviour
         gM.AddMoney(moneyDrop); // add money and spawn material
         
         // Spawns a changerText for indikation for gaining money
-        if (changerText != null)
-        {
-            changerText.GetComponentInChildren<Text>().text = moneyDrop.ToString();
-            changerText.GetComponentInChildren<Text>().color = moneyColor;
 
-            if(spawnTextPosition != null)
-            {
-                Instantiate(changerText, spawnTextPosition.position, spawnTextPosition.rotation);
-            }
+        if(changerText != null && spawnTextPosition != null)
+        {
+            changerText.transform.position = spawnTextPosition.position;
+            changerText.transform.rotation = spawnTextPosition.rotation;
+            changerText.SetActive(true);
         }
 
         if (materialDrop == true)

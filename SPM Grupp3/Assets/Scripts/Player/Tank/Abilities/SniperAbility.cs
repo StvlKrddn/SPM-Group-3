@@ -4,8 +4,14 @@ using UnityEngine;
 
 public class SniperAbility : BulletBehavior
 {
-    [SerializeField] float damageOfAbility; 
-    protected override void OnTriggerEnter(Collider other)
+    [SerializeField] float damageOfAbility;
+
+	protected override void OnBecameInvisible()
+	{
+		Destroy(gameObject, 0.01f);
+	}
+
+	protected override void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Enemy"))
         {

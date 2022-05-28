@@ -26,8 +26,8 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5205185240933545452}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0.000527764, y: 0.6379836, z: 0.0006393943, w: 0.77004945}
+  m_LocalPosition: {x: 0, y: 0, z: -7.150646}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4729605052656165729}
@@ -36,7 +36,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 566.5, y: 318.5}
+  m_AnchoredPosition: {x: -28.258636, y: 2.0338879}
   m_SizeDelta: {x: 1133, y: 637}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &8561880241783439316
@@ -82,7 +82,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &8995062961746653962
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -208,6 +208,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Duration: 0.6
   moveSpeed: 5
+  destroyAfterFade: 1
 --- !u!1 &8943200749382906870
 GameObject:
   m_ObjectHideFlags: 0

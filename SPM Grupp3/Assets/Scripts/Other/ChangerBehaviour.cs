@@ -42,8 +42,8 @@ public class ChangerBehaviour : MonoBehaviour
             yield return null;
         }
 
-        if(destroyAfterFade)
-            Destroy(transform.parent.gameObject);
+        if (destroyAfterFade)
+            transform.parent.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
