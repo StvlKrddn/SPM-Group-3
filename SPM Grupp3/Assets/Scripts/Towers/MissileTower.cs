@@ -49,7 +49,6 @@ public class MissileTower : Tower
     // Start is called before the first frame update
     void Start()
     {
-        EventHandler.RegisterListener<TowerHitEvent>(HitTarget);
         radius.transform.localScale = new Vector3(range * 2f, 0.01f, range * 2f);
         InvokeRepeating("UpdateTarget", 0f, 0.5f);
     }
@@ -67,27 +66,24 @@ public class MissileTower : Tower
             }
         }
     }
-    public override void HitTarget(TowerHitEvent eventInfo)
+    public override void HitTarget(GameObject hit, GameObject hitEffect)
     {
-        if (eventInfo.towerGO == gameObject)
+        if (hit != null && hit.GetComponent<EnemyController>())
         {
-            if (target != null)
-            {
-                EnemyController enemyTarget = eventInfo.enemyHit.GetComponent<EnemyController>();
-                GameObject effectInstance = Instantiate(eventInfo.hitEffect, enemyTarget.transform.position, enemyTarget.transform.rotation);
+            EnemyController enemyTarget = hit.GetComponent<EnemyController>();
+            GameObject effectInstance = Instantiate(hitEffect, enemyTarget.transform.position, enemyTarget.transform.rotation);
 
-                Destroy(effectInstance, 1f);
-                
-                if (!shotAlready)
-                {
-                    bullet.DecideTypeOfShot("Missile");
-                    shotAlready = true;
-                }
-                Invoke("Coldown", 0.3f);
+            Destroy(effectInstance, 1f);
+            
+            if (!shotAlready)
+            {
+                bullet.DecideTypeOfShot("Missile");
+                shotAlready = true;
             }
+            Invoke("Cooldown", 0.3f);
         }
     }
-    void Coldown()
+    void Cooldown()
     {
         shotAlready = false;
     }
