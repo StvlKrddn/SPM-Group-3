@@ -139,10 +139,11 @@ public class GameManager : MonoBehaviour
         Player2Color = baseStats.Player2Color;
     }
 
-    [ContextMenu("Delete Save Data")]
+    [ContextMenu("Delete Saved Data")]
     public void DeleteSaveData()
     {
         DataManager.DeleteFile(DataManager.SaveData);
+        DataManager.DeleteFile(DataManager.CustomizationData);
     }
 
     private void Start()

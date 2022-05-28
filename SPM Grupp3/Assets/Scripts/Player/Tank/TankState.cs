@@ -38,12 +38,12 @@ public class TankState : MonoBehaviour
     public TankUpgradeTree tankUpgradeTree;
     [SerializeField] private TankUpgradeTree tankUpgradeTreeOne;
     [SerializeField] private TankUpgradeTree tankUpgradeTreeTwo;
-    [SerializeField] private UnityEngine.Material player1Material;
-    [SerializeField] private UnityEngine.Material player2Material;
     [SerializeField] private HealthBar healthBar;
 
     private int hurMangaGangerDamage = 0;
     private bool invincibilityFrame = false;
+    private Color player1Color;
+    private Color player2Color;
 
 
     // Getters and Setters
@@ -122,16 +122,15 @@ public class TankState : MonoBehaviour
 
     void SetPlayerDifference()
     {
-        Renderer renderer = GetComponent<Renderer>();
+        player1Color = GameManager.Instance.Player1Color;
+        player2Color = GameManager.Instance.Player2Color;
         if (playerInput.playerIndex == 0)
         {
-            renderer.material = player1Material;
-            transform.Find("TankBody").Find("Cube.004").GetComponent<Renderer>().material = player1Material;
+            transform.Find("TankMesh").Find("TankBody").GetComponent<Renderer>().material.color = player1Color;
         }
         else
         {
-            renderer.material = player2Material;
-            transform.Find("TankBody").Find("Cube.004").GetComponent<Renderer>().material = player2Material;
+            transform.Find("TankMesh").Find("TankBody").GetComponent<Renderer>().material.color = player2Color;
         }
         tankUpgradeTree = playerInput.playerIndex == 0 ? tankUpgradeTreeOne : tankUpgradeTreeTwo;
     }
@@ -216,7 +215,7 @@ public class TankState : MonoBehaviour
             EnemyMortarShot enemyMortarShot = other.gameObject.GetComponentInParent<EnemyMortarShot>();
             TakeDamage(enemyMortarShot.damage);
 
-            print("Tar man damage flera gångar?" + hurMangaGangerDamage);
+            print("Tar man damage flera gï¿½ngar?" + hurMangaGangerDamage);
         }
     }
 
