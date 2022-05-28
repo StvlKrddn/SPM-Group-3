@@ -35,9 +35,6 @@ public class GameManager : MonoBehaviour
     private WaveManager waveManager;
     private Canvas canvas;
     private Slider livesSlider;
-
-    private SaveData data;
-
     private float money;
     private float material;
     private float baseHealth;
@@ -75,39 +72,49 @@ public class GameManager : MonoBehaviour
         buildManager = FindObjectOfType<BuildManager>();
         if (DataManager.FileExists(DataManager.SaveData))
         {
-            LoadFromFile();
+            LoadSaveData();
         }
         else 
         {
             LoadBase();
         }
+        if (DataManager.FileExists(DataManager.CustomizationData))
+        {
+            LoadCustomizationData();
+        }
     }
 
-    private void LoadFromFile()
+    private void LoadSaveData()
     {
-        data = (SaveData) DataManager.ReadFromFile(DataManager.SaveData);
-        money = data.money;
-        material = data.material;
-        currentWave = data.currentWave;
-        baseHealth = data.currentBaseHealth;
+        SaveData saveData = (SaveData) DataManager.ReadFromFile(DataManager.SaveData);
+        money = saveData.money;
+        material = saveData.material;
+        currentWave = saveData.currentWave;
+        baseHealth = saveData.currentBaseHealth;
 
-        enemiesKilled = data.enemiesKilled;
-        moneyCollected = data.moneyCollected;
-        materialCollected = data.materialCollected;
+        enemiesKilled = saveData.enemiesKilled;
+        moneyCollected = saveData.moneyCollected;
+        materialCollected = saveData.materialCollected;
 
-        Player1Color = data.player1Color;
-        Player2Color = data.player2Color;
+        startingMode = saveData.startingMode;
 
-        startingMode = data.startingMode;
-
-        List<TowerData> towerData = new List<TowerData>(data.towerData);
+        List<TowerData> towerData = new List<TowerData>(saveData.towerData);
 
         foreach (TowerData tower in towerData)
         {
             AddPlacedTower(buildManager.LoadTower(tower));
         }
-        UpgradeController.currentUpgradeLevel = data.tankUpgradeLevel;
+        UpgradeController.currentUpgradeLevel = saveData.tankUpgradeLevel;
+        
         Invoke(nameof(FixUpgradeDelay), Mathf.Epsilon);
+    }
+
+    private void LoadCustomizationData()
+    {
+        CustomizationData customData = (CustomizationData) DataManager.ReadFromFile(DataManager.CustomizationData);
+
+        Player1Color = customData.player1Color;
+        Player2Color = customData.player2Color;
     }
 
     private void FixUpgradeDelay(GameObject tank)
@@ -235,13 +242,17 @@ public class GameManager : MonoBehaviour
             material,
             currentBaseHealth,
             currentScene: SceneManager.GetActiveScene().buildIndex,
-            Player1Color,
-            Player2Color,
             startingMode,
             towersPlaced,
             UpgradeController.currentUpgradeLevel
         );
         DataManager.WriteToFile(saveData, DataManager.SaveData);
+
+        CustomizationData customData = new CustomizationData(
+            Player1Color,
+            Player2Color
+        );
+        DataManager.WriteToFile(customData, DataManager.CustomizationData);
     }
 
     public void TakeDamage(float damage, GameObject enemy)
