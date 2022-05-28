@@ -9,7 +9,7 @@ public class DebugEnemy : EnemyController
         print(damage);
     }
 
-    protected override void Update() {}
+    protected override void FixedUpdate() {}
 
     //There gonna be one error that you can ignore
 }

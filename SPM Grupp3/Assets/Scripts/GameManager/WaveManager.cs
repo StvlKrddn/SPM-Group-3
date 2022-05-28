@@ -91,6 +91,10 @@ public class WaveManager : MonoBehaviour
 
     private void SpawnWave()
     {
+        if (poolOfEnemies.Count < poolCount + poolCount / 2)
+        { 
+            StopCoroutine(ClearInactive());
+        }
         currentWave++;
 
         waveClear.SetActive(false);
@@ -141,14 +145,18 @@ public class WaveManager : MonoBehaviour
         }
     }
 
-    private void ClearInactive()
+    private IEnumerator ClearInactive()
     {
-        for (int i = poolOfEnemies.Count - 1; i > -1; i--)
+        for (int i = 0; i < poolOfEnemies.Count; i++)
         {
             if (poolOfEnemies.Count > poolCount && poolOfEnemies[i].activeSelf == false)
             {
                 Destroy(poolOfEnemies[i]);
                 poolOfEnemies.RemoveAt(i);
+                yield return new WaitForSeconds(10 / (poolOfEnemies.Count - poolCount));
+            }
+            else if (poolOfEnemies.Count > poolCount)
+            {
                 break;
             }
         }
@@ -181,7 +189,7 @@ public class WaveManager : MonoBehaviour
             {
                 if (poolOfEnemies.Count > poolCount) 
                 {
-                    ClearInactive();
+                    StartCoroutine(ClearInactive());
                 }
                 waveClear.SetActive(true);
                 //startHint.transform.position = waveClear.transform.position;
@@ -205,10 +213,6 @@ public class WaveManager : MonoBehaviour
     {
         for (int i = 0; i < currentWaveEnemies.Count; i++)
         {
-            if (poolOfEnemies.Count > poolCount) //Clear inactive enemies
-            {
-                ClearInactive();
-            }
             GameObject enemy = GetPooledEnemy(currentWaveEnemies[i]);
             int givenPath = wayPoints.GiveNewPath(); //Gives the enemy the right path
             if (enemy != null)
@@ -227,12 +231,6 @@ public class WaveManager : MonoBehaviour
             if (changeSpawnRate.ContainsKey(i)) //The wave changes spawnrate after a subwave
             {
                 spawnRate = changeSpawnRate[i];
-
-
-
-
-
-                
             }
         }
         yield return false;

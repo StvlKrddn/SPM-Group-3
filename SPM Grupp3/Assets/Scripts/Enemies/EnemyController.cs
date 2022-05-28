@@ -70,7 +70,7 @@ public abstract class EnemyController : MonoBehaviour
     protected virtual void Start() {}
 
     // Update is called once per frame
-    protected virtual void Update()
+    protected virtual void FixedUpdate()
     {
         MoveStep();   
     }
@@ -80,7 +80,7 @@ public abstract class EnemyController : MonoBehaviour
         //WIP Enemy moves right direction
         Vector3 direction = target.position - transform.position;
         direction.Normalize();
-        transform.position += speed * Time.deltaTime * direction;
+        transform.position += speed * direction * Time.deltaTime;
     }
 
     private void EnemyDeathBase()
