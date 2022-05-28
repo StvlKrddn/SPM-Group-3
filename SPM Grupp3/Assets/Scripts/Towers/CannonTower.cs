@@ -107,6 +107,8 @@ public class CannonTower : Tower
         else
         {
             bullet = shots[bulletIndex].GetComponent<Shot>();
+            bullet.transform.position = firePoint.position;
+            bullet.transform.rotation = firePoint.rotation;
             bullet.gameObject.SetActive(true);
         }
 
