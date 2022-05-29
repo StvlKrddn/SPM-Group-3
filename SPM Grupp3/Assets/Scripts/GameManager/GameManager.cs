@@ -267,33 +267,31 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // Modifiy the values to two decimals when it is more than 1000 unites /Noah
+    // Modifiy the values to 10K if it is equal or higher than 10.000
     private void UpdateUI()
     {
         float mon = money;
 
-        if(mon >= 1000)
+        if(mon >= 10000)
         {
-            int holeNumb = (int) mon/1000;
-            int deciNumb = (int)(mon % 1000) / 10;
-            moneyCounterUI.text = ": " + holeNumb.ToString() + "," + deciNumb.ToString() + "K";
+            int holeNumb = (int) mon / 10000;
+            moneyCounterUI.text = holeNumb.ToString() + "K";
         }
         else
         {
-            moneyCounterUI.text = ": " + money.ToString();
+            moneyCounterUI.text = mon.ToString();
         }
 
         float mat = material;
 
-        if(mat >= 1000)
+        if(mat >= 10000)
         {
-            int holeNumb = (int) mat / 1000;
-            int deciNumb = (int)(mat % 1000) / 10;
-            materialCounterUI.text = ": " + holeNumb.ToString() + "," + deciNumb.ToString() + "K";
+            int holeNumb = (int) mat / 10000;
+            materialCounterUI.text = holeNumb.ToString() + "K";
         }
         else
         {
-            materialCounterUI.text = ": " + material.ToString();
+            materialCounterUI.text = mat.ToString();
         }
 
         /*waveCounter.GetComponent<Text>().text = (currentWave + 1) + "/" + GetComponent<WaveManager>().waves.Length;*/

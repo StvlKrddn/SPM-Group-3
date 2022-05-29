@@ -9,7 +9,6 @@ public class HealthBar : MonoBehaviour
     private Transform lookAt;
     [SerializeField] private float updateSpeedSeconds = 0.5f;
     //[SerializeField] private GameObject FollowPlayer;
-    [SerializeField] private bool faceCamera = true;
     private float fillAmount;
 
     public float FillAmount { get { return fillAmount; } set { fillAmount = value; } }
@@ -61,10 +60,11 @@ public class HealthBar : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (faceCamera)
-        {
             transform.LookAt(lookAt);
-            transform.Rotate(0, 180, 0);
-        }
+
+            if(this.name.Equals("TankUI"))
+                transform.Rotate(90, 180, 0);
+            else
+                transform.Rotate(0, 180, 0);
     }
 }

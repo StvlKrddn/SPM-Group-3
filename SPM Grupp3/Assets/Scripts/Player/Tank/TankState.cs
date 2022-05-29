@@ -279,7 +279,8 @@ public class TankState : MonoBehaviour
     public void RepairTank()
     {
         playerHandler.Destroyed = false;
-        currentHealth = health;
+        ResetHealth();
+        //currentHealth = health;
 
         EventHandler.InvokeEvent(new PlayerSwitchEvent(
             description: "Player switching mode",
@@ -293,9 +294,9 @@ public class TankState : MonoBehaviour
         GetComponent<BoostAbility>().ChangeSpeed();
     }
 
-    public void ResetHealth()
+    private void ResetHealth()
     {
         currentHealth = health;
-        healthBar.HandleHealthChanged(currentHealth);
+        healthBar.HandleHealthChanged(health);
     }
 }
