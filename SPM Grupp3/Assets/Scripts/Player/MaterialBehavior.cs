@@ -19,78 +19,67 @@ public class MaterialBehavior : MonoBehaviour
     private Color dropTextColor = new Color(164,164,164,255);
 
     private GameManager gameManager;
-    private Rigidbody rb;
     private bool landed = false;
-	private Vector3 direction;
-
-	float x;
-	float z;
 
 
     public float[] xValues = new float[2];
     public float[] zValues = new float[2];
 
-    private int timeModifier;
 
 	private Vector3 originalPosition;
 
-    private float xMovement;
-
-
     public float secondsBeforeLanding = 3; 
 
-    public float yMovement =-0.016666666f;
-
+    private float xMovement;
+    public float yMovement;
     private float zMovement;
+    private int framesTimesSeconds = 150;
 
+ private Vector3 destinationVector;
 
-    private int howManyTimes; 
+    // Sverkers remake på materialkoden
 
-    Vector3 tempVector;
-    void Start()
-    {
-        //  transform.position = new Vector3(transform.position.x, transform.position.y + 2, transform.position.z);
+	private void Awake()
+	{
+        changerText = Instantiate(changerText, spawnTextPosition.position, spawnTextPosition.rotation, GameManager.Instance.transform.Find("DropTexts"));
+		changerText.GetComponentInChildren<Text>().text = materialValue.ToString();
+        changerText.GetComponentInChildren<Text>().color = dropTextColor;
+        changerText.SetActive(false);
+        gameManager = GameManager.Instance;
+	}
+
+	private void OnEnable()
+	{
+	    landed = false;
         transform.position = new Vector3(transform.position.x, 3, transform.position.z);
-
-
-        Vector3 destination = new Vector3(Random.Range(xValues[0], xValues[1]), 0, Random.Range(zValues[0], zValues[1]));
-
-        xMovement = (destination.x - transform.position.x) / 150;
-        yMovement = -(secondsBeforeLanding / 150);
-        zMovement = (destination.z - transform.position.z) / 150;
-
-        tempVector = new Vector3(xMovement, yMovement, zMovement);
-        
-        gameManager = FindObjectOfType<GameManager>();
-        rb = GetComponent<Rigidbody>();
-		direction = Random.insideUnitSphere.normalized;
-		/*while ((x > 0.25f && x < -0.25f) || (z > 0.25f && z < -0.25f))
-		{
-		}
-			x = Random.Range(-0.35f, 0.35f);
-			z = Random.Range(-0.26f, 0.26f);*/
-        direction = new Vector3(-3f, 0, 0);
-
+        destinationVector = CalculatePosition();
     }
 
-    void Update()
+    private void OnDisable()
     {
-	//	if (landed == true)
-	//	{
-	//		Bobbing();
-	//	}
-	//	else
-	//	{
-	//		Throw();
-	//	}
+        StopAllCoroutines();
+    }
+
+
+    void Start()
+    {
+        transform.position = new Vector3(transform.position.x, 3, transform.position.z);
+        destinationVector = CalculatePosition();
+    }
+
+    private Vector3 CalculatePosition()
+    {
+        Vector3 destination = new Vector3(Random.Range(xValues[0], xValues[1]), 0, Random.Range(zValues[0], zValues[1]));
+        xMovement = (destination.x - transform.position.x) / framesTimesSeconds;
+        yMovement = -(secondsBeforeLanding / framesTimesSeconds);
+        zMovement = (destination.z - transform.position.z) / framesTimesSeconds;
+        return new Vector3(xMovement, yMovement, zMovement);
     }
 
     private void FixedUpdate()
     {
         if (landed == true)
         {
-
-            
             Bobbing();
         }
         else
@@ -111,15 +100,7 @@ public class MaterialBehavior : MonoBehaviour
 
     private void Throw()
     {
-        howManyTimes += 1;
-
-
-        transform.position += tempVector;
-       //     transform.Translate(xMovement, yMovement, zMovement);
-       //   transform.position += (direction * Time.fixedDeltaTime);
-       //transform.Translate(transform.position * x * Time.smoothDeltaTime);
-       //transform.Translate(transform.position * z * Time.smoothDeltaTime);
-       //transform.Translate(transform.up * 5 * Time.smoothDeltaTime);
+        transform.position += destinationVector;
     }
 
     private void Bobbing()
@@ -138,27 +119,20 @@ public class MaterialBehavior : MonoBehaviour
         {
             gameManager.AddMaterial(materialValue);
 
-            if (changerText != null)
+            if (changerText != null && spawnTextPosition != null)
             {
-                changerText.GetComponentInChildren<Text>().text = materialValue.ToString();
-                changerText.GetComponentInChildren<Text>().color = dropTextColor;
-
-                if (spawnTextPosition != null)
-                    Instantiate(changerText, spawnTextPosition.position, spawnTextPosition.rotation);
-                else
-                {
-                    Instantiate(changerText);
-                    print("No transform-point for changerText");
-                }
+                changerText.transform.position = transform.position;
+                changerText.transform.rotation = transform.rotation;
+                changerText.SetActive(true);
             }
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
 
 	private IEnumerator SelfDestruct()
     {
         yield return new WaitForSeconds(duration);
-        Destroy(gameObject);
+        gameObject.SetActive(false);
         yield return null;
     }
 }

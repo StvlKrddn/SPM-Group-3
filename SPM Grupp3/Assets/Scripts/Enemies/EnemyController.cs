@@ -17,7 +17,6 @@ public abstract class EnemyController : MonoBehaviour
     public int damageBase = 10;
     public int moneyDrop = 10;
     public bool materialDrop = false;
-    public Transform material;
 
     private GameObject hitByPoisonEffect;
     private float defaultSpeed;
@@ -30,6 +29,7 @@ public abstract class EnemyController : MonoBehaviour
     private float currentHealth;
     public int path;
     protected List<Transform[]> wayPoints;
+    private MaterialHolder materialHolder;
 
     private Color moneyColor = new Color(255, 100, 0, 255);
     public GameObject changerText;
@@ -57,7 +57,7 @@ public abstract class EnemyController : MonoBehaviour
 
 	private void OnDestroy()
 	{
-        Destroy(changerText.gameObject);
+        Destroy(changerText);
 	}
 
 	protected virtual void Awake() 
@@ -69,6 +69,7 @@ public abstract class EnemyController : MonoBehaviour
         healthBar.slider.maxValue = health;
         healthBar.slider.value = health;
         wayPoints = Waypoints.instance.GetWaypoints();
+        materialHolder = FindObjectOfType<MaterialHolder>();
         changerText.GetComponentInChildren<Text>().text = moneyDrop.ToString();
         changerText.GetComponentInChildren<Text>().color = moneyColor;
         changerText = Instantiate(changerText, spawnTextPosition.position, spawnTextPosition.rotation, GameManager.Instance.transform.Find("DropTexts"));
@@ -148,7 +149,7 @@ public abstract class EnemyController : MonoBehaviour
 
         if (materialDrop == true)
         {
-            Instantiate(material, transform.position, transform.rotation);
+			materialHolder.GiveMaterial(transform.position, transform.rotation);
         }
         DieEvent dieEvent = new DieEvent("d�d", gameObject, null, null);
         EventHandler.InvokeEvent(dieEvent);
