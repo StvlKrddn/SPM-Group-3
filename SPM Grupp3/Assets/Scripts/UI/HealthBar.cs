@@ -60,11 +60,15 @@ public class HealthBar : MonoBehaviour
 
     private void LateUpdate()
     {
-            transform.LookAt(lookAt);
 
-            if(this.name.Equals("TankUI"))
-                transform.Rotate(90, 180, 0);
-            else
-                transform.Rotate(0, 180, 0);
+        if (this.name.Equals("GameManager"))
+            return;
+
+        transform.LookAt(lookAt);
+
+        if(this.name.Equals("TankUI"))
+            transform.Rotate(90, 180, 0);
+        else
+            transform.Rotate(0, 180, 0);
     }
 }

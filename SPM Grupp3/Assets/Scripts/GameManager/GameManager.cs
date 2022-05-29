@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour
     private WaveManager waveManager;
     private Canvas canvas;
     private Slider livesSlider;
+    private HealthBar healthBar;
     private float money;
     private float material;
     private float baseHealth;
@@ -68,6 +69,7 @@ public class GameManager : MonoBehaviour
 
     void Awake() 
     {
+
         EventHandler.RegisterListener<SaveGameEvent>(SaveGame);
         buildManager = FindObjectOfType<BuildManager>();
         if (DataManager.FileExists(DataManager.SaveData))
@@ -151,8 +153,10 @@ public class GameManager : MonoBehaviour
         InitializeUIElements();
 
         currentBaseHealth = baseHealth;
-        livesSlider.maxValue = baseStats.baseHealth;
-        livesSlider.value = currentBaseHealth;
+        healthBar.HandleHealthChanged(currentBaseHealth);
+
+        /*livesSlider.maxValue = baseStats.baseHealth;
+        livesSlider.value = currentBaseHealth;*/
 
         waveManager = GetComponent<WaveManager>();
 
@@ -172,8 +176,9 @@ public class GameManager : MonoBehaviour
         waveCounter = topPanel.Find("WaveHolder").Find("WaveCounter").gameObject;
         moneyCounterUI = topPanel.Find("MoneyHolder").Find("MoneyCounter").GetComponent<Text>();
         materialCounterUI = topPanel.Find("MaterialHolder").Find("MaterialCounter").GetComponent<Text>();
-        
-        livesSlider = canvas.Find("LivesSlider").GetComponent<Slider>();
+
+        healthBar = canvas.GetComponent<HealthBar>();
+        //livesSlider = canvas.Find("LivesSlider").GetComponent<Slider>();
 
         victoryPanel = canvas.Find("VictoryPanel").gameObject;        
         defeatPanel = canvas.Find("DefeatPanel").gameObject;
@@ -260,7 +265,8 @@ public class GameManager : MonoBehaviour
     {
         damagingEnemy = enemy;
         currentBaseHealth -= damage;
-        livesSlider.value -= damage;
+        healthBar.HandleHealthChanged(currentBaseHealth);
+        //livesSlider.value -= damage;
         if (currentBaseHealth <= 0)
         {
             Defeat();
@@ -415,7 +421,8 @@ public class GameManager : MonoBehaviour
     private void ResetBaseHealth()
     {
         currentBaseHealth = baseHealth;
-        livesSlider.value = currentBaseHealth;
+        healthBar.HandleHealthChanged(currentBaseHealth);
+        //livesSlider.value = currentBaseHealth;
     }
 }
 
