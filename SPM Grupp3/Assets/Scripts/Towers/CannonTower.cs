@@ -76,9 +76,10 @@ public class CannonTower : Tower
         if (target != null && target.GetComponent<EnemyController>())
         {
             EnemyController enemyTarget = target.GetComponent<EnemyController>();
-            GameObject effectInstance = Instantiate(hitEffect, enemyTarget.transform.position, enemyTarget.transform.rotation);
+            Destroy(Instantiate(hitEffect, enemyTarget.transform.position + Vector3.up * 2, Quaternion.LookRotation(transform.position - enemyTarget.transform.position)), 1f);
+            // GameObject effectInstance = Instantiate(hitEffect, enemyTarget.transform.position, enemyTarget.transform.rotation);
 
-            Destroy(effectInstance, 1f);
+            // Destroy(effectInstance, 1f);
             bullet.DecideTypeOfShot("Cannon");
         }
     }
@@ -164,7 +165,7 @@ public class CannonTower : Tower
     {
         CannonTower cT = tower.GetComponent<CannonTower>();
 
-        cT.ShotDamage = upgradeDamageAmount;
+        cT.ShotDamage += upgradeDamageAmount;
 
         GameObject towerUpgradeVisual1 = cT.transform.Find("Container").Find("Level1").gameObject;
         GameObject towerUpgradeVisual2 = cT.transform.Find("Container").Find("Level2").gameObject;

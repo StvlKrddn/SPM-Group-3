@@ -11,6 +11,7 @@ public class BulletBehavior : MonoBehaviour
 
     [SerializeField] private float bulletSpeed;
     [SerializeField] private float range;
+    [SerializeField] private GameObject muzzleFlash;
     
     Vector3 originalPosition;
     [SerializeField] private int penetrationCount = 2;
@@ -27,12 +28,12 @@ public class BulletBehavior : MonoBehaviour
 
 	void Start()
     {
-        // NOTE(August): Ändra från FindObjectOfType eftersom den körs varje gång en kula skjuts
         GameObject tank = GetComponentInParent<TankState>().gameObject;
         weapon = tank.GetComponent<WeaponSlot>();
         UpdateBulletStats();
         transform.parent = null;
         originalPosition = transform.position;
+
     }
 
 	private void OnEnable()

@@ -106,14 +106,15 @@ public class MissileTower : Tower
         GameObject bulletGO;
         if (missileIndex < 0)
         {
-            bulletGO = Instantiate(shot, firePoint.position, firePoint.rotation);
+            bulletGO = Instantiate(shot, firePoint.position, firePoint.rotation, transform);
             shots.Add(bulletGO);
         }
         else
         {
             bulletGO = shots[missileIndex];
+            bulletGO.transform.position = firePoint.position;
+            bulletGO.transform.rotation = firePoint.rotation;
         }
-        bulletGO.transform.parent = transform;
         bulletGO.SetActive(true);
         bullet = bulletGO.GetComponent<Shot>();
 

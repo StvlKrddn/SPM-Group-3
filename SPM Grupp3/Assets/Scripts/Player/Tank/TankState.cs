@@ -182,6 +182,7 @@ public class TankState : MonoBehaviour
         {
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(skewedVector), Time.deltaTime * standardSpeed);
         }
+
     }
 
     void RotateTurret()
