@@ -83,7 +83,7 @@ public class Shot : MonoBehaviour
                 break;
             case "Slow":
                 SlowTower sT = tower.GetComponent<SlowTower>();
-                GetComponent<SlowTowerEffect>().HitBySlow(sT.SlowProc, sT.range, sT.AreaOfEffect, false);
+                GetComponent<SlowTowerEffect>().HitBySlow(enemy, sT.SlowProc, sT.range, sT.AreaOfEffect, false);
 
                 break;
             case "Poison":

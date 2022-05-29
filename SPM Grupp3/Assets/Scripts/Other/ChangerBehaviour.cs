@@ -14,9 +14,9 @@ public class ChangerBehaviour : MonoBehaviour
 
     public bool destroyAfterFade = true;
 
-    private void Start()
+    private void OnEnable()
     {
-       
+        transform.position = transform.parent.position;
         lookAt = GameObject.FindGameObjectWithTag("Look").transform;
         Faded();
     }
