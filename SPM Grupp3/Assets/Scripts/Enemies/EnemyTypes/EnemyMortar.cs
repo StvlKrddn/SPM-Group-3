@@ -9,6 +9,7 @@ public class EnemyMortar : EnemyController
     private TankState[] tanks;
     private Transform explosionRadius = null;
     public Rigidbody mortarRigidbody;
+    private List<GameObject> shots = new List<GameObject>();
 
     // Update is called once per frame
     protected override void Awake()
@@ -17,7 +18,22 @@ public class EnemyMortar : EnemyController
         timer = Random.Range(timer, cd - 1);
     }
 
-    protected override void FixedUpdate()
+	protected override void OnEnable()
+	{
+		base.OnEnable();
+        timer = Random.Range(timer, cd - 1);
+    }
+
+	private void OnDestroy()
+	{
+        foreach (GameObject shot in shots)
+        {
+            Destroy(shot);
+        }
+        shots.Clear();
+	}
+
+	protected override void FixedUpdate()
     {
         MoveStep();
         timer += Time.deltaTime;
@@ -26,7 +42,6 @@ public class EnemyMortar : EnemyController
             CalculateTarget();
             if (explosionRadius != null)
             {
-                CalculateVelocity(3);
                 LaunchShot();
             }
             timer = 0;
@@ -54,27 +69,27 @@ public class EnemyMortar : EnemyController
         }
     }
 
-    private Vector3 CalculateVelocity(float duration)
-    {
-        Vector3 distance = explosionRadius.position - transform.position;
-        Vector3 distanceXZ = new Vector3(distance.x, 0, distance.z);
-
-        float yDistance = distance.y;
-        float xzDistance = distanceXZ.magnitude;
-
-        float xzVelocity = xzDistance / duration;
-        float yVelocity = yDistance / duration + 0.5f * Mathf.Abs(Physics.gravity.y) * duration;
-
-        Vector3 result = distanceXZ.normalized;
-        result *= xzVelocity;
-        result.y = yVelocity;
-
-        return result;
-    }
 
     private void LaunchShot()
     {
-        Rigidbody rigidbody = Instantiate(mortarRigidbody, transform.position, Quaternion.identity);
-        rigidbody.velocity = explosionRadius.position;
+        int mortarIndex = FindEmptyMortar();
+        if (mortarIndex < 0)
+        {
+            Rigidbody rigidbody = Instantiate(mortarRigidbody, transform.position, Quaternion.identity, GameManager.Instance.transform.Find("EnemyContainer"));
+            rigidbody.velocity = explosionRadius.position;
+            shots.Add(rigidbody.gameObject);
+        }
+    }
+
+    private int FindEmptyMortar()
+    {
+        for (int i = 0; i < shots.Count; i++)
+        {
+            if (shots.Count > i && shots[i].activeSelf == false)
+            {
+                return i;
+            }
+        }
+        return -1;
     }
 }
