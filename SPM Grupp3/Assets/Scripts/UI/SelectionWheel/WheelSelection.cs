@@ -356,10 +356,10 @@ public class WheelSelection : MonoBehaviour
             selectedItem.GetComponent<ButtonClick>().Click();
             EventHandler.InvokeEvent(new BoughtInUIEvent("Something is bought in UI"));
 
-            if (!MenuItems[index].transform.parent.name.Equals("BuildPanel"))
-            {
-                UpdateUpgradeLevelText();
-            }
+            // if (!MenuItems[index].transform.parent.name.Equals("BuildPanel"))
+            // {
+            //     UpdateUpgradeLevelText();
+            // }
 
             stickInput = Vector2.zero;
         }

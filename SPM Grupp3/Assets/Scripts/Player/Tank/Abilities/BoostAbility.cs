@@ -16,8 +16,6 @@ public class BoostAbility : MonoBehaviour
     InputAction boostAction;
     TankState tankState;
     GameObject effect;
-    ParticleSystem system;
-
 
     float speedBeforeBoost;
     bool allowedToBoost = true;
@@ -33,7 +31,6 @@ public class BoostAbility : MonoBehaviour
     {
         tankState = GetComponent<TankState>();
         boostAction = tankState.PlayerInput.actions["Boost"];
-        system = GetComponentInChildren<ParticleSystem>();
         ChangeSpeed();
     }
 
@@ -44,7 +41,6 @@ public class BoostAbility : MonoBehaviour
 
     private void OnEnable() 
     {
-        // Skapar ett exploit där spelaren kan gå in och ut ur Garaget för att få tillbaka sin boost direkt men who cares :)
         allowedToBoost = true;
     }
 
@@ -58,10 +54,9 @@ public class BoostAbility : MonoBehaviour
         if (boostAction.IsPressed() && allowedToBoost)
         {
             // Play particle effect
-            //system.Play();
-            foreach (Transform booster in boosters.transform)
+            foreach (Transform child in boosters.transform)
             {
-                booster.GetComponent<ParticleSystem>().Play();
+                child.GetComponent<ParticleSystem>().Play();
             }
 
             boostTimer = boostDuration;
@@ -83,9 +78,9 @@ public class BoostAbility : MonoBehaviour
         {
             // Reset movement speed
             tankState.StandardSpeed = Mathf.Lerp(tankState.StandardSpeed, speedBeforeBoost, Time.deltaTime * boostAccelerationTimeMultiplier);
-            foreach (Transform booster in boosters.transform)
+            foreach (Transform child in boosters.transform)
             {
-                booster.GetComponent<ParticleSystem>().Play();
+                child.GetComponent<ParticleSystem>().Play();
             }
             animator.SetBool("isBoosting", false);
         }
