@@ -91,10 +91,6 @@ public class WaveManager : MonoBehaviour
 
     private void SpawnWave()
     {
-        if (poolOfEnemies.Count < poolCount + poolCount / 2)
-        { 
-            StopCoroutine(ClearInactive());
-        }
         currentWave++;
 
         waveClear.SetActive(false);

@@ -7,6 +7,7 @@ public class EnemyArcher : EnemyController
     public float timer = 2;
     public int cd = 5;
     public GameObject shot;
+    private List<GameObject> bullets = new List<GameObject>();
 
 	// Update is called once per frame
 	protected override void OnEnable()
@@ -33,8 +34,41 @@ public class EnemyArcher : EnemyController
         }
     }
 
-    private void ShootPlayer()
+	private void OnDestroy()
+	{
+        foreach (GameObject bullet in bullets)
+        {
+            Destroy(bullet);
+        }
+	}
+
+	private void ShootPlayer()
     {
-        Instantiate(shot, transform.position, Quaternion.identity);
+        GameObject bullet;
+        int bulletIndex = FindEmptyBullet();
+        if (bulletIndex < 0)
+        {
+            bullet = Instantiate(shot, transform.position, Quaternion.identity, GameManager.Instance.transform.Find("EnemyContainer"));
+            bullets.Add(bullet);
+        }
+        else
+        {
+            bullet = bullets[bulletIndex];
+            bullet.transform.position = transform.position;
+            bullet.transform.rotation = transform.rotation;
+            bullet.SetActive(true);
+        }
+    }
+
+    private int FindEmptyBullet()
+    {
+        for (int i = 0; i < bullets.Count; i++)
+        {
+            if (bullets.Count > i && bullets[i].activeSelf == false)
+            {
+                return i;
+            }
+        }
+        return -1;
     }
 }

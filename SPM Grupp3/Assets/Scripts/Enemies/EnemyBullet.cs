@@ -11,11 +11,24 @@ public class EnemyBullet : MonoBehaviour
     public float bulletTime = 5f;
     public float timer = 0;
     public float damage = 5;
-    // Start is called before the first frame update
+    private Transform garageTrigger;
+	// Start is called before the first frame update
 
-    void Start()
+	private void OnEnable()
+	{
+        timer = 0;
+		FindTarget();
+	}
+
+	void Start()
     {
+        garageTrigger = FindObjectOfType<GarageTrigger>().gameObject.transform;
+        FindTarget();
         //Checks who is closer between tank1 and tank2
+    }
+
+    private void FindTarget()
+    {
         if (FindObjectOfType<TankState>())
         {
             tanks = FindObjectsOfType<TankState>();
@@ -30,7 +43,7 @@ public class EnemyBullet : MonoBehaviour
         }
         else
         {
-            target = FindObjectOfType<GarageTrigger>().gameObject.transform;
+            target = garageTrigger;
         }
         direction = target.position - transform.position; //Checks direction
         direction.Normalize();
@@ -40,15 +53,9 @@ public class EnemyBullet : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
 	{
-    //    if (!other.CompareTag("Enemy"))
-    //    {
-    //        Destroy(gameObject, Mathf.Epsilon);
-    //    }
-
-
-        if(other.CompareTag("Player"))
+        if(other.CompareTag("Tank"))
         {
-            Destroy(gameObject, Mathf.Epsilon);
+            gameObject.SetActive(false);
         }
 	}
 
@@ -59,7 +66,7 @@ public class EnemyBullet : MonoBehaviour
         transform.Translate(speed * Time.deltaTime * direction, Space.World); //Bullet travels
         if (timer >= bulletTime)
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
     public int GetDamage()
