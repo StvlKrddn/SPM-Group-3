@@ -100,7 +100,7 @@ public class PoisonTower : Tower
         int bulletIndex = FindShot();
         if (bulletIndex < 0)
         {
-            effectInstance = Instantiate(poisonPulse, transform.position, transform.rotation);
+            effectInstance = Instantiate(poisonPulse, transform.position, transform.rotation, transform);
             shots.Add(effectInstance);
         }
         else

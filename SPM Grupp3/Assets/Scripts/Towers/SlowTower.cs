@@ -142,7 +142,7 @@ public class SlowTower : Tower
         GameObject effectInstance;
         if (shotIndex < 0)
         {
-            effectInstance = Instantiate(onHitEffect, transform.position, transform.rotation);
+            effectInstance = Instantiate(onHitEffect, transform.position, transform.rotation, transform);
             shots.Add(effectInstance);
         }
         else

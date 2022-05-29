@@ -95,10 +95,6 @@ public class WaveManager : MonoBehaviour
 
     private void SpawnWave()
     {
-        if (poolOfEnemies.Count < poolCount + poolCount / 2)
-        { 
-            StopCoroutine(ClearInactive());
-        }
         currentWave++;
 
         if(!waveCleared.GetComponent<FadeBehaviour>().Faded())
@@ -159,13 +155,16 @@ public class WaveManager : MonoBehaviour
             {
                 Destroy(poolOfEnemies[i]);
                 poolOfEnemies.RemoveAt(i);
-                yield return new WaitForSeconds(10 / (poolOfEnemies.Count - poolCount));
+                i--;
+                yield return new WaitForSeconds(0.15f + (poolCount + 1) / poolOfEnemies.Count);
             }
-            else if (poolOfEnemies.Count > poolCount)
+            else if (poolOfEnemies.Count < poolCount)
             {
+                print("Head out");
                 break;
             }
         }
+        yield return null;
     }
 
     private int FindEmptyPool()

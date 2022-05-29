@@ -49,12 +49,8 @@ public class EnemyMortarShot : MonoBehaviour
 
                 TankState tankToTarget = tanks[Random.Range(0, tanks.Length)];
                 Vector3 tempVector = new Vector3(tankToTarget.transform.position.x + Random.Range(-4, 4), tankToTarget.transform.position.y, tankToTarget.transform.position.z + Random.Range(-4, 4));
-                //Transform randomTransform = new Transform();
 
-                target =tempVector;
-
-
-             //   target.position = tempVector;
+                target = tempVector;
 
 
                 if (radius.transform.parent != null)
@@ -65,7 +61,7 @@ public class EnemyMortarShot : MonoBehaviour
             }
             else
             {
-                Destroy(gameObject);
+                gameObject.SetActive(false);
             }
         }
     }
@@ -87,7 +83,7 @@ public class EnemyMortarShot : MonoBehaviour
         {
             if (collider.gameObject.CompareTag("PlaceForTower") || collider.gameObject.CompareTag("Road") || collider.gameObject.CompareTag("Tank"))
             {
-                Destroy(radius);
+                radius.SetActive(false);
                 StartCoroutine(Particle());
             }
         }
@@ -104,6 +100,7 @@ public class EnemyMortarShot : MonoBehaviour
             p.Play();
         }
         yield return new WaitForSeconds(particle[0].main.duration);
-        Destroy(gameObject);
+        radius.transform.parent = transform;
+        gameObject.SetActive(false);
     }
 }
