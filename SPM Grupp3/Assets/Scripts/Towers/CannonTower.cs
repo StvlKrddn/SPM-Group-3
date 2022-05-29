@@ -76,9 +76,10 @@ public class CannonTower : Tower
         if (target != null && target.GetComponent<EnemyController>())
         {
             EnemyController enemyTarget = target.GetComponent<EnemyController>();
-            GameObject effectInstance = Instantiate(hitEffect, enemyTarget.transform.position, enemyTarget.transform.rotation);
+            Destroy(Instantiate(hitEffect, enemyTarget.transform.position + Vector3.up * 2, Quaternion.LookRotation(transform.position - enemyTarget.transform.position)), 1f);
+            // GameObject effectInstance = Instantiate(hitEffect, enemyTarget.transform.position, enemyTarget.transform.rotation);
 
-            Destroy(effectInstance, 1f);
+            // Destroy(effectInstance, 1f);
             bullet.DecideTypeOfShot("Cannon");
         }
     }

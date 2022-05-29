@@ -15,6 +15,8 @@ public class WeaponSlot : MonoBehaviour
     [SerializeField] private float bulletSpeed;
     [SerializeField] private bool penetrating;
     [SerializeField] private float damage;
+    [Space]
+    [SerializeField] private GameObject muzzleFlash;
     private GameObject bulletPrefab;
     private List<GameObject> bullets = new List<GameObject>();
 
@@ -95,6 +97,7 @@ public class WeaponSlot : MonoBehaviour
 
     void SpawnBullet()
     {
+        Destroy(Instantiate(muzzleFlash, bulletSpawner.position, bulletSpawner.rotation, bulletSpawner.parent), 0.1f);
         Quaternion spreadDirection = ComputeBulletSpread();
         int bulletIndex = FindShot();
         if (bulletIndex < 0)
