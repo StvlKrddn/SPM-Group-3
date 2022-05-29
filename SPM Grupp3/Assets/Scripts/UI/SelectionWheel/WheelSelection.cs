@@ -40,17 +40,19 @@ public class WheelSelection : MonoBehaviour
     private Vector2 stickInput;
     private InputAction infoAction;
 
+    private TowerUpgradeController tUC;
     private GameObject towerToDisplay;
     private GameObject statisticPanel;
     private GameObject menuItem;
-    // private Text upgradeTitleText;
-    // private Text upgradeLevel1Text;
-    // private Text upgradeLevel2Text;
-    // private Text upgradeLevel3Text;
+    private Text upgradeTitleText;
+    private Text upgradeLevel1Text;
+    private Text upgradeLevel2Text;
+    private Text upgradeLevel3Text;
 
 
     private void Start() 
     {
+        tUC = TowerUpgradeController.Instance;
         numberOfMenuItems = MenuItems.Length;
         degreesPerItem = 360 / numberOfMenuItems;
 
@@ -69,6 +71,59 @@ public class WheelSelection : MonoBehaviour
         stickAction = playerInput.actions["LeftStick"];
         selectAction = playerInput.actions["Accept"];
         infoAction = playerInput.actions["Information"];
+
+        SetRightValuesOnUpgrades();
+    }
+
+    private void SetRightValuesOnUpgrades()
+    {
+        if (gameObject.name.Equals("BuildPanel"))
+        {
+            return;
+        }
+        if (gameObject.name.Equals("TankPanel"))
+        {
+            return;
+        }
+        
+        statisticPanel = MenuItems[0].transform.Find("StatisticPanel").gameObject;
+        upgradeTitleText = statisticPanel.transform.Find("Title").GetComponent<Text>();
+        upgradeLevel1Text = upgradeTitleText.transform.Find("Level1").GetComponent<Text>();
+        upgradeLevel2Text = upgradeTitleText.transform.Find("Level2").GetComponent<Text>();
+        upgradeLevel3Text = upgradeTitleText.transform.Find("Level3").GetComponent<Text>();
+
+        switch (tUC.GetNameOfTowerClicked())
+        {
+            case "Cannon Tower":
+                CannonTower cT = tUC.ClickedTower.GetComponent<CannonTower>();
+                upgradeLevel1Text.text = "Basic Fire rate: " + cT.FireRate;
+                upgradeLevel2Text.text = "Basic Damage: " + cT.ShotDamage;
+                upgradeLevel3Text.text = "Double Shot: (Active)";
+
+                break;
+            case "Missile Tower":
+                MissileTower mT = tUC.ClickedTower.GetComponent<MissileTower>();
+                upgradeLevel1Text.text = "Basic AoE Radius: " + mT.SplashRadius;
+                upgradeLevel2Text.text = "Basic AoE Damage: " + mT.SplashDamage;
+                upgradeLevel3Text.text = "Increased Third Missle Dmg (Active)";
+
+                break;
+            case "Slow Tower":
+                SlowTower sT = tUC.ClickedTower.GetComponent<SlowTower>();
+                upgradeLevel1Text.text = "Basic Range: " + sT.range;
+                upgradeLevel2Text.text = "Basic Area Effect: (Active)";
+                upgradeLevel3Text.text = "Periodic Halts All Enemies: (Active)";
+
+                break;
+            case "Poison Tower":
+                PoisonTower pT = tUC.ClickedTower.GetComponent<PoisonTower>();
+                upgradeLevel1Text.text = "Basic Poison Duration: " + pT.PoisonTicks;
+                upgradeLevel2Text.text = "Basic DoT: " + pT.PoisonDamagePerTick;
+                upgradeLevel3Text.text = "Contagious: (Active)";
+
+                break;
+        }
+        
     }
 
     private void Update() 
@@ -145,26 +200,27 @@ public class WheelSelection : MonoBehaviour
             return;
         }
         for (int i = 0; i < numberOfMenuItems; i++)
-        {
-            
+        {            
             if (MenuItems[i].transform.Find("StatisticPanel"))
             {
                 statisticPanel = MenuItems[i].transform.Find("StatisticPanel").gameObject;
+
+                if (!MenuItems[i].transform.parent.name.Equals("BuildPanel"))
+                {
+                    upgradeTitleText = statisticPanel.transform.Find("Title").GetComponent<Text>();
+                    upgradeLevel1Text = upgradeTitleText.transform.Find("Level1").GetComponent<Text>();
+                    upgradeLevel2Text = upgradeTitleText.transform.Find("Level2").GetComponent<Text>();
+                    upgradeLevel3Text = upgradeTitleText.transform.Find("Level3").GetComponent<Text>();
+                }
             }
+
             if (MenuItems[i].transform.Find("Cost"))
             {
                 menuItem = MenuItems[i].transform.Find("Cost").gameObject;
             }
-                
+
             if (i == index)
             {
-                if (!MenuItems[i].transform.parent.name.Equals("BuildPanel"))
-                {
-                    //upgradeTitleText = statisticPanel.transform.Find("Title").GetComponent<Text>();
-                    //upgradeLevel1Text = upgradeTitleText.transform.Find("Level1").GetComponent<Text>();
-                    //upgradeLevel2Text = upgradeTitleText.transform.Find("Level2").GetComponent<Text>();
-                    //upgradeLevel3Text = upgradeTitleText.transform.Find("Level3").GetComponent<Text>();
-                }
                 // Hover effect
                 MenuItems[i].transform.GetChild(0).GetComponent<Image>().color = highLight;
                     
@@ -174,45 +230,7 @@ public class WheelSelection : MonoBehaviour
                     
                 Tower tower;
 
-                TowerUpgradeController tUC = TowerUpgradeController.Instance;
-                
-
-                if (statisticPanel != null)
-                {
-                    if (MenuItems[i].transform.parent.name.Equals("BuildPanel"))
-                    {
-                        if (infoAction.IsPressed())
-                        {
-                            statisticPanel.SetActive(true);
-                        }
-                    }
-                    else
-                    {
-                        statisticPanel.SetActive(true);
-
-                        //upgradeTitleText.text = tUC.GetNameOfTowerClicked() + " (Lv " + tUC.GetUpgradesPurchased() + ")";
-
-                        switch (tUC.GetUpgradesPurchased())
-                        {
-                            case 0:
-                                //upgradeLevel1Text.color = Color.green;
-                                break;
-                            case 1:
-                                //upgradeLevel2Text.color = Color.green;
-                                break;
-                            case 2:
-                                //upgradeLevel3Text.color = Color.green;
-                                break;
-                            case 3:
-                                //upgradeTitleText.text = tUC.GetNameOfTowerClicked() + " (Lv MAX)";
-                                break;
-                        }
-
-                    }
-                }
-                    
-              
-                    
+                ShowStatisticPanel(i);
 
                 DecideTowerToBuild(MenuItems[i].name);
 
@@ -221,18 +239,7 @@ public class WheelSelection : MonoBehaviour
                     tower = towerToDisplay.GetComponent<Tower>();
                     moneyText.text = tower.cost.ToString();
                     materialText.text = tower.materialCost.ToString(); //if needed
-                }
-                else
-                {
-                    
-                    if (tUC.ClickedTower != null) //Checks upgrade and changes the UI based on upgradelevel
-                    {
-                        UpgradeHighlighted(moneyText, materialText, tUC);
-                    }
-                }
-                DecideTowerToBuild(MenuItems[i].name);
-                if (towerToDisplay != null)
-                {
+
                     if (GameManager.Instance.CheckIfEnoughResources(towerToDisplay.GetComponent<Tower>()))
                     {
                         moneyText.color = Color.black;
@@ -242,6 +249,19 @@ public class WheelSelection : MonoBehaviour
                     {
                         moneyText.color = Color.red;
                     }
+                }
+                else
+                {                  
+                    if (tUC.ClickedTower != null) //Checks upgrade and changes the UI based on upgradelevel
+                    {
+                        UpgradeHighlighted(moneyText, materialText);
+                    }
+                }
+/*
+                DecideTowerToBuild(MenuItems[i].name);
+                if (towerToDisplay != null)
+                {
+
                 }
                 else
                 {
@@ -255,7 +275,7 @@ public class WheelSelection : MonoBehaviour
                 if (infoAction.triggered)
                 {
                     //InfoPanel();
-                }
+                }*/
 
                 selectHint.SetActive(true);
                 infoHint.SetActive(true);               
@@ -267,22 +287,62 @@ public class WheelSelection : MonoBehaviour
 
                 MenuItems[i].transform.Find("Cost").gameObject.SetActive(false);
 
-
                 if (MenuItems[i].transform.parent.name.Equals("BuildPanel"))
                 {
                     statisticPanel.SetActive(false);                    
                 }
                 else
                 {
-                    //upgradeLevel1Text.color = Color.white;
-                    //upgradeLevel2Text.color = Color.white;
-                    //upgradeLevel3Text.color = Color.white;
+                    upgradeLevel1Text.color = Color.white;
+                    upgradeLevel2Text.color = Color.white;
+                    upgradeLevel3Text.color = Color.white;
                 }
             }
         }
     }
 
-    private void UpgradeHighlighted(Text moneyText, Text materialText, TowerUpgradeController tUC)
+    private void ShowStatisticPanel(int i)
+    {
+        if (statisticPanel != null)
+        {
+            if (MenuItems[i].transform.parent.name.Equals("BuildPanel"))
+            {
+                if (infoAction.IsPressed())
+                {
+                    statisticPanel.SetActive(true);
+                }
+            }
+            else
+            {
+                statisticPanel.SetActive(true);
+
+                upgradeTitleText.text = tUC.GetNameOfTowerClicked() + " (Lv " + tUC.GetUpgradesPurchased() + ")";
+
+                ChangeUpgradeTextColorToGreen();
+            }
+        }
+    }
+
+    private void ChangeUpgradeTextColorToGreen()
+    {
+        switch (tUC.GetUpgradesPurchased())
+        {
+            case 0:
+                upgradeLevel1Text.color = Color.green;
+                break;
+            case 1:
+                upgradeLevel2Text.color = Color.green;
+                break;
+            case 2:
+                upgradeLevel3Text.color = Color.green;
+                break;
+            case 3:
+                upgradeTitleText.text = tUC.GetNameOfTowerClicked() + " (Lv MAX)";
+                break;
+        }
+    }
+
+    private void UpgradeHighlighted(Text moneyText, Text materialText)
     {
         Tower tower;
         tower = tUC.ClickedTower.GetComponent<Tower>();
@@ -372,8 +432,6 @@ public class WheelSelection : MonoBehaviour
 
     private void UpdateUpgradeLevelText()
     {
-        TowerUpgradeController tUC = TowerUpgradeController.Instance;
-
         switch (tUC.GetNameOfTowerClicked())
         {
             case "Cannon Tower":
@@ -381,13 +439,13 @@ public class WheelSelection : MonoBehaviour
                 switch (tUC.GetUpgradesPurchased())
                 {
                     case 1:
-                        //upgradeLevel1Text.text = "Basic Fire rate: " + cT.FireRate;
+                        upgradeLevel1Text.text = "Basic Fire rate: " + cT.FireRate;
                         break;
                     case 2:
-                        //upgradeLevel2Text.text = "Basic Damage: " + cT.ShotDamage;
+                        upgradeLevel2Text.text = "Basic Damage: " + cT.ShotDamage;
                         break;
                     case 3:
-                        //upgradeLevel3Text.text = "Double Shot: (Active)";
+                        upgradeLevel3Text.text = "Double Shot: (Active)";
                         break;
                 }
 
@@ -397,13 +455,13 @@ public class WheelSelection : MonoBehaviour
                 switch (tUC.GetUpgradesPurchased())
                 {
                     case 1:
-                        //upgradeLevel1Text.text = "Basic AoE Radius: " + mT.SplashRadius;
+                        upgradeLevel1Text.text = "Basic AoE Radius: " + mT.SplashRadius;
                         break;
                     case 2:
-                        //upgradeLevel2Text.text = "Basic AoE Damage: " + mT.SplashDamage;
+                        upgradeLevel2Text.text = "Basic AoE Damage: " + mT.SplashDamage;
                         break;
                     case 3:
-                        //upgradeLevel3Text.text = "Increased Third Missle Dmg (Active)";
+                        upgradeLevel3Text.text = "Increased Third Missle Dmg (Active)";
                         break;
                 }
                 break;
@@ -412,13 +470,13 @@ public class WheelSelection : MonoBehaviour
                 switch (tUC.GetUpgradesPurchased())
                 {
                     case 1:
-                        //upgradeLevel1Text.text = "Basic Range: " + sT.range;
+                        upgradeLevel1Text.text = "Basic Range: " + sT.range;
                         break;
                     case 2:
-                        //upgradeLevel2Text.text = "Basic Area Effect: (Active)";
+                        upgradeLevel2Text.text = "Basic Area Effect: (Active)";
                         break;
                     case 3:
-                        //upgradeLevel3Text.text = "Periodic Halts All Enemies: (Active)";
+                        upgradeLevel3Text.text = "Periodic Halts All Enemies: (Active)";
                         break;
                 }
                 break;
@@ -427,13 +485,13 @@ public class WheelSelection : MonoBehaviour
                 switch (tUC.GetUpgradesPurchased())
                 {
                     case 1:
-                        //upgradeLevel1Text.text = "Basic Poison Duration: " + pT.PoisonTicks;
+                        upgradeLevel1Text.text = "Basic Poison Duration: " + pT.PoisonTicks;
                         break;
                     case 2:
-                        //upgradeLevel2Text.text = "Basic DoT: " + pT.PoisonDamagePerTick;
+                        upgradeLevel2Text.text = "Basic DoT: " + pT.PoisonDamagePerTick;
                         break;
                     case 3:
-                        //upgradeLevel3Text.text = "Contagious: (Active)";
+                        upgradeLevel3Text.text = "Contagious: (Active)";
                         break;
                 }
                 break;

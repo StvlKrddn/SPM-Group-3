@@ -165,7 +165,7 @@ public class CannonTower : Tower
     {
         CannonTower cT = tower.GetComponent<CannonTower>();
 
-        cT.ShotDamage = upgradeDamageAmount;
+        cT.ShotDamage += upgradeDamageAmount;
 
         GameObject towerUpgradeVisual1 = cT.transform.Find("Container").Find("Level1").gameObject;
         GameObject towerUpgradeVisual2 = cT.transform.Find("Container").Find("Level2").gameObject;
