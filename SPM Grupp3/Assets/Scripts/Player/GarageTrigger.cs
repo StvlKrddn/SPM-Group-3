@@ -15,13 +15,14 @@ public class GarageTrigger : MonoBehaviour
         hintEnterUI = UI.Canvas.transform.Find("EnterGarageHint").gameObject;
     }
 
-    private void OnTriggerEnter(Collider other)
+/*    private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Tank"))
         {
-            hintEnterUI.SetActive(true);
+            hintEnterUI.GetComponent<FadeBehaviour>().Fade();
+            //hintEnterUI.SetActive(true);
         }
-    }
+    }*/
 
 
     private void OnTriggerStay(Collider other)
@@ -30,10 +31,16 @@ public class GarageTrigger : MonoBehaviour
         {
             PlayerInput playerInput = other.GetComponentInParent<PlayerInput>();
             acceptAction = playerInput.actions["EnterGarage"];
-            
+
+            if(hintEnterUI.GetComponent<FadeBehaviour>().Faded())
+                hintEnterUI.GetComponent<FadeBehaviour>().Fade();
+
             if (acceptAction.IsPressed() && limit == false)
             {
-                hintEnterUI.SetActive(false);
+                if (!hintEnterUI.GetComponent<FadeBehaviour>().Faded())
+                    hintEnterUI.GetComponent<FadeBehaviour>().Fade();
+
+                //hintEnterUI.SetActive(false);
                 EventHandler.InvokeEvent(new PlayerSwitchEvent(
                     description: "A player switched mode",
                     playerContainer: other.transform.parent.gameObject
@@ -43,13 +50,15 @@ public class GarageTrigger : MonoBehaviour
 
             }
         }
-        }
+    }
 
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Tank"))
         {
-            hintEnterUI.SetActive(false);
+            if(!hintEnterUI.GetComponent<FadeBehaviour>().Faded())
+                hintEnterUI.GetComponent<FadeBehaviour>().Fade();
+            //hintEnterUI.SetActive(false);
         }
     }
 
