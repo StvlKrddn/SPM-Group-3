@@ -8,7 +8,7 @@ public abstract class EnemyController : MonoBehaviour
 {
     public float speed = 10f;
     [SerializeField] private float health = 100f;
-    public GameObject hitEffect;
+    public GameObject deathEffect;
     [SerializeField] private float meleeDamage;
     private GameManager gM;
     private Transform target;
@@ -153,6 +153,7 @@ public abstract class EnemyController : MonoBehaviour
         }
         DieEvent dieEvent = new DieEvent("d�d", gameObject, null, null);
         EventHandler.InvokeEvent(dieEvent);
+        Destroy(Instantiate(deathEffect, transform.position, Quaternion.identity), 1f);
         gameObject.SetActive(false);
     }
 
