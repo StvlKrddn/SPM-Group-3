@@ -11,7 +11,6 @@ public class BulletBehavior : MonoBehaviour
 
     [SerializeField] private float bulletSpeed;
     [SerializeField] private float range;
-    [SerializeField] private GameObject muzzleFlash;
     
     Vector3 originalPosition;
     [SerializeField] private int penetrationCount = 2;

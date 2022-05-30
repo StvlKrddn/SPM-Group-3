@@ -6,6 +6,8 @@ public class BuildingEffect : MonoBehaviour
 {
     [SerializeField] private float objectHeight = 1f;
     [SerializeField] private float sinkSpeed = 2f;
+    [Space]
+    [SerializeField] private GameObject tower;
 
     private Material material;
     private float height;
@@ -15,33 +17,28 @@ public class BuildingEffect : MonoBehaviour
     {
         material = GetComponent<Renderer>().material;
         height = material.GetFloat("CutoffHeight");
+        tower.GetComponent<Renderer>().enabled = false;
     }
 
-    public IEnumerator PlayEffect()
+    private void Update()
     {
-        bool finished = false;
-        while(!finished)
+        if (transform.position.y > tower.transform.position.y)
         {
-            if (transform.position.y > 0)
+            transform.position -= Vector3.up * sinkSpeed * Time.deltaTime;
+        }
+        else 
+        {
+            transform.position = new Vector3(transform.position.x, tower.transform.position.y, transform.position.z);
+            if (height < objectHeight)
             {
-                transform.position -= Vector3.up * sinkSpeed * Time.deltaTime;
+                height += sinkSpeed * Time.deltaTime;
+                SetCutoff(height);
             }
-            else 
+            else
             {
-                transform.position = new Vector3(transform.position.x, 0, transform.position.z);
-                if (height < objectHeight)
-                {
-                    height += sinkSpeed * Time.deltaTime;
-                    SetCutoff(height);
-                }
-                else
-                {
-                    finished = true;
-                    Destroy(gameObject);
-
-                }
+                tower.GetComponent<Renderer>().enabled = true;
+                transform.parent.gameObject.SetActive(false);
             }
-            yield return new WaitForEndOfFrame();
         }
     }
 

@@ -18,8 +18,6 @@ public class BuildManager : MonoBehaviour
         instance = this;*/
     }
 
-    [SerializeField] private GameObject buildEffect;
-
     public GameObject cannonTowerPrefab;
     public GameObject missileTowerPrefab;
     public GameObject slowTowerPrefab;
@@ -69,7 +67,7 @@ public class BuildManager : MonoBehaviour
 
         if (gM.SpendResources(tower.cost, tower.materialCost))
         {
-            GameObject placedTower = BuildTower(TowerToBuild, ClickedArea.transform.GetChild(0).position, 0);
+            BuildTower(TowerToBuild, ClickedArea.transform.GetChild(0).position, 0);
 
 			ClickedArea = null;
 
@@ -86,13 +84,12 @@ public class BuildManager : MonoBehaviour
     {
         GameObject towerPrefab = GetTowerByType(tower.towerType);
 
-        GameObject newTower = BuildTower(towerPrefab, tower.position, tower.level);
+        BuildTower(towerPrefab, tower.position, tower.level);
     }
 
-    GameObject BuildTower(GameObject tower, Vector3 position, int level)
+    async void BuildTower(GameObject tower, Vector3 position, int level)
     {
         GameObject newTower = Instantiate(tower, position, Quaternion.identity);
-        newTower.SetActive(false);
         Tower towerScript = newTower.GetComponent<Tower>();
 
         GameObject placement = FindTile(towerScript);
@@ -110,8 +107,6 @@ public class BuildManager : MonoBehaviour
         {
             towerScript.LoadTowerLevel(placedTower);
         }
-
-        return newTower;
     }
 
 
