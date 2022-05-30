@@ -10842,6 +10842,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 759940563}
     - target: {fileID: 5574963424639874961, guid: f38755517d96a124d80b16613eb953a3, type: 3}
+      propertyPath: moneyParticle
+      value: 
+      objectReference: {fileID: 1589792882}
+    - target: {fileID: 5574963424639874961, guid: f38755517d96a124d80b16613eb953a3, type: 3}
       propertyPath: restartButton
       value: 
       objectReference: {fileID: 0}
@@ -10852,11 +10856,15 @@ PrefabInstance:
     - target: {fileID: 5574963424639874961, guid: f38755517d96a124d80b16613eb953a3, type: 3}
       propertyPath: moneyCounterUI
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1589792883}
     - target: {fileID: 5574963424639874961, guid: f38755517d96a124d80b16613eb953a3, type: 3}
       propertyPath: selectedButton
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 5574963424639874961, guid: f38755517d96a124d80b16613eb953a3, type: 3}
+      propertyPath: materialParticle
+      value: 
+      objectReference: {fileID: 1589792880}
     - target: {fileID: 5574963424639874961, guid: f38755517d96a124d80b16613eb953a3, type: 3}
       propertyPath: materialChangerUI
       value: 
@@ -10864,7 +10872,7 @@ PrefabInstance:
     - target: {fileID: 5574963424639874961, guid: f38755517d96a124d80b16613eb953a3, type: 3}
       propertyPath: materialCounterUI
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1589792881}
     - target: {fileID: 5574963424639874961, guid: f38755517d96a124d80b16613eb953a3, type: 3}
       propertyPath: baseStats.material
       value: 0
@@ -11571,7 +11579,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5574963424639874967, guid: f38755517d96a124d80b16613eb953a3, type: 3}
       propertyPath: waves.Array.data[0].subWaves.Array.data[0].enemies.Array.size
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 5574963424639874967, guid: f38755517d96a124d80b16613eb953a3, type: 3}
       propertyPath: waves.Array.data[0].subWaves.Array.data[1].enemies.Array.size
@@ -12056,6 +12064,10 @@ PrefabInstance:
     - target: {fileID: 5574963424639874967, guid: f38755517d96a124d80b16613eb953a3, type: 3}
       propertyPath: waves.Array.data[0].subWaves.Array.data[0].enemies.Array.data[2].amount
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 5574963424639874967, guid: f38755517d96a124d80b16613eb953a3, type: 3}
+      propertyPath: waves.Array.data[0].subWaves.Array.data[0].enemies.Array.data[4].amount
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 5574963424639874967, guid: f38755517d96a124d80b16613eb953a3, type: 3}
       propertyPath: waves.Array.data[1].subWaves.Array.data[0].enemies.Array.data[0].amount
@@ -13213,6 +13225,10 @@ PrefabInstance:
       propertyPath: waves.Array.data[0].subWaves.Array.data[0].enemies.Array.data[3].enemyPrefab
       value: 
       objectReference: {fileID: 5940178821907547970, guid: 2d58c5c9792dba04da822e43cf28112c, type: 3}
+    - target: {fileID: 5574963424639874967, guid: f38755517d96a124d80b16613eb953a3, type: 3}
+      propertyPath: waves.Array.data[0].subWaves.Array.data[0].enemies.Array.data[4].enemyPrefab
+      value: 
+      objectReference: {fileID: 5940178821907547970, guid: f3cdae9303da05b4a8d7adbc9c7eaef0, type: 3}
     - target: {fileID: 5574963424639874967, guid: f38755517d96a124d80b16613eb953a3, type: 3}
       propertyPath: waves.Array.data[0].subWaves.Array.data[1].enemies.Array.data[0].enemyPrefab
       value: 
@@ -17535,7 +17551,7 @@ GameObject:
   - component: {fileID: 207312581}
   m_Layer: 6
   m_Name: GroundPlane
-  m_TagString: Untagged
+  m_TagString: GameBoard
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -97407,6 +97423,38 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 174427384154470194, guid: e69b554477972e34f80c3193812c535d, type: 3}
   m_PrefabInstance: {fileID: 1589792878}
   m_PrefabAsset: {fileID: 0}
+--- !u!198 &1589792880 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 5330480908814868149, guid: e69b554477972e34f80c3193812c535d, type: 3}
+  m_PrefabInstance: {fileID: 1589792878}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1589792881 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2631724412334176421, guid: e69b554477972e34f80c3193812c535d, type: 3}
+  m_PrefabInstance: {fileID: 1589792878}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!198 &1589792882 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 1239675144700989848, guid: e69b554477972e34f80c3193812c535d, type: 3}
+  m_PrefabInstance: {fileID: 1589792878}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1589792883 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2631724412662563646, guid: e69b554477972e34f80c3193812c535d, type: 3}
+  m_PrefabInstance: {fileID: 1589792878}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1590957982
 GameObject:
   m_ObjectHideFlags: 0
