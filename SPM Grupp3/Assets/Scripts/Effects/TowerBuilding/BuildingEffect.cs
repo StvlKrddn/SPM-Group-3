@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class BuildingEffect : MonoBehaviour
 {
-    [SerializeField] private float noiseStrength = 0.5f;
     [SerializeField] private float objectHeight = 1f;
     [SerializeField] private float sinkSpeed = 2f;
 
@@ -18,11 +17,12 @@ public class BuildingEffect : MonoBehaviour
         height = material.GetFloat("CutoffHeight");
     }
 
-    void Update()
+    public IEnumerator PlayEffect()
     {
-        material.SetFloat("NoiseStrength", noiseStrength);
-
-        if (transform.position.y > 0)
+        bool finished = false;
+        while(!finished)
+        {
+            if (transform.position.y > 0)
             {
                 transform.position -= Vector3.up * sinkSpeed * Time.deltaTime;
             }
@@ -34,8 +34,15 @@ public class BuildingEffect : MonoBehaviour
                     height += sinkSpeed * Time.deltaTime;
                     SetCutoff(height);
                 }
-            }
+                else
+                {
+                    finished = true;
+                    Destroy(gameObject);
 
+                }
+            }
+            yield return new WaitForEndOfFrame();
+        }
     }
 
     void SetCutoff(float height)

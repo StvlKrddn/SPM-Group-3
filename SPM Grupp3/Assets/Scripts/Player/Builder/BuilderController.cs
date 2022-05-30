@@ -471,7 +471,6 @@ public class BuilderController : MonoBehaviour
 
             if (towerHit != null && preTower == null && towerHit.GetComponent<Tower>())
             {
-                print("Clicked Tower");
                 selectedTower = towerHit.GetComponent<Tower>();
                 towerHit.layer = LayerMask.NameToLayer("Ignore Raycast");
                 selectedTower.ShowUpgradeUI(towerMenu);
