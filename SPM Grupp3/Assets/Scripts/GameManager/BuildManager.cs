@@ -19,6 +19,7 @@ public class BuildManager : MonoBehaviour
     }
 
     [SerializeField] private GameObject buildEffect;
+    [SerializeField] private AudioClip buildSound;
 
     public GameObject cannonTowerPrefab;
     public GameObject missileTowerPrefab;
@@ -91,8 +92,9 @@ public class BuildManager : MonoBehaviour
 
     GameObject BuildTower(GameObject tower, Vector3 position, int level)
     {
+        
         GameObject newTower = Instantiate(tower, position, Quaternion.identity);
-        newTower.SetActive(false);
+/*        newTower.SetActive(false);*/
         Tower towerScript = newTower.GetComponent<Tower>();
 
         GameObject placement = FindTile(towerScript);
@@ -104,6 +106,8 @@ public class BuildManager : MonoBehaviour
 
         // Måste vara GameManager.Instance då BuildTower ibland körs innan Start
         GameManager.Instance.AddPlacedTower(placedTower);
+
+        EventHandler.InvokeEvent(new PlaySoundEvent("Tower is placed", buildSound));
 
         towerScript.radius.SetActive(false);
         if (level != 0)

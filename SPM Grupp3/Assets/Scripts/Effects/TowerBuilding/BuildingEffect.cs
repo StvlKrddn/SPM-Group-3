@@ -37,6 +37,8 @@ public class BuildingEffect : MonoBehaviour
                 else
                 {
                     finished = true;
+
+
                     Destroy(gameObject);
 
                 }
