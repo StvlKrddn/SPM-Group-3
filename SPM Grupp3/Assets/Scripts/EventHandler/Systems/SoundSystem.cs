@@ -13,14 +13,13 @@ public class SoundSystem : MonoBehaviour
 
     void Start()
     {
-        // If any DieEvent is invoked, call the OnObjectExploded-method
-        EventHandler.RegisterListener<DieEvent>(OnObjectExploded);
+        EventHandler.RegisterListener<DieEvent>(PlaySound);
 
         audioSource = GetComponent<AudioSource>();
     }
 
 
-    void OnObjectExploded(DieEvent eventInfo)
+    void PlaySound(DieEvent eventInfo)
     {
         AudioClip clip = eventInfo.DeathSounds[Random.Range(0, eventInfo.DeathSounds.Length)];
 

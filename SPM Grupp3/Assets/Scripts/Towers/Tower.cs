@@ -38,6 +38,20 @@ public abstract class Tower : MonoBehaviour
     public abstract void ShowUpgradeUI(Transform towerMenu);
     public abstract float UpgradeCostUpdate();
 
+    // private void Awake()
+    // {
+    //     StartCoroutine(BuildEffect());
+    // }
+
+    // IEnumerator BuildEffect()
+    // {
+    //     GameObject buildEffect = transform.Find("BuildEffect").gameObject;
+    //     BuildingEffect effect = buildEffect.GetComponentInChildren<BuildingEffect>();
+    //     yield return effect.PlayEffect();
+    //     buildEffect.SetActive(false);
+    //     gameObject.SetActive(true);
+    // }
+
     public void LevelUpTower()
     {
         tUC = TowerUpgradeController.Instance;
