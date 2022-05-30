@@ -106,11 +106,11 @@ public class GameManager : MonoBehaviour
 
         foreach (TowerData tower in towerData)
         {
-            AddPlacedTower(buildManager.LoadTower(tower));
+            buildManager.LoadTower(tower);
         }
         UpgradeController.currentUpgradeLevel = saveData.tankUpgradeLevel;
         
-        Invoke(nameof(FixUpgradeDelay), Mathf.Epsilon);
+        Invoke(nameof(FixUpgradeDelay), 0.01f);
     }
 
     private void LoadCustomizationData()

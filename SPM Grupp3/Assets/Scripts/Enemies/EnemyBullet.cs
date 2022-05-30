@@ -32,13 +32,8 @@ public class EnemyBullet : MonoBehaviour
         if (FindObjectOfType<TankState>())
         {
             tanks = FindObjectsOfType<TankState>();
-            foreach (TankState tank in tanks)
-            {
-                if (target == null || Vector2.Distance(tank.transform.position, transform.position) < Vector3.Distance(target.position, transform.position))
-                {
-                    target = tank.transform;
-                }
-            }
+            TankState tankToTarget = tanks[Random.Range(0, tanks.Length)];
+            target = tankToTarget.transform;
 
         }
         else

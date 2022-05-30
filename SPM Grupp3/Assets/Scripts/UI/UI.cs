@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Globalization;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,8 +13,6 @@ public class UI : MonoBehaviour
     public static bool IsPaused;
     public static bool MenuOpen;
     
-    [SerializeField] private EventSystem eventSystem;
-    [Space]
     [SerializeField] private GameObject victoryPanel;
     [SerializeField] private GameObject defeatPanel;
     [SerializeField] private GameObject pauseMenu;
@@ -22,6 +21,7 @@ public class UI : MonoBehaviour
     private GameObject resumeButton;
     private GameObject restartButton;
     private GameObject continueButton;
+    private EventSystem eventSystem;
 
     private static Canvas canvas;
 
@@ -43,6 +43,8 @@ public class UI : MonoBehaviour
         resumeButton = pauseMenu.transform.Find("Resume").gameObject;
         continueButton = victoryPanel.transform.Find("Buttons").Find("ContinueButton").gameObject;        
         restartButton = defeatPanel.transform.Find("Buttons").Find("RestartButton").gameObject;
+
+        eventSystem = FindObjectOfType<EventSystem>();
     }
 
     public void PauseGame()
