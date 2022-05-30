@@ -5,6 +5,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof(AudioSource))]
 public class SoundSystem : MonoBehaviour
 {
+    public static SoundSystem instance;
     [SerializeField] private int maxBufferSize = 2;
 
     private AudioSource audioSource;
@@ -12,14 +13,14 @@ public class SoundSystem : MonoBehaviour
 
     private Slider effectSlider;
 
-
+    public Slider EffectSlider { get { return effectSlider; } set { effectSlider = value; } }
     void Start()
-    {       
-        effectSlider = GameObject.Find("EffectVolume").GetComponent<Slider>();
-        effectSlider.onValueChanged.AddListener(delegate { SetVolume(); });
-        // If any DieEvent is invoked, call the OnObjectExploded-method
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
         EventHandler.RegisterListener<PlaySoundEvent>(PlaySound);
-
         audioSource = GetComponent<AudioSource>();
     }
 

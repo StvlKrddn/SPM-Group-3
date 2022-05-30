@@ -34,7 +34,7 @@ public class PoisonTower : Tower
     public override float UpgradeCostUpdate()
     {
         base.TowerLevel1();
-        switch (tUC.GetUpgradesPurchased())
+        switch (towerUpgradeController.GetUpgradesPurchased())
         {
             case 0:
                 costForUpgrade = level1Cost;
@@ -134,8 +134,8 @@ public class PoisonTower : Tower
         base.TowerLevel1();
         if (gM.SpendResources(level1Cost, 0f))
         {
-            tUC.IncreaseUpgradesPurchased();
-            PoisonTower pT = tUC.ClickedTower.GetComponent<PoisonTower>();            
+            towerUpgradeController.IncreaseUpgradesPurchased();
+            PoisonTower pT = towerUpgradeController.ClickedTower.GetComponent<PoisonTower>();            
             Level1(pT.gameObject);
         }
     }
@@ -144,8 +144,8 @@ public class PoisonTower : Tower
         base.TowerLevel2();
         if (gM.SpendResources(level2Cost, 0f))
         {
-            tUC.IncreaseUpgradesPurchased();
-            PoisonTower pT = tUC.ClickedTower.GetComponent<PoisonTower>();          
+            towerUpgradeController.IncreaseUpgradesPurchased();
+            PoisonTower pT = towerUpgradeController.ClickedTower.GetComponent<PoisonTower>();          
             Level2(pT.gameObject);
         }
     }
@@ -154,8 +154,8 @@ public class PoisonTower : Tower
         base.TowerLevel3();
         if (gM.SpendResources(level3Cost, 0f))
         {
-            tUC.IncreaseUpgradesPurchased();
-            PoisonTower pT = tUC.ClickedTower.GetComponent<PoisonTower>();
+            towerUpgradeController.IncreaseUpgradesPurchased();
+            PoisonTower pT = towerUpgradeController.ClickedTower.GetComponent<PoisonTower>();
             Level3(pT.gameObject);
         }
     }

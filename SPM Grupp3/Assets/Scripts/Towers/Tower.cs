@@ -13,7 +13,7 @@ public abstract class Tower : MonoBehaviour
     public GameObject radius;
     protected GameManager gM;
     public GameObject onHitEffect;
-    protected TowerUpgradeController tUC;
+    protected TowerUpgradeController towerUpgradeController;
     public GameObject tower;
     public GameObject towerPlacement;
 
@@ -56,8 +56,8 @@ public abstract class Tower : MonoBehaviour
 
     public void LevelUpTower()
     {
-        tUC = TowerUpgradeController.Instance;
-        switch (tUC.GetUpgradesPurchased())
+        towerUpgradeController = TowerUpgradeController.Instance;
+        switch (towerUpgradeController.GetUpgradesPurchased())
         {
             case 0:
                 TowerLevel1();
@@ -93,17 +93,17 @@ public abstract class Tower : MonoBehaviour
     protected virtual void TowerLevel1()
     {
         gM = GameManager.Instance;
-        tUC = TowerUpgradeController.Instance;
+        towerUpgradeController = TowerUpgradeController.Instance;
     }
     protected virtual void TowerLevel2()
     {
         gM = GameManager.Instance;
-        tUC = TowerUpgradeController.Instance;
+        towerUpgradeController = TowerUpgradeController.Instance;
     }
     protected virtual void TowerLevel3()
     {
         gM = GameManager.Instance;
-        tUC = TowerUpgradeController.Instance;
+        towerUpgradeController = TowerUpgradeController.Instance;
     }
 
     protected abstract void Level1(GameObject tower);
