@@ -110,13 +110,25 @@ public abstract class Tower : MonoBehaviour
     protected abstract void Level2(GameObject tower);
     protected abstract void Level3(GameObject tower);
 
-    public void ShowHoverEffect()
+    public void ShowHover()
     {
-        fadeBehaviour.Hover();
+        if (!fadeBehaviour.Faded())
+        {
+            print("Not faded");
+            return;
+        }
+
+        fadeBehaviour.Fade();
     }
-    public void HideHoverEffect()
+    public void HideHover()
     {
-        fadeBehaviour.HideHover();
+        if (fadeBehaviour.Faded())
+        {
+            print("Already faded");
+            return;
+        }
+
+        fadeBehaviour.Fade();
     }
 
     void UpdateTarget()

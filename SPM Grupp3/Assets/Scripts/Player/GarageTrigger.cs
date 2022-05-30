@@ -28,12 +28,24 @@ public class GarageTrigger : MonoBehaviour
 
     public void ShowHover()
     {
-        fadeBehaviour.Hover();
+        if (!fadeBehaviour.Faded())
+        {
+            print("Not faded");
+            return;
+        }
+
+        fadeBehaviour.Fade();
     }
 
     public void HideHover()
     {
-        fadeBehaviour.HideHover();
+        if (fadeBehaviour.Faded())
+        {
+            print("Already faded");
+            return;
+        }
+            
+        fadeBehaviour.Fade();
     }
 
     private void OnTriggerStay(Collider other)
