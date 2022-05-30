@@ -10,6 +10,7 @@ public class TankState : MonoBehaviour
     [SerializeField] private float health = 50f;
     [SerializeField] private Animator animator;
     [SerializeField] private GameObject destroyEffect;
+    [SerializeField] private ParticleSystem[] hitEffects;
     public int levelOfTank;
 
     // Components
@@ -244,6 +245,10 @@ public class TankState : MonoBehaviour
             invincibilityFrame = true;
             currentHealth -= damage;
             healthBar.HandleHealthChanged(currentHealth);
+
+            for(int i = 0; i < hitEffects.Length; i++)
+                hitEffects[i].Play();
+
             if (currentHealth <= 0 && !playerHandler.Destroyed)
             {
                 DestroyTank();
