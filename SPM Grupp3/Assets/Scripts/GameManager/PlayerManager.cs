@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 public class PlayerManager : MonoBehaviour
 {
     [System.NonSerialized] public bool InBuildMode;
+    [SerializeField] private Transform[] spawnPositions;
     private PlayerInputManager playerManager;
     private List<PlayerHandler> players = new List<PlayerHandler>();
 
@@ -21,6 +22,7 @@ public class PlayerManager : MonoBehaviour
         print("New player joined the game");
         
         GameObject player = newPlayer.gameObject;
+
         players.Add(player.GetComponent<PlayerHandler>());
 
         EventHandler.InvokeEvent(new PlayerJoinedEvent(
@@ -40,22 +42,6 @@ public class PlayerManager : MonoBehaviour
         else
         {
             InBuildMode = players[0].CurrentMode == PlayerMode.Build || players[1].CurrentMode == PlayerMode.Build;
-        }
-    }
-
-    public void TurnOnCursor()
-    {
-        if (players[0].CurrentMode == PlayerMode.Tank)
-        {
-            players[0].SwitchMode();
-        }
-    }
-
-    public void Restart()
-    {
-        PlayerMode startingMode = GameManager.Instance.StartingMode;
-        if (startingMode == PlayerMode.Build || players[0].CurrentMode == PlayerMode.Build || players[1].CurrentMode == PlayerMode.Build)
-        {
         }
     }
 }

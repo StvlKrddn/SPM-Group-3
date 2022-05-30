@@ -21,11 +21,15 @@ public class BuilderController : MonoBehaviour
     [SerializeField] private LayerMask garageLayer;
     [SerializeField] private Color hoverColor;
     [SerializeField] private Color towerPreview;
+    [SerializeField] private GameObject playerCursor;
+
     private Color player1Color;
     private Color player2Color;
 
     private Color startColor;
     private Transform _selection;
+    private Transform towerSelection;
+    private Transform garageSelection;
     private BuildManager buildManager;
     private Camera mainCamera;
     private Mouse virtualMouse;
@@ -38,13 +42,13 @@ public class BuilderController : MonoBehaviour
     private bool previousMouseState;
     private bool previousYState;
     private GameObject preTower;
-    private GameObject playerCursor;
     private Tower selectedTower;
     private Transform playerUI;
     private Transform towerMenu;
     private GameObject buildPanel;
     private GameObject hintsPanel;
     private GameObject tankUpgrade;
+    public bool purchasedTower = false;
 
     private GameObject towerHit;
     private GameObject placementHit;
@@ -54,7 +58,7 @@ public class BuilderController : MonoBehaviour
     private bool stopMouse = false;
     private bool placementClicked = false;
     private bool purchasedInUI = false;
-
+    private bool coldown = false;
     void Start()
     {
         GameObject placement = GameObject.Find("PlaceForTower").gameObject;
@@ -91,9 +95,8 @@ public class BuilderController : MonoBehaviour
 
     void InitializeCursor()
     {
-        playerCursor = Instantiate(cursorPrefab, playerUI);
+        playerCursor.SetActive(true);
         SetCursorColor(playerCursor);
-        playerCursor.name = "Player " + (playerInput.playerIndex + 1) + " cursor";
         cursorTransform = playerCursor.GetComponent<RectTransform>();
         cursorTransform.gameObject.SetActive(true);
     }
@@ -194,7 +197,7 @@ public class BuilderController : MonoBehaviour
         }
     }
 
-    private void Deselect()
+    public void Deselect()
     {
         buildManager.TowerToBuild = null;
         Destroy(preTower);
@@ -226,6 +229,7 @@ public class BuilderController : MonoBehaviour
         {
             selectedTower.radius.SetActive(false);
         }
+        purchasedTower = false;
         hintsPanel.SetActive(false);
         cursorTransform.gameObject.SetActive(true);
         stopHover = false;
@@ -278,7 +282,7 @@ public class BuilderController : MonoBehaviour
         {
             if (purchasedInUI)
             {
-                if (pointerAction.ReadValue<Vector2>().x > 0.2f || pointerAction.ReadValue<Vector2>().y > 0.2f)
+                if (pointerAction.ReadValue<Vector2>().x > 0.2f || pointerAction.ReadValue<Vector2>().y > 0.2f || pointerAction.ReadValue<Vector2>().x < -0.2f || pointerAction.ReadValue<Vector2>().y < -0.2f)
                 {
                     return;
                 }
@@ -350,10 +354,57 @@ public class BuilderController : MonoBehaviour
         return hit;
     }
 
-    
+    void Coldown()
+    {
+        coldown = false;
+    }
+
+    void TowerHover()
+    {
+        RaycastHit towerHover = CastRayFromCamera(towerLayerMask);
+        Transform selection = null;
+
+        if (towerHover.collider != null)
+        {
+            selection = towerHover.transform;
+            selection.GetComponent<Tower>().ShowHoverEffect();
+            towerSelection = selection;
+        }
+      
+        if (towerSelection != null && selection == null)
+        {
+            towerSelection.GetComponent<Tower>().HideHoverEffect();
+            towerSelection = null;
+        }
+
+        // Raycast along the ray and return the hit point
+
+    }
+
+    void GarageHover()
+    {
+        RaycastHit garageHover = CastRayFromCamera(garageLayer);
+        Transform selection = null;
+
+        if (garageHover.collider != null)
+        {
+            selection = garageHover.transform;
+            selection.GetComponent<GarageTrigger>().ShowHover();
+            garageSelection = selection;
+        }
+
+        if (garageSelection != null && selection == null)
+        {
+            garageSelection.GetComponent<GarageTrigger>().HideHover();
+            garageSelection = null;
+        }
+    }
 
     void Hover(RaycastHit hit)
-    {
+    {        
+        TowerHover();
+        GarageHover();
+
         if (_selection != null)
         {
             var selectionRenderer = _selection.GetComponent<Renderer>();
@@ -405,7 +456,7 @@ public class BuilderController : MonoBehaviour
             return;
         }
 
-        GameObject tower = towerToDisplay.transform.Find("Level1").gameObject;
+        GameObject tower = towerToDisplay.transform.Find("Container").gameObject;
         Transform placement = buildManager.ClickedArea.transform.GetChild(0).transform;
         Vector3 placeVec = placement.position;
         Vector3 towerPlace = new Vector3(placeVec.x, placeVec.y, placeVec.z);
@@ -413,11 +464,11 @@ public class BuilderController : MonoBehaviour
         preTower = Instantiate(tower, towerPlace, placement.rotation);
         GameObject radius = preTower.transform.Find("Radius").gameObject;
         preTower.layer = 12;
-        preTower.GetComponent<Renderer>().material.color = towerPreview;
+        preTower.transform.Find("Level1").GetComponent<Renderer>().material.color = towerPreview;
 
         Tower tow = towerToDisplay.GetComponent<Tower>();       
         radius.transform.localScale = new Vector3(tow.range * 2f, 0.01f, tow.range * 2f);
-       // radius.SetActive(true);
+        //radius.SetActive(true);
     }
 
     public void DestroyPreTower()
@@ -442,7 +493,7 @@ public class BuilderController : MonoBehaviour
                 if (placementHit.CompareTag("PlaceForTower"))
                 {
                     buildManager.ClickedArea = _selection.gameObject;
-                    buildPanel.transform.position = buildManager.ClickedArea.transform.position;
+                    buildPanel.transform.position = buildManager.ClickedArea.transform.position + new Vector3(0f,0.2f,0f);
                     hintsPanel.transform.position = buildManager.ClickedArea.transform.position;
 
                     cursorTransform.gameObject.SetActive(false);

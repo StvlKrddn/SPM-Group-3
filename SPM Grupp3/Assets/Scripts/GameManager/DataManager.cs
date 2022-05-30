@@ -6,10 +6,10 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
-public class DataManager : MonoBehaviour
+public class DataManager
 {
     public static string SaveData = "SaveData";
-    public static string TowerData = "TowerData";
+    public static string CustomizationData = "CustomizationData";
 
     /// <summary> 
     /// Pass in a data structure and save it to a binary file in the default path.

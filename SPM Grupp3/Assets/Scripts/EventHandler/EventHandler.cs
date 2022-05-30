@@ -2,10 +2,15 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class EventHandler
+public class EventHandler : MonoBehaviour
 {
     delegate void EventListener(Event info);
     static Dictionary<Type, List<EventListener>> eventListeners = new Dictionary<Type, List<EventListener>>();
+
+    void OnDestroy() 
+    {
+        eventListeners.Clear();
+    }
 
     public static void RegisterListener<TEventType>(Action<TEventType> listener) where TEventType : Event
     {
@@ -62,6 +67,5 @@ public static class EventHandler
                 listener(eventInfo);
             }
         }
-
     }
 }

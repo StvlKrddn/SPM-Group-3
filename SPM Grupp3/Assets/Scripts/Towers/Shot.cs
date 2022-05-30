@@ -12,6 +12,8 @@ public class Shot : MonoBehaviour
     private Vector3 direction;
     private float distanceThisFrame;
 
+    private EnemyController enemy;
+
     public void Seek(Transform _target)
     {       
         target = _target;
@@ -22,7 +24,7 @@ public class Shot : MonoBehaviour
     {
         if (target == null)
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
             return;
         }
         if (target != null)
@@ -45,23 +47,19 @@ public class Shot : MonoBehaviour
         tower = gameObject.GetComponentInParent<Tower>();
         if (other.gameObject.CompareTag("Enemy"))
         {
-            EventHandler.InvokeEvent(new TowerHitEvent(
-                    description: "An enemy hit",
-                    towerGO: tower.gameObject,
-                    hitEffect: tower.onHitEffect,
-                    enemyHit: target.gameObject
-                    ));
-            Destroy(gameObject);
+            tower.HitTarget(other.gameObject, tower.onHitEffect);
+            gameObject.SetActive(false);
         }
     }
 
 
-    // Under Muntan sa ni lärare att jag borde flytta all kod över vad som händer när de olika tornen träffar en fiende
-    // Jag själv anser att det sättet jag hade tidigare var bättre då det var ett enklare system
-    // Men jag har nu ändrat så att varje skott själv bestämmer vilken effekt den ska ha.
+    // Under Muntan sa ni lï¿½rare att jag borde flytta all kod ï¿½ver vad som hï¿½nder nï¿½r de olika tornen trï¿½ffar en fiende
+    // Jag sjï¿½lv anser att det sï¿½ttet jag hade tidigare var bï¿½ttre dï¿½ det var ett enklare system
+    // Men jag har nu ï¿½ndrat sï¿½ att varje skott sjï¿½lv bestï¿½mmer vilken effekt den ska ha.
+
     public void DecideTypeOfShot(string towerType)
     {
-        EnemyController enemy = target.GetComponent<EnemyController>();
+        enemy = target.GetComponent<EnemyController>();
         switch (towerType)
         {
             case "Cannon":
@@ -84,9 +82,8 @@ public class Shot : MonoBehaviour
 
                 break;
             case "Slow":
-
                 SlowTower sT = tower.GetComponent<SlowTower>();
-                GetComponent<SlowTowerEffect>().HitBySlow(sT.SlowProc, sT.range, sT.AreaOfEffect, false);
+                GetComponent<SlowTowerEffect>().HitBySlow(enemy, sT.SlowProc, sT.range, sT.AreaOfEffect, false);
 
                 break;
             case "Poison":
@@ -95,7 +92,5 @@ public class Shot : MonoBehaviour
 
                 break;
         }
-
-
     }
 }

@@ -27,7 +27,9 @@ public class WaveManager : MonoBehaviour
     private List<GameObject> currentWaveEnemies = new List<GameObject>();
     private List<GameObject> poolOfEnemies = new List<GameObject>();
     private Text waveUI;
-    private GameObject waveClear;
+    private GameObject startHint;
+    private GameObject waveStarted;
+    private GameObject waveCleared;
     private Dictionary<int, float> changeSpawnRate = new Dictionary<int, float>();
     private Waypoints wayPoints;
     private List<Transform[]> wayPostions;
@@ -36,20 +38,33 @@ public class WaveManager : MonoBehaviour
 
     private void Awake()
     {
+        EventHandler.RegisterListener<NewWaveEvent>(OnStartWave);
         if (startingWave != 1)
         {
             currentWave = startingWave - 2;
         }
         Transform waveHolder = UI.Canvas.transform.GetChild(0).Find("WaveHolder");
         waveUI = waveHolder.Find("WaveCounter").GetComponent<Text>();
-        waveClear = waveHolder.Find("WaveCleared").gameObject;
+        waveCleared = waveHolder.Find("WaveCleared").gameObject;
+        waveStarted = waveHolder.Find("WaveStarted").gameObject;
+        startHint = waveHolder.Find("StartWaveHint").gameObject;
         
         victoryWave = waves.Length;
-        waveClear.SetActive(false);
+
+        /*waveClear.SetActive(false);
+        waveStarted.SetActive(false);*/
         gameManager = GameManager.Instance;
+        currentWave = gameManager.CurrentWave;
 
+    }
 
-        EventHandler.RegisterListener<StartWaveEvent>(OnStartWave);
+    private void OnEnable()
+    {
+    }
+
+    private void OnDestroy()
+    {
+        EventHandler.UnregisterListener<NewWaveEvent>(OnStartWave);
     }
 
     private void Update()
@@ -70,8 +85,7 @@ public class WaveManager : MonoBehaviour
         wayPostions = wayPoints.GetWaypoints();
     }
 
-
-    private void OnStartWave(StartWaveEvent eventInfo)
+    private void OnStartWave(NewWaveEvent eventInfo)
     {       
         if (spawnEnemies)
         {
@@ -83,21 +97,15 @@ public class WaveManager : MonoBehaviour
     {
         currentWave++;
 
-        EventHandler.InvokeEvent(new NewWaveEvent(
-            description: "New wave started",
-            currentWave: currentWave
-            ));
+        if(!waveCleared.GetComponent<FadeBehaviour>().Faded())
+            waveCleared.GetComponent<FadeBehaviour>().Fade();
 
-        spawnEnemies = false;
-    }
-
-    public void StartWave(int currentWave)
-    {
-        waveClear.SetActive(false);
-        this.currentWave = currentWave;
+        startHint.GetComponent<FadeBehaviour>().Fade();
         WaveConstructor(waves[currentWave]);
         StartCoroutine(SpawnCurrentWave());
         UpdateUI();
+
+        spawnEnemies = false;
     }
 
     private void WaveConstructor(WaveInfo wave)
@@ -139,16 +147,24 @@ public class WaveManager : MonoBehaviour
         }
     }
 
-    private void ClearInactive()
+    private IEnumerator ClearInactive()
     {
-        for (int i = poolOfEnemies.Count - 1; i > -1; i--)
+        for (int i = 0; i < poolOfEnemies.Count; i++)
         {
             if (poolOfEnemies.Count > poolCount && poolOfEnemies[i].activeSelf == false)
             {
                 Destroy(poolOfEnemies[i]);
                 poolOfEnemies.RemoveAt(i);
+                i--;
+                yield return new WaitForSeconds(0.15f + (poolCount + 1) / poolOfEnemies.Count);
+            }
+            else if (poolOfEnemies.Count < poolCount)
+            {
+                print("Head out");
+                break;
             }
         }
+        yield return null;
     }
 
     private int FindEmptyPool()
@@ -178,9 +194,14 @@ public class WaveManager : MonoBehaviour
             {
                 if (poolOfEnemies.Count > poolCount) 
                 {
-                    ClearInactive();
+                    StartCoroutine(ClearInactive());
                 }
-                waveClear.SetActive(true);
+
+                waveCleared.GetComponent<FadeBehaviour>().Fade();
+
+                //startHint.transform.position = waveClear.transform.position;
+                startHint.transform.localPosition = new Vector3(startHint.transform.localPosition.x, -370, startHint.transform.localPosition.z);
+                startHint.GetComponent<FadeBehaviour>().Fade();
                 spawnEnemies = true;
                 Debug.Log("Wave " + currentWave + " cleared");
                 GameManager.Instance.AddMoney(waveMoneyBonus);
@@ -197,12 +218,11 @@ public class WaveManager : MonoBehaviour
 
     private IEnumerator SpawnCurrentWave()
     {
+
+        waveStarted.GetComponent<FadeBehaviour>().Fade();
+
         for (int i = 0; i < currentWaveEnemies.Count; i++)
         {
-            if (poolOfEnemies.Count > poolCount) //Clear inactive enemies
-            {
-                ClearInactive();
-            }
             GameObject enemy = GetPooledEnemy(currentWaveEnemies[i]);
             int givenPath = wayPoints.GiveNewPath(); //Gives the enemy the right path
             if (enemy != null)
@@ -218,15 +238,12 @@ public class WaveManager : MonoBehaviour
 
             yield return new WaitForSeconds(spawnRate);
 
+            if(!waveStarted.GetComponent<FadeBehaviour>().Faded())
+                waveStarted.GetComponent<FadeBehaviour>().Fade();
+
             if (changeSpawnRate.ContainsKey(i)) //The wave changes spawnrate after a subwave
             {
                 spawnRate = changeSpawnRate[i];
-
-
-
-
-
-                
             }
         }
         yield return false;

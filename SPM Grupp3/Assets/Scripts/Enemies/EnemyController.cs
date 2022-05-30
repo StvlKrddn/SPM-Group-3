@@ -8,7 +8,7 @@ public abstract class EnemyController : MonoBehaviour
 {
     public float speed = 10f;
     [SerializeField] private float health = 100f;
-    public GameObject hitEffect;
+    public GameObject deathEffect;
     [SerializeField] private float meleeDamage;
     private GameManager gM;
     private Transform target;
@@ -17,7 +17,6 @@ public abstract class EnemyController : MonoBehaviour
     public int damageBase = 10;
     public int moneyDrop = 10;
     public bool materialDrop = false;
-    public Transform material;
 
     private GameObject hitByPoisonEffect;
     private float defaultSpeed;
@@ -30,7 +29,9 @@ public abstract class EnemyController : MonoBehaviour
     private float currentHealth;
     public int path;
     protected List<Transform[]> wayPoints;
+    private MaterialHolder materialHolder;
 
+    private Color moneyColor = new Color(255, 100, 0, 255);
     public GameObject changerText;
     [SerializeField] private Transform spawnTextPosition;
 
@@ -42,6 +43,7 @@ public abstract class EnemyController : MonoBehaviour
 	// Start is called before the first frame update
 	protected virtual void OnEnable()
 	{
+        
         currentHealth = health;
         currWaypointIndex = 0;
         poisonTickTimers.Clear();
@@ -53,6 +55,11 @@ public abstract class EnemyController : MonoBehaviour
         target = wayPoints[path][currWaypointIndex];
     }
 
+	private void OnDestroy()
+	{
+        Destroy(changerText);
+	}
+
 	protected virtual void Awake() 
     {
         defaultSpeed = speed;
@@ -62,13 +69,18 @@ public abstract class EnemyController : MonoBehaviour
         healthBar.slider.maxValue = health;
         healthBar.slider.value = health;
         wayPoints = Waypoints.instance.GetWaypoints();
+        materialHolder = FindObjectOfType<MaterialHolder>();
+        changerText.GetComponentInChildren<Text>().text = moneyDrop.ToString();
+        changerText.GetComponentInChildren<Text>().color = moneyColor;
+        changerText = Instantiate(changerText, spawnTextPosition.position, spawnTextPosition.rotation, GameManager.Instance.transform.Find("DropTexts"));
+        changerText.SetActive(false);
         //Change to right tank when done with tanks
     }
 
     protected virtual void Start() {}
 
     // Update is called once per frame
-    protected virtual void Update()
+    protected virtual void FixedUpdate()
     {
         MoveStep();   
     }
@@ -78,7 +90,7 @@ public abstract class EnemyController : MonoBehaviour
         //WIP Enemy moves right direction
         Vector3 direction = target.position - transform.position;
         direction.Normalize();
-        transform.position += speed * Time.deltaTime * direction;
+        transform.position += speed * direction * Time.deltaTime;
     }
 
     private void EnemyDeathBase()
@@ -103,18 +115,8 @@ public abstract class EnemyController : MonoBehaviour
             transform.LookAt(target);
         }
 
-        if (other.gameObject.CompareTag("Bullet"))
-        {
-            print("hur många blev träffade ");
-            //other.GetComponent<SphereCollider>().enabled = false;
-            GameObject towerBullet = other.gameObject;
-            Tower tower = towerBullet.GetComponent<Shot>().getTowerShotCameFrom();
-        }
-
         if (other.gameObject.CompareTag("PlayerShots"))
         {
-         //   print("hur m¨ånga rfäddade");
-         //   other.GetComponent<BoxCollider>().enabled = false;
             BulletBehavior playerBullet = other.GetComponent<BulletBehavior>();
             
             TakeDamage(playerBullet.BulletDamage);
@@ -137,26 +139,21 @@ public abstract class EnemyController : MonoBehaviour
         gM.AddMoney(moneyDrop); // add money and spawn material
         
         // Spawns a changerText for indikation for gaining money
-        if (changerText != null)
-        {
-            changerText.GetComponentInChildren<Text>().text = moneyDrop.ToString();
-            changerText.GetComponentInChildren<Text>().color = Color.yellow;
 
-            if(spawnTextPosition != null)
-                Instantiate(changerText, spawnTextPosition.position, spawnTextPosition.rotation);
-            else
-            {
-                Instantiate(changerText);
-                print("No transform-point for changerText");
-            }
+        if(changerText != null && spawnTextPosition != null)
+        {
+            changerText.transform.position = spawnTextPosition.position;
+            changerText.transform.rotation = spawnTextPosition.rotation;
+            changerText.SetActive(true);
         }
 
         if (materialDrop == true)
         {
-            Instantiate(material, transform.position, transform.rotation);
+			materialHolder.GiveMaterial(transform.position, transform.rotation);
         }
         DieEvent dieEvent = new DieEvent("d�d", gameObject, null, null);
         EventHandler.InvokeEvent(dieEvent);
+        Destroy(Instantiate(deathEffect, transform.position, Quaternion.identity), 1f);
         gameObject.SetActive(false);
     }
 

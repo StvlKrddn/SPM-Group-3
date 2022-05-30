@@ -103,7 +103,7 @@ public class Outline : MonoBehaviour {
 	{
         if (GetComponentInParent<TankState>())
         {
-            outlineColor = GetComponentInParent<TankState>().PlayerInput.playerIndex == 0 ? Color.blue : Color.red;
+            outlineColor = GetComponentInParent<TankState>().PlayerInput.playerIndex == 0 ? GameManager.Instance.Player1Color: GameManager.Instance.Player1Color;
         }
 	}
 

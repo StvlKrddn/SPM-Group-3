@@ -15,11 +15,13 @@ public class WeaponSlot : MonoBehaviour
     [SerializeField] private float bulletSpeed;
     [SerializeField] private bool penetrating;
     [SerializeField] private float damage;
+    [Space]
+    [SerializeField] private GameObject muzzleFlash;
     private GameObject bulletPrefab;
+    private List<GameObject> bullets = new List<GameObject>();
 
     TankState tank;
     public Transform bulletSpawner;
-    BulletBehavior bullet;
     Transform turretObject;
     GameObject spawnedBullet;
     InputAction shootAction;
@@ -55,7 +57,7 @@ public class WeaponSlot : MonoBehaviour
         allowedToShoot = true;
 	}
 
-	void ConstructWeapon()
+	public void ConstructWeapon()
     {
         fireRate = equippedWeapon.fireRate;
         spread = equippedWeapon.spread;
@@ -64,7 +66,17 @@ public class WeaponSlot : MonoBehaviour
         bulletSpeed = equippedWeapon.bulletSpeed;
         bulletPrefab = equippedWeapon.bulletPrefab;
         damage = equippedWeapon.damage;
-		bullet = bulletPrefab.GetComponent<BulletBehavior>();
+    }
+
+    public void UpgradeShots()
+    {
+        if (bullets.Count > 0)
+        {
+            foreach (GameObject bullet in bullets)
+            {
+                bullet.GetComponent<BulletBehavior>().UpdateBulletStats();
+            }
+        }
     }
 
 	void Update()
@@ -85,14 +97,38 @@ public class WeaponSlot : MonoBehaviour
 
     void SpawnBullet()
     {
+        Destroy(Instantiate(muzzleFlash, bulletSpawner.position, bulletSpawner.rotation, bulletSpawner.parent), 0.1f);
         Quaternion spreadDirection = ComputeBulletSpread();
-
-        spawnedBullet = Instantiate(
+        int bulletIndex = FindShot();
+        if (bulletIndex < 0)
+        {
+            spawnedBullet = Instantiate(
             original: bulletPrefab,
             position: bulletSpawner.position,
             rotation: bulletSpawner.rotation * spreadDirection,
             parent: transform
             );
+            bullets.Add(spawnedBullet);
+        }
+        else
+        {
+            GameObject bullet = bullets[bulletIndex];
+            bullet.transform.position = bulletSpawner.position;
+            bullet.transform.rotation = bulletSpawner.rotation * spreadDirection;
+            bullet.SetActive(true);
+        }
+    }
+
+    private int FindShot()
+    {
+        for (int i = 0; i < bullets.Count; i++)
+        {
+            if (bullets[i].activeSelf == false)
+            {
+                return i;
+            }
+        }
+        return -1;
     }
 
 
@@ -124,5 +160,15 @@ public class WeaponSlot : MonoBehaviour
         damage = damageIncrease;
         this.range = range;
         spread = 0;
-	}
+        bulletSpeed += 15;
+    }
+
+    public void ClearBullets()
+    {
+        foreach (GameObject bullet in bullets)
+        {
+            Destroy(bullet);
+        }
+        bullets.Clear();
+    }
 }

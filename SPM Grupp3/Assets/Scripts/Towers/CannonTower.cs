@@ -18,24 +18,15 @@ public class CannonTower : Tower
     [SerializeField] private float level3Cost;
 
     public float costForUpgrade;
-
     private float fireCountdown = 0f;
+
+    public float FireRate { get { return fireRate; } set { fireRate = value; } }
 
     // Start is called before the first frame update
     void Start()
     {
         InvokeRepeating("UpdateTarget", 0f, 0.5f);
         radius.transform.localScale = new Vector3(range * 2f, 0.01f, range * 2f);
-    }
-
-    private void OnEnable()
-    {
-        EventHandler.RegisterListener<TowerHitEvent>(HitTarget);
-    }
-
-    void OnDestroy()
-    {
-        EventHandler.UnregisterListener<TowerHitEvent>(HitTarget);
     }
 
     // Update is called once per frame
@@ -80,18 +71,16 @@ public class CannonTower : Tower
         Shoot();
     }
 
-    public override void HitTarget(TowerHitEvent eventInfo)
+    public override void HitTarget(GameObject target, GameObject hitEffect)
     {
-        if (eventInfo.towerGO == gameObject)
+        if (target != null && target.GetComponent<EnemyController>())
         {
-            if (target != null)
-            {
-                EnemyController enemyTarget = eventInfo.enemyHit.GetComponent<EnemyController>();
-                GameObject effectInstance = Instantiate(eventInfo.hitEffect, enemyTarget.transform.position, enemyTarget.transform.rotation);
+            EnemyController enemyTarget = target.GetComponent<EnemyController>();
+            Destroy(Instantiate(hitEffect, enemyTarget.transform.position + Vector3.up * 2, Quaternion.LookRotation(transform.position - enemyTarget.transform.position)), 1f);
+            // GameObject effectInstance = Instantiate(hitEffect, enemyTarget.transform.position, enemyTarget.transform.rotation);
 
-                Destroy(effectInstance, 1f);
-                bullet.DecideTypeOfShot("Cannon");
-            }
+            // Destroy(effectInstance, 1f);
+            bullet.DecideTypeOfShot("Cannon");
         }
     }
 
@@ -108,9 +97,21 @@ public class CannonTower : Tower
 
     protected void Shoot()
     {
-        GameObject bulletGO = Instantiate(shot, firePoint.position, firePoint.rotation, transform);
-        bulletGO.SetActive(true);
-        bullet = bulletGO.GetComponent<Shot>();
+        int bulletIndex = FindShot();
+        if (bulletIndex < 0)
+        {
+            GameObject bulletGO = Instantiate(shot, firePoint.position, firePoint.rotation, transform);
+            bulletGO.SetActive(true);
+            bullet = bulletGO.GetComponent<Shot>();
+            shots.Add(bulletGO);
+        }
+        else
+        {
+            bullet = shots[bulletIndex].GetComponent<Shot>();
+            bullet.transform.position = firePoint.position;
+            bullet.transform.rotation = firePoint.rotation;
+            bullet.gameObject.SetActive(true);
+        }
 
         if (bullet != null)
         {
@@ -164,10 +165,10 @@ public class CannonTower : Tower
     {
         CannonTower cT = tower.GetComponent<CannonTower>();
 
-        cT.ShotDamage = upgradeDamageAmount;
+        cT.ShotDamage += upgradeDamageAmount;
 
-        GameObject towerUpgradeVisual1 = cT.transform.Find("Level1").gameObject;
-        GameObject towerUpgradeVisual2 = cT.transform.Find("Level2").gameObject;
+        GameObject towerUpgradeVisual1 = cT.transform.Find("Container").Find("Level1").gameObject;
+        GameObject towerUpgradeVisual2 = cT.transform.Find("Container").Find("Level2").gameObject;
 
         towerUpgradeVisual1.SetActive(false);
         towerUpgradeVisual2.SetActive(true);
@@ -189,7 +190,15 @@ public class CannonTower : Tower
 
     protected override void Level3(GameObject tower)
     {
+        
         CannonTower cT = tower.GetComponent<CannonTower>();
         cT.shootTwice = true;
+
+        GameObject towerUpgradeVisual2 = cT.transform.Find("Container").Find("Level2").gameObject;
+        GameObject towerUpgradeVisual3 = cT.transform.Find("Container").Find("Level3").gameObject;
+
+
+        towerUpgradeVisual2.SetActive(false);
+        towerUpgradeVisual3.SetActive(true);
     }
 }

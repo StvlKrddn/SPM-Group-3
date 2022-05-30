@@ -10,6 +10,7 @@ public class PlayerHandler : MonoBehaviour
 
     [SerializeField] private GameObject tankMode;
     [SerializeField] private GameObject buildMode;
+    [SerializeField] private GameObject cursor;
 
 /*    [SerializeField] private GameObject tankMode;
     [SerializeField] private GameObject buildMode;*/
@@ -51,6 +52,7 @@ public class PlayerHandler : MonoBehaviour
     {
         // Disable Build
         buildMode.SetActive(false);
+        cursor.SetActive(false);
 
         // Enable Tank
         tankMode.SetActive(true);
@@ -74,7 +76,7 @@ public class PlayerHandler : MonoBehaviour
 
     private IEnumerator FixUpgradeDelay(GameObject tank)
     {
-        yield return new WaitForSeconds(Mathf.Epsilon);
+        yield return new WaitForSeconds(0.01f);
         UpgradeController.Instance.FixUpgrades(tank);
     }
 
@@ -85,6 +87,7 @@ public class PlayerHandler : MonoBehaviour
 
         // Enable Build
         buildMode.SetActive(true);
+        cursor.SetActive(true);
 
         EventHandler.InvokeEvent(new EnterBuildModeEvent(
             description: "Player entered build mode",
@@ -131,9 +134,8 @@ public class PlayerHandler : MonoBehaviour
     {
         if (context.performed)
         {
-            EventHandler.InvokeEvent(new StartWaveEvent(
-                description: "Player started new wave",
-                invoker: gameObject
+            EventHandler.InvokeEvent(new NewWaveEvent(
+                description: "Player started new wave"
             ));
         }
     }

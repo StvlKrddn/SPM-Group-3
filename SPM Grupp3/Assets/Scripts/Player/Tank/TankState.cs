@@ -38,11 +38,12 @@ public class TankState : MonoBehaviour
     public TankUpgradeTree tankUpgradeTree;
     [SerializeField] private TankUpgradeTree tankUpgradeTreeOne;
     [SerializeField] private TankUpgradeTree tankUpgradeTreeTwo;
-    [SerializeField] private UnityEngine.Material player1Material;
-    [SerializeField] private UnityEngine.Material player2Material;
     [SerializeField] private HealthBar healthBar;
 
-    private int hurMangaGangerDamage = 0; 
+    private int hurMangaGangerDamage = 0;
+    private bool invincibilityFrame = false;
+    private Color player1Color;
+    private Color player2Color;
 
 
     // Getters and Setters
@@ -94,7 +95,6 @@ public class TankState : MonoBehaviour
         
         aimSpeed = standardSpeed * 5;
 
-        StartCoroutine(LockRotation());
 
         //Create isometric matrix
         isoMatrix = Matrix4x4.Rotate(Quaternion.Euler(0, 45, 0));
@@ -102,15 +102,11 @@ public class TankState : MonoBehaviour
 
         // Subscribe to events
         EventHandler.RegisterListener<WaveEndEvent>(OnWaveEnd);
-
     }
 
-    IEnumerator LockRotation()
+    private void OnEnable()
     {
-        yield return new WaitForSeconds(0.5f);
-        transform.rotation = Quaternion.Euler(0, transform.rotation.y, 0);
-
-        rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ | RigidbodyConstraints.FreezePositionY;
+        invincibilityFrame = false;
     }
 
     void InitializeInputSystem()
@@ -126,16 +122,15 @@ public class TankState : MonoBehaviour
 
     void SetPlayerDifference()
     {
-        Renderer renderer = GetComponent<Renderer>();
+        player1Color = GameManager.Instance.Player1Color;
+        player2Color = GameManager.Instance.Player2Color;
         if (playerInput.playerIndex == 0)
         {
-            renderer.material = player1Material;
-            transform.Find("TankBody").Find("Cube.004").GetComponent<Renderer>().material = player1Material;
+            transform.Find("TankMesh").Find("TankBody").GetComponent<Renderer>().material.color = player1Color;
         }
         else
         {
-            renderer.material = player2Material;
-            transform.Find("TankBody").Find("Cube.004").GetComponent<Renderer>().material = player2Material;
+            transform.Find("TankMesh").Find("TankBody").GetComponent<Renderer>().material.color = player2Color;
         }
         tankUpgradeTree = playerInput.playerIndex == 0 ? tankUpgradeTreeOne : tankUpgradeTreeTwo;
     }
@@ -143,7 +138,7 @@ public class TankState : MonoBehaviour
     void FindGarage()
     {
         garage = GameObject.FindGameObjectWithTag("Garage").transform;
-        spawnPoint = garage.Find("PlayerSpawn");
+        spawnPoint = garage.Find("SpawnPoints").GetChild(playerInput.playerIndex);
         transform.position = spawnPoint.position;
     }
     void Update()
@@ -187,6 +182,7 @@ public class TankState : MonoBehaviour
         {
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(skewedVector), Time.deltaTime * standardSpeed);
         }
+
     }
 
     void RotateTurret()
@@ -220,11 +216,10 @@ public class TankState : MonoBehaviour
             EnemyMortarShot enemyMortarShot = other.gameObject.GetComponentInParent<EnemyMortarShot>();
             TakeDamage(enemyMortarShot.damage);
 
-            print("Tar man damage flera gångar?" + hurMangaGangerDamage);
         }
     }
 
-	private void OnCollisionEnter(Collision collision)
+	private void OnCollisionStay(Collision collision)
 	{
         if (collision.gameObject.CompareTag("Enemy"))
         {
@@ -243,12 +238,23 @@ public class TankState : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        currentHealth -= damage;
-        healthBar.HandleHealthChanged(currentHealth);
-        if (currentHealth <= 0 && !playerHandler.Destroyed)
+
+        if (!invincibilityFrame)
         {
-            DestroyTank();
+            Invoke(nameof(InvincibilityDuration), 0.15f);
+            invincibilityFrame = true;
+            currentHealth -= damage;
+            healthBar.HandleHealthChanged(currentHealth);
+            if (currentHealth <= 0 && !playerHandler.Destroyed)
+            {
+                DestroyTank();
+            }
         }
+    }
+
+    public void InvincibilityDuration()
+    {
+        invincibilityFrame = false;
     }
 
     void DestroyTank()
@@ -273,7 +279,13 @@ public class TankState : MonoBehaviour
     public void RepairTank()
     {
         playerHandler.Destroyed = false;
-        currentHealth = health;
+        ResetHealth();
+        //currentHealth = health;
+
+        EventHandler.InvokeEvent(new EnterTankModeEvent(
+            description: "Player switching mode",
+            playerContainer: transform.parent.gameObject
+        ));
     }
 
     public void IncreaseSpeed(float speedIncrease)
@@ -282,9 +294,9 @@ public class TankState : MonoBehaviour
         GetComponent<BoostAbility>().ChangeSpeed();
     }
 
-    public void ResetHealth()
+    private void ResetHealth()
     {
         currentHealth = health;
-        healthBar.HandleHealthChanged(currentHealth);
+        healthBar.HandleHealthChanged(health);
     }
 }

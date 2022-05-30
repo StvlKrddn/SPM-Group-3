@@ -40,10 +40,21 @@ public class WheelSelection : MonoBehaviour
     private Vector2 stickInput;
     private InputAction infoAction;
 
+    private TowerUpgradeController tUC;
+    private GameManager gM;
     private GameObject towerToDisplay;
+    private GameObject statisticPanel;
+    private GameObject costPanel;
+    private Text upgradeTitleText;
+    private Text upgradeLevel1Text;
+    private Text upgradeLevel2Text;
+    private Text upgradeLevel3Text;
+
 
     private void Start() 
     {
+        tUC = TowerUpgradeController.Instance;
+        gM = GameManager.Instance;
         numberOfMenuItems = MenuItems.Length;
         degreesPerItem = 360 / numberOfMenuItems;
 
@@ -62,6 +73,53 @@ public class WheelSelection : MonoBehaviour
         stickAction = playerInput.actions["LeftStick"];
         selectAction = playerInput.actions["Accept"];
         infoAction = playerInput.actions["Information"];
+
+        if (!gameObject.name.Equals("BuildPanel") && !gameObject.name.Equals("TankPanel"))
+        {
+            statisticPanel = MenuItems[0].transform.Find("StatisticPanel").gameObject;
+            upgradeTitleText = statisticPanel.transform.Find("Title").GetComponent<Text>();
+            upgradeLevel1Text = upgradeTitleText.transform.Find("Level1").GetComponent<Text>();
+            upgradeLevel2Text = upgradeTitleText.transform.Find("Level2").GetComponent<Text>();
+            upgradeLevel3Text = upgradeTitleText.transform.Find("Level3").GetComponent<Text>();
+
+            SetStartValuesOnUpgrades();
+        }        
+    }
+
+    /* Sets the correct values on the statistics of the towers for statistic panel when upgradeing */
+    private void SetStartValuesOnUpgrades()
+    {
+        switch (tUC.GetNameOfTowerClicked())
+        {
+            case "Cannon Tower":
+                CannonTower cT = tUC.ClickedTower.GetComponent<CannonTower>();
+                upgradeLevel1Text.text = "Basic Fire rate: " + cT.FireRate;
+                upgradeLevel2Text.text = "Basic Damage: " + cT.ShotDamage;
+                upgradeLevel3Text.text = "Double Shot: (Inactive)";
+
+                break;
+            case "Missile Tower":
+                MissileTower mT = tUC.ClickedTower.GetComponent<MissileTower>();
+                upgradeLevel1Text.text = "Basic AoE Radius: " + mT.SplashRadius;
+                upgradeLevel2Text.text = "Basic AoE Damage: " + mT.SplashDamage;
+                upgradeLevel3Text.text = "Increased Third Missle Dmg (Inactive)";
+
+                break;
+            case "Slow Tower":
+                SlowTower sT = tUC.ClickedTower.GetComponent<SlowTower>();
+                upgradeLevel1Text.text = "Basic Range: " + sT.range;
+                upgradeLevel2Text.text = "Basic Area Effect: (Active)";
+                upgradeLevel3Text.text = "Periodic Halts All Enemies: (Inactive)";
+
+                break;
+            case "Poison Tower":
+                PoisonTower pT = tUC.ClickedTower.GetComponent<PoisonTower>();
+                upgradeLevel1Text.text = "Basic Poison Duration: " + pT.PoisonTicks;
+                upgradeLevel2Text.text = "Basic DoT: " + pT.PoisonDamagePerTick;
+                upgradeLevel3Text.text = "Contagious: (Inactive)";
+
+                break;
+        }        
     }
 
     private void Update() 
@@ -69,39 +127,50 @@ public class WheelSelection : MonoBehaviour
         selectHint.SetActive(false);
         infoHint.SetActive(false);
 
+        builderController.DestroyPreTower();
+
+        if (!gameObject.name.Equals("BuildPanel") && !gameObject.name.Equals("TankPanel"))
+        {
+            upgradeLevel1Text.color = Color.white;
+            upgradeLevel2Text.color = Color.white;
+            upgradeLevel3Text.color = Color.white;
+        }
+
+
         stickInput = stickAction.ReadValue<Vector2>();
 
-        if (stickAction.IsPressed())
+        if (!builderController.purchasedTower)
         {
-            float signedAngle = Vector2.SignedAngle(Vector2.up, stickInput);
-            if (signedAngle <= 0)
+            if (stickAction.IsPressed())
             {
-                signedAngle += 360;
+                float signedAngle = Vector2.SignedAngle(Vector2.up, stickInput);
+                if (signedAngle <= 0)
+                {
+                    signedAngle += 360;
+                }
+
+                // Get angle of stick
+                pointingAngle = signedAngle;
+
+                selectedIndex = GetIndex(pointingAngle);
+            }
+            else
+            {
+                selectedIndex = -1;
             }
 
-            // Get angle of stick
-            pointingAngle = signedAngle;
-            
-            selectedIndex = GetIndex(pointingAngle);
-        }
-        else 
-        {
-            selectedIndex = -1;
-        }
+            HighlightItem(selectedIndex);
 
-        HighlightItem(selectedIndex);
-
-        if (selectAction.triggered && selectedIndex != -1)
-        {
-            SelectItem(selectedIndex);
+            if (selectAction.triggered && selectedIndex != -1)
+            {
+                SelectItem(selectedIndex);
+            }
         }
     }
 
     // Returns index of item based on angle
     private int GetIndex(float angle)
     {
-        builderController.DestroyPreTower();
-        
         // Check if there are any menu items
         if (numberOfMenuItems <= 0 || angle < 0)
         {
@@ -135,72 +204,126 @@ public class WheelSelection : MonoBehaviour
             return;
         }
         for (int i = 0; i < numberOfMenuItems; i++)
-        {
+        {            
+            if (MenuItems[i].transform.Find("Cost"))
+            {
+                costPanel = MenuItems[i].transform.Find("Cost").gameObject;
+            }
+
+            if (gameObject.name.Equals("BuildPanel"))
+            {
+                statisticPanel = MenuItems[i].transform.Find("StatisticPanel").gameObject;
+            }
+
             if (i == index)
             {
+                //print(i + " - " + index);
                 // Hover effect
                 MenuItems[i].transform.GetChild(0).GetComponent<Image>().color = highLight;
-                if (MenuItems[i].transform.Find("Cost"))
-                {
-                    GameObject menuItem = MenuItems[i].transform.Find("Cost").gameObject;
-                    menuItem.SetActive(true);
-                    Text moneyText = menuItem.transform.Find("MoneyCost").GetComponentInChildren<Text>();
-                    Text materialText = menuItem.transform.Find("MaterialCost").GetComponentInChildren<Text>();
-                    Tower tower;
+                    
+                costPanel.SetActive(true);
+                Text moneyText = costPanel.transform.Find("MoneyCost").GetComponentInChildren<Text>();
+                Text materialText = costPanel.transform.Find("MaterialCost").GetComponentInChildren<Text>();
+                    
+                Tower tower;
 
-                    if (towerToDisplay != null)
+                DecideTowerToBuild(MenuItems[i].name);
+                if (towerToDisplay != null)
+                {
+                    tower = towerToDisplay.GetComponent<Tower>();
+                    moneyText.text = tower.cost.ToString();
+                    materialText.text = tower.materialCost.ToString(); //if needed
+
+                    if (gM.CheckIfEnoughResources(towerToDisplay.GetComponent<Tower>()))
                     {
-                        tower = towerToDisplay.GetComponent<Tower>();
-                        moneyText.text = tower.cost.ToString();
-                        materialText.text = tower.materialCost.ToString(); //if needed
+                        moneyText.color = Color.black;
+                        builderController.GhostTower(towerToDisplay);
                     }
                     else
                     {
-                        TowerUpgradeController tUC = TowerUpgradeController.Instance;
-                        if (tUC.ClickedTower != null) //Checks upgrade and changes the UI based on upgradelevel
-                        {
-                            UpgradeHighlighted(moneyText, materialText, tUC);
-                        }
+                        moneyText.color = Color.red;
                     }
-                    DecideTowerToBuild(MenuItems[i].name);
-                    if (towerToDisplay != null)
-                    {
-                        if (GameManager.Instance.CheckIfEnoughResources(towerToDisplay.GetComponent<Tower>()))
-                        {
-                            moneyText.color = Color.black;
-                            builderController.GhostTower(towerToDisplay);
-                        }
-                        else
-                        {
-                            moneyText.color = Color.red;
-                        }
-                    }
-
-                    if (infoAction.triggered)
-                    {
-                        print("WEEEEEEEEEEEEEE");
-                        //InfoPanel();
-                    }
-
-
-                    selectHint.SetActive(true);
-                    infoHint.SetActive(true);
                 }
+                else
+                {                  
+                    if (tUC.ClickedTower != null) //Checks upgrade and changes the UI based on upgradelevel
+                    {
+                        UpgradeHighlighted(moneyText, materialText);
+                    }
+                }
+                
+                if (MenuItems[i].name.Equals("Upgrade"))
+                {
+                    ShowStatisticPanel();
+                }
+                
+                
+
+                selectHint.SetActive(true);
+                infoHint.SetActive(true);               
             }
             else
             {
                 // Remove hover effect from all other items
                 MenuItems[i].transform.GetChild(0).GetComponent<Image>().color = hidden;
-                if (MenuItems[i].transform.Find("Cost"))
-                {
-                    MenuItems[i].transform.Find("Cost").gameObject.SetActive(false);
-                }
 
+                MenuItems[i].transform.Find("Cost").gameObject.SetActive(false);
+
+                if (gameObject.name.Equals("BuildPanel"))
+                {
+                    statisticPanel.SetActive(false);                    
+                }
             }
         }
     }
 
-    private void UpgradeHighlighted(Text moneyText, Text materialText, TowerUpgradeController tUC)
+    // Decides which statistic panel to show
+    private void ShowStatisticPanel()
+    {
+        if (statisticPanel != null)
+        {
+
+            if (transform.name.Equals("BuildPanel")) //Build
+            {
+                if (infoAction.IsPressed())
+                {
+                    statisticPanel.SetActive(true);
+                }
+            }
+            else if (gameObject.name.Equals("TankPanel")) //Tank Upgrade (Not Implemented Jet)
+            {
+                return;
+            }
+            else //Tower Upgrade
+            {
+                statisticPanel.SetActive(true);
+                upgradeTitleText.text = tUC.GetNameOfTowerClicked() + " (Lv " + tUC.GetUpgradesPurchased() + ")";
+                ChangeUpgradeTextColorToGreen();
+            }
+        }
+    }
+
+    private void ChangeUpgradeTextColorToGreen()
+    {
+        switch (tUC.GetUpgradesPurchased()) //Which level the tower is in and which text to turn green
+        {
+            case 0:
+                upgradeLevel1Text.color = Color.green;
+                break;
+            case 1:
+                upgradeLevel2Text.color = Color.green;
+                break;
+            case 2:
+                upgradeLevel3Text.color = Color.green;
+                break;
+            case 3:
+                upgradeTitleText.text = tUC.GetNameOfTowerClicked() + " (Lv MAX)";
+                break;
+        }
+    }
+
+    /* Method for determining how the cost will be presented to the player */
+    private void UpgradeHighlighted(Text moneyText, Text materialText)
     {
         Tower tower;
         tower = tUC.ClickedTower.GetComponent<Tower>();
@@ -214,54 +337,54 @@ public class WheelSelection : MonoBehaviour
             return;
         }
         
-        float money = GameManager.Instance.Money;
-        float material = GameManager.Instance.Material;
+        float money = gM.Money;
+        float material = gM.Material;
 
-        if (GameManager.Instance.CheckIfEnoughResources(tower))
-        {
-             moneyText.color = Color.black;
-             materialText.color = Color.black;
-        }
-        else if (money < tower.cost)
+        if(money < tower.UpgradeCostUpdate())
         {
             moneyText.color = Color.red;
-            materialText.color = Color.black;
-        }
-        else if (material < tower.materialCost)
-        {
-            moneyText.color = Color.black;
-            materialText.color = Color.red;   
         }
         else
         {
-            moneyText.color = Color.red;
+            moneyText.color = Color.black;
+        }
+
+        if(material < tower.materialCost)
+        {
             materialText.color = Color.red;
+        }
+        else
+        {
+            materialText.color = Color.black;
         }
 
         moneyText.text = tower.UpgradeCostUpdate().ToString();
         materialText.text = tower.materialCost.ToString();
-        
     }
 
     public void DecideTowerToBuild(string name)
     {
-        switch (name)
+        switch (name) // Which tower that is selected
         {
             case "Cannon":
-            towerToDisplay = buildManager.cannonTowerPrefab;
-            break;
+                towerToDisplay = buildManager.cannonTowerPrefab;
+                break;
 
             case "Missile":
-            towerToDisplay = buildManager.missileTowerPrefab;
-            break;
+                towerToDisplay = buildManager.missileTowerPrefab;
+                break;
 
             case "Slow":
-            towerToDisplay = buildManager.slowTowerPrefab;
-            break;
+                towerToDisplay = buildManager.slowTowerPrefab;
+                break;
 
             case "Poison":
-            towerToDisplay = buildManager.poisonTowerPrefab;
-            break;
+                towerToDisplay = buildManager.poisonTowerPrefab;
+                break;
+
+            default:
+                towerToDisplay = null;
+                break;
          }
     }
 
@@ -273,10 +396,90 @@ public class WheelSelection : MonoBehaviour
         {
             selectedItem.GetComponent<ButtonClick>().Click();
             EventHandler.InvokeEvent(new BoughtInUIEvent("Something is bought in UI"));
+
+            if (!gameObject.name.Equals("BuildPanel") && !gameObject.name.Equals("TankPanel"))
+            {
+                UpdateUpgradeLevelText();                              
+            }
+
+            stickInput = Vector2.zero;
         }
         else
         {
                 /*MenuItems[index].color = Color.green;*/
+        }
+    }
+
+
+    private void UpdateUpgradeLevelText()
+    {
+        switch (tUC.GetNameOfTowerClicked()) //Which Tower That Is Clicked
+        {
+            case "Cannon Tower":
+                CannonTower cT = tUC.ClickedTower.GetComponent<CannonTower>();
+
+                switch (tUC.GetUpgradesPurchased()) // Which Level the CannonTower is in
+                {
+                    case 1:
+                        upgradeLevel1Text.text = "Basic Fire rate: " + cT.FireRate;
+                        break;
+                    case 2:
+                        upgradeLevel2Text.text = "Basic Damage: " + cT.ShotDamage;
+                        break;
+                    case 3:
+                        upgradeLevel3Text.text = "Double Shot: (Active)";
+                        break;
+                }
+
+                break;
+            case "Missile Tower":
+                MissileTower mT = tUC.ClickedTower.GetComponent<MissileTower>();
+
+                switch (tUC.GetUpgradesPurchased()) // Which Level the MissileTower is in
+                {
+                    case 1:
+                        upgradeLevel1Text.text = "Basic AoE Radius: " + mT.SplashRadius;
+                        break;
+                    case 2:
+                        upgradeLevel2Text.text = "Basic AoE Damage: " + mT.SplashDamage;
+                        break;
+                    case 3:
+                        upgradeLevel3Text.text = "Increased Third Missle Dmg (Active)";
+                        break;
+                }
+                break;
+            case "Slow Tower":
+                SlowTower sT = tUC.ClickedTower.GetComponent<SlowTower>();
+
+                switch (tUC.GetUpgradesPurchased()) // Which Level the SlowTower is in
+                {
+                    case 1:
+                        upgradeLevel1Text.text = "Basic Range: " + sT.range;
+                        break;
+                    case 2:
+                        upgradeLevel2Text.text = "Basic Area Effect: (Active)";
+                        break;
+                    case 3:
+                        upgradeLevel3Text.text = "Periodic Halts All Enemies: (Active)";
+                        break;
+                }
+                break;
+            case "Poison Tower":
+                PoisonTower pT = tUC.ClickedTower.GetComponent<PoisonTower>();
+
+                switch (tUC.GetUpgradesPurchased()) // Which Level the PoisonTower is in
+                {
+                    case 1:
+                        upgradeLevel1Text.text = "Basic Poison Duration: " + pT.PoisonTicks;
+                        break;
+                    case 2:
+                        upgradeLevel2Text.text = "Basic DoT: " + pT.PoisonDamagePerTick;
+                        break;
+                    case 3:
+                        upgradeLevel3Text.text = "Contagious: (Active)";
+                        break;
+                }
+                break;
         }
     }
 }

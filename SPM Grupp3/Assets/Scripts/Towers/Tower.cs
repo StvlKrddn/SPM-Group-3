@@ -15,9 +15,9 @@ public abstract class Tower : MonoBehaviour
     public GameObject onHitEffect;
     protected TowerUpgradeController tUC;
     public GameObject tower;
-    public GameObject upgradeUI;
-    public GameObject buildUI;
     public GameObject towerPlacement;
+
+    [SerializeField] private FadeBehaviour fadeBehaviour;
 
     [Header("BaseStats")]
 
@@ -26,6 +26,7 @@ public abstract class Tower : MonoBehaviour
     [SerializeField] private float shotDamage = 5000f;
     public float cost = 150f;
     public float materialCost;
+    protected List<GameObject> shots = new List<GameObject>();
 
     public float ShotDamage { get { return shotDamage; } set { shotDamage = value; } }
 
@@ -33,7 +34,9 @@ public abstract class Tower : MonoBehaviour
 
     protected Shot bullet;
 
-    public abstract void HitTarget(TowerHitEvent eventInfo);
+
+
+    public abstract void HitTarget(GameObject hit, GameObject hitEffect);
     public abstract void ShowUpgradeUI(Transform towerMenu);
     public abstract float UpgradeCostUpdate();
 
@@ -93,6 +96,15 @@ public abstract class Tower : MonoBehaviour
     protected abstract void Level2(GameObject tower);
     protected abstract void Level3(GameObject tower);
 
+    public void ShowHoverEffect()
+    {
+        fadeBehaviour.Hover();
+    }
+    public void HideHoverEffect()
+    {
+        fadeBehaviour.HideHover();
+    }
+
     void UpdateTarget()
     {
         GameObject[] enemies = GameObject.FindGameObjectsWithTag(enemyTag);
@@ -118,7 +130,25 @@ public abstract class Tower : MonoBehaviour
             target = null;
         }
     }
-    
+
+    protected int FindShot()
+    {
+        for (int i = 0; i < shots.Count; i++)
+        {
+            if (shots[i].activeSelf == false)
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    protected IEnumerator DisableEffect(GameObject effect)
+    {
+        yield return new WaitForSeconds(1);
+        effect.SetActive(false);
+    }
+
     protected void LockOnTarget()
     {
         if (target != null)

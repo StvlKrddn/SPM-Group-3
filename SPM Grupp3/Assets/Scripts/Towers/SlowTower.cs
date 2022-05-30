@@ -5,7 +5,6 @@ using UnityEngine;
 public class SlowTower : Tower
 {
     [SerializeField] private float slowProc = 0.7f;
-    [SerializeField] private float slowRadius = 1f;
     [SerializeField] private bool areaOfEffect = false;
     public bool stunActive = false;
     [SerializeField] private float shotsBeforeStun;
@@ -22,8 +21,6 @@ public class SlowTower : Tower
     [SerializeField] private float level3Cost;
 
     private float currentShots = 0;
-
-    
 
     public float costForUpgrade;
 
@@ -57,7 +54,6 @@ public class SlowTower : Tower
     // Start is called before the first frame update
     void Start()
     {  
-        EventHandler.RegisterListener<TowerHitEvent>(HitTarget);
         radius.transform.localScale = new Vector3(range * 2f, 0.01f, range * 2f);
         InvokeRepeating("UpdateTarget", 0f, 0.5f);
     }
@@ -79,16 +75,12 @@ public class SlowTower : Tower
         }
     }
 
-    public override void HitTarget(TowerHitEvent eventInfo)
+    public override void HitTarget(GameObject hit, GameObject hitEffect)
     {
-        if (eventInfo.towerGO == gameObject)
+        if (target != null)
         {
-            if (target != null)
-            {
-                bullet.DecideTypeOfShot("Slow");
-            }
+            bullet.DecideTypeOfShot("Slow");
         }
-        
     }
 
     private bool CanYouShoot()
@@ -105,9 +97,21 @@ public class SlowTower : Tower
 
     private void Shoot()
     {   
+        int shotIndex = FindShot();
         if (!areaOfEffect)
         {
-            GameObject bulletGO = Instantiate(shot, firePoint.position, firePoint.rotation);
+            GameObject bulletGO;
+            if (shotIndex < 0)
+            {
+                bulletGO = Instantiate(shot, firePoint.position, firePoint.rotation, transform);
+                shots.Add(bulletGO);
+            }
+            else
+            {
+                bulletGO = shots[shotIndex];
+                bulletGO.transform.position = firePoint.position;
+                bulletGO.transform.rotation = firePoint.rotation;
+            }
             bulletGO.transform.parent = transform;
             bulletGO.SetActive(true);
             bullet = bulletGO.GetComponent<Shot>();
@@ -119,11 +123,11 @@ public class SlowTower : Tower
         }
         else
         {
-            AOESlow();
+            AOESlow(shotIndex);
         }
     }
 
-    private void  AOESlow()
+    private void  AOESlow(int shotIndex)
     {
         if (currentShots <= 0 && stunActive)
         {
@@ -134,17 +138,30 @@ public class SlowTower : Tower
             currentShots -= 1;
         }
 
-        GameObject effectInstance = Instantiate(onHitEffect, transform.position, transform.rotation);
-        Destroy(effectInstance, 1f);
+        GameObject effectInstance;
+        if (shotIndex < 0)
+        {
+            effectInstance = Instantiate(onHitEffect, transform.position, transform.rotation, transform);
+            shots.Add(effectInstance);
+        }
+        else
+        {
+            effectInstance = shots[shotIndex];
+            effectInstance.transform.position = transform.position;
+            effectInstance.transform.rotation = transform.rotation;
+        }
+        effectInstance.SetActive(true);
+
+        StartCoroutine(DisableEffect(effectInstance));
         
 
         if (stunActive && CurrentShots <= 0f)
         {
-            GetComponent<SlowTowerEffect>().HitBySlow(SlowProc, range, AreaOfEffect, true);
+            GetComponent<SlowTowerEffect>().HitBySlow(null, SlowProc, range, AreaOfEffect, true);
         }
         else
         {
-            GetComponent<SlowTowerEffect>().HitBySlow(SlowProc, range, AreaOfEffect, false);
+            GetComponent<SlowTowerEffect>().HitBySlow(null, SlowProc, range, AreaOfEffect, false);
         }
 
     }
@@ -195,18 +212,40 @@ public class SlowTower : Tower
 
     protected override void Level1(GameObject tower)
     {
-        tower.GetComponent<SlowTower>().slowRadius += upgradeAmountSlowRadius;
+        SlowTower sT = tower.GetComponent<SlowTower>();
+        sT.range += upgradeAmountSlowRadius;
+        sT.radius.transform.localScale = new Vector3(sT.range * 2f, 0.01f, sT.range * 2f);      
     }
 
     protected override void Level2(GameObject tower)
     {
         SlowTower sT = tower.GetComponent<SlowTower>();
+
+        GameObject towerUpgradeVisual1 = sT.transform.Find("Container").Find("Level1").gameObject;
+        GameObject towerUpgradeVisual2 = sT.transform.Find("Container").Find("Level2").gameObject;
+
+        towerUpgradeVisual1.SetActive(false);
+        towerUpgradeVisual2.SetActive(true);
+
         sT.areaOfEffect = true;
+        foreach (GameObject bullet in sT.shots)
+        {
+            Destroy(bullet);
+        }
+        sT.shots.Clear();
         sT.transform.rotation = Quaternion.Euler(0, 0, 0);
     }
 
     protected override void Level3(GameObject tower)
     {
-        tower.GetComponent<SlowTower>().stunActive = true; 
+        SlowTower sT = tower.GetComponent<SlowTower>();
+
+        sT.stunActive = true;
+
+        GameObject towerUpgradeVisual1 = sT.transform.Find("Container").Find("Level2").gameObject;
+        GameObject towerUpgradeVisual2 = sT.transform.Find("Container").Find("Level3").gameObject;
+
+        towerUpgradeVisual1.SetActive(false);
+        towerUpgradeVisual2.SetActive(true);
     }
-}
+} 

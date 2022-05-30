@@ -10,16 +10,31 @@ public class GarageTrigger : MonoBehaviour
     private GameObject hintEnterUI;
     private bool limit = false;
 
+    [SerializeField] private FadeBehaviour fadeBehaviour;
+
     void Awake() 
     {
         hintEnterUI = UI.Canvas.transform.Find("EnterGarageHint").gameObject;
     }
 
-    private void OnTriggerEnter(Collider other)
+/*    private void OnTriggerEnter(Collider other)
     {
-        hintEnterUI.SetActive(true);
+        if (other.CompareTag("Tank"))
+        {
+            hintEnterUI.GetComponent<FadeBehaviour>().Fade();
+            //hintEnterUI.SetActive(true);
+        }
+    }*/
+
+    public void ShowHover()
+    {
+        fadeBehaviour.Hover();
     }
 
+    public void HideHover()
+    {
+        fadeBehaviour.HideHover();
+    }
 
     private void OnTriggerStay(Collider other)
     {
@@ -27,12 +42,22 @@ public class GarageTrigger : MonoBehaviour
         {
             PlayerInput playerInput = other.GetComponentInParent<PlayerInput>();
             acceptAction = playerInput.actions["EnterGarage"];
-            
+
+            if(hintEnterUI.GetComponent<FadeBehaviour>().Faded())
+                hintEnterUI.GetComponent<FadeBehaviour>().Fade();
+
             if (acceptAction.IsPressed() && limit == false)
             {
+<<<<<<< HEAD
 
                 print("kommer den hit");
                 hintEnterUI.SetActive(false);
+=======
+                if (!hintEnterUI.GetComponent<FadeBehaviour>().Faded())
+                    hintEnterUI.GetComponent<FadeBehaviour>().Fade();
+
+                //hintEnterUI.SetActive(false);
+>>>>>>> main
                 EventHandler.InvokeEvent(new PlayerSwitchEvent(
                     description: "A player switched mode",
                     playerContainer: other.transform.parent.gameObject
@@ -42,11 +67,16 @@ public class GarageTrigger : MonoBehaviour
 
             }
         }
-        }
+    }
 
     private void OnTriggerExit(Collider other)
-    {      
-        hintEnterUI.SetActive(false);
+    {
+        if (other.CompareTag("Tank"))
+        {
+            if(!hintEnterUI.GetComponent<FadeBehaviour>().Faded())
+                hintEnterUI.GetComponent<FadeBehaviour>().Fade();
+            //hintEnterUI.SetActive(false);
+        }
     }
 
     public void ChangeLimit()

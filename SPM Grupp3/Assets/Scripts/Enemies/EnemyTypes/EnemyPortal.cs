@@ -64,7 +64,7 @@ public class EnemyPortal : EnemyController
 		transform.position = wayPoints[path][randomWaypoint].position;
 	}
 
-    protected override void Update()
+    protected override void FixedUpdate()
 	{
 		if (opened)
 		{
@@ -84,6 +84,7 @@ public class EnemyPortal : EnemyController
 
 	private IEnumerator OpenPortal()
 	{
+		yield return new WaitForSeconds(0.01f);
 		foreach (ParticleSystem particle in pS)
 		{
 			particle.Play();

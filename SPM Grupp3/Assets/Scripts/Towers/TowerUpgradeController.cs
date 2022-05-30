@@ -51,12 +51,6 @@ public class TowerUpgradeController : MonoBehaviour
         placement = eventInfo.placementClicked;
     }
 
-    public void PlaceTowerInUpgradeList(GameObject placedTower)
-    {
-        PlacedTower U = new PlacedTower(placedTower, placement, 0);
-        gameManager.AddPlacedTower(U);   
-    }
-
     public int GetUpgradesPurchased()
     {
         for (int i = 0; i < placedTowers.Count; i++)
@@ -67,6 +61,40 @@ public class TowerUpgradeController : MonoBehaviour
             }
         }
         return 0;
+    }
+
+    public int GetUpgradesPurchased(GameObject tower)
+    {
+        for (int i = 0; i < placedTowers.Count; i++)
+        {
+            if (placedTowers[i].tower.Equals(tower))
+            {
+                return placedTowers[i].upgradesPurchased;
+            }
+        }
+        return 0;
+    }
+
+    public string GetNameOfTowerClicked()
+    {
+        string nameOfTower = null;
+        if (clickedTower.GetComponent<CannonTower>())
+        {
+            nameOfTower = "Cannon Tower";
+        }
+        else if (clickedTower.GetComponent<MissileTower>())
+        {
+            nameOfTower = "Missile Tower";
+        }
+        else if(clickedTower.GetComponent<SlowTower>())
+        {
+            nameOfTower = "Slow Tower";
+        }
+        else if(clickedTower.GetComponent<PoisonTower>())
+        {
+            nameOfTower = "Poison Tower";
+        }
+        return nameOfTower;
     }
 
     public PlacedTower GetPlacedTower(GameObject tower)

@@ -18,8 +18,15 @@ public class EnemyMortarShot : MonoBehaviour
         particle = GetComponentsInChildren<ParticleSystem>();
     }
 
-    // Update is called once per frame
-    void Update()
+	private void OnEnable()
+	{
+        gameObject.SetActive(true);
+        radius.transform.parent = transform;
+    }
+
+
+	// Update is called once per frame
+	void Update()
     {
         switch (phase)
         {
@@ -49,12 +56,8 @@ public class EnemyMortarShot : MonoBehaviour
 
                 TankState tankToTarget = tanks[Random.Range(0, tanks.Length)];
                 Vector3 tempVector = new Vector3(tankToTarget.transform.position.x + Random.Range(-4, 4), tankToTarget.transform.position.y, tankToTarget.transform.position.z + Random.Range(-4, 4));
-                //Transform randomTransform = new Transform();
 
-                target =tempVector;
-
-
-             //   target.position = tempVector;
+                target = tempVector;
 
 
                 if (radius.transform.parent != null)
@@ -65,7 +68,7 @@ public class EnemyMortarShot : MonoBehaviour
             }
             else
             {
-                Destroy(gameObject);
+                gameObject.SetActive(false);
             }
         }
     }
@@ -85,9 +88,9 @@ public class EnemyMortarShot : MonoBehaviour
     {
         if (phase == 2)
         {
-            if (collider.gameObject.CompareTag("PlaceForTower") || collider.gameObject.CompareTag("Road") || collider.gameObject.CompareTag("Tank"))
+            if (collider.gameObject.CompareTag("Tank") || collider.gameObject.CompareTag("GameBoard"))
             {
-                Destroy(radius);
+                radius.SetActive(false);
                 StartCoroutine(Particle());
             }
         }
@@ -97,6 +100,7 @@ public class EnemyMortarShot : MonoBehaviour
     private IEnumerator Particle()
     {
         phase = 3;
+        yield return new WaitForSeconds(0.01f);
         GetComponent<MeshRenderer>().enabled = false;
         particle[0].transform.GetComponent<SphereCollider>().enabled = true;
         foreach (ParticleSystem p in particle)
@@ -104,6 +108,10 @@ public class EnemyMortarShot : MonoBehaviour
             p.Play();
         }
         yield return new WaitForSeconds(particle[0].main.duration);
-        Destroy(gameObject);
+        if (gameObject.activeSelf == true)
+        {
+            radius.transform.parent = transform;
+            gameObject.SetActive(false);
+        }
     }
 }

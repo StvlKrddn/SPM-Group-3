@@ -16,83 +16,74 @@ public class MaterialBehavior : MonoBehaviour
     [SerializeField] private GameObject changerText;
     [SerializeField] private Transform spawnTextPosition;
 
-    [SerializeField] private Color dropTextColor;
+    private Color dropTextColor = new Color(164,164,164,255);
 
     private GameManager gameManager;
-    private Rigidbody rb;
     private bool landed = false;
-	private Vector3 direction;
-
-	float x;
-	float z;
 
 
     public float[] xValues = new float[2];
     public float[] zValues = new float[2];
 
-    private int timeModifier;
 
 	private Vector3 originalPosition;
 
-    private float xMovement;
-
-
     public float secondsBeforeLanding = 3; 
 
-    public float yMovement =-0.016666666f;
-
+    private float xMovement;
+    public float yMovement;
     private float zMovement;
+    private int framesTimesSeconds = 150;
 
+ private Vector3 destinationVector;
 
-    private int howManyTimes; 
+    private MeshRenderer mRenderer;
 
-    Vector3 tempVector;
-    void Start()
-    {
-        //  transform.position = new Vector3(transform.position.x, transform.position.y + 2, transform.position.z);
+    // Sverkers remake på materialkoden
+
+	private void Awake()
+	{
+        mRenderer = GetComponent<MeshRenderer>();
+        changerText = Instantiate(changerText, spawnTextPosition.position, spawnTextPosition.rotation, GameManager.Instance.transform.Find("DropTexts"));
+		changerText.GetComponentInChildren<Text>().text = materialValue.ToString();
+        changerText.GetComponentInChildren<Text>().color = dropTextColor;
+        changerText.SetActive(false);
+        gameManager = GameManager.Instance;
+	}
+
+	private void OnEnable()
+	{
+        mRenderer.enabled = true;
+        landed = false;
         transform.position = new Vector3(transform.position.x, 3, transform.position.z);
-
-
-        Vector3 destination = new Vector3(Random.Range(xValues[0], xValues[1]), 0, Random.Range(zValues[0], zValues[1]));
-
-
-       
-
-            xMovement = ((destination.x - transform.position.x ) / 49);
-            zMovement = (( destination.z - transform.position.z) / 49);
-
-        tempVector = new Vector3(xMovement, yMovement, zMovement);
-        
-        gameManager = FindObjectOfType<GameManager>();
-        rb = GetComponent<Rigidbody>();
-		direction = Random.insideUnitSphere.normalized;
-		while ((x > 0.25f && x < -0.25f) || (z > 0.25f && z < -0.25f))
-		{
-		}
-			//x = Random.Range(-0.35f, 0.35f);
-			//z = Random.Range(-0.26f, 0.26f);
-        direction = new Vector3(-3f, 0, 0);
-
+        destinationVector = CalculatePosition();
     }
 
-    void Update()
+    private void OnDisable()
     {
-	//	if (landed == true)
-	//	{
-	//		Bobbing();
-	//	}
-	//	else
-	//	{
-	//		Throw();
-	//	}
+        StopAllCoroutines();
+    }
+
+
+    void Start()
+    {
+        transform.position = new Vector3(transform.position.x, 3, transform.position.z);
+        destinationVector = CalculatePosition();
+    }
+
+    private Vector3 CalculatePosition()
+    {
+        Vector3 destination = new Vector3(Random.Range(xValues[0], xValues[1]), 0, Random.Range(zValues[0], zValues[1]));
+        xMovement = (destination.x - transform.position.x) / framesTimesSeconds;
+        yMovement = -(secondsBeforeLanding / framesTimesSeconds);
+        zMovement = (destination.z - transform.position.z) / framesTimesSeconds;
+        return new Vector3(xMovement, yMovement, zMovement);
     }
 
     private void FixedUpdate()
     {
         if (landed == true)
         {
-
-            
             Bobbing();
         }
         else
@@ -107,22 +98,13 @@ public class MaterialBehavior : MonoBehaviour
         originalPosition = transform.position;
 		originalPosition.y += 1;
 
-        print(howManyTimes);
         landed = true;
 		StartCoroutine(SelfDestruct());
 	}
 
     private void Throw()
     {
-        howManyTimes += 1;
-
-
-        transform.position += tempVector;
-       //     transform.Translate(xMovement, yMovement, zMovement);
-       //   transform.position += (direction * Time.fixedDeltaTime);
-       //transform.Translate(transform.position * x * Time.smoothDeltaTime);
-       //transform.Translate(transform.position * z * Time.smoothDeltaTime);
-       //transform.Translate(transform.up * 5 * Time.smoothDeltaTime);
+        transform.position += destinationVector;
     }
 
     private void Bobbing()
@@ -133,7 +115,7 @@ public class MaterialBehavior : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-		if (landed != true && (other.gameObject.CompareTag("PlaceForTower") || other.gameObject.CompareTag("Road")))
+		if (landed != true && (other.gameObject.CompareTag("PlaceForTower") || other.gameObject.CompareTag("Road") || other.gameObject.CompareTag("GameBoard")))
 		{
 			Landed();
 		}
@@ -141,27 +123,32 @@ public class MaterialBehavior : MonoBehaviour
         {
             gameManager.AddMaterial(materialValue);
 
-            if (changerText != null)
+            if (changerText != null && spawnTextPosition != null)
             {
-                changerText.GetComponentInChildren<Text>().text = materialValue.ToString();
-                changerText.GetComponentInChildren<Text>().color = dropTextColor;
-
-                if (spawnTextPosition != null)
-                    Instantiate(changerText, spawnTextPosition.position, spawnTextPosition.rotation);
-                else
-                {
-                    Instantiate(changerText);
-                    print("No transform-point for changerText");
-                }
+                changerText.transform.position = transform.position;
+                changerText.transform.rotation = transform.rotation;
+                changerText.SetActive(true);
             }
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
 
 	private IEnumerator SelfDestruct()
     {
-        yield return new WaitForSeconds(duration);
-        Destroy(gameObject);
+        yield return new WaitForSeconds(duration - 5);
+        StartCoroutine(Blink(0.4f));
+        yield return new WaitForSeconds(5);
+        gameObject.SetActive(false);
+        yield return null;
+    }
+
+    private IEnumerator Blink(float divide)
+    {
+        mRenderer.enabled = false;
+        yield return new WaitForSeconds(divide);
+        mRenderer.enabled = true;
+        yield return new WaitForSeconds(divide * 2);
+        StartCoroutine(Blink(divide / 1.25f));
         yield return null;
     }
 }

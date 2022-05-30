@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
     [Header("UI: ")]
     [SerializeField] private Text moneyCounterUI;
     [SerializeField] private Text materialCounterUI;
+    [SerializeField] private ParticleSystem moneyParticle;
+    [SerializeField] private ParticleSystem materialParticle;
 
     //[Header("Players: ")]
     //[SerializeField] private PlayerMode startingMode;
@@ -35,9 +37,7 @@ public class GameManager : MonoBehaviour
     private WaveManager waveManager;
     private Canvas canvas;
     private Slider livesSlider;
-
-    private SaveData data;
-
+    private HealthBar healthBar;
     private float money;
     private float material;
     private float baseHealth;
@@ -71,43 +71,60 @@ public class GameManager : MonoBehaviour
 
     void Awake() 
     {
+
         EventHandler.RegisterListener<SaveGameEvent>(SaveGame);
         buildManager = FindObjectOfType<BuildManager>();
         if (DataManager.FileExists(DataManager.SaveData))
         {
-       //     LoadFromFile();
+            LoadSaveData();
         }
         else 
         {
             LoadBase();
         }
-
-        LoadBase();
+        if (DataManager.FileExists(DataManager.CustomizationData))
+        {
+            LoadCustomizationData();
+        }
     }
 
-    private void LoadFromFile()
+    private void LoadSaveData()
     {
-        data = (SaveData) DataManager.ReadFromFile(DataManager.SaveData);
-        money = data.money;
-        material = data.material;
-        currentWave = data.currentWave;
-        baseHealth = data.currentBaseHealth;
+        SaveData saveData = (SaveData) DataManager.ReadFromFile(DataManager.SaveData);
+        money = saveData.money;
+        material = saveData.material;
+        currentWave = saveData.currentWave;
+        baseHealth = saveData.currentBaseHealth;
 
-        enemiesKilled = data.enemiesKilled;
-        moneyCollected = data.moneyCollected;
-        materialCollected = data.materialCollected;
+        enemiesKilled = saveData.enemiesKilled;
+        moneyCollected = saveData.moneyCollected;
+        materialCollected = saveData.materialCollected;
 
-        Player1Color = data.player1Color;
-        Player2Color = data.player2Color;
+        startingMode = saveData.startingMode;
 
-        startingMode = data.startingMode;
-
-        List<TowerData> towerData = new List<TowerData>(data.towerData);
+        List<TowerData> towerData = new List<TowerData>(saveData.towerData);
 
         foreach (TowerData tower in towerData)
         {
-            AddPlacedTower(buildManager.LoadTower(tower));
+            buildManager.LoadTower(tower);
         }
+        UpgradeController.currentUpgradeLevel = saveData.tankUpgradeLevel;
+        
+        Invoke(nameof(FixUpgradeDelay), 0.01f);
+    }
+
+    private void LoadCustomizationData()
+    {
+        CustomizationData customData = (CustomizationData) DataManager.ReadFromFile(DataManager.CustomizationData);
+
+        Player1Color = customData.player1Color;
+        Player2Color = customData.player2Color;
+    }
+
+    private void FixUpgradeDelay(GameObject tank)
+    {
+        UpgradeController.Instance.FixUpgrades(FindObjectOfType<TankState>().gameObject);
+        UpgradeController.Instance.FixUpgrades(tank);
     }
 
     private void LoadBase()
@@ -126,10 +143,11 @@ public class GameManager : MonoBehaviour
         Player2Color = baseStats.Player2Color;
     }
 
-    [ContextMenu("Delete Save Data")]
+    [ContextMenu("Delete Saved Data")]
     public void DeleteSaveData()
     {
         DataManager.DeleteFile(DataManager.SaveData);
+        DataManager.DeleteFile(DataManager.CustomizationData);
     }
 
     private void Start()
@@ -137,8 +155,10 @@ public class GameManager : MonoBehaviour
         InitializeUIElements();
 
         currentBaseHealth = baseHealth;
-        livesSlider.maxValue = baseStats.baseHealth;
-        livesSlider.value = currentBaseHealth;
+        healthBar.HandleHealthChanged(currentBaseHealth);
+
+        /*livesSlider.maxValue = baseStats.baseHealth;
+        livesSlider.value = currentBaseHealth;*/
 
         waveManager = GetComponent<WaveManager>();
 
@@ -158,8 +178,9 @@ public class GameManager : MonoBehaviour
         waveCounter = topPanel.Find("WaveHolder").Find("WaveCounter").gameObject;
         moneyCounterUI = topPanel.Find("MoneyHolder").Find("MoneyCounter").GetComponent<Text>();
         materialCounterUI = topPanel.Find("MaterialHolder").Find("MaterialCounter").GetComponent<Text>();
-        
-        livesSlider = canvas.Find("LivesSlider").GetComponent<Slider>();
+
+        healthBar = canvas.GetComponent<HealthBar>();
+        //livesSlider = canvas.Find("LivesSlider").GetComponent<Slider>();
 
         victoryPanel = canvas.Find("VictoryPanel").gameObject;        
         defeatPanel = canvas.Find("DefeatPanel").gameObject;
@@ -229,65 +250,71 @@ public class GameManager : MonoBehaviour
             material,
             currentBaseHealth,
             currentScene: SceneManager.GetActiveScene().buildIndex,
-            Player1Color,
-            Player2Color,
             startingMode,
-            towersPlaced
+            towersPlaced,
+            UpgradeController.currentUpgradeLevel
         );
         DataManager.WriteToFile(saveData, DataManager.SaveData);
+
+        CustomizationData customData = new CustomizationData(
+            Player1Color,
+            Player2Color
+        );
+        DataManager.WriteToFile(customData, DataManager.CustomizationData);
     }
 
     public void TakeDamage(float damage, GameObject enemy)
     {
         damagingEnemy = enemy;
         currentBaseHealth -= damage;
-        livesSlider.value -= damage;
+        healthBar.HandleHealthChanged(currentBaseHealth);
+        //livesSlider.value -= damage;
         if (currentBaseHealth <= 0)
         {
             Defeat();
         }
     }
 
-    // Modifiy the values to two decimals when it is more than 1000 unites /Noah
+    // Modifiy the values to 10K if it is equal or higher than 10.000
     private void UpdateUI()
     {
         float mon = money;
 
-        if(mon >= 1000)
+        if(mon >= 10000)
         {
-            int holeNumb = (int) mon/1000;
-            int deciNumb = (int)(mon % 1000) / 10;
-            moneyCounterUI.text = ": " + holeNumb.ToString() + "," + deciNumb.ToString() + "K";
+            int holeNumb = (int) mon / 10000;
+            moneyCounterUI.text = holeNumb.ToString() + "K";
         }
         else
         {
-            moneyCounterUI.text = ": " + money.ToString();
+            moneyCounterUI.text = mon.ToString();
         }
 
         float mat = material;
 
-        if(mat >= 1000)
+        if(mat >= 10000)
         {
-            int holeNumb = (int) mat / 1000;
-            int deciNumb = (int)(mat % 1000) / 10;
-            materialCounterUI.text = ": " + holeNumb.ToString() + "," + deciNumb.ToString() + "K";
+            int holeNumb = (int) mat / 10000;
+            materialCounterUI.text = holeNumb.ToString() + "K";
         }
         else
         {
-            materialCounterUI.text = ": " + material.ToString();
+            materialCounterUI.text = mat.ToString();
         }
 
-        //print("vad är wave counter " + waveCounter);
-
-        waveCounter.GetComponent<Text>().text = (currentWave + 1) + "/" + GetComponent<WaveManager>().waves.Length;
+        /*waveCounter.GetComponent<Text>().text = (currentWave + 1) + "/" + GetComponent<WaveManager>().waves.Length;*/
     }
 
     public void AddMoney(float addMoney)
     {
-/*      moneyChangerUI.color = colorGain;
-        moneyChangerUI.text = "+" + addMoney;
+        /*      moneyChangerUI.color = colorGain;
+                moneyChangerUI.text = "+" + addMoney;
 
-        Instantiate(moneyChangerUI, moneyUI.transform);*/
+                Instantiate(moneyChangerUI, moneyUI.transform);
+        */
+
+        if (moneyParticle != null)
+            moneyParticle.Play();
 
         money += addMoney;
         moneyCollected += (int) addMoney;
@@ -296,10 +323,13 @@ public class GameManager : MonoBehaviour
 
     public void AddMaterial(float addMaterial)
     {
-/*      materialChangerUI.color = colorGain;
-        materialChangerUI.text = "+" + addMaterial;
+        /*      materialChangerUI.color = colorGain;
+                materialChangerUI.text = "+" + addMaterial;
 
-        Instantiate(materialChangerUI, materialUI.transform);*/
+                Instantiate(materialChangerUI, materialUI.transform);*/
+
+        if(materialParticle != null)
+            materialParticle.Play();
 
         material += addMaterial;
         materialCollected += (int) addMaterial;
@@ -368,7 +398,7 @@ public class GameManager : MonoBehaviour
         UI.OpenMenu();
 
         waveManager.Restart();
-       
+
         defeatPanel.SetActive(true);
 
         buildManager.TowerToBuild = null;
@@ -400,7 +430,8 @@ public class GameManager : MonoBehaviour
     private void ResetBaseHealth()
     {
         currentBaseHealth = baseHealth;
-        livesSlider.value = currentBaseHealth;
+        healthBar.HandleHealthChanged(currentBaseHealth);
+        //livesSlider.value = currentBaseHealth;
     }
 }
 
