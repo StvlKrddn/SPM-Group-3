@@ -5,7 +5,6 @@ using UnityEngine;
 public class SlowTower : Tower
 {
     [SerializeField] private float slowProc = 0.7f;
-    [SerializeField] private float slowRadius = 1f;
     [SerializeField] private bool areaOfEffect = false;
     public bool stunActive = false;
     [SerializeField] private float shotsBeforeStun;
@@ -37,7 +36,7 @@ public class SlowTower : Tower
     public override float UpgradeCostUpdate()
     {
         base.TowerLevel1();
-        switch (tUC.GetUpgradesPurchased())
+        switch (towerUpgradeController.GetUpgradesPurchased())
         {
             case 0:
                 costForUpgrade = level1Cost;
@@ -185,8 +184,8 @@ public class SlowTower : Tower
         base.TowerLevel1();
         if (gM.SpendResources(level1Cost,0f))
         {
-            tUC.IncreaseUpgradesPurchased();
-            SlowTower sT = tUC.ClickedTower.GetComponent<SlowTower>();
+            towerUpgradeController.IncreaseUpgradesPurchased();
+            SlowTower sT = towerUpgradeController.ClickedTower.GetComponent<SlowTower>();
             Level1(sT.gameObject);    
         }        
     }
@@ -195,8 +194,8 @@ public class SlowTower : Tower
         base.TowerLevel2();
         if (gM.SpendResources(level2Cost, 0f))
         {
-            tUC.IncreaseUpgradesPurchased();
-            SlowTower sT = tUC.ClickedTower.GetComponent<SlowTower>();
+            towerUpgradeController.IncreaseUpgradesPurchased();
+            SlowTower sT = towerUpgradeController.ClickedTower.GetComponent<SlowTower>();
             Level2(sT.gameObject);
         }
     }
@@ -205,8 +204,8 @@ public class SlowTower : Tower
         base.TowerLevel3();
         if (gM.SpendResources(level3Cost, 0f))
         {
-            tUC.IncreaseUpgradesPurchased();
-            SlowTower sT = tUC.ClickedTower.GetComponent<SlowTower>();
+            towerUpgradeController.IncreaseUpgradesPurchased();
+            SlowTower sT = towerUpgradeController.ClickedTower.GetComponent<SlowTower>();
             Level3(sT.gameObject);
         }
     }
@@ -214,7 +213,8 @@ public class SlowTower : Tower
     protected override void Level1(GameObject tower)
     {
         SlowTower sT = tower.GetComponent<SlowTower>();
-        sT.radius.transform.localScale = new Vector3((sT.range * 2f) + upgradeAmountSlowRadius, 0.01f, (sT.range * 2f) + upgradeAmountSlowRadius);
+        sT.range += upgradeAmountSlowRadius;
+        sT.radius.transform.localScale = new Vector3(sT.range * 2f, 0.01f, sT.range * 2f);      
     }
 
     protected override void Level2(GameObject tower)

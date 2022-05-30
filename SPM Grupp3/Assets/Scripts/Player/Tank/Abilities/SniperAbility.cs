@@ -4,7 +4,20 @@ using UnityEngine;
 
 public class SniperAbility : BulletBehavior
 {
-    [SerializeField] float damageOfAbility;
+    [SerializeField] private float damageOfAbility;
+    [SerializeField] private GameObject startObject;
+    [SerializeField] private GameObject hitObject;
+    private BoxCollider boxCollider;
+    private ParticleSystem hitParticle;
+    private ParticleSystem startParticle;
+
+    protected override void Start()
+	{
+		base.Start();
+	    hitParticle = hitObject.GetComponent<ParticleSystem>();
+        boxCollider = GetComponent<BoxCollider>();
+        startParticle = startObject.GetComponent<ParticleSystem>();
+	}
 
 	protected override void OnBecameInvisible()
 	{
@@ -15,6 +28,10 @@ public class SniperAbility : BulletBehavior
     {
         if (other.CompareTag("Enemy"))
         {
+            boxCollider.enabled = false;
+            GetComponentInChildren<MeshRenderer>().gameObject.SetActive(false);
+            startParticle.Stop();
+
             EnemyController target = other.GetComponent<EnemyController>();
             EnemyController[] enemyControllers = FindObjectsOfType(typeof(EnemyController)) as EnemyController[];
             foreach (EnemyController enemy in enemyControllers)
@@ -24,7 +41,10 @@ public class SniperAbility : BulletBehavior
                     enemy.TakeDamage(damageOfAbility);
                 }
             }
-            Destroy(gameObject, 0.01f);
+            hitObject.SetActive(true);
+            hitObject.transform.parent = null;
+            hitObject.SetActive(true);
+            Destroy(gameObject, hitParticle.main.duration + 0.01f);
         }
     }
 }

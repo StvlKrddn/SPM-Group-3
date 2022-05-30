@@ -76,7 +76,7 @@ public class PlayerHandler : MonoBehaviour
 
     private IEnumerator FixUpgradeDelay(GameObject tank)
     {
-        yield return new WaitForSeconds(Mathf.Epsilon);
+        yield return new WaitForSeconds(0.01f);
         UpgradeController.Instance.FixUpgrades(tank);
     }
 

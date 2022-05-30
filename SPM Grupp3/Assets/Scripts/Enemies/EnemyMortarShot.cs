@@ -22,6 +22,7 @@ public class EnemyMortarShot : MonoBehaviour
 	{
         gameObject.SetActive(true);
         radius.transform.parent = transform;
+        phase = 1;
     }
 
 
@@ -100,6 +101,7 @@ public class EnemyMortarShot : MonoBehaviour
     private IEnumerator Particle()
     {
         phase = 3;
+        yield return new WaitForSeconds(0.01f);
         GetComponent<MeshRenderer>().enabled = false;
         particle[0].transform.GetComponent<SphereCollider>().enabled = true;
         foreach (ParticleSystem p in particle)

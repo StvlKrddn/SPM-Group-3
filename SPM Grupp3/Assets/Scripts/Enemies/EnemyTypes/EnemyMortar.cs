@@ -72,12 +72,21 @@ public class EnemyMortar : EnemyController
 
     private void LaunchShot()
     {
+        Rigidbody rigidbody;
         int mortarIndex = FindEmptyMortar();
         if (mortarIndex < 0)
         {
-            Rigidbody rigidbody = Instantiate(mortarRigidbody, transform.position, mortarRigidbody.rotation, GameManager.Instance.transform.Find("EnemyContainer"));
+            rigidbody = Instantiate(mortarRigidbody, transform.position, mortarRigidbody.rotation, GameManager.Instance.transform.Find("EnemyContainer"));
             rigidbody.velocity = explosionRadius.position;
             shots.Add(rigidbody.gameObject);
+        }
+        else
+        {
+            rigidbody = shots[mortarIndex].GetComponent<Rigidbody>();
+            rigidbody.velocity = explosionRadius.position;
+            rigidbody.transform.position = transform.position;
+            rigidbody.transform.rotation = transform.rotation;
+            rigidbody.gameObject.SetActive(true);
         }
     }
 

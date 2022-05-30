@@ -1,30 +1,37 @@
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 // When this script is attached to an object, an AudioSource is automatically also added, and cannot be removed.
 [RequireComponent(typeof(AudioSource))]
 public class SoundSystem : MonoBehaviour
 {
+    public static SoundSystem instance;
     [SerializeField] private int maxBufferSize = 2;
 
     private AudioSource audioSource;
     private List<AudioSource> soundBuffer = new List<AudioSource>();
 
+    private Slider effectSlider;
 
+    public Slider EffectSlider { get { return effectSlider; } set { effectSlider = value; } }
     void Start()
     {
-        // If any DieEvent is invoked, call the OnObjectExploded-method
-        EventHandler.RegisterListener<DieEvent>(OnObjectExploded);
-
+        if (instance == null)
+        {
+            instance = this;
+        }
+        EventHandler.RegisterListener<PlaySoundEvent>(PlaySound);
         audioSource = GetComponent<AudioSource>();
     }
 
-
-    void OnObjectExploded(DieEvent eventInfo)
+    public void SetVolume()
     {
-        AudioClip clip = eventInfo.DeathSounds[Random.Range(0, eventInfo.DeathSounds.Length)];
+        audioSource.volume = effectSlider.value;
+    }
 
-        // If buffer is smaller than max size, play another sound
+    void PlaySound(PlaySoundEvent eventInfo)
+    {
+        AudioClip clip = eventInfo.sound;
         if (soundBuffer.Count < maxBufferSize)
         {
             audioSource.PlayOneShot(clip);

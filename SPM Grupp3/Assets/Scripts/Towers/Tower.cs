@@ -13,11 +13,11 @@ public abstract class Tower : MonoBehaviour
     public GameObject radius;
     protected GameManager gM;
     public GameObject onHitEffect;
-    protected TowerUpgradeController tUC;
+    protected TowerUpgradeController towerUpgradeController;
     public GameObject tower;
-    public GameObject upgradeUI;
-    public GameObject buildUI;
     public GameObject towerPlacement;
+
+    [SerializeField] private FadeBehaviour fadeBehaviour;
 
     [Header("BaseStats")]
 
@@ -34,14 +34,30 @@ public abstract class Tower : MonoBehaviour
 
     protected Shot bullet;
 
+
+
     public abstract void HitTarget(GameObject hit, GameObject hitEffect);
     public abstract void ShowUpgradeUI(Transform towerMenu);
     public abstract float UpgradeCostUpdate();
 
+    // private void Awake()
+    // {
+    //     StartCoroutine(BuildEffect());
+    // }
+
+    // IEnumerator BuildEffect()
+    // {
+    //     GameObject buildEffect = transform.Find("BuildEffect").gameObject;
+    //     BuildingEffect effect = buildEffect.GetComponentInChildren<BuildingEffect>();
+    //     yield return effect.PlayEffect();
+    //     buildEffect.SetActive(false);
+    //     gameObject.SetActive(true);
+    // }
+
     public void LevelUpTower()
     {
-        tUC = TowerUpgradeController.Instance;
-        switch (tUC.GetUpgradesPurchased())
+        towerUpgradeController = TowerUpgradeController.Instance;
+        switch (towerUpgradeController.GetUpgradesPurchased())
         {
             case 0:
                 TowerLevel1();
@@ -77,22 +93,31 @@ public abstract class Tower : MonoBehaviour
     protected virtual void TowerLevel1()
     {
         gM = GameManager.Instance;
-        tUC = TowerUpgradeController.Instance;
+        towerUpgradeController = TowerUpgradeController.Instance;
     }
     protected virtual void TowerLevel2()
     {
         gM = GameManager.Instance;
-        tUC = TowerUpgradeController.Instance;
+        towerUpgradeController = TowerUpgradeController.Instance;
     }
     protected virtual void TowerLevel3()
     {
         gM = GameManager.Instance;
-        tUC = TowerUpgradeController.Instance;
+        towerUpgradeController = TowerUpgradeController.Instance;
     }
 
     protected abstract void Level1(GameObject tower);
     protected abstract void Level2(GameObject tower);
     protected abstract void Level3(GameObject tower);
+
+    public void ShowHoverEffect()
+    {
+        fadeBehaviour.Hover();
+    }
+    public void HideHoverEffect()
+    {
+        fadeBehaviour.HideHover();
+    }
 
     void UpdateTarget()
     {

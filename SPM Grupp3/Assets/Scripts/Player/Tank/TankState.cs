@@ -17,24 +17,24 @@ public class TankState : MonoBehaviour
     Transform turretObject;
 
     // Input components
-    InputAction moveAction;
-    InputAction aimAction;
-    InputAction abilityAction;
+    private InputAction moveAction;
+    private InputAction aimAction;
+    private InputAction abilityAction;
 
     // Instance variables
-    Vector2 gamepadInputVector;
+    private Vector2 gamepadInputVector;
     protected Vector3 aimInputVector;
-    float aimSpeed;
-    float standardSpeed;
-    Matrix4x4 isoMatrix;
+    private float aimSpeed;
+    private float standardSpeed;
+    private Matrix4x4 isoMatrix;
 
-    Transform spawnPoint;
-    Transform garage;
-    PlayerInput playerInput;
-    PlayerHandler playerHandler;
+    private Transform spawnPoint;
+    private Transform garage;
+    private PlayerInput playerInput;
+    private PlayerHandler playerHandler;
 
-    float currentHealth;
-    float playerID;
+    private float currentHealth;
+    private float playerID;
     public TankUpgradeTree tankUpgradeTree;
     [SerializeField] private TankUpgradeTree tankUpgradeTreeOne;
     [SerializeField] private TankUpgradeTree tankUpgradeTreeTwo;
@@ -163,7 +163,6 @@ public class TankState : MonoBehaviour
         animator.SetBool("isMoving", moveAction.IsPressed());
 
         Move();
-        //levelOfTank = UpgradeController.instance.currentUpgradeLevel;
     }
 
     void Move()

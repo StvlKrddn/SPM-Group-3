@@ -34,8 +34,9 @@ public class EnemyArcher : EnemyController
         }
     }
 
-	private void OnDestroy()
+	protected override void OnDestroy()
 	{
+        base.OnDestroy();
         foreach (GameObject bullet in bullets)
         {
             Destroy(bullet);

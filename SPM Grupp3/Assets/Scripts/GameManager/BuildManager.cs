@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -44,8 +45,6 @@ public class BuildManager : MonoBehaviour
         //EventHandler.UnregisterListener<GarageEvent>(EnterBuildMode);
     }
 
-
-
     public void InstantiateTower()
     {
         if (TowerToBuild != null)
@@ -68,19 +67,12 @@ public class BuildManager : MonoBehaviour
 
         if (gM.SpendResources(tower.cost, tower.materialCost))
         {
-            placedTower = Instantiate(TowerToBuild, ClickedArea.transform.GetChild(0).transform.position, ClickedArea.transform.GetChild(0).transform.rotation);
-			Instantiate(towerBase, ClickedArea.transform.GetChild(0).transform.position, ClickedArea.transform.GetChild(0).transform.rotation, placedTower.transform);
-            Tower tower = placedTower.GetComponent<Tower>();
-			tower.towerPlacement = ClickedArea;
-			clickedArea.layer = 11;
-            tower.radius.SetActive(false);
+            BuildTower(TowerToBuild, ClickedArea.transform.GetChild(0).position, 0);
+
 			ClickedArea = null;
 
-            gM.AddPlacedTower(new PlacedTower(placedTower, tower.towerPlacement, 0));
             BuilderController buildController = transform.Find("BuilderMode").GetComponent<BuilderController>();
             buildController.purchasedTower = true;
-
-
 
             return;
         }
@@ -88,22 +80,35 @@ public class BuildManager : MonoBehaviour
         print("Get away you are too poor!");
     }
 
-    public PlacedTower LoadTower(TowerData tower)
+    public void LoadTower(TowerData tower)
     {
         GameObject towerPrefab = GetTowerByType(tower.towerType);
-        GameObject newTower = Instantiate(towerPrefab, tower.position, Quaternion.identity);
 
-        Tower towerScript = newTower.GetComponent<Tower>();
-        GameObject placement = FindTile(towerScript);
-        placement.layer = LayerMask.NameToLayer("Road");
-
-        Instantiate(towerBase, placement.transform.position, placement.transform.rotation, newTower.transform);
-
-        PlacedTower placedTower = new PlacedTower(newTower, towerScript.towerPlacement, tower.level);
-        towerScript.radius.SetActive(false);
-        towerScript.LoadTowerLevel(placedTower);
-        return placedTower;
+        BuildTower(towerPrefab, tower.position, tower.level);
     }
+
+    async void BuildTower(GameObject tower, Vector3 position, int level)
+    {
+        GameObject newTower = Instantiate(tower, position, Quaternion.identity);
+        Tower towerScript = newTower.GetComponent<Tower>();
+
+        GameObject placement = FindTile(towerScript);
+        Instantiate(towerBase, placement.transform.position, placement.transform.rotation, newTower.transform);
+        placement.layer = LayerMask.NameToLayer("Road");
+        towerScript.towerPlacement = placement;
+
+        PlacedTower placedTower = new PlacedTower(newTower, towerScript.towerPlacement, level);
+
+        // Måste vara GameManager.Instance då BuildTower ibland körs innan Start
+        GameManager.Instance.AddPlacedTower(placedTower);
+
+        towerScript.radius.SetActive(false);
+        if (level != 0)
+        {
+            towerScript.LoadTowerLevel(placedTower);
+        }
+    }
+
 
     GameObject GetTowerByType(string towerType)
     {
@@ -128,8 +133,7 @@ public class BuildManager : MonoBehaviour
         Collider[] colliders = Physics.OverlapBox(tower.transform.position, transform.localScale / 1.5f);
         foreach (Collider c in colliders)
         {
-            int layer = c.gameObject.layer;
-            if (layer == LayerMask.NameToLayer("PlaceForTower"))
+            if (c.gameObject.CompareTag("PlaceForTower"))
             {
                 placement = c.gameObject;
             }

@@ -31,7 +31,7 @@ public class MissileTower : Tower
     public override float UpgradeCostUpdate()
     {
         base.TowerLevel1();
-        switch (tUC.GetUpgradesPurchased())
+        switch (towerUpgradeController.GetUpgradesPurchased())
         {
             case 0:
                 costForUpgrade = level1Cost;
@@ -141,8 +141,8 @@ public class MissileTower : Tower
         base.TowerLevel1();
         if (gM.SpendResources(level1Cost, 0f))
         {
-            tUC.IncreaseUpgradesPurchased();
-            MissileTower mT = tUC.ClickedTower.GetComponent<MissileTower>();
+            towerUpgradeController.IncreaseUpgradesPurchased();
+            MissileTower mT = towerUpgradeController.ClickedTower.GetComponent<MissileTower>();
             Level1(mT.gameObject);
         }
     }
@@ -151,8 +151,8 @@ public class MissileTower : Tower
         base.TowerLevel2();
         if (gM.SpendResources(level2Cost, 0f))
         {
-            tUC.IncreaseUpgradesPurchased();
-            MissileTower mT = tUC.ClickedTower.GetComponent<MissileTower>();
+            towerUpgradeController.IncreaseUpgradesPurchased();
+            MissileTower mT = towerUpgradeController.ClickedTower.GetComponent<MissileTower>();
             Level2(mT.gameObject);
         }
         
@@ -162,8 +162,8 @@ public class MissileTower : Tower
         base.TowerLevel3();
         if (gM.SpendResources(level3Cost, 0f))
         {
-            tUC.IncreaseUpgradesPurchased();
-            MissileTower mT = tUC.ClickedTower.GetComponent<MissileTower>();
+            towerUpgradeController.IncreaseUpgradesPurchased();
+            MissileTower mT = towerUpgradeController.ClickedTower.GetComponent<MissileTower>();
             Level3(mT.gameObject);
         }
     }
