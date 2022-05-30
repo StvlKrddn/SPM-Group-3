@@ -10,7 +10,7 @@ public abstract class EnemyController : MonoBehaviour
     [SerializeField] private float health = 100f;
     public GameObject deathEffect;
     [SerializeField] private float meleeDamage;
-    private GameManager gM;
+    private GameManager gameManager;
     private Transform target;
     private HealthBar healthBar;
     protected int currWaypointIndex = 0;
@@ -18,13 +18,9 @@ public abstract class EnemyController : MonoBehaviour
     public int moneyDrop = 10;
     public bool materialDrop = false;
 
-    private GameObject hitByPoisonEffect;
     private float defaultSpeed;
     private List<float> poisonTickTimers = new List<float>();
     public bool spread = false;
-    private float amountOfTicks;
-    private float amountOfDps;
-    private float maxHealthDamage;
     private bool dead = false;
     private float currentHealth;
     public int path;
@@ -48,14 +44,13 @@ public abstract class EnemyController : MonoBehaviour
         currWaypointIndex = 0;
         poisonTickTimers.Clear();
         dead = false;
-        //healthBar.ResetHealth();
         healthBar.slider.maxValue = health;
         healthBar.slider.value = health;
         path = Waypoints.instance.GivePath();
         target = wayPoints[path][currWaypointIndex];
     }
 
-	private void OnDestroy()
+	protected virtual void OnDestroy()
 	{
         Destroy(changerText);
 	}
@@ -64,7 +59,7 @@ public abstract class EnemyController : MonoBehaviour
     {
         defaultSpeed = speed;
         currentHealth = health;
-        gM = GameManager.Instance;
+        gameManager = GameManager.Instance;
         healthBar = GetComponentInChildren<HealthBar>();
         healthBar.slider.maxValue = health;
         healthBar.slider.value = health;
@@ -95,7 +90,7 @@ public abstract class EnemyController : MonoBehaviour
 
     private void EnemyDeathBase()
     {
-        gM.TakeDamage(damageBase, gameObject);
+        gameManager.TakeDamage(damageBase, gameObject);
         DieEvent dieEvent = new DieEvent("död från bas", gameObject, null, null);
         EventHandler.InvokeEvent(dieEvent);
         gameObject.SetActive(false);
@@ -135,7 +130,7 @@ public abstract class EnemyController : MonoBehaviour
 
     public void EnemyDeath()
     {
-        gM.AddMoney(moneyDrop); // add money and spawn material
+        gameManager.AddMoney(moneyDrop); // add money and spawn material
         
         // Spawns a changerText for indikation for gaining money
 
@@ -168,90 +163,4 @@ public abstract class EnemyController : MonoBehaviour
 	{
 		TakeDamage(damage);
 	}
-
-/*    public void HitBySlow(float slowProc, float radius, bool areaOfEffect)
-    {
-        if (!areaOfEffect)
-        {
-            speed *= slowProc;
-            Invoke(nameof(SlowDuration), 3f);
-        }
-        else
-        {
-            Collider[] colliders = Physics.OverlapSphere(transform.position, radius);
-            foreach (Collider c in colliders)
-            {
-                if (c.GetComponent<EnemyController>())
-                {
-                    EnemyController eC = c.GetComponent<EnemyController>();
-                    eC.speed *= slowProc;
-                    eC.Invoke(nameof(SlowDuration), 3f);
-                }
-            }
-        }
-    }
-
-    private void SlowDuration()
-    {
-        speed = defaultSpeed;
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (spread)
-        {
-            if (collision.gameObject.CompareTag("Enemy"))
-            {
-                if (poisonTickTimers != null)
-                {
-                    print("DamageTaken");
-                    EnemyController eC = collision.gameObject.GetComponent<EnemyController>();
-                    eC.HitByPoison(amountOfTicks, hitByPoisonEffect, amountOfDps, maxHealthDamage);
-                }
-            }
-        }
-    }
-
-
-
-    public void HitByPoison(float ticks, GameObject hitEffect, float dps, float currentHealthDamage)
-    {
-        amountOfTicks = ticks;
-        amountOfDps = dps;
-        maxHealthDamage = currentHealthDamage;
-        GameObject poisonEffect = Instantiate(hitEffect, gameObject.transform);
-        Destroy(poisonEffect, ticks);
-        if (poisonTickTimers.Count <= 0)
-        {
-            poisonTickTimers.Add(ticks);
-            StartCoroutine(PoisonTick(dps, currentHealthDamage));
-        }
-    }
-
-    private IEnumerator PoisonTick(float dps, float maxHealthDamage)
-    {
-        while (poisonTickTimers.Count > 0)
-        {
-            for (int i = 0; i < poisonTickTimers.Count; i++)
-            {
-                poisonTickTimers[i]--;
-            }
-            TakeDamage(dps);
-            TakeDamage(health * maxHealthDamage);
-            poisonTickTimers.RemoveAll(i => i == 0);
-            yield return new WaitForSeconds(0.75f);
-        }
-    }
-
-    public virtual void HitBySplash(float radius, float splashDamage)
-    {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, radius);
-        foreach (Collider c in colliders)
-        {
-            if (c.GetComponent<EnemyController>())
-            {
-                c.GetComponent<EnemyController>().TakeDamage(splashDamage);
-            }
-        }
-    }*/
 }

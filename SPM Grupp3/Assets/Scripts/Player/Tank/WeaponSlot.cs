@@ -20,13 +20,13 @@ public class WeaponSlot : MonoBehaviour
     private GameObject bulletPrefab;
     private List<GameObject> bullets = new List<GameObject>();
 
-    TankState tank;
+    private TankState tank;
     public Transform bulletSpawner;
-    Transform turretObject;
-    GameObject spawnedBullet;
-    InputAction shootAction;
+    private Transform turretObject;
+    private GameObject spawnedBullet;
+    private InputAction shootAction;
 
-    bool allowedToShoot = true;
+    private bool allowedToShoot = true;
 
     public float FireRate { get { return fireRate; } set { fireRate = value; } }
     public float BulletSpread { get { return spread; } set { spread = value; } }
