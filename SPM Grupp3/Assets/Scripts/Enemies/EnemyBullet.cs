@@ -17,12 +17,12 @@ public class EnemyBullet : MonoBehaviour
 	private void OnEnable()
 	{
         timer = 0;
-		FindTarget();
+		Invoke(nameof(FindTarget), 0.01f);
 	}
 
 	void Start()
     {
-        garageTrigger = FindObjectOfType<GarageTrigger>().gameObject.transform;
+        garageTrigger = FindObjectOfType<GarageTrigger>().transform.parent;
         FindTarget();
         //Checks who is closer between tank1 and tank2
     }

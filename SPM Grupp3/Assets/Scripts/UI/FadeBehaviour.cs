@@ -12,7 +12,7 @@ public class FadeBehaviour : MonoBehaviour
 
     public float duration = 0.4f;
 
-    public bool destoryAfterFade = false;
+    public bool destroyAfterFade = false;
 
     private CanvasGroup canvasGroup;
 
@@ -46,7 +46,7 @@ public class FadeBehaviour : MonoBehaviour
                 yield return null;
             }
         
-        if (destoryAfterFade)
+        if (destroyAfterFade)
             Destroy(transform.parent.gameObject);
     }
 

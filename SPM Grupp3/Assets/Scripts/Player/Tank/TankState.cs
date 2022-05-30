@@ -216,11 +216,10 @@ public class TankState : MonoBehaviour
             EnemyMortarShot enemyMortarShot = other.gameObject.GetComponentInParent<EnemyMortarShot>();
             TakeDamage(enemyMortarShot.damage);
 
-            print("Tar man damage flera g�ngar?" + hurMangaGangerDamage);
         }
     }
 
-	private void OnCollisionEnter(Collision collision)
+	private void OnCollisionStay(Collision collision)
 	{
         if (collision.gameObject.CompareTag("Enemy"))
         {
@@ -283,7 +282,7 @@ public class TankState : MonoBehaviour
         ResetHealth();
         //currentHealth = health;
 
-        EventHandler.InvokeEvent(new PlayerSwitchEvent(
+        EventHandler.InvokeEvent(new EnterTankModeEvent(
             description: "Player switching mode",
             playerContainer: transform.parent.gameObject
         ));

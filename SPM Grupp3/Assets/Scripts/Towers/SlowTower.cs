@@ -104,7 +104,7 @@ public class SlowTower : Tower
             GameObject bulletGO;
             if (shotIndex < 0)
             {
-                bulletGO = Instantiate(shot, firePoint.position, firePoint.rotation);
+                bulletGO = Instantiate(shot, firePoint.position, firePoint.rotation, transform);
                 shots.Add(bulletGO);
             }
             else
