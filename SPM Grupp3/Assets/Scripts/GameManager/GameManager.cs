@@ -313,7 +313,8 @@ public class GameManager : MonoBehaviour
                 Instantiate(moneyChangerUI, moneyUI.transform);
         */
 
-        moneyParticle.Play();
+        if (moneyParticle != null)
+            moneyParticle.Play();
 
         money += addMoney;
         moneyCollected += (int) addMoney;
@@ -327,7 +328,8 @@ public class GameManager : MonoBehaviour
 
                 Instantiate(materialChangerUI, materialUI.transform);*/
 
-        materialParticle.Play();
+        if(materialParticle != null)
+            materialParticle.Play();
 
         material += addMaterial;
         materialCollected += (int) addMaterial;
