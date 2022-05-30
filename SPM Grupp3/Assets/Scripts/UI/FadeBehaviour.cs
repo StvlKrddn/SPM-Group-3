@@ -7,8 +7,6 @@ public class FadeBehaviour : MonoBehaviour
 {
 
     private bool faded = false;
-    private bool startedFaded = false;
-    [SerializeField] private bool looping = false;
 
     public float duration = 0.4f;
 
