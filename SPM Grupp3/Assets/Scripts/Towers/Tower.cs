@@ -15,9 +15,9 @@ public abstract class Tower : MonoBehaviour
     public GameObject onHitEffect;
     protected TowerUpgradeController tUC;
     public GameObject tower;
-    public GameObject upgradeUI;
-    public GameObject buildUI;
     public GameObject towerPlacement;
+
+    [SerializeField] private FadeBehaviour fadeBehaviour;
 
     [Header("BaseStats")]
 
@@ -33,6 +33,8 @@ public abstract class Tower : MonoBehaviour
     protected Transform target;
 
     protected Shot bullet;
+
+
 
     public abstract void HitTarget(GameObject hit, GameObject hitEffect);
     public abstract void ShowUpgradeUI(Transform towerMenu);
@@ -93,6 +95,15 @@ public abstract class Tower : MonoBehaviour
     protected abstract void Level1(GameObject tower);
     protected abstract void Level2(GameObject tower);
     protected abstract void Level3(GameObject tower);
+
+    public void ShowHoverEffect()
+    {
+        fadeBehaviour.Hover();
+    }
+    public void HideHoverEffect()
+    {
+        fadeBehaviour.HideHover();
+    }
 
     void UpdateTarget()
     {
