@@ -106,7 +106,7 @@ public class GameManager : MonoBehaviour
 
         foreach (TowerData tower in towerData)
         {
-            AddPlacedTower(buildManager.LoadTower(tower));
+            buildManager.LoadTower(tower);
         }
         UpgradeController.currentUpgradeLevel = saveData.tankUpgradeLevel;
         

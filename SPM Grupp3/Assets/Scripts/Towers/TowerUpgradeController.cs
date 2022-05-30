@@ -51,17 +51,23 @@ public class TowerUpgradeController : MonoBehaviour
         placement = eventInfo.placementClicked;
     }
 
-    public void PlaceTowerInUpgradeList(GameObject placedTower)
-    {
-        PlacedTower U = new PlacedTower(placedTower, placement, 0);
-        gameManager.AddPlacedTower(U);   
-    }
-
     public int GetUpgradesPurchased()
     {
         for (int i = 0; i < placedTowers.Count; i++)
         {
             if (placedTowers[i].tower.Equals(clickedTower))
+            {
+                return placedTowers[i].upgradesPurchased;
+            }
+        }
+        return 0;
+    }
+
+    public int GetUpgradesPurchased(GameObject tower)
+    {
+        for (int i = 0; i < placedTowers.Count; i++)
+        {
+            if (placedTowers[i].tower.Equals(tower))
             {
                 return placedTowers[i].upgradesPurchased;
             }
