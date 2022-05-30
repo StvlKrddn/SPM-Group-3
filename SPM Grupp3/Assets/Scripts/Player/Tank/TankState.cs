@@ -216,11 +216,10 @@ public class TankState : MonoBehaviour
             EnemyMortarShot enemyMortarShot = other.gameObject.GetComponentInParent<EnemyMortarShot>();
             TakeDamage(enemyMortarShot.damage);
 
-            print("Tar man damage flera g�ngar?" + hurMangaGangerDamage);
         }
     }
 
-	private void OnCollisionEnter(Collision collision)
+	private void OnCollisionStay(Collision collision)
 	{
         if (collision.gameObject.CompareTag("Enemy"))
         {

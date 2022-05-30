@@ -6,11 +6,6 @@ public class SlowTowerEffect : MonoBehaviour
 {
     private EnemyController enemy;
 
-	private void OnDestroy()
-	{
-		StopAllCoroutines();
-    }
-
 	public void HitBySlow(EnemyController enemy, float slowProc, float radius, bool areaOfEffect, bool stun)
     {
         this.enemy = enemy;

@@ -175,6 +175,14 @@ public class MissileTower : Tower
 
     protected override void Level2(GameObject tower)
     {
+        MissileTower mT = tower.GetComponent<MissileTower>();
+
+        GameObject towerUpgradeVisual1 = mT.transform.Find("Container").Find("Level1").gameObject;
+        GameObject towerUpgradeVisual2 = mT.transform.Find("Container").Find("Level2").gameObject;
+
+        towerUpgradeVisual1.SetActive(false);
+        towerUpgradeVisual2.SetActive(true);
+
         tower.GetComponent<MissileTower>().splashDamage += amountUpgradeSplashDamage;
     }
 
