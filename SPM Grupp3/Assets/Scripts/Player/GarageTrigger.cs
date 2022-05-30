@@ -10,6 +10,8 @@ public class GarageTrigger : MonoBehaviour
     private GameObject hintEnterUI;
     private bool limit = false;
 
+    [SerializeField] private FadeBehaviour fadeBehaviour;
+
     void Awake() 
     {
         hintEnterUI = UI.Canvas.transform.Find("EnterGarageHint").gameObject;
@@ -24,6 +26,15 @@ public class GarageTrigger : MonoBehaviour
         }
     }*/
 
+    public void ShowHover()
+    {
+        fadeBehaviour.Hover();
+    }
+
+    public void HideHover()
+    {
+        fadeBehaviour.HideHover();
+    }
 
     private void OnTriggerStay(Collider other)
     {

@@ -13,6 +13,7 @@ public class FadeBehaviour : MonoBehaviour
     public bool destroyAfterFade = false;
 
     private CanvasGroup canvasGroup;
+    public bool hover = false;
 
     private void Awake()
     {
@@ -25,14 +26,44 @@ public class FadeBehaviour : MonoBehaviour
 
     }
 
+    public void Hover()
+    {
+        float counter = 0f;
+
+        while (counter < duration)
+        {
+            counter += Time.deltaTime;
+            canvasGroup.alpha = Mathf.Lerp(0, 1, counter / duration);
+
+        }
+        
+        if (destroyAfterFade)
+            Destroy(transform.parent.gameObject);
+    }
+
+    public void HideHover()
+    {
+        float counter = 0f;
+
+        while (counter < duration)
+        {
+            counter += Time.deltaTime;
+            canvasGroup.alpha = Mathf.Lerp(1, 0, counter / duration);
+
+        }
+
+        if (destroyAfterFade)
+            Destroy(transform.parent.gameObject);
+    }
+
     public void Fade()
     {
-        StartCoroutine(DoFade(canvasGroup, canvasGroup.alpha, faded ? 1 : 0));
+        DoFade(canvasGroup.alpha, faded ? 1 : 0);
 
         faded = !faded;
     }
 
-    private IEnumerator DoFade(CanvasGroup canvasGroup, float start, float end)
+    private void DoFade(float start, float end)
     {
         float counter = 0f;
 
@@ -41,7 +72,6 @@ public class FadeBehaviour : MonoBehaviour
                 counter += Time.deltaTime;
                 canvasGroup.alpha = Mathf.Lerp(start, end, counter / duration);
 
-                yield return null;
             }
         
         if (destroyAfterFade)
