@@ -33,25 +33,25 @@ public class UpdateCost : MonoBehaviour
         switch (towerPanel.name)
         {
             case "UpgradeCannonPanel":
-                tower = buildManager.cannonTowerPrefab;
+                tower = buildManager.CannonTowerPrefab;
                 break;
             case "UpgradeMissilePanel":
-                tower = buildManager.missileTowerPrefab;
+                tower = buildManager.MissileTowerPrefab;
                 break;
             case "UpgradeSlowPanel":
-                tower = buildManager.slowTowerPrefab;
+                tower = buildManager.SlowTowerPrefab;
                 break;
             case "UpgradePoisonPanel":
-                tower = buildManager.poisonTowerPrefab;
+                tower = buildManager.PoisonTowerPrefab;
                 break;
 
         }
 
         costText.text = tower.GetComponent<Tower>().UpgradeCostUpdate().ToString();
 
-        /*        TowerUpgradeCotroller tUC = TowerUpgradeCotroller.instance;
+        /*        TowerUpgradeCotroller towerManager = TowerUpgradeCotroller.instance;
 
-                switch(tUC.GetUpgradesPurchased())
+                switch(towerManager.GetUpgradesPurchased())
                 {
                     case 0:
                         costText.text = tower.GetComponent<Tower>()..ToString();

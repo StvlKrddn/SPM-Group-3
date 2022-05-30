@@ -48,8 +48,7 @@ public class BuilderController : MonoBehaviour
     private GameObject buildPanel;
     private GameObject hintsPanel;
     private GameObject tankUpgrade;
-    public bool purchasedTower = false;
-
+    
     private GameObject towerHit;
     private GameObject placementHit;
     private GameObject garageHit;
@@ -58,7 +57,9 @@ public class BuilderController : MonoBehaviour
     private bool stopMouse = false;
     private bool placementClicked = false;
     private bool purchasedInUI = false;
-    private bool coldown = false;
+
+    [System.NonSerialized] public bool purchasedTower = false;
+
     void Start()
     {
         GameObject placement = GameObject.Find("PlaceForTower").gameObject;
@@ -151,7 +152,6 @@ public class BuilderController : MonoBehaviour
 				}
 				towerMenu.transform.GetChild(i).GetChild(0).GetComponent<Image>().color = player2Color;
 			}
-
 		}
 	}
 
@@ -227,7 +227,7 @@ public class BuilderController : MonoBehaviour
 
         if (selectedTower != null)
         {
-            selectedTower.radius.SetActive(false);
+            selectedTower.Radius.SetActive(false);
         }
         purchasedTower = false;
         hintsPanel.SetActive(false);
@@ -354,11 +354,6 @@ public class BuilderController : MonoBehaviour
         return hit;
     }
 
-    void Coldown()
-    {
-        coldown = false;
-    }
-
     void TowerHover()
     {
         RaycastHit towerHover = CastRayFromCamera(towerLayerMask);
@@ -376,9 +371,6 @@ public class BuilderController : MonoBehaviour
             towerSelection.GetComponent<Tower>().HideHoverEffect();
             towerSelection = null;
         }
-
-        // Raycast along the ray and return the hit point
-
     }
 
     void GarageHover()
@@ -437,18 +429,6 @@ public class BuilderController : MonoBehaviour
         GhostTower(buildManager.TowerToBuild);
     }
 
-/*    public void ExitHover()
-    {
-        buildManager.TowerToBuild = null;
-        GhostTower();
-    }
-
-    public void TowerToHover(GameObject tower)
-    {
-        buildManager.TowerToBuild = tower;
-        GhostTower();
-    }*/
-
     public void GhostTower(GameObject towerToDisplay)
     {
         if (buildManager.ClickedArea == null)
@@ -468,7 +448,6 @@ public class BuilderController : MonoBehaviour
 
         Tower tow = towerToDisplay.GetComponent<Tower>();       
         radius.transform.localScale = new Vector3(tow.range * 2f, 0.01f, tow.range * 2f);
-        //radius.SetActive(true);
     }
 
     public void DestroyPreTower()
@@ -523,10 +502,10 @@ public class BuilderController : MonoBehaviour
                 selectedTower = towerHit.GetComponent<Tower>();
                 towerHit.layer = LayerMask.NameToLayer("Ignore Raycast");
                 selectedTower.ShowUpgradeUI(towerMenu);
-                selectedTower.radius.SetActive(true);
+                selectedTower.Radius.SetActive(true);
                 cursorTransform.gameObject.SetActive(false);
 
-                EventHandler.InvokeEvent(new TowerClickedEvent("Tower Is clicked", selectedTower.gameObject, selectedTower.towerPlacement));
+                EventHandler.InvokeEvent(new TowerClickedEvent("Tower Is clicked", selectedTower.gameObject));
                 tankUpgrade.transform.position = towerHit.transform.position;
                 hintsPanel.transform.position = towerHit.transform.position;
                 hintsPanel.SetActive(true);
@@ -542,7 +521,7 @@ public class BuilderController : MonoBehaviour
 	{
 		if (selectedTower != null)
 		{
-			selectedTower.towerPlacement.layer = LayerMask.NameToLayer("PlaceForTower");
+			selectedTower.TowerPlacement.layer = LayerMask.NameToLayer("PlaceForTower");
             GameManager.Instance.RemovePlacedTower(selectedTower.gameObject);
 			Destroy(selectedTower.gameObject);
 			Deselect();
