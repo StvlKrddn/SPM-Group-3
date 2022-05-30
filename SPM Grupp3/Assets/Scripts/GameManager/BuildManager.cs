@@ -6,24 +6,13 @@ using UnityEngine.InputSystem;
 
 public class BuildManager : MonoBehaviour
 {    
-/*    public static BuildManager instance; */   
-
-    private void Awake()
-    {
-        
-/*        if (instance != null)
-        {
-            Debug.Log("More than one buildmanager");
-        }
-        instance = this;*/
-    }
 
     public GameObject cannonTowerPrefab;
     public GameObject missileTowerPrefab;
     public GameObject slowTowerPrefab;
     public GameObject poisonTowerPrefab;
 
-    private GameManager gM;
+    private GameManager gameManager;
     private GameObject towerToBuild;
     private GameObject clickedArea;
     public GameObject placedTower;
@@ -37,12 +26,7 @@ public class BuildManager : MonoBehaviour
 
     private void Start()
     {
-        gM = GameManager.Instance;
-    }
-
-    void OnDisable()
-    {
-        //EventHandler.UnregisterListener<GarageEvent>(EnterBuildMode);
+        gameManager = GameManager.Instance;
     }
 
     public void InstantiateTower()
@@ -57,7 +41,7 @@ public class BuildManager : MonoBehaviour
             return;
         }
 
-        foreach (PlacedTower towerPlaced in gM.towersPlaced)
+        foreach (PlacedTower towerPlaced in gameManager.towersPlaced)
         {
             if (towerPlaced.tower == clickedArea)
             {
@@ -65,7 +49,7 @@ public class BuildManager : MonoBehaviour
             }
         }
 
-        if (gM.SpendResources(tower.cost, tower.materialCost))
+        if (gameManager.SpendResources(tower.cost, tower.materialCost))
         {
             BuildTower(TowerToBuild, ClickedArea.transform.GetChild(0).position, 0);
 
@@ -87,7 +71,7 @@ public class BuildManager : MonoBehaviour
         BuildTower(towerPrefab, tower.position, tower.level);
     }
 
-    async void BuildTower(GameObject tower, Vector3 position, int level)
+    private void BuildTower(GameObject tower, Vector3 position, int level)
     {
         GameObject newTower = Instantiate(tower, position, Quaternion.identity);
         Tower towerScript = newTower.GetComponent<Tower>();

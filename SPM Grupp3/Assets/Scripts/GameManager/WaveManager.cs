@@ -33,8 +33,7 @@ public class WaveManager : MonoBehaviour
     private Dictionary<int, float> changeSpawnRate = new Dictionary<int, float>();
     private Waypoints wayPoints;
     private List<Transform[]> wayPostions;
-
-    //public int timeToWaitBetweenWave; 
+ 
 
     private void Awake()
     {
@@ -354,12 +353,6 @@ public struct SubWave
 {
     public EnemyStruct[] enemies;
     public float spawnRate;
- //   public bool waitBetweenWave;
-  //  public int timeToWait;
-    //public bool waitBetweenWave; 
-
-
- 
 }
 
 [Serializable]
