@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnemyMortar : EnemyController
 {
     public float timer = 2;
-    public int cd = 5;
+    public int cooldown = 5;
     private TankState[] tanks;
     private Transform explosionRadius = null;
     public Rigidbody mortarRigidbody;
@@ -15,17 +15,18 @@ public class EnemyMortar : EnemyController
     protected override void Awake()
     {
         base.Awake();
-        timer = Random.Range(timer, cd - 1);
+        timer = Random.Range(timer, cooldown - 1);
     }
 
 	protected override void OnEnable()
 	{
 		base.OnEnable();
-        timer = Random.Range(timer, cd - 1);
+        timer = Random.Range(timer, cooldown - 1);
     }
 
-	private void OnDestroy()
+	protected override void OnDestroy()
 	{
+		base.OnDestroy();
         foreach (GameObject shot in shots)
         {
             Destroy(shot);
@@ -37,7 +38,7 @@ public class EnemyMortar : EnemyController
     {
         MoveStep();
         timer += Time.deltaTime;
-        if (timer >= cd)
+        if (timer >= cooldown)
         {
             CalculateTarget();
             if (explosionRadius != null)

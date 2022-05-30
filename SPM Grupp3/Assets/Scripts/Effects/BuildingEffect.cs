@@ -11,7 +11,6 @@ public class BuildingEffect : MonoBehaviour
 
     private Material material;
     private float height;
-    private bool isHeightSet = false;
 
     void Awake()
     {

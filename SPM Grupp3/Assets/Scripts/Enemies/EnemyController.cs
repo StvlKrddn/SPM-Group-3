@@ -86,6 +86,17 @@ public abstract class EnemyController : MonoBehaviour
         Vector3 direction = target.position - transform.position;
         direction.Normalize();
         transform.position += speed * direction * Time.deltaTime;
+        if (Vector3.Distance(transform.position, target.transform.position) < 0.2f)
+        {
+            if (wayPoints[path].Length - 1 <= currWaypointIndex) // Changes waypoint to til the enemy reaches the last waypoint
+            {
+                EnemyDeathBase();
+                return;
+            }
+            currWaypointIndex++;
+            target = wayPoints[path][currWaypointIndex];
+            transform.LookAt(target);
+        }
     }
 
     private void EnemyDeathBase()
@@ -98,18 +109,6 @@ public abstract class EnemyController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Waypoint"))
-        {
-            if (wayPoints[path].Length - 1 <= currWaypointIndex) // Changes waypoint to til the enemy reaches the last waypoint
-            {
-                EnemyDeathBase();
-                return;
-            }
-            currWaypointIndex++;
-            target = wayPoints[path][currWaypointIndex];
-            transform.LookAt(target);
-        }
-
         if (other.gameObject.CompareTag("PlayerShots"))
         {
             BulletBehavior playerBullet = other.GetComponent<BulletBehavior>();

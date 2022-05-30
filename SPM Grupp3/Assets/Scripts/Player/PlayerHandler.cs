@@ -12,9 +12,6 @@ public class PlayerHandler : MonoBehaviour
     [SerializeField] private GameObject buildMode;
     [SerializeField] private GameObject cursor;
 
-/*    [SerializeField] private GameObject tankMode;
-    [SerializeField] private GameObject buildMode;*/
-
     private PlayerMode currentMode;
     private GameObject canvas;
     private PlayerInput playerInput;
@@ -64,10 +61,6 @@ public class PlayerHandler : MonoBehaviour
 
         playerInput.SwitchCurrentActionMap("Tank");
 
-        //GetComponentInChildren<HealthBar>().ResetHealth();
-
-        //canvas.transform.Find("Build_UI").gameObject.SetActive(false);
-
         currentMode = PlayerMode.Tank;
 
 
@@ -96,8 +89,6 @@ public class PlayerHandler : MonoBehaviour
 
         playerInput.SwitchCurrentActionMap("Builder");
 
-        //canvas.transform.Find("Build_UI").gameObject.SetActive(true);
-
         currentMode = PlayerMode.Build;
 
         //print("Entered build mode");
@@ -117,7 +108,7 @@ public class PlayerHandler : MonoBehaviour
         }
         if (destroyed)
         {
-            print("Your tank is destroyed! Wait until next wave");
+            //print("Your tank is destroyed! Wait until next wave");
         }
     }
 

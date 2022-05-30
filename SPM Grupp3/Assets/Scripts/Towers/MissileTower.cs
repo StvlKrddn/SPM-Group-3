@@ -12,7 +12,7 @@ public class MissileTower : Tower
     [SerializeField] private float amountUpgradeSplashDamage;
 
     [Header("ThirdShot Dubble Damage")]
-    public bool thirdShot = false;
+    public bool ThirdShot = false;
 
     [Header("Upgrade Cost")]
     [SerializeField] private float level1Cost;
@@ -23,7 +23,7 @@ public class MissileTower : Tower
     private float shotsFired = 0;
     private bool shotAlready = false;
 
-    public float costForUpgrade;
+    public float CostForUpgrade;
     public float ShotsFired { get { return shotsFired; } set { shotsFired = value; } }
     public float SplashRadius { get { return splashRadius; } set { splashRadius = value; } }
     public float SplashDamage { get { return splashDamage; } set { splashDamage = value; } }
@@ -31,25 +31,25 @@ public class MissileTower : Tower
     public override float UpgradeCostUpdate()
     {
         base.TowerLevel1();
-        switch (towerUpgradeController.GetUpgradesPurchased())
+        switch (towerManager.GetUpgradesPurchased())
         {
             case 0:
-                costForUpgrade = level1Cost;
+                CostForUpgrade = level1Cost;
                 break;
             case 1:
-                costForUpgrade = level2Cost;
+                CostForUpgrade = level2Cost;
                 break;
             case 2:
-                costForUpgrade = level3Cost;
+                CostForUpgrade = level3Cost;
                 break;
         }
-        return costForUpgrade;
+        return CostForUpgrade;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        radius.transform.localScale = new Vector3(range * 2f, 0.01f, range * 2f);
+        Radius.transform.localScale = new Vector3(range * 2f, 0.01f, range * 2f);
         InvokeRepeating("UpdateTarget", 0f, 0.5f);
     }
 
@@ -139,32 +139,32 @@ public class MissileTower : Tower
     protected override void TowerLevel1()
     {
         base.TowerLevel1();
-        if (gM.SpendResources(level1Cost, 0f))
+        if (gameManager.SpendResources(level1Cost, 0f))
         {
-            towerUpgradeController.IncreaseUpgradesPurchased();
-            MissileTower mT = towerUpgradeController.ClickedTower.GetComponent<MissileTower>();
-            Level1(mT.gameObject);
+            towerManager.IncreaseUpgradesPurchased();
+            MissileTower missileTower = towerManager.ClickedTower.GetComponent<MissileTower>();
+            Level1(missileTower.gameObject);
         }
     }
     protected override void TowerLevel2()
     {
         base.TowerLevel2();
-        if (gM.SpendResources(level2Cost, 0f))
+        if (gameManager.SpendResources(level2Cost, 0f))
         {
-            towerUpgradeController.IncreaseUpgradesPurchased();
-            MissileTower mT = towerUpgradeController.ClickedTower.GetComponent<MissileTower>();
-            Level2(mT.gameObject);
+            towerManager.IncreaseUpgradesPurchased();
+            MissileTower missileTower = towerManager.ClickedTower.GetComponent<MissileTower>();
+            Level2(missileTower.gameObject);
         }
         
     }
     protected override void TowerLevel3()
     {
         base.TowerLevel3();
-        if (gM.SpendResources(level3Cost, 0f))
+        if (gameManager.SpendResources(level3Cost, 0f))
         {
-            towerUpgradeController.IncreaseUpgradesPurchased();
-            MissileTower mT = towerUpgradeController.ClickedTower.GetComponent<MissileTower>();
-            Level3(mT.gameObject);
+            towerManager.IncreaseUpgradesPurchased();
+            MissileTower missileTower = towerManager.ClickedTower.GetComponent<MissileTower>();
+            Level3(missileTower.gameObject);
         }
     }
 
@@ -175,10 +175,10 @@ public class MissileTower : Tower
 
     protected override void Level2(GameObject tower)
     {
-        MissileTower mT = tower.GetComponent<MissileTower>();
+        MissileTower missileTower = tower.GetComponent<MissileTower>();
 
-        GameObject towerUpgradeVisual1 = mT.transform.Find("Container").Find("Level1").gameObject;
-        GameObject towerUpgradeVisual2 = mT.transform.Find("Container").Find("Level2").gameObject;
+        GameObject towerUpgradeVisual1 = missileTower.transform.Find("Container").Find("Level1").gameObject;
+        GameObject towerUpgradeVisual2 = missileTower.transform.Find("Container").Find("Level2").gameObject;
 
         towerUpgradeVisual1.SetActive(false);
         towerUpgradeVisual2.SetActive(true);
@@ -189,6 +189,6 @@ public class MissileTower : Tower
     protected override void Level3(GameObject tower)
     {   
         
-        tower.GetComponent<MissileTower>().thirdShot = true;
+        tower.GetComponent<MissileTower>().ThirdShot = true;
     }
 }

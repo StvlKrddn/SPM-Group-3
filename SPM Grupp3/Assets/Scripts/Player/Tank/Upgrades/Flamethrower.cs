@@ -2,13 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.ParticleSystemJobs;
 
 public class Flamethrower : MonoBehaviour
 {
     public static float FireDamage;
     [SerializeField] private float damage;
-    //private CapsuleCollider capsuleCollider;
     private TankState state;
     private PlayerInput playerInput;
     private InputAction fireAction;
@@ -17,7 +15,6 @@ public class Flamethrower : MonoBehaviour
 
     void Start()
     {
-        //capsuleCollider = GetComponent<CapsuleCollider>();
         state = GetComponentInParent<TankState>();
         playerInput = state.PlayerInput;
         fireAction = playerInput.actions["Shoot"];
@@ -30,25 +27,10 @@ public class Flamethrower : MonoBehaviour
         if(fireAction.IsPressed())
         {
             fireParticles.Play();
-            //capsuleCollider.enabled = true;
         }
         else
         {
-            //capsuleCollider.enabled = false;
             fireParticles.Stop();
         }
-        
-
     }
-
-    /*
-	private void OnTriggerStay(Collider other)
-	{
-        if (other.GetComponent<EnemyController>())
-        {
-            other.GetComponent<EnemyController>().HitByFire(fireDamage * Time.fixedDeltaTime);
-        }
-		
-	}
-    */
 }

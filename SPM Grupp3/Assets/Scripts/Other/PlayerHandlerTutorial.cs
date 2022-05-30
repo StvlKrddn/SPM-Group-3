@@ -54,7 +54,6 @@ public class PlayerHandlerTutorial : MonoBehaviour
 
         currentMode = PlayerMode.Tank;
 
-        //print("Entered tank mode");
     }
 
     void EnterBuildMode()
@@ -74,7 +73,6 @@ public class PlayerHandlerTutorial : MonoBehaviour
 
         currentMode = PlayerMode.Build;
 
-        //print("Entered build mode");
     }
 
     public void SwitchMode()
