@@ -75,7 +75,7 @@ public class EnemyMortar : EnemyController
         int mortarIndex = FindEmptyMortar();
         if (mortarIndex < 0)
         {
-            Rigidbody rigidbody = Instantiate(mortarRigidbody, transform.position, Quaternion.identity, GameManager.Instance.transform.Find("EnemyContainer"));
+            Rigidbody rigidbody = Instantiate(mortarRigidbody, transform.position, mortarRigidbody.rotation, GameManager.Instance.transform.Find("EnemyContainer"));
             rigidbody.velocity = explosionRadius.position;
             shots.Add(rigidbody.gameObject);
         }

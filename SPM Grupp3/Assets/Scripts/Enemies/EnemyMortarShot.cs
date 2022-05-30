@@ -18,8 +18,15 @@ public class EnemyMortarShot : MonoBehaviour
         particle = GetComponentsInChildren<ParticleSystem>();
     }
 
-    // Update is called once per frame
-    void Update()
+	private void OnEnable()
+	{
+        gameObject.SetActive(true);
+        radius.transform.parent = transform;
+    }
+
+
+	// Update is called once per frame
+	void Update()
     {
         switch (phase)
         {
@@ -81,7 +88,7 @@ public class EnemyMortarShot : MonoBehaviour
     {
         if (phase == 2)
         {
-            if (collider.gameObject.CompareTag("PlaceForTower") || collider.gameObject.CompareTag("Road") || collider.gameObject.CompareTag("Tank"))
+            if (collider.gameObject.CompareTag("Tank") || collider.gameObject.CompareTag("GameBoard"))
             {
                 radius.SetActive(false);
                 StartCoroutine(Particle());
@@ -100,7 +107,10 @@ public class EnemyMortarShot : MonoBehaviour
             p.Play();
         }
         yield return new WaitForSeconds(particle[0].main.duration);
-        radius.transform.parent = transform;
-        gameObject.SetActive(false);
+        if (gameObject.activeSelf == true)
+        {
+            radius.transform.parent = transform;
+            gameObject.SetActive(false);
+        }
     }
 }
