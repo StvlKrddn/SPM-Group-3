@@ -84,6 +84,7 @@ public class EnemyPortal : EnemyController
 
 	private IEnumerator OpenPortal()
 	{
+		yield return new WaitForSeconds(0.01f);
 		foreach (ParticleSystem particle in pS)
 		{
 			particle.Play();
