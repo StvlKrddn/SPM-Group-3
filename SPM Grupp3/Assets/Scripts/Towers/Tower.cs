@@ -91,11 +91,13 @@ public abstract class Tower : MonoBehaviour
 
     public void ShowHover()
     {
-        fadeBehaviour.Fade();
+        if(fadeBehaviour.Faded())
+            fadeBehaviour.Fade();
     }
     public void HideHover()
     {
-        fadeBehaviour.Fade();
+        if (!fadeBehaviour.Faded())
+            fadeBehaviour.Fade();
     }
 
     void UpdateTarget()

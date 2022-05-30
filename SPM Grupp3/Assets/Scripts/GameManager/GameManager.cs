@@ -30,7 +30,7 @@ public class GameManager : MonoBehaviour
     private GameObject damagingEnemy;
     private WaveManager waveManager;
     private Canvas canvas;
-    private Slider livesSlider;
+    private GameObject livesSlider;
     private HealthBar healthBar;
     private float money;
     private float material;
@@ -173,8 +173,12 @@ public class GameManager : MonoBehaviour
         moneyCounterUI = topPanel.Find("MoneyHolder").Find("MoneyCounter").GetComponent<Text>();
         materialCounterUI = topPanel.Find("MaterialHolder").Find("MaterialCounter").GetComponent<Text>();
 
+        
+
         healthBar = canvas.GetComponent<HealthBar>();
-        //livesSlider = canvas.Find("LivesSlider").GetComponent<Slider>();
+        livesSlider = canvas.Find("LivesSlider").gameObject;
+
+        livesSlider.SetActive(true);
 
         victoryPanel = canvas.Find("VictoryPanel").gameObject;        
         defeatPanel = canvas.Find("DefeatPanel").gameObject;
@@ -366,6 +370,8 @@ public class GameManager : MonoBehaviour
         UI.OpenMenu();
 
         waveManager.Restart();
+
+        livesSlider.SetActive(false);
 
         defeatPanel.SetActive(true);
 
