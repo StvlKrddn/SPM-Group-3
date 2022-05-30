@@ -74,8 +74,6 @@ public class WheelSelection : MonoBehaviour
         selectAction = playerInput.actions["Accept"];
         infoAction = playerInput.actions["Information"];
 
-        
-
         if (!gameObject.name.Equals("BuildPanel") && !gameObject.name.Equals("TankPanel"))
         {
             statisticPanel = MenuItems[0].transform.Find("StatisticPanel").gameObject;
@@ -85,7 +83,7 @@ public class WheelSelection : MonoBehaviour
             upgradeLevel3Text = upgradeTitleText.transform.Find("Level3").GetComponent<Text>();
 
             SetStartValuesOnUpgrades();
-        }           
+        }        
     }
 
     /* Sets the correct values on the statistics of the towers for statistic panel when upgradeing */
@@ -130,6 +128,14 @@ public class WheelSelection : MonoBehaviour
         infoHint.SetActive(false);
 
         builderController.DestroyPreTower();
+
+        if (!gameObject.name.Equals("BuildPanel") && !gameObject.name.Equals("TankPanel"))
+        {
+            upgradeLevel1Text.color = Color.white;
+            upgradeLevel2Text.color = Color.white;
+            upgradeLevel3Text.color = Color.white;
+        }
+
 
         stickInput = stickAction.ReadValue<Vector2>();
 
@@ -211,6 +217,7 @@ public class WheelSelection : MonoBehaviour
 
             if (i == index)
             {
+                //print(i + " - " + index);
                 // Hover effect
                 MenuItems[i].transform.GetChild(0).GetComponent<Image>().color = highLight;
                     
@@ -245,7 +252,12 @@ public class WheelSelection : MonoBehaviour
                     }
                 }
                 
-                ShowStatisticPanel();
+                if (MenuItems[i].name.Equals("Upgrade"))
+                {
+                    ShowStatisticPanel();
+                }
+                
+                
 
                 selectHint.SetActive(true);
                 infoHint.SetActive(true);               
@@ -260,12 +272,6 @@ public class WheelSelection : MonoBehaviour
                 if (gameObject.name.Equals("BuildPanel"))
                 {
                     statisticPanel.SetActive(false);                    
-                }
-                else
-                {
-                    upgradeLevel1Text.color = Color.white;
-                    upgradeLevel2Text.color = Color.white;
-                    upgradeLevel3Text.color = Color.white;
                 }
             }
         }
@@ -474,7 +480,6 @@ public class WheelSelection : MonoBehaviour
                         break;
                 }
                 break;
-
         }
     }
 }

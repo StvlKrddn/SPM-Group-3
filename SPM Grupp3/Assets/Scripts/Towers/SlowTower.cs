@@ -5,7 +5,6 @@ using UnityEngine;
 public class SlowTower : Tower
 {
     [SerializeField] private float slowProc = 0.7f;
-    [SerializeField] private float slowRadius = 1f;
     [SerializeField] private bool areaOfEffect = false;
     public bool stunActive = false;
     [SerializeField] private float shotsBeforeStun;
@@ -214,7 +213,8 @@ public class SlowTower : Tower
     protected override void Level1(GameObject tower)
     {
         SlowTower sT = tower.GetComponent<SlowTower>();
-        sT.radius.transform.localScale = new Vector3((sT.range * 2f) + upgradeAmountSlowRadius, 0.01f, (sT.range * 2f) + upgradeAmountSlowRadius);
+        sT.range += upgradeAmountSlowRadius;
+        sT.radius.transform.localScale = new Vector3(sT.range * 2f, 0.01f, sT.range * 2f);      
     }
 
     protected override void Level2(GameObject tower)
