@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
     [Header("UI: ")]
     [SerializeField] private Text moneyCounterUI;
     [SerializeField] private Text materialCounterUI;
+    [SerializeField] private ParticleSystem moneyParticle;
+    [SerializeField] private ParticleSystem materialParticle;
 
     //[Header("Players: ")]
     //[SerializeField] private PlayerMode startingMode;
@@ -305,10 +307,14 @@ public class GameManager : MonoBehaviour
 
     public void AddMoney(float addMoney)
     {
-/*      moneyChangerUI.color = colorGain;
-        moneyChangerUI.text = "+" + addMoney;
+        /*      moneyChangerUI.color = colorGain;
+                moneyChangerUI.text = "+" + addMoney;
 
-        Instantiate(moneyChangerUI, moneyUI.transform);*/
+                Instantiate(moneyChangerUI, moneyUI.transform);
+        */
+
+        if (moneyParticle != null)
+            moneyParticle.Play();
 
         money += addMoney;
         moneyCollected += (int) addMoney;
@@ -317,10 +323,13 @@ public class GameManager : MonoBehaviour
 
     public void AddMaterial(float addMaterial)
     {
-/*      materialChangerUI.color = colorGain;
-        materialChangerUI.text = "+" + addMaterial;
+        /*      materialChangerUI.color = colorGain;
+                materialChangerUI.text = "+" + addMaterial;
 
-        Instantiate(materialChangerUI, materialUI.transform);*/
+                Instantiate(materialChangerUI, materialUI.transform);*/
+
+        if(materialParticle != null)
+            materialParticle.Play();
 
         material += addMaterial;
         materialCollected += (int) addMaterial;
@@ -389,7 +398,7 @@ public class GameManager : MonoBehaviour
         UI.OpenMenu();
 
         waveManager.Restart();
-       
+
         defeatPanel.SetActive(true);
 
         buildManager.TowerToBuild = null;
