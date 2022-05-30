@@ -118,7 +118,6 @@ public abstract class EnemyController : MonoBehaviour
         if (other.gameObject.CompareTag("PlayerShots"))
         {
             BulletBehavior playerBullet = other.GetComponent<BulletBehavior>();
-            
             TakeDamage(playerBullet.BulletDamage);
         }
     }
