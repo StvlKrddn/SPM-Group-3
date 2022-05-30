@@ -36,7 +36,7 @@ public class SlowTower : Tower
     public override float UpgradeCostUpdate()
     {
         base.TowerLevel1();
-        switch (tUC.GetUpgradesPurchased())
+        switch (towerUpgradeController.GetUpgradesPurchased())
         {
             case 0:
                 costForUpgrade = level1Cost;
@@ -184,8 +184,8 @@ public class SlowTower : Tower
         base.TowerLevel1();
         if (gM.SpendResources(level1Cost,0f))
         {
-            tUC.IncreaseUpgradesPurchased();
-            SlowTower sT = tUC.ClickedTower.GetComponent<SlowTower>();
+            towerUpgradeController.IncreaseUpgradesPurchased();
+            SlowTower sT = towerUpgradeController.ClickedTower.GetComponent<SlowTower>();
             Level1(sT.gameObject);    
         }        
     }
@@ -194,8 +194,8 @@ public class SlowTower : Tower
         base.TowerLevel2();
         if (gM.SpendResources(level2Cost, 0f))
         {
-            tUC.IncreaseUpgradesPurchased();
-            SlowTower sT = tUC.ClickedTower.GetComponent<SlowTower>();
+            towerUpgradeController.IncreaseUpgradesPurchased();
+            SlowTower sT = towerUpgradeController.ClickedTower.GetComponent<SlowTower>();
             Level2(sT.gameObject);
         }
     }
@@ -204,8 +204,8 @@ public class SlowTower : Tower
         base.TowerLevel3();
         if (gM.SpendResources(level3Cost, 0f))
         {
-            tUC.IncreaseUpgradesPurchased();
-            SlowTower sT = tUC.ClickedTower.GetComponent<SlowTower>();
+            towerUpgradeController.IncreaseUpgradesPurchased();
+            SlowTower sT = towerUpgradeController.ClickedTower.GetComponent<SlowTower>();
             Level3(sT.gameObject);
         }
     }

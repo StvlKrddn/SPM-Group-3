@@ -51,7 +51,7 @@ public class CannonTower : Tower
     public override float UpgradeCostUpdate()
     {
         base.TowerLevel1();
-        switch (tUC.GetUpgradesPurchased())
+        switch (towerUpgradeController.GetUpgradesPurchased())
         {
             case 0:
                 costForUpgrade = level1Cost;
@@ -138,8 +138,8 @@ public class CannonTower : Tower
 
         if (gM.SpendResources(level1Cost, 0f))
         {
-            tUC.IncreaseUpgradesPurchased();
-            CannonTower cT = tUC.ClickedTower.GetComponent<CannonTower>();
+            towerUpgradeController.IncreaseUpgradesPurchased();
+            CannonTower cT = towerUpgradeController.ClickedTower.GetComponent<CannonTower>();
             Level1(cT.gameObject);
         }      
     }
@@ -155,8 +155,8 @@ public class CannonTower : Tower
 
         if (gM.SpendResources(level2Cost, 0f))
         {
-            tUC.IncreaseUpgradesPurchased();
-            CannonTower cT = tUC.ClickedTower.GetComponent<CannonTower>();
+            towerUpgradeController.IncreaseUpgradesPurchased();
+            CannonTower cT = towerUpgradeController.ClickedTower.GetComponent<CannonTower>();
             Level2(cT.gameObject);
         }
     }
@@ -182,8 +182,8 @@ public class CannonTower : Tower
 
         if (gM.SpendResources(level3Cost, 0f))
         {
-            tUC.IncreaseUpgradesPurchased();
-            CannonTower cT = tUC.ClickedTower.GetComponent<CannonTower>();
+            towerUpgradeController.IncreaseUpgradesPurchased();
+            CannonTower cT = towerUpgradeController.ClickedTower.GetComponent<CannonTower>();
             Level3(cT.gameObject);
         }     
     }
