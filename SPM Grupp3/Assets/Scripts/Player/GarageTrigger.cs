@@ -28,23 +28,11 @@ public class GarageTrigger : MonoBehaviour
 
     public void ShowHover()
     {
-        if (!fadeBehaviour.Faded())
-        {
-            print("Not faded");
-            return;
-        }
-
         fadeBehaviour.Fade();
     }
 
     public void HideHover()
-    {
-        if (fadeBehaviour.Faded())
-        {
-            print("Already faded");
-            return;
-        }
-            
+    {   
         fadeBehaviour.Fade();
     }
 
