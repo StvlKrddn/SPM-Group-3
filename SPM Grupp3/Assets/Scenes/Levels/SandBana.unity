@@ -1461,6 +1461,16 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!198 &13269637 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 5330480908814868149, guid: e69b554477972e34f80c3193812c535d, type: 3}
+  m_PrefabInstance: {fileID: 13269634}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &13269638 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 1239675144700989848, guid: e69b554477972e34f80c3193812c535d, type: 3}
+  m_PrefabInstance: {fileID: 13269634}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &13269639
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11900,7 +11910,7 @@ PrefabInstance:
     - target: {fileID: 5574963424639874961, guid: f38755517d96a124d80b16613eb953a3, type: 3}
       propertyPath: moneyParticle
       value: 
-      objectReference: {fileID: 1404986609}
+      objectReference: {fileID: 13269638}
     - target: {fileID: 5574963424639874961, guid: f38755517d96a124d80b16613eb953a3, type: 3}
       propertyPath: restartButton
       value: 
@@ -11956,7 +11966,7 @@ PrefabInstance:
     - target: {fileID: 5574963424639874961, guid: f38755517d96a124d80b16613eb953a3, type: 3}
       propertyPath: materialParticle
       value: 
-      objectReference: {fileID: 1392751603}
+      objectReference: {fileID: 13269637}
     - target: {fileID: 5574963424639874961, guid: f38755517d96a124d80b16613eb953a3, type: 3}
       propertyPath: materialChangerUI
       value: 
@@ -85432,11 +85442,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1392412105}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!198 &1392751603 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 6828786613204237470, guid: e69b554477972e34f80c3193812c535d, type: 3}
-  m_PrefabInstance: {fileID: 13269634}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1392773216
 GameObject:
   m_ObjectHideFlags: 0
@@ -85817,11 +85822,6 @@ Transform:
   m_Father: {fileID: 156156578}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!198 &1404986609 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 6290848780740405278, guid: e69b554477972e34f80c3193812c535d, type: 3}
-  m_PrefabInstance: {fileID: 13269634}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1407394379
 GameObject:
   m_ObjectHideFlags: 0

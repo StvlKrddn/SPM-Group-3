@@ -126601,6 +126601,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e69b554477972e34f80c3193812c535d, type: 3}
+--- !u!198 &174427384038882808 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 5330480908814868149, guid: e69b554477972e34f80c3193812c535d, type: 3}
+  m_PrefabInstance: {fileID: 174427384038882807}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &174427384038882809 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 1239675144700989848, guid: e69b554477972e34f80c3193812c535d, type: 3}
+  m_PrefabInstance: {fileID: 174427384038882807}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &223533085104367709
 Transform:
   m_ObjectHideFlags: 0
@@ -127429,6 +127439,8 @@ MonoBehaviour:
     startingMode: 0
   moneyCounterUI: {fileID: 2805306753020149449}
   materialCounterUI: {fileID: 2805306752409142610}
+  moneyParticle: {fileID: 174427384038882809}
+  materialParticle: {fileID: 174427384038882808}
 --- !u!4 &5574963424805490050
 Transform:
   m_ObjectHideFlags: 0
