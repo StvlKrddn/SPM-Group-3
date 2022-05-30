@@ -28,7 +28,7 @@ public class UpgradeController : MonoBehaviour
         return currentUpgradeLevel;
     }
 
-    public void IncreaseUpgradesPurchased()
+	public void IncreaseUpgradesPurchased()
     {
         if (currentUpgradeLevel < 3 && GameManager.Instance.SpendResources(moneyCost, materialCost))
         {

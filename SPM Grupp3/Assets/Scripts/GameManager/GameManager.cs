@@ -110,7 +110,7 @@ public class GameManager : MonoBehaviour
         }
         UpgradeController.currentUpgradeLevel = saveData.tankUpgradeLevel;
         
-        Invoke(nameof(FixUpgradeDelay), Mathf.Epsilon);
+        Invoke(nameof(FixUpgradeDelay), 0.01f);
     }
 
     private void LoadCustomizationData()

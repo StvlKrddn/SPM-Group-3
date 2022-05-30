@@ -25,7 +25,7 @@ public class FireTank : TankUpgradeTree
 	{
 		if (base.Ability())
 		{	
-			GameObject grenadeTemp = Instantiate(grenade, transform.position, transform.rotation, null);
+			GameObject grenadeTemp = Instantiate(grenade, transform.position, grenade.transform.rotation, transform);
 			grenadeTemp.transform.parent = null;
 			return true;
 		}
