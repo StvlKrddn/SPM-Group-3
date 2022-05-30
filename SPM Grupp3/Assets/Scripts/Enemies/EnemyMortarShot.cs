@@ -22,6 +22,7 @@ public class EnemyMortarShot : MonoBehaviour
 	{
         gameObject.SetActive(true);
         radius.transform.parent = transform;
+        phase = 1;
     }
 
 

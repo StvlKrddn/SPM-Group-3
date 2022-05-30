@@ -25,7 +25,7 @@ public class BulletBehavior : MonoBehaviour
         penetrationCountMax = penetrationCount;
 	}
 
-	void Start()
+	protected virtual void Start()
     {
         GameObject tank = GetComponentInParent<TankState>().gameObject;
         weapon = tank.GetComponent<WeaponSlot>();
