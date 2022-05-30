@@ -142,18 +142,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be6f1b9e84993ae41a1c787c62870dc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fadeBehaviour: {fileID: 2819976000372220747}
   enemyTag: Enemy
   turnSpeed: 10
   shot: {fileID: 3201376968240350041, guid: 7e4902a1dd3b3484280a32e92534c4c7, type: 3}
   firePoint: {fileID: 6433795424573960498}
-  radius: {fileID: 1082448807002956707}
-  onHitEffect: {fileID: 5202362185975563897, guid: afc452a4019ab8b47ac2ea888849a086, type: 3}
-  tower: {fileID: 6433795423722352152}
-  towerPlacement: {fileID: 0}
-  fadeBehaviour: {fileID: 2819976000372220747}
-  range: 5
-  fireRate: 1
+  Radius: {fileID: 0}
+  OnHitEffect: {fileID: 0}
+  TowerPlacement: {fileID: 0}
   shotDamage: 10
+  fireRate: 1
+  range: 5
   cost: 500
   materialCost: 0
   upgradeDamageAmount: 10
@@ -163,7 +162,7 @@ MonoBehaviour:
   level1Cost: 700
   level2Cost: 1200
   level3Cost: 2000
-  costForUpgrade: 0
+  CostForUpgrade: 0
 --- !u!1 &6433795424573960509
 GameObject:
   m_ObjectHideFlags: 0
