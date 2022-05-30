@@ -28,6 +28,8 @@ public class BuilderController : MonoBehaviour
 
     private Color startColor;
     private Transform _selection;
+    private Transform towerSelection;
+    private Transform garageSelection;
     private BuildManager buildManager;
     private Camera mainCamera;
     private Mouse virtualMouse;
@@ -56,7 +58,7 @@ public class BuilderController : MonoBehaviour
     private bool stopMouse = false;
     private bool placementClicked = false;
     private bool purchasedInUI = false;
-
+    private bool coldown = false;
     void Start()
     {
         GameObject placement = GameObject.Find("PlaceForTower").gameObject;
@@ -352,10 +354,57 @@ public class BuilderController : MonoBehaviour
         return hit;
     }
 
-    
+    void Coldown()
+    {
+        coldown = false;
+    }
+
+    void TowerHover()
+    {
+        RaycastHit towerHover = CastRayFromCamera(towerLayerMask);
+        Transform selection = null;
+
+        if (towerHover.collider != null)
+        {
+            selection = towerHover.transform;
+            selection.GetComponent<Tower>().ShowHoverEffect();
+            towerSelection = selection;
+        }
+      
+        if (towerSelection != null && selection == null)
+        {
+            towerSelection.GetComponent<Tower>().HideHoverEffect();
+            towerSelection = null;
+        }
+
+        // Raycast along the ray and return the hit point
+
+    }
+
+    void GarageHover()
+    {
+        RaycastHit garageHover = CastRayFromCamera(garageLayer);
+        Transform selection = null;
+
+        if (garageHover.collider != null)
+        {
+            selection = garageHover.transform;
+            selection.GetComponent<GarageTrigger>().ShowHover();
+            garageSelection = selection;
+        }
+
+        if (garageSelection != null && selection == null)
+        {
+            garageSelection.GetComponent<GarageTrigger>().HideHover();
+            garageSelection = null;
+        }
+    }
 
     void Hover(RaycastHit hit)
-    {
+    {        
+        TowerHover();
+        GarageHover();
+
         if (_selection != null)
         {
             var selectionRenderer = _selection.GetComponent<Renderer>();
