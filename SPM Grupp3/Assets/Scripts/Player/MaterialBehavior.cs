@@ -37,10 +37,13 @@ public class MaterialBehavior : MonoBehaviour
 
  private Vector3 destinationVector;
 
+    private MeshRenderer mRenderer;
+
     // Sverkers remake på materialkoden
 
 	private void Awake()
 	{
+        mRenderer = GetComponent<MeshRenderer>();
         changerText = Instantiate(changerText, spawnTextPosition.position, spawnTextPosition.rotation, GameManager.Instance.transform.Find("DropTexts"));
 		changerText.GetComponentInChildren<Text>().text = materialValue.ToString();
         changerText.GetComponentInChildren<Text>().color = dropTextColor;
@@ -50,7 +53,8 @@ public class MaterialBehavior : MonoBehaviour
 
 	private void OnEnable()
 	{
-	    landed = false;
+        mRenderer.enabled = true;
+        landed = false;
         transform.position = new Vector3(transform.position.x, 3, transform.position.z);
         destinationVector = CalculatePosition();
     }
@@ -111,7 +115,7 @@ public class MaterialBehavior : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-		if (landed != true && (other.gameObject.CompareTag("PlaceForTower") || other.gameObject.CompareTag("Road")))
+		if (landed != true && (other.gameObject.CompareTag("PlaceForTower") || other.gameObject.CompareTag("Road") || other.gameObject.CompareTag("GameBoard")))
 		{
 			Landed();
 		}
@@ -131,8 +135,20 @@ public class MaterialBehavior : MonoBehaviour
 
 	private IEnumerator SelfDestruct()
     {
-        yield return new WaitForSeconds(duration);
+        yield return new WaitForSeconds(duration - 5);
+        StartCoroutine(Blink(0.4f));
+        yield return new WaitForSeconds(5);
         gameObject.SetActive(false);
+        yield return null;
+    }
+
+    private IEnumerator Blink(float divide)
+    {
+        mRenderer.enabled = false;
+        yield return new WaitForSeconds(divide);
+        mRenderer.enabled = true;
+        yield return new WaitForSeconds(divide * 2);
+        StartCoroutine(Blink(divide / 1.25f));
         yield return null;
     }
 }
