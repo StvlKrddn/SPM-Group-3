@@ -282,7 +282,7 @@ public class TankState : MonoBehaviour
         ResetHealth();
         //currentHealth = health;
 
-        EventHandler.InvokeEvent(new PlayerSwitchEvent(
+        EventHandler.InvokeEvent(new EnterTankModeEvent(
             description: "Player switching mode",
             playerContainer: transform.parent.gameObject
         ));

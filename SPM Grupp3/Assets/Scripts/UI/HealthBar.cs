@@ -28,11 +28,10 @@ public class HealthBar : MonoBehaviour
 
     public void HandleHealthChanged(float currentHealth)
     {
-        if (currentHealth > 0)
+        if (currentHealth > 0 && gameObject.activeSelf == true)
         {
             StartCoroutine(UpdateHealthBar(currentHealth));
         }
-        //UpdateHealthBar(currentHealth);
     }
 
     private IEnumerator UpdateHealthBar(float currentHealth)
