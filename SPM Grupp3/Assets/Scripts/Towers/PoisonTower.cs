@@ -34,7 +34,7 @@ public class PoisonTower : Tower
     public override float UpgradeCostUpdate()
     {
         base.TowerLevel1();
-        switch (towerUpgradeController.GetUpgradesPurchased())
+        switch (towerManager.GetUpgradesPurchased())
         {
             case 0:
                 costForUpgrade = level1Cost;
@@ -49,18 +49,14 @@ public class PoisonTower : Tower
         return costForUpgrade;
     }
 
-    // Start is called before the first frame update
     void Start()
     {
-        radius.transform.localScale = new Vector3(range * 2f, 0.01f, range * 2f);
+        Radius.transform.localScale = new Vector3(range * 2f, 0.01f, range * 2f);
         InvokeRepeating("UpdateTarget", 0f, 0.5f);
     }
 
-    // Update is called once per frame
     void Update()
-    {      
-       // LockOnTarget();
-
+    {     
         if (target != null)
         {
             if (CanYouShoot())
@@ -113,7 +109,7 @@ public class PoisonTower : Tower
         StartCoroutine(DisableEffect(effectInstance));
 
         //F�r att tornet �r AOE, D� skjuter den inte ut n�t skott
-        GetComponent<PoisonTowerEffect>().HitByPoison(PoisonTicks, onHitEffect, PoisonDamagePerTick, MaxHealthPerTick, range);
+        GetComponent<PoisonTowerEffect>().HitByPoison(PoisonTicks, OnHitEffect, PoisonDamagePerTick, MaxHealthPerTick, range);
     }
 
     public override void ShowUpgradeUI(Transform towerMenu)
@@ -132,31 +128,31 @@ public class PoisonTower : Tower
     protected override void TowerLevel1()
     {
         base.TowerLevel1();
-        if (gM.SpendResources(level1Cost, 0f))
+        if (gameManager.SpendResources(level1Cost, 0f))
         {
-            towerUpgradeController.IncreaseUpgradesPurchased();
-            PoisonTower pT = towerUpgradeController.ClickedTower.GetComponent<PoisonTower>();            
-            Level1(pT.gameObject);
+            towerManager.IncreaseUpgradesPurchased();
+            PoisonTower poisonTower = towerManager.ClickedTower.GetComponent<PoisonTower>();            
+            Level1(poisonTower.gameObject);
         }
     }
     protected override void TowerLevel2()
     {
         base.TowerLevel2();
-        if (gM.SpendResources(level2Cost, 0f))
+        if (gameManager.SpendResources(level2Cost, 0f))
         {
-            towerUpgradeController.IncreaseUpgradesPurchased();
-            PoisonTower pT = towerUpgradeController.ClickedTower.GetComponent<PoisonTower>();          
-            Level2(pT.gameObject);
+            towerManager.IncreaseUpgradesPurchased();
+            PoisonTower poisonTower = towerManager.ClickedTower.GetComponent<PoisonTower>();          
+            Level2(poisonTower.gameObject);
         }
     }
     protected override void TowerLevel3()
     {
         base.TowerLevel3();
-        if (gM.SpendResources(level3Cost, 0f))
+        if (gameManager.SpendResources(level3Cost, 0f))
         {
-            towerUpgradeController.IncreaseUpgradesPurchased();
-            PoisonTower pT = towerUpgradeController.ClickedTower.GetComponent<PoisonTower>();
-            Level3(pT.gameObject);
+            towerManager.IncreaseUpgradesPurchased();
+            PoisonTower poisonTower = towerManager.ClickedTower.GetComponent<PoisonTower>();
+            Level3(poisonTower.gameObject);
         }
     }
 
@@ -167,10 +163,10 @@ public class PoisonTower : Tower
 
     protected override void Level2(GameObject tower)
     {
-        PoisonTower pT = tower.GetComponent<PoisonTower>();
-        pT.poisonDamagePerTick += upgradeAmountPoisonDamagePerTick;
-        pT.maxHealthPerTick += upgradeMaxHealthPoisonDamagePerTick; 
-        pT.fireRate += upgradeAttackSpeed;
+        PoisonTower poisonTower = tower.GetComponent<PoisonTower>();
+        poisonTower.poisonDamagePerTick += upgradeAmountPoisonDamagePerTick;
+        poisonTower.maxHealthPerTick += upgradeMaxHealthPoisonDamagePerTick; 
+        poisonTower.fireRate += upgradeAttackSpeed;
     }
 
     protected override void Level3(GameObject tower)

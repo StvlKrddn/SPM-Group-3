@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class Shot : MonoBehaviour
 {
-    [Header("Speed of the bullet")]
-    public float shotSpeed = 1f;
-
-    public Transform target;
     private Tower tower;
     private Vector3 direction;
     private float distanceThisFrame;
-
     private EnemyController enemy;
+
+    [Header("Speed of the bullet")]
+    public float shotSpeed = 1f;
+    public Transform target;
 
     public void Seek(Transform _target)
     {       
@@ -47,7 +46,7 @@ public class Shot : MonoBehaviour
         tower = gameObject.GetComponentInParent<Tower>();
         if (other.gameObject.CompareTag("Enemy"))
         {
-            tower.HitTarget(other.gameObject, tower.onHitEffect);
+            tower.HitTarget(other.gameObject, tower.OnHitEffect);
             gameObject.SetActive(false);
         }
     }
@@ -63,32 +62,32 @@ public class Shot : MonoBehaviour
         switch (towerType)
         {
             case "Cannon":
-                CannonTower cT = tower.GetComponent<CannonTower>();
-                enemy.TakeDamage(cT.ShotDamage);
+                CannonTower cannonTower = tower.GetComponent<CannonTower>();
+                enemy.TakeDamage(cannonTower.ShotDamage);
 
                 break;
             case "Missile":
-                MissileTower mT = tower.GetComponent<MissileTower>();
-                if (mT.thirdShot && mT.ShotsFired % 3 == 0)
+                MissileTower missileTower = tower.GetComponent<MissileTower>();
+                if (missileTower.ThirdShot && missileTower.ShotsFired % 3 == 0)
                 {
-                    GetComponent<SplashTowerEffect>().HitBySplash(mT.SplashRadius, mT.SplashDamage * 2);
-                    enemy.TakeDamage(mT.ShotDamage * 2);
+                    GetComponent<SplashTowerEffect>().HitBySplash(missileTower.SplashRadius, missileTower.SplashDamage * 2);
+                    enemy.TakeDamage(missileTower.ShotDamage * 2);
                 }
                 else
                 {
-                    GetComponent<SplashTowerEffect>().HitBySplash(mT.SplashRadius, mT.SplashDamage);
-                    enemy.TakeDamage(mT.ShotDamage);
+                    GetComponent<SplashTowerEffect>().HitBySplash(missileTower.SplashRadius, missileTower.SplashDamage);
+                    enemy.TakeDamage(missileTower.ShotDamage);
                 }
 
                 break;
             case "Slow":
-                SlowTower sT = tower.GetComponent<SlowTower>();
-                GetComponent<SlowTowerEffect>().HitBySlow(enemy, sT.SlowProc, sT.range, sT.AreaOfEffect, false);
+                SlowTower slowTower = tower.GetComponent<SlowTower>();
+                GetComponent<SlowTowerEffect>().HitBySlow(enemy, slowTower.SlowProc, slowTower.range, slowTower.AreaOfEffect, false);
 
                 break;
             case "Poison":
-                PoisonTower pT = tower.GetComponent<PoisonTower>();
-                GetComponent<PoisonTowerEffect>().HitByPoison(pT.PoisonTicks, pT.onHitEffect, pT.PoisonDamagePerTick, pT.MaxHealthPerTick, pT.range);
+                PoisonTower poisonTower = tower.GetComponent<PoisonTower>();
+                GetComponent<PoisonTowerEffect>().HitByPoison(poisonTower.PoisonTicks, poisonTower.OnHitEffect, poisonTower.PoisonDamagePerTick, poisonTower.MaxHealthPerTick, poisonTower.range);
 
                 break;
         }

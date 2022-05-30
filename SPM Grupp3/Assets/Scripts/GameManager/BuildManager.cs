@@ -5,22 +5,18 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class BuildManager : MonoBehaviour
-{    
-
-    public GameObject cannonTowerPrefab;
-    public GameObject missileTowerPrefab;
-    public GameObject slowTowerPrefab;
-    public GameObject poisonTowerPrefab;
-
+{
+    [SerializeField] private GameObject towerBase;
     private GameManager gameManager;
     private GameObject towerToBuild;
     private GameObject clickedArea;
-    public GameObject placedTower;
-    private TowerPlacement towerPlacement;
     private Tower tower;
-    [SerializeField] private GameObject towerBase;
 
-    public TowerPlacement TowerPlacement { get { return towerPlacement; } set { towerPlacement = value; } }
+    public GameObject CannonTowerPrefab;
+    public GameObject MissileTowerPrefab;
+    public GameObject SlowTowerPrefab;
+    public GameObject PoisonTowerPrefab;
+
     public GameObject TowerToBuild { get { return towerToBuild; } set { towerToBuild = value; } }
     public GameObject ClickedArea { get { return clickedArea; } set { clickedArea = value; } }
 
@@ -79,14 +75,14 @@ public class BuildManager : MonoBehaviour
         GameObject placement = FindTile(towerScript);
         Instantiate(towerBase, placement.transform.position, placement.transform.rotation, newTower.transform);
         placement.layer = LayerMask.NameToLayer("Road");
-        towerScript.towerPlacement = placement;
+        towerScript.TowerPlacement = placement;
 
-        PlacedTower placedTower = new PlacedTower(newTower, towerScript.towerPlacement, level);
+        PlacedTower placedTower = new PlacedTower(newTower, towerScript.TowerPlacement, level);
 
         // Måste vara GameManager.Instance då BuildTower ibland körs innan Start
-        GameManager.Instance.AddPlacedTower(placedTower);
+        gameManager.AddPlacedTower(placedTower);
 
-        towerScript.radius.SetActive(false);
+        towerScript.Radius.SetActive(false);
         if (level != 0)
         {
             towerScript.LoadTowerLevel(placedTower);
@@ -94,32 +90,32 @@ public class BuildManager : MonoBehaviour
     }
 
 
-    GameObject GetTowerByType(string towerType)
+    private GameObject GetTowerByType(string towerType)
     {
         switch (towerType)
         {
             case "CannonTower(Clone)":
-                return cannonTowerPrefab;
+                return CannonTowerPrefab;
             case "MissileTower(Clone)":
-                return missileTowerPrefab;
+                return MissileTowerPrefab;
             case "SlowTower(Clone)":
-                return slowTowerPrefab;
+                return SlowTowerPrefab;
             case "PoisonTower(Clone)":
-                return poisonTowerPrefab;
+                return PoisonTowerPrefab;
             default:
                 return null;
         }
     }
 
-    GameObject FindTile(Tower tower)
+    private GameObject FindTile(Tower tower)
     {
         GameObject placement = null;
         Collider[] colliders = Physics.OverlapBox(tower.transform.position, transform.localScale / 1.5f);
-        foreach (Collider c in colliders)
+        foreach (Collider collider in colliders)
         {
-            if (c.gameObject.CompareTag("PlaceForTower"))
+            if (collider.gameObject.CompareTag("PlaceForTower"))
             {
-                placement = c.gameObject;
+                placement = collider.gameObject;
             }
         }
         return placement;

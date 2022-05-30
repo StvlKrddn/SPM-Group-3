@@ -15,23 +15,22 @@ public class PlacedTower
         upgradesPurchased = uP;
     }
 }
-public class TowerUpgradeController : MonoBehaviour
+public class TowerManager : MonoBehaviour
 {
-    private static TowerUpgradeController instance;
+    private static TowerManager instance;
     private GameObject clickedTower;
     private GameManager gameManager;
     private List<PlacedTower> placedTowers;
-    private GameObject placement;
 
     public GameObject ClickedTower { get { return clickedTower; } set { clickedTower = value; } }
-    public static TowerUpgradeController Instance 
+    public static TowerManager Instance 
     { 
         get 
         {
             // "Lazy loading" to prevent Unity load order error
             if (instance == null)
             {
-                instance = FindObjectOfType<TowerUpgradeController>();
+                instance = FindObjectOfType<TowerManager>();
             }
             return instance; 
         } 
@@ -48,7 +47,6 @@ public class TowerUpgradeController : MonoBehaviour
     public void GetTowerClicked(TowerClickedEvent eventInfo)
     {
         clickedTower = eventInfo.towerClicked;
-        placement = eventInfo.placementClicked;
     }
 
     public int GetUpgradesPurchased()

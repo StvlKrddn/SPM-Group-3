@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class SlowTower : Tower
 {
+    [Space]
     [SerializeField] private float slowProc = 0.7f;
-    [SerializeField] private bool areaOfEffect = false;
-    public bool stunActive = false;
+    [SerializeField] private bool areaOfEffect = false;   
     [SerializeField] private float shotsBeforeStun;
+    public bool StunActive = false;
 
     [Header("Amount To Upgrade")]
     [SerializeField] private float upgradeAmountSlowProc;
@@ -21,11 +22,9 @@ public class SlowTower : Tower
     [SerializeField] private float level3Cost;
 
     private float currentShots = 0;
-
-    public float costForUpgrade;
-
     private float fireCountdown = 0f;
-    private float timer;
+
+    public float CostForUpgrade;
 
     public float SlowProc { get { return slowProc; } set { slowProc = value; } }
     public float ShotsBeforeStun { get { return shotsBeforeStun; } set { shotsBeforeStun = value; } }
@@ -36,25 +35,25 @@ public class SlowTower : Tower
     public override float UpgradeCostUpdate()
     {
         base.TowerLevel1();
-        switch (towerUpgradeController.GetUpgradesPurchased())
+        switch (towerManager.GetUpgradesPurchased())
         {
             case 0:
-                costForUpgrade = level1Cost;
+                CostForUpgrade = level1Cost;
                 break;
             case 1:
-                costForUpgrade = level2Cost;
+                CostForUpgrade = level2Cost;
                 break;
             case 2:
-                costForUpgrade = level3Cost;
+                CostForUpgrade = level3Cost;
                 break;
         }
-        return costForUpgrade;
+        return CostForUpgrade;
     }
 
     // Start is called before the first frame update
     void Start()
     {  
-        radius.transform.localScale = new Vector3(range * 2f, 0.01f, range * 2f);
+        Radius.transform.localScale = new Vector3(range * 2f, 0.01f, range * 2f);
         InvokeRepeating("UpdateTarget", 0f, 0.5f);
     }
 
@@ -65,7 +64,6 @@ public class SlowTower : Tower
             LockOnTarget();
         }
        
-
         if (target != null)
         {
             if (CanYouShoot())
@@ -129,7 +127,7 @@ public class SlowTower : Tower
 
     private void  AOESlow(int shotIndex)
     {
-        if (currentShots <= 0 && stunActive)
+        if (currentShots <= 0 && StunActive)
         {
             currentShots = shotsBeforeStun;
         }
@@ -141,7 +139,7 @@ public class SlowTower : Tower
         GameObject effectInstance;
         if (shotIndex < 0)
         {
-            effectInstance = Instantiate(onHitEffect, transform.position, transform.rotation, transform);
+            effectInstance = Instantiate(OnHitEffect, transform.position, transform.rotation, transform);
             shots.Add(effectInstance);
         }
         else
@@ -155,7 +153,7 @@ public class SlowTower : Tower
         StartCoroutine(DisableEffect(effectInstance));
         
 
-        if (stunActive && CurrentShots <= 0f)
+        if (StunActive && CurrentShots <= 0f)
         {
             GetComponent<SlowTowerEffect>().HitBySlow(null, SlowProc, range, AreaOfEffect, true);
         }
@@ -182,68 +180,68 @@ public class SlowTower : Tower
     protected override void TowerLevel1()
     {
         base.TowerLevel1();
-        if (gM.SpendResources(level1Cost,0f))
+        if (gameManager.SpendResources(level1Cost,0f))
         {
-            towerUpgradeController.IncreaseUpgradesPurchased();
-            SlowTower sT = towerUpgradeController.ClickedTower.GetComponent<SlowTower>();
-            Level1(sT.gameObject);    
+            towerManager.IncreaseUpgradesPurchased();
+            SlowTower slowTower = towerManager.ClickedTower.GetComponent<SlowTower>();
+            Level1(slowTower.gameObject);    
         }        
     }
     protected override void TowerLevel2()
     {
         base.TowerLevel2();
-        if (gM.SpendResources(level2Cost, 0f))
+        if (gameManager.SpendResources(level2Cost, 0f))
         {
-            towerUpgradeController.IncreaseUpgradesPurchased();
-            SlowTower sT = towerUpgradeController.ClickedTower.GetComponent<SlowTower>();
-            Level2(sT.gameObject);
+            towerManager.IncreaseUpgradesPurchased();
+            SlowTower slowTower = towerManager.ClickedTower.GetComponent<SlowTower>();
+            Level2(slowTower.gameObject);
         }
     }
     protected override void TowerLevel3()
     {
         base.TowerLevel3();
-        if (gM.SpendResources(level3Cost, 0f))
+        if (gameManager.SpendResources(level3Cost, 0f))
         {
-            towerUpgradeController.IncreaseUpgradesPurchased();
-            SlowTower sT = towerUpgradeController.ClickedTower.GetComponent<SlowTower>();
-            Level3(sT.gameObject);
+            towerManager.IncreaseUpgradesPurchased();
+            SlowTower slowTower = towerManager.ClickedTower.GetComponent<SlowTower>();
+            Level3(slowTower.gameObject);
         }
     }
 
     protected override void Level1(GameObject tower)
     {
-        SlowTower sT = tower.GetComponent<SlowTower>();
-        sT.range += upgradeAmountSlowRadius;
-        sT.radius.transform.localScale = new Vector3(sT.range * 2f, 0.01f, sT.range * 2f);      
+        SlowTower slowTower = tower.GetComponent<SlowTower>();
+        slowTower.range += upgradeAmountSlowRadius;
+        slowTower.Radius.transform.localScale = new Vector3(slowTower.range * 2f, 0.01f, slowTower.range * 2f);      
     }
 
     protected override void Level2(GameObject tower)
     {
-        SlowTower sT = tower.GetComponent<SlowTower>();
+        SlowTower slowTower = tower.GetComponent<SlowTower>();
 
-        GameObject towerUpgradeVisual1 = sT.transform.Find("Container").Find("Level1").gameObject;
-        GameObject towerUpgradeVisual2 = sT.transform.Find("Container").Find("Level2").gameObject;
+        GameObject towerUpgradeVisual1 = slowTower.transform.Find("Container").Find("Level1").gameObject;
+        GameObject towerUpgradeVisual2 = slowTower.transform.Find("Container").Find("Level2").gameObject;
 
         towerUpgradeVisual1.SetActive(false);
         towerUpgradeVisual2.SetActive(true);
 
-        sT.areaOfEffect = true;
-        foreach (GameObject bullet in sT.shots)
+        slowTower.areaOfEffect = true;
+        foreach (GameObject bullet in slowTower.shots)
         {
             Destroy(bullet);
         }
-        sT.shots.Clear();
-        sT.transform.rotation = Quaternion.Euler(0, 0, 0);
+        slowTower.shots.Clear();
+        slowTower.transform.rotation = Quaternion.Euler(0, 0, 0);
     }
 
     protected override void Level3(GameObject tower)
     {
-        SlowTower sT = tower.GetComponent<SlowTower>();
+        SlowTower slowTower = tower.GetComponent<SlowTower>();
 
-        sT.stunActive = true;
+        slowTower.StunActive = true;
 
-        GameObject towerUpgradeVisual1 = sT.transform.Find("Container").Find("Level2").gameObject;
-        GameObject towerUpgradeVisual2 = sT.transform.Find("Container").Find("Level3").gameObject;
+        GameObject towerUpgradeVisual1 = slowTower.transform.Find("Container").Find("Level2").gameObject;
+        GameObject towerUpgradeVisual2 = slowTower.transform.Find("Container").Find("Level3").gameObject;
 
         towerUpgradeVisual1.SetActive(false);
         towerUpgradeVisual2.SetActive(true);

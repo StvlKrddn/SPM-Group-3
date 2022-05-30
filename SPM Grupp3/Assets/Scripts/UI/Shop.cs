@@ -6,14 +6,12 @@ using UnityEngine.UI;
 
 public class Shop : MonoBehaviour
 {
-    [Header("UI Elements: ")]
-    public Canvas canvas;
-
     private Button pressedButton;
     private BuildManager buildManager;
 
     void Start()
     {
+        Canvas canvas = GetComponent<Canvas>();
         Camera canvasCamera = GameObject.FindGameObjectWithTag("Camera/CanvasCamera").GetComponent<Camera>();
         canvas.worldCamera = canvasCamera;
     }
@@ -21,32 +19,28 @@ public class Shop : MonoBehaviour
     public void PurchaseCannonTower()
     {
         buildManager = GetComponentInParent<BuildManager>();
-        buildManager.TowerToBuild = buildManager.cannonTowerPrefab;
-        UpdateCostUI(buildManager.TowerToBuild.GetComponent<Tower>().cost, buildManager.TowerToBuild.GetComponent<Tower>().materialCost);
+        buildManager.TowerToBuild = buildManager.CannonTowerPrefab;
         buildManager.InstantiateTower();
     }
 
     public void PurchaseMissileTower()
     {
         buildManager = GetComponentInParent<BuildManager>();
-        buildManager.TowerToBuild = buildManager.missileTowerPrefab;
-        UpdateCostUI(buildManager.TowerToBuild.GetComponent<Tower>().cost, buildManager.TowerToBuild.GetComponent<Tower>().materialCost);
+        buildManager.TowerToBuild = buildManager.MissileTowerPrefab;
         buildManager.InstantiateTower();
     }
 
     public void PurchaseSlowTower()
     {
         buildManager = GetComponentInParent<BuildManager>();
-        buildManager.TowerToBuild = buildManager.slowTowerPrefab;
-        UpdateCostUI(buildManager.TowerToBuild.GetComponent<Tower>().cost, buildManager.TowerToBuild.GetComponent<Tower>().materialCost);
+        buildManager.TowerToBuild = buildManager.SlowTowerPrefab;
         buildManager.InstantiateTower();
     }
 
     public void PurchasePoisonTower()
     {
         buildManager = GetComponentInParent<BuildManager>();
-        buildManager.TowerToBuild = buildManager.poisonTowerPrefab;
-        UpdateCostUI(buildManager.TowerToBuild.GetComponent<Tower>().cost, buildManager.TowerToBuild.GetComponent<Tower>().materialCost);
+        buildManager.TowerToBuild = buildManager.PoisonTowerPrefab;
         buildManager.InstantiateTower();
     }
 
@@ -55,11 +49,6 @@ public class Shop : MonoBehaviour
         pressedButton = button;
         PurchaseTower();
     }
-
-/*    public void OnClick(UIClickedEvent eventInfo)
-    {
-        player = eventInfo.Clicker;
-    }*/
 
     private void PurchaseTower()
     {
@@ -78,22 +67,5 @@ public class Shop : MonoBehaviour
                 PurchaseSlowTower();
                 break;
         }
-    }
-
-    private void UpdateCostUI(float moneyCost, float materialCost)
-    {
-/*       moneyCostUI.color = Color.red;
-        moneyCostUI.text = "-" + moneyCost;
-
-        if (materialCost > 0)
-        {
-            materialCostUI.color = Color.red;
-            materialCostUI.text = "-" + materialCost; ;
-        }
-        else
-        {
-            materialCostUI.color = Color.gray;
-            materialCostUI.text = "0";
-        }*/
     }
 }

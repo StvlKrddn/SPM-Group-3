@@ -347,7 +347,7 @@ public class GameManager : MonoBehaviour
 
     public void RemovePlacedTower(GameObject tower)
     {
-        PlacedTower clickedTower = TowerUpgradeController.Instance.GetPlacedTower(tower);
+        PlacedTower clickedTower = TowerManager.Instance.GetPlacedTower(tower);
         towersPlaced.Remove(clickedTower);
     }
 
