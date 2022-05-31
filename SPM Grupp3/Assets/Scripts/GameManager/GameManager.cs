@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Text materialCounterUI;
     [SerializeField] private ParticleSystem moneyParticle;
     [SerializeField] private ParticleSystem materialParticle;
+    [SerializeField] private Color moneyBaseColor;
+    [SerializeField] private Color materialBaseColor;
 
     [NonSerialized] public Color Player1Color;
     [NonSerialized] public Color Player2Color;
@@ -65,6 +67,7 @@ public class GameManager : MonoBehaviour
 
     void Awake() 
     {
+
 
         EventHandler.RegisterListener<SaveGameEvent>(SaveGame);
         buildManager = FindObjectOfType<BuildManager>();
@@ -158,7 +161,12 @@ public class GameManager : MonoBehaviour
 
         canvas = UI.Canvas;
 
+        moneyBaseColor = moneyCounterUI.color;
+        materialBaseColor = materialCounterUI.color;
+
         UpdateUI();
+
+        
 
         victoryPanel.SetActive(false);
         defeatPanel.SetActive(false);
@@ -233,6 +241,7 @@ public class GameManager : MonoBehaviour
 
 
         }
+           
         UpdateUI();
     }
 
@@ -298,7 +307,6 @@ public class GameManager : MonoBehaviour
         {
             materialCounterUI.text = mat.ToString();
         }
-
     }
 
     public void AddMoney(float addMoney)
@@ -321,12 +329,17 @@ public class GameManager : MonoBehaviour
         UpdateUI();
     }
 
+    private IEnumerator currentCoroutine;
+
     public bool SpendResources(float moneySpent, float materialSpent)
     {
         if (moneySpent <= money && materialSpent <= material)
         {
             money -= moneySpent;
             material -= materialSpent;
+
+            moneyCounterUI.color = Color.Lerp(moneyCounterUI.color, Color.red, 0.2f);
+            materialCounterUI.color = Color.Lerp(materialCounterUI.color, Color.red, 0.2f);
 
             UpdateUI();
             return true;
