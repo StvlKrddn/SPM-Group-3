@@ -273,15 +273,6 @@ public class WheelSelection : MonoBehaviour
                 {
                     statisticPanel.SetActive(false);                    
                 }
-<<<<<<< HEAD
-=======
-                else
-                {
-                //    upgradeLevel1Text.color = Color.white;
-                //    upgradeLevel2Text.color = Color.white;
-                //    upgradeLevel3Text.color = Color.white;
-                }
->>>>>>> Branch-for-speltest
             }
         }
     }
