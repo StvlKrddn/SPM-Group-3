@@ -6,11 +6,12 @@ using UnityEngine;
 [Serializable]
 public struct CustomizationData
 {
-    public SerializableColor player1Color, player2Color;
+    public SerializableColor PlayerColor;
+    public bool HasHat;
 
-    public CustomizationData(Color player1Color, Color player2Color)
+    public CustomizationData(Color player1Color, bool hasHat)
     {
-        this.player1Color = player1Color;
-        this.player2Color = player2Color;
+        PlayerColor = player1Color;
+        HasHat = hasHat;
     }
 }
