@@ -99,6 +99,7 @@ public class WaveManager : MonoBehaviour
 
         if(!waveCleared.GetComponent<FadeBehaviour>().Faded())
             waveCleared.GetComponent<FadeBehaviour>().Fade();
+        print(startHint);
 
         startHint.GetComponent<FadeBehaviour>().Fade();
         WaveConstructor(waves[currentWave]);

@@ -90,7 +90,8 @@ public class tutorialLoadingTextBox : MonoBehaviour
         {
 
         }
-        if(progressDialogue.triggered || Gamepad.current.aButton.wasPressedThisFrame)
+        if(//progressDialogue.triggered ||
+            Gamepad.current.aButton.wasPressedThisFrame)
         {
             if(isTextLoading)
             {

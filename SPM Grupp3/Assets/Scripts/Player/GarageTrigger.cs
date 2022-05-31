@@ -48,16 +48,16 @@ public class GarageTrigger : MonoBehaviour
 
             if (acceptAction.IsPressed() && limit == false)
             {
-<<<<<<< HEAD
+ 
 
                 print("kommer den hit");
                 hintEnterUI.SetActive(false);
-=======
+
                 if (!hintEnterUI.GetComponent<FadeBehaviour>().Faded())
                     hintEnterUI.GetComponent<FadeBehaviour>().Fade();
 
                 //hintEnterUI.SetActive(false);
->>>>>>> main
+
                 EventHandler.InvokeEvent(new PlayerSwitchEvent(
                     description: "A player switched mode",
                     playerContainer: other.transform.parent.gameObject

@@ -58,6 +58,8 @@ public class FadeBehaviour : MonoBehaviour
 
     public void Fade()
     {
+        print(canvasGroup);
+
         DoFade(canvasGroup.alpha, faded ? 1 : 0);
 
         faded = !faded;
