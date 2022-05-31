@@ -57,6 +57,8 @@ public class PoisonTower : Tower
         Radius.transform.localScale = new Vector3(range * 2f, 0.01f, range * 2f);
         InvokeRepeating("UpdateTarget", 0f, 0.2f);
         poisonTowerEffect = GetComponent<PoisonTowerEffect>();
+
+
     }
 
     void Update()
@@ -167,7 +169,12 @@ public class PoisonTower : Tower
 
     protected override void Level1(GameObject tower)
     {
-        tower.GetComponent<PoisonTower>().poisonTicks += upgradeAmountPoisonTicks;  
+        PoisonTower poisonTower = tower.GetComponent<PoisonTower>();
+
+        poisonTower.poisonTicks += upgradeAmountPoisonTicks;
+        GetVisualUpgrade(poisonTower);
+
+        level1Visual.transform.localScale = new Vector3(level1Visual.transform.localScale.x *1.2f, level1Visual.transform.localScale.y * 1.2f, level1Visual.transform.localScale.z * 1.2f);
     }
 
     protected override void Level2(GameObject tower)
@@ -176,10 +183,19 @@ public class PoisonTower : Tower
         poisonTower.poisonDamagePerTick += upgradeAmountPoisonDamagePerTick;
         poisonTower.maxHealthPerTick += upgradeMaxHealthPoisonDamagePerTick; 
         poisonTower.fireRate += upgradeAttackSpeed;
+       
+        level1Visual.SetActive(false);
+        level2Visual.SetActive(true);
     }
 
     protected override void Level3(GameObject tower)
     {
-        tower.GetComponent<PoisonTower>().poisonSpread = true;
+        PoisonTower poisonTower = tower.GetComponent<PoisonTower>();
+        poisonTower.poisonSpread = true;
+
+        level2Visual.SetActive(false);
+        level3Visual.SetActive(true);
     }
+
+
 }

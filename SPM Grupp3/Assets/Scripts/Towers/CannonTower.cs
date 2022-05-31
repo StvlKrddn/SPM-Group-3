@@ -17,6 +17,9 @@ public class CannonTower : Tower
     [SerializeField] private float level2Cost;
     [SerializeField] private float level3Cost;
 
+    [Space]
+    [SerializeField] private Animator animator;
+
     private float fireCountdown = 0f;
 
     [System.NonSerialized] public float CostForUpgrade;
@@ -38,12 +41,17 @@ public class CannonTower : Tower
         {
             if (CanYouShoot())
             {
+                animator.SetTrigger("Shooting");
                 Shoot();
                 if (shootTwice)
                 {
                     Invoke(nameof(DubbelShot), 0.1f);
                 }
             }
+/*            else
+            {
+                animator.SetBool("Shooting", false);
+            }*/
 
         }
     }
@@ -94,6 +102,7 @@ public class CannonTower : Tower
 
     protected void Shoot()
     {
+        
         int bulletIndex = FindShot();
         if (bulletIndex < 0)
         {
@@ -114,6 +123,7 @@ public class CannonTower : Tower
         {
             bullet.Seek(target);
         }
+
     }
 
     public override void ShowUpgradeUI(Transform towerMenu)
@@ -143,7 +153,9 @@ public class CannonTower : Tower
 
     protected override void Level1(GameObject tower)
     {
-        tower.GetComponent<CannonTower>().fireRate += upgradeFireRateAmount;
+        CannonTower cannonTower = tower.GetComponent<CannonTower>();
+        cannonTower.fireRate += upgradeFireRateAmount;
+        GetVisualUpgrade(cannonTower);
     }
 
     protected override void TowerLevel2()
@@ -155,6 +167,8 @@ public class CannonTower : Tower
             towerManager.IncreaseUpgradesPurchased();
             CannonTower cannonTower = towerManager.ClickedTower.GetComponent<CannonTower>();
             Level2(cannonTower.gameObject);
+
+            animator.SetInteger("Level", 1);
         }
     }
 
@@ -164,11 +178,10 @@ public class CannonTower : Tower
 
         cannonTower.ShotDamage += upgradeDamageAmount;
 
-        GameObject towerUpgradeVisual1 = cannonTower.transform.Find("Container").Find("Level1").gameObject;
-        GameObject towerUpgradeVisual2 = cannonTower.transform.Find("Container").Find("Level2").gameObject;
+        
 
-        towerUpgradeVisual1.SetActive(false);
-        towerUpgradeVisual2.SetActive(true);
+        level1Visual.SetActive(false);
+        level2Visual.SetActive(true);
     }
 
     
@@ -176,6 +189,8 @@ public class CannonTower : Tower
     protected override void TowerLevel3()
     {
         base.TowerLevel3();
+
+        animator = level3Visual.GetComponent<Animator>();
 
         if (gameManager.SpendResources(level3Cost, 0f))
         {
@@ -191,11 +206,7 @@ public class CannonTower : Tower
         CannonTower cannonTower = tower.GetComponent<CannonTower>();
         cannonTower.shootTwice = true;
 
-        GameObject towerUpgradeVisual2 = cannonTower.transform.Find("Container").Find("Level2").gameObject;
-        GameObject towerUpgradeVisual3 = cannonTower.transform.Find("Container").Find("Level3").gameObject;
-
-
-        towerUpgradeVisual2.SetActive(false);
-        towerUpgradeVisual3.SetActive(true);
+        level2Visual.SetActive(false);
+        level3Visual.SetActive(true);
     }
 }

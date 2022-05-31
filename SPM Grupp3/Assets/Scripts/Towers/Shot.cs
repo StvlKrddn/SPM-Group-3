@@ -75,7 +75,6 @@ public class Shot : MonoBehaviour
 
     public void DecideTypeOfShot(string towerType)
     {
-        print(enemy);
         switch (towerType)
         {
             case "Cannon":
