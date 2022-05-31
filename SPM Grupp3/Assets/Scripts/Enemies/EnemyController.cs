@@ -8,20 +8,20 @@ public abstract class EnemyController : MonoBehaviour
 {
     private GameManager gameManager;
     private HealthBar healthBar;
-    private Transform target;
     private float defaultSpeed;
     private float currentHealth;
     private List<float> poisonTickTimers = new List<float>();
     private bool dead = false;
     private MaterialHolder materialHolder;
     private Color moneyColor = new Color(255, 100, 0, 255);
-    private Animator animator;
     private float defaultAnimationSpeed;
     [SerializeField] private float health = 100f;
     [SerializeField] private float meleeDamage;
     [SerializeField] private Transform spawnTextPosition;
     [SerializeField] private PoisonTowerEffect poisonTowerEffect;
+    [SerializeField] protected Animator animator;
 
+    protected Transform target;
     protected int currentWaypointIndex = 0;
     protected List<Transform[]> wayPoints;
 
@@ -49,10 +49,8 @@ public abstract class EnemyController : MonoBehaviour
         healthBar = GetComponentInChildren<HealthBar>();
         healthBar.slider.maxValue = health;
         healthBar.slider.value = health;
-
-        if (GetComponent<Animator>())
+        if (animator != null)
         {
-            animator = GetComponent<Animator>();
             defaultAnimationSpeed = animator.speed;
         }
 

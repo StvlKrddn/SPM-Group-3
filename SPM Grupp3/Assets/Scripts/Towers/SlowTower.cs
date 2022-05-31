@@ -78,11 +78,9 @@ public class SlowTower : Tower
 
     public override void HitTarget(GameObject hit, GameObject hitEffect)
     {
-        print("Run");
         if (target != null)
         {
             bullet.DecideTypeOfShot("Slow");
-            print(bullet);
         }
     }
 
