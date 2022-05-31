@@ -7,39 +7,32 @@ using Random = UnityEngine.Random;
 
 public class MaterialBehavior : MonoBehaviour
 {
-    [SerializeField] private float materialValue = 1;
+    private GameManager gameManager;
+    private Color dropTextColor = new Color(164,164,164,255);
+    private MeshRenderer mRenderer;
+    private bool landed = false;
+	private Vector3 originalPosition;
+    private Vector3 destinationVector;
+    private float xMovement;
+    private float zMovement;
+    private readonly int framesTimesSeconds = 150;
 
+    [SerializeField] private float yMovement;
+    [SerializeField] private float materialValue = 1;
     [SerializeField] private float bobbingSpeed = 5f;
     [SerializeField] private float bobbingStrength = 0.2f;
     [SerializeField] private float duration = 5f;
-
+    [SerializeField] private float secondsBeforeLanding = 3;
+    [SerializeField] private float blinkDuration = 5;
     [SerializeField] private GameObject changerText;
     [SerializeField] private Transform spawnTextPosition;
 
-    private Color dropTextColor = new Color(164,164,164,255);
+    [SerializeField] private float[] xValues = new float[2];
+    [SerializeField] private float[] zValues = new float[2];
 
-    private GameManager gameManager;
-    private bool landed = false;
-
-
-    public float[] xValues = new float[2];
-    public float[] zValues = new float[2];
-
-
-	private Vector3 originalPosition;
-
-    public float secondsBeforeLanding = 3; 
-
-    private float xMovement;
-    public float yMovement;
-    private float zMovement;
-    private int framesTimesSeconds = 150;
-
- private Vector3 destinationVector;
-
-    private MeshRenderer mRenderer;
 
     // Sverkers remake på materialkoden
+    // Han tyckte att att det skulle vara mer hårdkodade värden
 
 	private void Awake()
 	{
@@ -50,6 +43,11 @@ public class MaterialBehavior : MonoBehaviour
         changerText.SetActive(false);
         gameManager = GameManager.Instance;
 	}
+    void Start()
+    {
+        transform.position = new Vector3(transform.position.x, 3, transform.position.z);
+        destinationVector = CalculatePosition();
+    }
 
 	private void OnEnable()
 	{
@@ -62,13 +60,6 @@ public class MaterialBehavior : MonoBehaviour
     private void OnDisable()
     {
         StopAllCoroutines();
-    }
-
-
-    void Start()
-    {
-        transform.position = new Vector3(transform.position.x, 3, transform.position.z);
-        destinationVector = CalculatePosition();
     }
 
     private Vector3 CalculatePosition()
@@ -125,8 +116,7 @@ public class MaterialBehavior : MonoBehaviour
 
             if (changerText != null && spawnTextPosition != null)
             {
-                changerText.transform.position = transform.position;
-                changerText.transform.rotation = transform.rotation;
+                changerText.transform.SetPositionAndRotation(transform.position, transform.rotation);
                 changerText.SetActive(true);
             }
             gameObject.SetActive(false);
@@ -135,9 +125,9 @@ public class MaterialBehavior : MonoBehaviour
 
 	private IEnumerator SelfDestruct()
     {
-        yield return new WaitForSeconds(duration - 5);
+        yield return new WaitForSeconds(duration - blinkDuration);
         StartCoroutine(Blink(0.4f));
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(blinkDuration);
         gameObject.SetActive(false);
         yield return null;
     }

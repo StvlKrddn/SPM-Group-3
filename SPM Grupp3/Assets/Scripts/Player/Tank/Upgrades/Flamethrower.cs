@@ -5,12 +5,13 @@ using UnityEngine.InputSystem;
 
 public class Flamethrower : MonoBehaviour
 {
-    public static float FireDamage;
-    [SerializeField] private float damage;
-    private TankState state;
     private PlayerInput playerInput;
+    private TankState state;
     private InputAction fireAction;
+    [SerializeField] private float damage;
     [SerializeField] private ParticleSystem fireParticles;
+
+    public static float FireDamage;
 
 
     void Start()

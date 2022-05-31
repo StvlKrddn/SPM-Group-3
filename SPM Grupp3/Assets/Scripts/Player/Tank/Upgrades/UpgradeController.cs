@@ -5,11 +5,12 @@ using UnityEngine;
 
 public class UpgradeController : MonoBehaviour
 {
-    public int moneyCost = 500;
-    public int materialCost = 0;
+    private static UpgradeController instance;
+    [SerializeField] private int moneyCost = 500;
+    [SerializeField] private int materialCost = 0;
+
     public static int currentUpgradeLevel = 0;
 
-    private static UpgradeController instance;
     public static UpgradeController Instance
     {
         get
@@ -36,8 +37,8 @@ public class UpgradeController : MonoBehaviour
             if(FindObjectOfType<TankState>())
             {
                 TankState player = FindObjectOfType<TankState>();
-                player.levelOfTank++;
-                switch (player.levelOfTank)
+                player.LevelOfTank++;
+                switch (player.LevelOfTank)
                 {
                     case 1:
                     player.tankUpgradeTree.UpgradeOne();
@@ -51,7 +52,7 @@ public class UpgradeController : MonoBehaviour
                     player.tankUpgradeTree.UpgradeThree();
                     break;
                 }
-                print("Upgrade lvl" + player.levelOfTank + " instant");
+
                 if (player.GetComponent<WeaponSlot>())
                 {
                     player.GetComponent<WeaponSlot>().UpgradeShots();
@@ -63,10 +64,10 @@ public class UpgradeController : MonoBehaviour
     public void FixUpgrades(GameObject player)
     {
         TankState tS = player.GetComponentInChildren<TankState>();
-        for (int i = tS.levelOfTank; i < currentUpgradeLevel; i++)
+        for (int i = tS.LevelOfTank; i < currentUpgradeLevel; i++)
         {
-            tS.levelOfTank++;
-            switch (tS.levelOfTank)
+            tS.LevelOfTank++;
+            switch (tS.LevelOfTank)
             {
                 case 1:
                     tS.tankUpgradeTree.UpgradeOne();

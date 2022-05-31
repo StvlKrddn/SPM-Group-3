@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnemySpecialFire : EnemyController
 {
     private bool iceShieldOn = true;
-    public float iceRestiance = 0.5f;
+    [SerializeField] private float iceRestiance = 0.5f;
     [SerializeField] private GameObject iceShield;
 
 	protected override void OnEnable()

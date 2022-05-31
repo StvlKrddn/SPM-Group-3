@@ -11,7 +11,7 @@ public class SlowTowerEffect : MonoBehaviour
         this.enemy = enemy;
         if (!areaOfEffect)
         {
-            enemy.speed *= slowProc;
+            enemy.Speed *= slowProc;
             StartCoroutine(SlowDuration(enemy));
         }
         else
@@ -24,11 +24,11 @@ public class SlowTowerEffect : MonoBehaviour
                     EnemyController enemyController = enemyCollider.GetComponent<EnemyController>();
                     if (stun)
                     {
-                        enemyController.speed = 0;
+                        enemyController.Speed = 0;
                         StartCoroutine(SlowDuration(enemyController));
                         return;
                     }
-                    enemyController.speed *= slowProc;
+                    enemyController.Speed *= slowProc;
                     StartCoroutine(SlowDuration(enemyController));
                 }
             }
@@ -38,6 +38,6 @@ public class SlowTowerEffect : MonoBehaviour
     private IEnumerator SlowDuration(EnemyController enemyController)
     {
         yield return new WaitForSeconds(3f);
-        enemyController.speed = enemyController.DefaultSpeed;
+        enemyController.Speed = enemyController.DefaultSpeed;
     }
 }

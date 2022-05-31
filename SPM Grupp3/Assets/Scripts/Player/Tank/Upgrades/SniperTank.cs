@@ -29,7 +29,7 @@ public class SniperTank : TankUpgradeTree
 	{
 		if (base.Ability())
 		{
-			Instantiate(sniperAbility, weapon.bulletSpawner.position, weapon.bulletSpawner.rotation, transform);	
+			Instantiate(sniperAbility, weapon.BulletSpawner.position, weapon.BulletSpawner.rotation, transform);	
 			return true;
 		}
 		return false;

@@ -24,13 +24,13 @@ public class WaveManager : MonoBehaviour
     private float spawnRate = 0;
     private bool spawnEnemies = true;
     private int waveMoneyBonus;
-    private List<GameObject> currentWaveEnemies = new List<GameObject>();
-    private List<GameObject> poolOfEnemies = new List<GameObject>();
+    private readonly List<GameObject> currentWaveEnemies = new List<GameObject>();
+    private readonly List<GameObject> poolOfEnemies = new List<GameObject>();
     private Text waveUI;
     private GameObject startHint;
     private GameObject waveStarted;
     private GameObject waveCleared;
-    private Dictionary<int, float> changeSpawnRate = new Dictionary<int, float>();
+    private readonly Dictionary<int, float> changeSpawnRate = new Dictionary<int, float>();
     private Waypoints wayPoints;
     private List<Transform[]> wayPostions;
  
@@ -55,10 +55,6 @@ public class WaveManager : MonoBehaviour
         gameManager = GameManager.Instance;
         currentWave = gameManager.CurrentWave;
 
-    }
-
-    private void OnEnable()
-    {
     }
 
     private void OnDestroy()
@@ -251,8 +247,8 @@ public class WaveManager : MonoBehaviour
     private void UseInactive(GameObject enemy, int givenPath)
     {
         EnemyController enemyController = enemy.GetComponent<EnemyController>();
-        enemyController.path = givenPath;
-        enemyController.transform.position = wayPostions[enemyController.path][0].position;
+        enemyController.Path = givenPath;
+        enemyController.transform.position = wayPostions[enemyController.Path][0].position;
         enemyController.gameObject.SetActive(true);
     }
 

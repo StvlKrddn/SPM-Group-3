@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class EnemyMortar : EnemyController
 {
-    public float timer = 2;
-    public int cooldown = 5;
-    private TankState[] tanks;
+    private readonly List<GameObject> shots = new List<GameObject>();
     private Transform explosionRadius = null;
-    public Rigidbody mortarRigidbody;
-    private List<GameObject> shots = new List<GameObject>();
+    private TankState[] tanks;
+	[SerializeField] private float timer = 2;
+    [SerializeField] private int cooldown = 5;
+    [SerializeField] private Rigidbody mortarRigidbody;
 
     // Update is called once per frame
     protected override void Awake()
@@ -85,8 +85,7 @@ public class EnemyMortar : EnemyController
         {
             rigidbody = shots[mortarIndex].GetComponent<Rigidbody>();
             rigidbody.velocity = explosionRadius.position;
-            rigidbody.transform.position = transform.position;
-            rigidbody.transform.rotation = transform.rotation;
+            rigidbody.transform.SetPositionAndRotation(transform.position, transform.rotation);
             rigidbody.gameObject.SetActive(true);
         }
     }

@@ -11,11 +11,11 @@ public class TankState : MonoBehaviour
     [SerializeField] private Animator animator;
     [SerializeField] private GameObject destroyEffect;
     [SerializeField] private ParticleSystem[] hitEffects;
-    public int levelOfTank;
+    public int LevelOfTank;
 
     // Components
-    Rigidbody rb;
-    Transform turretObject;
+    private Rigidbody rb;
+    private Transform turretObject;
 
     // Input components
     private InputAction moveAction;
@@ -24,28 +24,27 @@ public class TankState : MonoBehaviour
 
     // Instance variables
     private Vector2 gamepadInputVector;
-    protected Vector3 aimInputVector;
     private float aimSpeed;
     private float standardSpeed;
     private Matrix4x4 isoMatrix;
-
-    private Transform spawnPoint;
     private Transform garage;
     private PlayerInput playerInput;
     private PlayerHandler playerHandler;
-
     private float currentHealth;
+    private Transform spawnPoint;
     private float playerID;
-    public TankUpgradeTree tankUpgradeTree;
-    [SerializeField] private TankUpgradeTree tankUpgradeTreeOne;
-    [SerializeField] private TankUpgradeTree tankUpgradeTreeTwo;
-    [SerializeField] private HealthBar healthBar;
-
     private int hurMangaGangerDamage = 0;
     private bool invincibilityFrame = false;
     private Color player1Color;
     private Color player2Color;
 
+    [SerializeField] private TankUpgradeTree tankUpgradeTreeOne;
+    [SerializeField] private TankUpgradeTree tankUpgradeTreeTwo;
+    [SerializeField] private HealthBar healthBar;
+
+    protected Vector3 aimInputVector;
+
+    public TankUpgradeTree tankUpgradeTree;
 
     // Getters and Setters
     public float StandardSpeed { 
@@ -174,7 +173,7 @@ public class TankState : MonoBehaviour
         // Translate vector to an isometric viewpoint
         Vector3 skewedVector = TranslateToIsometric(movementVector);
         
-        Vector3 movement = skewedVector * standardSpeed * Time.deltaTime;
+        Vector3 movement = standardSpeed * Time.deltaTime * skewedVector;
 
         rb.MovePosition(transform.position + movement);
 
@@ -208,13 +207,13 @@ public class TankState : MonoBehaviour
         if (other.CompareTag("EnemyBullet"))
         {
             EnemyBullet enemyBullet = other.gameObject.GetComponent<EnemyBullet>();
-            TakeDamage(enemyBullet.damage);
+            TakeDamage(enemyBullet.Damage);
         }
         else if (other.CompareTag("MortarBullet"))
         {
             hurMangaGangerDamage += 1; 
             EnemyMortarShot enemyMortarShot = other.gameObject.GetComponentInParent<EnemyMortarShot>();
-            TakeDamage(enemyMortarShot.damage);
+            TakeDamage(enemyMortarShot.Damage);
 
         }
     }

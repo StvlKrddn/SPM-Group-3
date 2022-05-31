@@ -40,7 +40,7 @@ public class BuilderController : MonoBehaviour
     private Vector2 newPosition;
     private Vector2 screenMiddle;
     private bool previousMouseState;
-    private bool previousYState;
+    private readonly bool previousYState;
     private GameObject preTower;
     private Tower selectedTower;
     private Transform playerUI;
@@ -62,7 +62,7 @@ public class BuilderController : MonoBehaviour
 
     void Start()
     {
-        GameObject placement = GameObject.Find("PlaceForTower").gameObject;
+        GameObject placement = GameObject.Find("PlaceForTower");
         startColor = placement.GetComponent<Renderer>().material.color;
         screenMiddle = new Vector2(Screen.width / 2, Screen.height / 2);
 

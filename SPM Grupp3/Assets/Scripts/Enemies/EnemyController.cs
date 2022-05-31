@@ -6,30 +6,30 @@ using UnityEngine.UI;
 
 public abstract class EnemyController : MonoBehaviour
 {
-    public float speed = 10f;
-    [SerializeField] private float health = 100f;
-    public GameObject deathEffect;
-    [SerializeField] private float meleeDamage;
     private GameManager gameManager;
-    private Transform target;
     private HealthBar healthBar;
-    protected int currWaypointIndex = 0;
-    public int damageBase = 10;
-    public int moneyDrop = 10;
-    public bool materialDrop = false;
-
+    private Transform target;
     private float defaultSpeed;
-    private List<float> poisonTickTimers = new List<float>();
-    public bool spread = false;
-    private bool dead = false;
     private float currentHealth;
-    public int path;
-    protected List<Transform[]> wayPoints;
+    private List<float> poisonTickTimers = new List<float>();
+    private bool dead = false;
     private MaterialHolder materialHolder;
-
     private Color moneyColor = new Color(255, 100, 0, 255);
-    public GameObject changerText;
+    [SerializeField] private float health = 100f;
+    [SerializeField] private float meleeDamage;
     [SerializeField] private Transform spawnTextPosition;
+
+    protected int currentWaypointIndex = 0;
+    protected List<Transform[]> wayPoints;
+
+    public float Speed = 10f;
+    public GameObject DeathEffect;
+    public int DamageBase = 10;
+    public int MoneyDrop = 10;
+    public bool MaterialDrop = false;
+    public int Path;
+    public bool Spread = false;
+    public GameObject ChangerText;
 
     public List<float> PoisonTickTimers { get { return poisonTickTimers; } set { poisonTickTimers = value; } }
     public float DefaultSpeed {  get { return defaultSpeed; } set { defaultSpeed = value; } }
@@ -37,27 +37,10 @@ public abstract class EnemyController : MonoBehaviour
     public float Health { get { return health; } }
 
 	// Start is called before the first frame update
-	protected virtual void OnEnable()
-	{
-        
-        currentHealth = health;
-        currWaypointIndex = 0;
-        poisonTickTimers.Clear();
-        dead = false;
-        healthBar.slider.maxValue = health;
-        healthBar.slider.value = health;
-        path = Waypoints.instance.GivePath();
-        target = wayPoints[path][currWaypointIndex];
-    }
-
-	protected virtual void OnDestroy()
-	{
-        Destroy(changerText);
-	}
 
 	protected virtual void Awake() 
     {
-        defaultSpeed = speed;
+        defaultSpeed = Speed;
         currentHealth = health;
         gameManager = GameManager.Instance;
         healthBar = GetComponentInChildren<HealthBar>();
@@ -65,13 +48,12 @@ public abstract class EnemyController : MonoBehaviour
         healthBar.slider.value = health;
         wayPoints = Waypoints.instance.GetWaypoints();
         materialHolder = FindObjectOfType<MaterialHolder>();
-        changerText.GetComponentInChildren<Text>().text = moneyDrop.ToString();
-        changerText.GetComponentInChildren<Text>().color = moneyColor;
-        changerText = Instantiate(changerText, spawnTextPosition.position, spawnTextPosition.rotation, GameManager.Instance.transform.Find("DropTexts"));
-        changerText.SetActive(false);
-        //Change to right tank when done with tanks
+        ChangerText.GetComponentInChildren<Text>().text = MoneyDrop.ToString();
+        ChangerText.GetComponentInChildren<Text>().color = moneyColor;
+        ChangerText = Instantiate(ChangerText, spawnTextPosition.position, spawnTextPosition.rotation, GameManager.Instance.transform.Find("DropTexts"));
+        ChangerText.SetActive(false);
+        //Set base values. Gets changertext, movement, health and healthbar, speed and waypoints/path
     }
-
     protected virtual void Start() {}
 
     // Update is called once per frame
@@ -80,30 +62,71 @@ public abstract class EnemyController : MonoBehaviour
         MoveStep();   
     }
 
+	protected virtual void OnEnable()
+	{
+        currentHealth = health;
+        currentWaypointIndex = 0;
+        poisonTickTimers.Clear();
+        dead = false;
+        healthBar.slider.maxValue = health;
+        healthBar.slider.value = health;
+        Path = Waypoints.instance.GivePath();
+        target = wayPoints[Path][currentWaypointIndex];
+    }
+
+	protected virtual void OnDestroy()
+	{
+        Destroy(ChangerText);
+	}
+
+
 	public void MoveStep()
     {
         //WIP Enemy moves right direction
         Vector3 direction = target.position - transform.position;
         direction.Normalize();
-        transform.position += speed * direction * Time.deltaTime;
+        transform.position += Speed * Time.deltaTime * direction;
         if (Vector3.Distance(transform.position, target.transform.position) < 0.2f)
         {
-            if (wayPoints[path].Length - 1 <= currWaypointIndex) // Changes waypoint to til the enemy reaches the last waypoint
+            if (wayPoints[Path].Length - 1 <= currentWaypointIndex) // Changes waypoint to til the enemy reaches the last waypoint
             {
                 EnemyDeathBase();
                 return;
             }
-            currWaypointIndex++;
-            target = wayPoints[path][currWaypointIndex];
+            currentWaypointIndex++;
+            target = wayPoints[Path][currentWaypointIndex];
             transform.LookAt(target);
         }
     }
 
     private void EnemyDeathBase()
     {
-        gameManager.TakeDamage(damageBase, gameObject);
-        DieEvent dieEvent = new DieEvent("död från bas", gameObject, null, null);
+        gameManager.TakeDamage(DamageBase, gameObject);
+        DieEvent dieEvent = new DieEvent("dead of base", gameObject, null, null);
         EventHandler.InvokeEvent(dieEvent);
+        gameObject.SetActive(false);
+    }
+
+    public void EnemyDeath()
+    {
+        gameManager.AddMoney(MoneyDrop); // add money and spawn material
+        
+        // Spawns a changerText for indikation for gaining money
+
+        if(ChangerText != null && spawnTextPosition != null)
+        {
+            ChangerText.transform.SetPositionAndRotation(spawnTextPosition.position, spawnTextPosition.rotation);
+            ChangerText.SetActive(true);
+        }
+
+        if (MaterialDrop == true)
+        {
+			materialHolder.GiveMaterial(transform.position, transform.rotation);
+        }
+        //Deathevent to wavemanager
+        DieEvent dieEvent = new DieEvent("dead", gameObject, null, null);
+        EventHandler.InvokeEvent(dieEvent);
+        Destroy(Instantiate(DeathEffect, transform.position, Quaternion.identity), 1f);
         gameObject.SetActive(false);
     }
 
@@ -115,7 +138,13 @@ public abstract class EnemyController : MonoBehaviour
             TakeDamage(playerBullet.BulletDamage);
         }
     }
-
+    private void OnParticleCollision(GameObject other)
+    {
+        if (other.CompareTag("Flamethrower"))
+        {
+            HitByFire(Flamethrower.FireDamage * Time.fixedDeltaTime);
+        }
+    }
     public virtual void TakeDamage(float damage)
     {
         currentHealth -= damage;
@@ -127,39 +156,9 @@ public abstract class EnemyController : MonoBehaviour
         }
     }
 
-    public void EnemyDeath()
-    {
-        gameManager.AddMoney(moneyDrop); // add money and spawn material
-        
-        // Spawns a changerText for indikation for gaining money
-
-        if(changerText != null && spawnTextPosition != null)
-        {
-            changerText.transform.position = spawnTextPosition.position;
-            changerText.transform.rotation = spawnTextPosition.rotation;
-            changerText.SetActive(true);
-        }
-
-        if (materialDrop == true)
-        {
-			materialHolder.GiveMaterial(transform.position, transform.rotation);
-        }
-        DieEvent dieEvent = new DieEvent("d�d", gameObject, null, null);
-        EventHandler.InvokeEvent(dieEvent);
-        Destroy(Instantiate(deathEffect, transform.position, Quaternion.identity), 1f);
-        gameObject.SetActive(false);
-    }
-
-    private void OnParticleCollision(GameObject other)
-    {
-        if (other.CompareTag("Flamethrower"))
-        {
-            HitByFire(Flamethrower.FireDamage * Time.fixedDeltaTime);
-        }
-    }
-
     public virtual void HitByFire(float damage)
 	{
+        //Used for specific enemy
 		TakeDamage(damage);
 	}
 }

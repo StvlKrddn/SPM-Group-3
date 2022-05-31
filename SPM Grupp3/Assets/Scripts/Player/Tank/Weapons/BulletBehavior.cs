@@ -4,18 +4,14 @@ using UnityEngine;
 
 public class BulletBehavior : MonoBehaviour
 {
-    [SerializeField] protected float damage;
-    public bool penetrating;
-
+    private int penetrationCountMax;
     private WeaponSlot weapon;
-
+    private Vector3 originalPosition;
+    [SerializeField] private int penetrationCount = 2;
     [SerializeField] private float bulletSpeed;
     [SerializeField] private float range;
-    
-    Vector3 originalPosition;
-    [SerializeField] private int penetrationCount = 2;
-    private int penetrationCountMax;
-    
+    [SerializeField] protected float damage;
+    [SerializeField] private bool penetrating;
 
     public float BulletDamage { get { return damage; } set { damage = value; } }
     public float BulletRange { get { return range; } set { range = value; } }

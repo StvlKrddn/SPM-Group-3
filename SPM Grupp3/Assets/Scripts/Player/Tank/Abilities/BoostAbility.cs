@@ -7,7 +7,16 @@ using UnityEngine.UI;
 [RequireComponent(typeof(TankState))]
 public class BoostAbility : MonoBehaviour
 {
+    private Slider slider;
+    private InputAction boostAction;
+    private TankState tankState;
+    private bool allowedToBoost = true;
+    private float speedBeforeBoost;
+    private float boostTimer;
+    private float notInUseTimer;
+
     // Inspector variables
+    [SerializeField] private float boostAccelerationTimeMultiplier = 8f;
     [SerializeField] private float boostSpeedMultiplier = 5f;
     [SerializeField] private float boostDuration = 1f;
     [SerializeField] private float boostCooldownTime = 5f;
@@ -15,18 +24,6 @@ public class BoostAbility : MonoBehaviour
     [SerializeField] private Animator animator;
     [SerializeField] private GameObject boostUI;
     
-    private Slider slider;
-
-    InputAction boostAction;
-    TankState tankState;
-    GameObject effect;
-
-    float speedBeforeBoost;
-    bool allowedToBoost = true;
-    float boostTimer;
-    float notInUseTimer;
-    float boostAccelerationTimeMultiplier = 8f;
-
     // Getters and setters
     public float BoostSpeedMultiplier { get { return boostSpeedMultiplier; } set { boostSpeedMultiplier = value; } }
     public float BoostDuration { get { return boostDuration; } set { boostDuration = value; } }

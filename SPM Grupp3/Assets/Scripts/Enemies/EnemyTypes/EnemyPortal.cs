@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class EnemyPortal : EnemyController
 {
-	[SerializeField] private float spawnDuration;
 	private bool opened = false;
 	private BoxCollider boxCollider;
 	private int randomWaypoint;
 	private Canvas canvas;
-	[SerializeField] private AnimationCurve fadeIn;
 	private Color color;
 	private MeshRenderer meshRenderer;
 	private ParticleSystem[] pS;
+	[SerializeField] private float spawnDuration;
+	[SerializeField] private AnimationCurve fadeIn;
 
 	protected override void OnEnable()
 	{
@@ -58,10 +58,10 @@ public class EnemyPortal : EnemyController
 
 	private void RandomizeTargets()
 	{
-		randomWaypoint = Random.Range(1, wayPoints[path].Length - 2); //For balancing reasons (and not last target)
+		randomWaypoint = Random.Range(1, wayPoints[Path].Length - 2); //For balancing reasons (and not last target)
 		spawnDuration *= randomWaypoint;
-		currWaypointIndex = randomWaypoint;
-		transform.position = wayPoints[path][randomWaypoint].position;
+		currentWaypointIndex = randomWaypoint;
+		transform.position = wayPoints[Path][randomWaypoint].position;
 	}
 
     protected override void FixedUpdate()

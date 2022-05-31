@@ -15,7 +15,6 @@ public abstract class TankUpgradeTree : MonoBehaviour
     [SerializeField] protected float abilityCD;
     [SerializeField] protected bool abilityReady = false;
 
-    private UpgradeController uC;
 
     private void OnEnable()
     {
@@ -27,7 +26,6 @@ public abstract class TankUpgradeTree : MonoBehaviour
 
     protected virtual void Start()
 	{   
-        uC = UpgradeController.Instance;
         tankState = GetComponent<TankState>();
         weapon = GetComponent<WeaponSlot>();
         gameManager = FindObjectOfType<GameManager>(); 
