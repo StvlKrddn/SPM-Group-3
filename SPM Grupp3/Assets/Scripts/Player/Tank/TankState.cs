@@ -15,7 +15,6 @@ public class TankState : MonoBehaviour
 
     // Components
     private Rigidbody rb;
-    private Transform turretObject;
 
     // Input components
     private InputAction moveAction;
@@ -38,13 +37,14 @@ public class TankState : MonoBehaviour
     private Color player1Color;
     private Color player2Color;
 
+    [SerializeField] private HealthBar healthBar;
     [SerializeField] private TankUpgradeTree tankUpgradeTreeOne;
     [SerializeField] private TankUpgradeTree tankUpgradeTreeTwo;
-    [SerializeField] private HealthBar healthBar;
 
     protected Vector3 aimInputVector;
 
     public TankUpgradeTree tankUpgradeTree;
+    public Transform TurretObject;
 
     // Getters and Setters
     public float StandardSpeed { 
@@ -91,7 +91,7 @@ public class TankState : MonoBehaviour
         healthBar.slider.maxValue = health;
         healthBar.HandleHealthChanged(health);
 
-        turretObject = transform.GetChild(0);
+        TurretObject = transform.GetChild(0);
         
         aimSpeed = standardSpeed * 5;
 
@@ -192,7 +192,7 @@ public class TankState : MonoBehaviour
 
         if (aimAction.IsPressed())
         {
-            turretObject.rotation = Quaternion.Slerp(turretObject.rotation, Quaternion.LookRotation(skewedVector), Time.deltaTime * aimSpeed);
+            TurretObject.rotation = Quaternion.Slerp(TurretObject.rotation, Quaternion.LookRotation(skewedVector), Time.deltaTime * aimSpeed);
         }
     } 
 
