@@ -25,7 +25,7 @@ public class CannonTower : Tower
     // Start is called before the first frame update
     void Start()
     {
-        InvokeRepeating("UpdateTarget", 0f, 0.5f);
+        InvokeRepeating("UpdateTarget", 0f, 0.2f);
         Radius.transform.localScale = new Vector3(range * 2f, 0.01f, range * 2f);
     }
 

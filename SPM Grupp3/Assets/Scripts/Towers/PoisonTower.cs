@@ -25,7 +25,10 @@ public class PoisonTower : Tower
 
     private float fireCountdown = 0f;
 
+    private PoisonTowerEffect poisonTowerEffect;
+
     [System.NonSerialized] public float CostForUpgrade;
+
 
     public float PoisonTicks { get { return poisonTicks; } set { poisonTicks = value; } }
     public float PoisonDamagePerTick { get { return poisonDamagePerTick; } set { poisonDamagePerTick = value; } }
@@ -52,7 +55,8 @@ public class PoisonTower : Tower
     void Start()
     {
         Radius.transform.localScale = new Vector3(range * 2f, 0.01f, range * 2f);
-        InvokeRepeating("UpdateTarget", 0f, 0.5f);
+        InvokeRepeating("UpdateTarget", 0f, 0.2f);
+        poisonTowerEffect = GetComponent<PoisonTowerEffect>();
     }
 
     void Update()
@@ -114,7 +118,7 @@ public class PoisonTower : Tower
         StartCoroutine(DisableEffect(effectInstance));
 
         //F�r att tornet �r AOE, D� skjuter den inte ut n�t skott
-        GetComponent<PoisonTowerEffect>().HitByPoison(PoisonTicks, OnHitEffect, PoisonDamagePerTick, MaxHealthPerTick, range);
+        poisonTowerEffect.HitByPoison(PoisonTicks, OnHitEffect, PoisonDamagePerTick, MaxHealthPerTick, range);
     }
 
     public override void ShowUpgradeUI(Transform towerMenu)

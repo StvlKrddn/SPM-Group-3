@@ -24,6 +24,8 @@ public class SlowTower : Tower
     private float currentShots = 0;
     private float fireCountdown = 0f;
 
+    private SlowTowerEffect slowTowerEffect;
+
     [System.NonSerialized] public float CostForUpgrade;
 
     public float SlowProc { get { return slowProc; } set { slowProc = value; } }
@@ -54,7 +56,8 @@ public class SlowTower : Tower
     void Start()
     {  
         Radius.transform.localScale = new Vector3(range * 2f, 0.01f, range * 2f);
-        InvokeRepeating("UpdateTarget", 0f, 0.5f);
+        InvokeRepeating("UpdateTarget", 0f, 0.2f);
+        SlowTowerEffect slowTowerEffect = GetComponent<SlowTowerEffect>();
     }
 
     // Update is called once per frame
@@ -75,9 +78,11 @@ public class SlowTower : Tower
 
     public override void HitTarget(GameObject hit, GameObject hitEffect)
     {
+        print("Run");
         if (target != null)
         {
             bullet.DecideTypeOfShot("Slow");
+            print(bullet);
         }
     }
 
@@ -155,11 +160,11 @@ public class SlowTower : Tower
 
         if (StunActive && CurrentShots <= 0f)
         {
-            GetComponent<SlowTowerEffect>().HitBySlow(null, SlowProc, range, AreaOfEffect, true);
+            slowTowerEffect.HitBySlow(null, SlowProc, range, AreaOfEffect, true);
         }
         else
         {
-            GetComponent<SlowTowerEffect>().HitBySlow(null, SlowProc, range, AreaOfEffect, false);
+            slowTowerEffect.HitBySlow(null, SlowProc, range, AreaOfEffect, false);
         }
 
     }

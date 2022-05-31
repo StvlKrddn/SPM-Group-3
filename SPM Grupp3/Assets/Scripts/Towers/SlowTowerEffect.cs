@@ -4,12 +4,10 @@ using UnityEngine;
 
 public class SlowTowerEffect : MonoBehaviour
 {
-    private EnemyController enemy;
     private float effectDuration = 3f;
 
 	public void HitBySlow(EnemyController enemy, float slowProc, float radius, bool areaOfEffect, bool stun)
     {
-        this.enemy = enemy;
         if (!areaOfEffect)
         {
             SlowEnemy(enemy, slowProc);
