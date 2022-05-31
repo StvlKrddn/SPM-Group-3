@@ -5,55 +5,89 @@ using UnityEngine.UI;
 
 public class ChangerBehaviour : MonoBehaviour
 {
-    private bool mFaded = false;
+    
+
+    private CanvasGroup canvasGroup;
     private Transform lookAt;
 
-    public float Duration = 0.4f;
+    [SerializeField] private float duration = 0.4f;
 
-    public float moveSpeed = 1;
+    [SerializeField] private float moveSpeed = 1;
+    [SerializeField] private float scaleMultiplier = 1;
 
-    public bool destroyAfterFade = true;
+    [SerializeField] private bool destroyAfterFade = true;
+    [SerializeField] private bool faceCamera = true;
+    [SerializeField] private bool stationary = false;
+
+    private bool faded;
 
     private void OnEnable()
     {
         transform.position = transform.parent.position;
+        canvasGroup = GetComponent<CanvasGroup>();
+
+        if (canvasGroup.alpha < 1)
+            faded = true;
+        else
+            faded = false;
+
+        
         lookAt = GameObject.FindGameObjectWithTag("Look").transform;
+
         Faded();
+
+        if(scaleMultiplier != 1)
+            StartCoroutine(DoScale());
     }
 
     public void Faded()
     {
-        var canvasGroup = GetComponent<CanvasGroup>();
+        StartCoroutine(DoFade(canvasGroup.alpha, faded ? 1 : 0));
 
-        StartCoroutine(DoFade(canvasGroup, canvasGroup.alpha, mFaded ? 1 : 0));
-
-        mFaded = !mFaded;
+        faded = !faded;
     }
 
-    private IEnumerator DoFade(CanvasGroup canvasGroup, float start, float end)
+    private IEnumerator DoFade(float start, float end)
     {
         float counter = 0f;
 
-        while (counter < Duration)
+        while (counter < duration)
         {
             counter += Time.deltaTime;
-            canvasGroup.alpha = Mathf.Lerp(start, end, counter / Duration);
+            canvasGroup.alpha = Mathf.Lerp(start, end, counter / duration);
 
             yield return null;
         }
 
         if (destroyAfterFade)
-            transform.parent.gameObject.SetActive(false);
+            Destroy(transform.parent.gameObject);
+    }
+
+    private IEnumerator DoScale()
+    {
+        float counter = 0f;
+
+        while (counter < duration)
+        {
+            counter += Time.deltaTime;
+            transform.localScale = Vector3.Lerp(transform.localScale, transform.localScale * scaleMultiplier, counter / duration);
+
+            yield return null;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        this.transform.Translate( Vector3.up * Time.deltaTime * moveSpeed);
+        if (!stationary)
+            transform.Translate( Vector3.up * Time.deltaTime * moveSpeed);
     }
 
     private void LateUpdate()
     {
+        if (!faceCamera)
+            return;
+
        transform.LookAt(lookAt);
        transform.Rotate(0, 180, 0);
     }

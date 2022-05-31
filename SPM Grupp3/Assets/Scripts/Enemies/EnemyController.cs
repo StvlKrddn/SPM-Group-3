@@ -49,13 +49,16 @@ public abstract class EnemyController : MonoBehaviour
         healthBar = GetComponentInChildren<HealthBar>();
         healthBar.slider.maxValue = health;
         healthBar.slider.value = health;
+
         if (GetComponent<Animator>())
         {
             animator = GetComponent<Animator>();
             defaultAnimationSpeed = animator.speed;
         }
+
         wayPoints = Waypoints.instance.GetWaypoints();
         materialHolder = FindObjectOfType<MaterialHolder>();
+
         ChangerText.GetComponentInChildren<Text>().text = MoneyDrop.ToString();
         ChangerText.GetComponentInChildren<Text>().color = moneyColor;
         ChangerText = Instantiate(ChangerText, spawnTextPosition.position, spawnTextPosition.rotation, GameManager.Instance.transform.Find("DropTexts"));
