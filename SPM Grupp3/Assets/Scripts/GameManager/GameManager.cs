@@ -15,6 +15,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Text materialCounterUI;
     [SerializeField] private ParticleSystem moneyParticle;
     [SerializeField] private ParticleSystem materialParticle;
+    private Color moneyBaseColor;
+    private Color materialBaseColor;
+    [SerializeField] private GameObject SpendEffektPrefab;
 
     [NonSerialized] public Color Player1Color;
     [NonSerialized] public Color Player2Color;
@@ -65,6 +68,7 @@ public class GameManager : MonoBehaviour
 
     void Awake() 
     {
+
 
         EventHandler.RegisterListener<SaveGameEvent>(SaveGame);
         buildManager = FindObjectOfType<BuildManager>();
@@ -158,7 +162,12 @@ public class GameManager : MonoBehaviour
 
         canvas = UI.Canvas;
 
+        moneyBaseColor = moneyCounterUI.color;
+        materialBaseColor = materialCounterUI.color;
+
         UpdateUI();
+
+        
 
         victoryPanel.SetActive(false);
         defeatPanel.SetActive(false);
@@ -233,6 +242,7 @@ public class GameManager : MonoBehaviour
 
 
         }
+           
         UpdateUI();
     }
 
@@ -298,7 +308,6 @@ public class GameManager : MonoBehaviour
         {
             materialCounterUI.text = mat.ToString();
         }
-
     }
 
     public void AddMoney(float addMoney)
@@ -321,18 +330,67 @@ public class GameManager : MonoBehaviour
         UpdateUI();
     }
 
+    private IEnumerator currentMoneyCoroutine;
+    private IEnumerator currentMaterialCoroutine;
+
     public bool SpendResources(float moneySpent, float materialSpent)
     {
         if (moneySpent <= money && materialSpent <= material)
         {
-            money -= moneySpent;
-            material -= materialSpent;
+            if(moneySpent > 0)
+            {
+                money -= moneySpent;
 
+                if (currentMoneyCoroutine != null)
+                    StopCoroutine(currentMaterialCoroutine);
+
+                currentMoneyCoroutine = DoColorBoughtFade(moneyCounterUI, moneyBaseColor, 2f);
+
+                StartCoroutine(currentMoneyCoroutine);
+
+                SpendEffektPrefab.GetComponentInChildren<Text>().text = moneySpent.ToString();
+
+                Instantiate(SpendEffektPrefab, moneyCounterUI.transform);
+            }
+            
+            if(materialSpent > 0)
+            {
+                material -= materialSpent;
+
+                if (currentMaterialCoroutine != null)
+                    StopCoroutine(currentMaterialCoroutine);
+
+                currentMaterialCoroutine = DoColorBoughtFade(materialCounterUI, materialBaseColor, 2f);
+
+                StartCoroutine(currentMaterialCoroutine);
+
+                SpendEffektPrefab.GetComponentInChildren<Text>().text = materialSpent.ToString();
+
+                Instantiate(SpendEffektPrefab, materialCounterUI.transform);
+            }
+            
             UpdateUI();
             return true;
         }
         //Show Error
         return false;
+    }
+
+    private IEnumerator DoColorBoughtFade(Text textUI, Color toColor, float duration)
+    {
+        float counter = 0f;
+
+        textUI.color = Color.red;
+
+        yield return new WaitForSeconds(1f);
+
+        while (counter < duration)
+        {
+            counter += Time.deltaTime;
+            textUI.color = Color.Lerp(textUI.color, toColor, counter / duration);
+
+            yield return null;
+        }
     }
 
     public bool CheckIfEnoughResources(Tower tower)

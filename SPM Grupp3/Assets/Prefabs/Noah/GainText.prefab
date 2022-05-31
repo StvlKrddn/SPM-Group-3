@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5625524282222786139}
   - component: {fileID: 8995062961746653962}
   m_Layer: 0
-  m_Name: ChangerText
+  m_Name: GainText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -158,7 +158,7 @@ CanvasGroup:
   m_Enabled: 1
   m_Alpha: 1
   m_Interactable: 1
-  m_BlocksRaycasts: 1
+  m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
 --- !u!114 &161130895360111935
 MonoBehaviour:
@@ -193,7 +193,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 1
+  m_Text: 10
 --- !u!114 &3869302381386736268
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -206,9 +206,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15f282039718bbc42999755c0cfa01b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Duration: 0.6
+  duration: 0.4
   moveSpeed: 5
+  scaleMultiplier: 1
   destroyAfterFade: 1
+  faceCamera: 0
+  stationary: 0
 --- !u!1 &8943200749382906870
 GameObject:
   m_ObjectHideFlags: 0
