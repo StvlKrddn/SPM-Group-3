@@ -167,7 +167,7 @@ public abstract class EnemyController : MonoBehaviour
     {
         if (Spread)
         {
-            if (collision.gameObject.tag.Equals("Enemy"))
+            if (collision.gameObject.CompareTag("Enemy"))
             {
                 if (GetComponent<EnemyController>().PoisonTickTimers.Count != 0)
                 {
