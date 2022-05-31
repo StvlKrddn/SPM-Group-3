@@ -31,7 +31,7 @@ public abstract class TankUpgradeTree : MonoBehaviour
         gameManager = FindObjectOfType<GameManager>(); 
 	}
 
-	public abstract void UpgradeOne();
+    public virtual void UpgradeOne() {}
 
     public virtual void UpgradeTwo()
     {

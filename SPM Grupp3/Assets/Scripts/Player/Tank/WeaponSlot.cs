@@ -16,6 +16,7 @@ public class WeaponSlot : MonoBehaviour
     private bool allowedToShoot = true;
     [SerializeField] TankWeapon equippedWeapon;
 
+    [SerializeField] private GameObject turretMesh;
     [SerializeField] private float fireRate;
     [SerializeField] private float spread;
     [SerializeField] private float range;
@@ -168,5 +169,14 @@ public class WeaponSlot : MonoBehaviour
             Destroy(bullet);
         }
         bullets.Clear();
+    }
+
+    public void ChangeTurretMesh(GameObject mesh)
+    {
+        turretMesh.SetActive(false);
+        turretMesh = mesh;
+        turretMesh.SetActive(true);
+        BulletSpawner = turretMesh.transform.Find("BarrelEnd");
+        tank.TurretObject = mesh.transform;
     }
 }
