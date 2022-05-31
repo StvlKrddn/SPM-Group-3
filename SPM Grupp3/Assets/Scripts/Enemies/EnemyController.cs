@@ -16,6 +16,7 @@ public abstract class EnemyController : MonoBehaviour
     private MaterialHolder materialHolder;
     private Color moneyColor = new Color(255, 100, 0, 255);
     private Animator animator;
+    private float defaultAnimationSpeed;
     [SerializeField] private float health = 100f;
     [SerializeField] private float meleeDamage;
     [SerializeField] private Transform spawnTextPosition;
@@ -51,6 +52,7 @@ public abstract class EnemyController : MonoBehaviour
         if (GetComponent<Animator>())
         {
             animator = GetComponent<Animator>();
+            defaultAnimationSpeed = animator.speed;
         }
         wayPoints = Waypoints.instance.GetWaypoints();
         materialHolder = FindObjectOfType<MaterialHolder>();
@@ -167,6 +169,22 @@ public abstract class EnemyController : MonoBehaviour
         //Used for specific enemy
 		TakeDamage(damage);
 	}
+
+    public void HitBySlow(float slowProc)
+    {
+        if (animator != null)
+        {
+            animator.speed *= slowProc; 
+        }
+    }
+
+    public void ResetAnimator()
+    {
+        if (animator != null)
+        {
+            animator.speed = defaultAnimationSpeed;
+        }
+    }
 
     private void OnCollisionEnter(Collision collision)
     {

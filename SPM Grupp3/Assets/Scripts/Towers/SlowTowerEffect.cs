@@ -5,14 +5,14 @@ using UnityEngine;
 public class SlowTowerEffect : MonoBehaviour
 {
     private EnemyController enemy;
+    private float effectDuration = 3f;
 
 	public void HitBySlow(EnemyController enemy, float slowProc, float radius, bool areaOfEffect, bool stun)
     {
         this.enemy = enemy;
         if (!areaOfEffect)
         {
-            enemy.Speed *= slowProc;
-            StartCoroutine(SlowDuration(enemy));
+            SlowEnemy(enemy, slowProc);
         }
         else
         {
@@ -24,20 +24,25 @@ public class SlowTowerEffect : MonoBehaviour
                     EnemyController enemyController = enemyCollider.GetComponent<EnemyController>();
                     if (stun)
                     {
-                        enemyController.Speed = 0;
-                        StartCoroutine(SlowDuration(enemyController));
-                        return;
+                        slowProc = 0;
                     }
-                    enemyController.Speed *= slowProc;
-                    StartCoroutine(SlowDuration(enemyController));
+                    SlowEnemy(enemyController, slowProc);
                 }
             }
         }
     }
 
+    private void SlowEnemy(EnemyController enemyController, float slowProc)
+    {
+        enemyController.Speed *= slowProc;
+        enemyController.HitBySlow(slowProc);
+        StartCoroutine(SlowDuration(enemyController));
+    }
+
     private IEnumerator SlowDuration(EnemyController enemyController)
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(effectDuration);
         enemyController.Speed = enemyController.DefaultSpeed;
+        enemyController.ResetAnimator();
     }
 }
