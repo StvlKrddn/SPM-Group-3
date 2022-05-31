@@ -25,7 +25,7 @@ public class PoisonTower : Tower
 
     private float fireCountdown = 0f;
 
-    public float costForUpgrade;
+    [System.NonSerialized] public float CostForUpgrade;
 
     public float PoisonTicks { get { return poisonTicks; } set { poisonTicks = value; } }
     public float PoisonDamagePerTick { get { return poisonDamagePerTick; } set { poisonDamagePerTick = value; } }
@@ -37,16 +37,16 @@ public class PoisonTower : Tower
         switch (towerManager.GetUpgradesPurchased())
         {
             case 0:
-                costForUpgrade = level1Cost;
+                CostForUpgrade = level1Cost;
                 break;
             case 1:
-                costForUpgrade = level2Cost;
+                CostForUpgrade = level2Cost;
                 break;
             case 2:
-                costForUpgrade = level3Cost;
+                CostForUpgrade = level3Cost;
                 break;
         }
-        return costForUpgrade;
+        return CostForUpgrade;
     }
 
     void Start()

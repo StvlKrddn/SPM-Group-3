@@ -23,7 +23,7 @@ public class MissileTower : Tower
     private float shotsFired = 0;
     private bool shotAlready = false;
 
-    public float CostForUpgrade;
+    [System.NonSerialized] public float CostForUpgrade;
     public float ShotsFired { get { return shotsFired; } set { shotsFired = value; } }
     public float SplashRadius { get { return splashRadius; } set { splashRadius = value; } }
     public float SplashDamage { get { return splashDamage; } set { splashDamage = value; } }

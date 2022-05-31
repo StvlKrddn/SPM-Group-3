@@ -24,7 +24,7 @@ public class SlowTower : Tower
     private float currentShots = 0;
     private float fireCountdown = 0f;
 
-    public float CostForUpgrade;
+    [System.NonSerialized] public float CostForUpgrade;
 
     public float SlowProc { get { return slowProc; } set { slowProc = value; } }
     public float ShotsBeforeStun { get { return shotsBeforeStun; } set { shotsBeforeStun = value; } }
