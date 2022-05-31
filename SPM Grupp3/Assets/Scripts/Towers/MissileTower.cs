@@ -19,6 +19,9 @@ public class MissileTower : Tower
     [SerializeField] private float level2Cost;
     [SerializeField] private float level3Cost;
 
+    [Space]
+    [SerializeField] private Animator animator;
+
     private float fireCountdown = 0f;
     private float shotsFired = 0;
     private bool shotAlready = false;
@@ -60,6 +63,7 @@ public class MissileTower : Tower
 
         if (target != null)
         {
+            animator.SetTrigger("Shooting");
             if (CanYouShoot())
             {
                 Shoot();
@@ -170,18 +174,20 @@ public class MissileTower : Tower
 
     protected override void Level1(GameObject tower)
     {
-        tower.GetComponent<MissileTower>().splashRadius += amountUpgradeSplashRadius;
+        MissileTower missileTower = tower.GetComponent<MissileTower>();
+        missileTower.splashRadius += amountUpgradeSplashRadius;
+
+        GetVisualUpgrade(missileTower);
     }
 
     protected override void Level2(GameObject tower)
     {
         MissileTower missileTower = tower.GetComponent<MissileTower>();
 
-        GameObject towerUpgradeVisual1 = missileTower.transform.Find("Container").Find("Level1").gameObject;
-        GameObject towerUpgradeVisual2 = missileTower.transform.Find("Container").Find("Level2").gameObject;
 
-        towerUpgradeVisual1.SetActive(false);
-        towerUpgradeVisual2.SetActive(true);
+
+        level1Visual.SetActive(false);
+        level2Visual.SetActive(true);
 
         tower.GetComponent<MissileTower>().splashDamage += amountUpgradeSplashDamage;
     }

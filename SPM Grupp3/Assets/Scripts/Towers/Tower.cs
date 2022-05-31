@@ -24,6 +24,10 @@ public abstract class Tower : MonoBehaviour
     public float cost = 150f;
     public float materialCost;
 
+    protected GameObject level1Visual;
+    protected GameObject level2Visual;
+    protected GameObject level3Visual;
+
     protected List<GameObject> shots = new List<GameObject>();
     protected Transform target;
     protected Shot bullet;
@@ -32,6 +36,13 @@ public abstract class Tower : MonoBehaviour
     public abstract void HitTarget(GameObject hit, GameObject hitEffect);
     public abstract void ShowUpgradeUI(Transform towerMenu);
     public abstract float UpgradeCostUpdate();
+
+    protected virtual void GetVisualUpgrade(Tower tower)
+    {
+        level1Visual = tower.transform.Find("Container").Find("Level1").gameObject;
+        level2Visual = tower.transform.Find("Container").Find("Level2").gameObject;
+        level3Visual = tower.transform.Find("Container").Find("Level3").gameObject;
+    }
 
     public void LevelUpTower()
     {

@@ -170,11 +170,11 @@ public abstract class EnemyController : MonoBehaviour
 		TakeDamage(damage);
 	}
 
-    public void HitBySlow(float slowProc)
+    public void HitBySlow()
     {
         if (animator != null)
         {
-            animator.speed *= slowProc; 
+            animator.speed = Speed / DefaultSpeed; 
         }
     }
 

@@ -214,8 +214,9 @@ public class SlowTower : Tower
     }
 
     protected override void Level1(GameObject tower)
-    {
+    {       
         SlowTower slowTower = tower.GetComponent<SlowTower>();
+        GetVisualUpgrade(slowTower);
         slowTower.range += upgradeAmountSlowRadius;
         slowTower.Radius.transform.localScale = new Vector3(slowTower.range * 2f, 0.01f, slowTower.range * 2f);      
     }
@@ -224,11 +225,8 @@ public class SlowTower : Tower
     {
         SlowTower slowTower = tower.GetComponent<SlowTower>();
 
-        GameObject towerUpgradeVisual1 = slowTower.transform.Find("Container").Find("Level1").gameObject;
-        GameObject towerUpgradeVisual2 = slowTower.transform.Find("Container").Find("Level2").gameObject;
-
-        towerUpgradeVisual1.SetActive(false);
-        towerUpgradeVisual2.SetActive(true);
+        level1Visual.SetActive(false);
+        level2Visual.SetActive(true);
 
         slowTower.areaOfEffect = true;
         foreach (GameObject bullet in slowTower.shots)
@@ -245,10 +243,7 @@ public class SlowTower : Tower
 
         slowTower.StunActive = true;
 
-        GameObject towerUpgradeVisual1 = slowTower.transform.Find("Container").Find("Level2").gameObject;
-        GameObject towerUpgradeVisual2 = slowTower.transform.Find("Container").Find("Level3").gameObject;
-
-        towerUpgradeVisual1.SetActive(false);
-        towerUpgradeVisual2.SetActive(true);
+        level2Visual.SetActive(false);
+        level3Visual.SetActive(true);
     }
 } 
