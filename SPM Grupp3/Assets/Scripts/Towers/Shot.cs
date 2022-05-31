@@ -23,11 +23,6 @@ public class Shot : MonoBehaviour
 
     private void Start()
     {
-        cannonTower = tower.GetComponent<CannonTower>();
-        missileTower = tower.GetComponent<MissileTower>();
-        slowTower = tower.GetComponent<SlowTower>();
-        poisonTower = tower.GetComponent<PoisonTower>();
-
         splashTowerEffect = GetComponent<SplashTowerEffect>();
         poisonTowerEffect = GetComponent<PoisonTowerEffect>();
         slowTowerEffect = GetComponent<SlowTowerEffect>();
@@ -78,14 +73,16 @@ public class Shot : MonoBehaviour
     // Men jag har nu �ndrat s� att varje skott sj�lv best�mmer vilken effekt den ska ha.
 
     public void DecideTypeOfShot(string towerType)
-    {      
+    {
         switch (towerType)
         {
-            case "Cannon":               
+            case "Cannon":
+                cannonTower = tower.GetComponent<CannonTower>();
                 enemy.TakeDamage(cannonTower.ShotDamage);
 
                 break;
             case "Missile":
+                missileTower = tower.GetComponent<MissileTower>();
                 if (missileTower.ThirdShot && missileTower.ShotsFired % 3 == 0)
                 {
                     splashTowerEffect.HitBySplash(missileTower.SplashRadius, missileTower.SplashDamage * 2);
@@ -99,10 +96,12 @@ public class Shot : MonoBehaviour
 
                 break;
             case "Slow":
+                slowTower = tower.GetComponent<SlowTower>();
                 slowTowerEffect.HitBySlow(enemy, slowTower.SlowProc, slowTower.range, slowTower.AreaOfEffect, false);
 
                 break;
             case "Poison":
+                poisonTower = tower.GetComponent<PoisonTower>();
                 poisonTowerEffect.HitByPoison(poisonTower.PoisonTicks, poisonTower.OnHitEffect, poisonTower.PoisonDamagePerTick, poisonTower.MaxHealthPerTick, poisonTower.range);
 
                 break;

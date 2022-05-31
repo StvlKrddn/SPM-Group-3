@@ -161,4 +161,19 @@ public abstract class EnemyController : MonoBehaviour
         //Used for specific enemy
 		TakeDamage(damage);
 	}
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (Spread)
+        {
+            if (collision.gameObject.tag.Equals("Enemy"))
+            {
+                if (GetComponent<EnemyController>().PoisonTickTimers.Count != 0)
+                {
+                    collision.gameObject.GetComponent<EnemyController>
+                }
+            }
+        }
+        
+    }
 }
