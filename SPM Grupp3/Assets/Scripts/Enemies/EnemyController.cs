@@ -15,6 +15,7 @@ public abstract class EnemyController : MonoBehaviour
     private bool dead = false;
     private MaterialHolder materialHolder;
     private Color moneyColor = new Color(255, 100, 0, 255);
+    private Animator animator;
     [SerializeField] private float health = 100f;
     [SerializeField] private float meleeDamage;
     [SerializeField] private Transform spawnTextPosition;
@@ -47,6 +48,10 @@ public abstract class EnemyController : MonoBehaviour
         healthBar = GetComponentInChildren<HealthBar>();
         healthBar.slider.maxValue = health;
         healthBar.slider.value = health;
+        if (GetComponent<Animator>())
+        {
+            animator = GetComponent<Animator>();
+        }
         wayPoints = Waypoints.instance.GetWaypoints();
         materialHolder = FindObjectOfType<MaterialHolder>();
         ChangerText.GetComponentInChildren<Text>().text = MoneyDrop.ToString();
