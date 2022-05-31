@@ -163,7 +163,7 @@ public class WeaponSlot : MonoBehaviour
 
     public void MaxRange()
     {
-        range = 1000;
+        range = 100;
         penetrating = true;
     }
 
