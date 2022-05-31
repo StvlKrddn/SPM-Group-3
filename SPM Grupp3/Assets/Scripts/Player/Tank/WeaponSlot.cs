@@ -25,6 +25,7 @@ public class WeaponSlot : MonoBehaviour
     [SerializeField] private float damage;
     [Space]
     [SerializeField] private GameObject muzzleFlash;
+    private Animator animator;
 
     public Transform BulletSpawner;
 
@@ -81,9 +82,22 @@ public class WeaponSlot : MonoBehaviour
 
 	void Update()
     {
+
+        if (shootAction.IsPressed() && animator != null)
+        {
+
+            animator.SetBool("Shoot", true);
+        }
+        else if (animator != null)
+        {
+            animator.SetBool("Shoot", false);
+        }
+
+       
         if (shootAction.IsPressed() && allowedToShoot)
         {
             StartCoroutine(Shoot());
+            
         }
     }
 
@@ -178,5 +192,14 @@ public class WeaponSlot : MonoBehaviour
         turretMesh.SetActive(true);
         BulletSpawner = turretMesh.transform.Find("BarrelEnd");
         tank.TurretObject = mesh.transform;
+
+        if (GetComponent<FireTank>().level1Mesh != null)
+        {
+            animator = GetComponent<FireTank>().level1Mesh.GetComponentInChildren<Animator>();
+        }
+        else
+        {
+            animator = null;
+        }
     }
 }

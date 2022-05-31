@@ -51,12 +51,16 @@ public class UI : MonoBehaviour
     {
         if (!IsPaused)
         {
+
+            print(MusicManager.instance);
+            MusicManager.instance.SetMusicPLay(false);
             Time.timeScale = 0f;
             pauseMenu.SetActive(true);
             IsPaused = true;
         }
         else
         {
+            MusicManager.instance.SetMusicPLay(true);
             Resume();
         }
         
