@@ -50,7 +50,7 @@ public class MissileTower : Tower
     void Start()
     {
         Radius.transform.localScale = new Vector3(range * 2f, 0.01f, range * 2f);
-        InvokeRepeating("UpdateTarget", 0f, 0.5f);
+        InvokeRepeating("UpdateTarget", 0f, 0.2f);
     }
 
     // Update is called once per frame

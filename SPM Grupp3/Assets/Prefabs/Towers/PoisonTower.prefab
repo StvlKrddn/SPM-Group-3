@@ -211,7 +211,7 @@ MonoBehaviour:
   shot: {fileID: 3201376968240350041, guid: 7e4902a1dd3b3484280a32e92534c4c7, type: 3}
   firePoint: {fileID: 2543076756762422033}
   Radius: {fileID: 2543076757610419390}
-  OnHitEffect: {fileID: 5202362185975563897, guid: afc452a4019ab8b47ac2ea888849a086, type: 3}
+  OnHitEffect: {fileID: 6062907644201011195, guid: 0bdcc3aa4ab50af46ab88c1eeecdcf4a, type: 3}
   TowerPlacement: {fileID: 9019748245944013588, guid: 4120c1f7b8f71e94aaf34696a5c7cadc, type: 3}
   shotDamage: 0
   fireRate: 1
@@ -230,7 +230,6 @@ MonoBehaviour:
   level1Cost: 1000
   level2Cost: 1200
   level3Cost: 2000
-  costForUpgrade: 0
 --- !u!114 &-5378784217089051976
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -243,6 +242,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb8f803b177c97643a14172379964892, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  poisonTower: {fileID: 0}
 --- !u!1 &2543076757610419390
 GameObject:
   m_ObjectHideFlags: 0

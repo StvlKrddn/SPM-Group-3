@@ -7,7 +7,6 @@ public class Shot : MonoBehaviour
     private Tower tower;
     private Vector3 direction;
     private float distanceThisFrame;
-    private EnemyController enemy;
     private CannonTower cannonTower;
     private MissileTower missileTower;
     private SlowTower slowTower;
@@ -20,18 +19,20 @@ public class Shot : MonoBehaviour
     public float shotSpeed = 1f;
     public Transform target;
 
+    protected EnemyController enemy;
 
     private void Start()
     {
         splashTowerEffect = GetComponent<SplashTowerEffect>();
         poisonTowerEffect = GetComponent<PoisonTowerEffect>();
         slowTowerEffect = GetComponent<SlowTowerEffect>();
-
-        enemy = target.GetComponent<EnemyController>();
     }
+
     public void Seek(Transform _target)
     {       
         target = _target;
+
+        enemy = target.GetComponent<EnemyController>();
     }
 
     // Update is called once per frame
@@ -74,6 +75,7 @@ public class Shot : MonoBehaviour
 
     public void DecideTypeOfShot(string towerType)
     {
+        print(enemy);
         switch (towerType)
         {
             case "Cannon":
