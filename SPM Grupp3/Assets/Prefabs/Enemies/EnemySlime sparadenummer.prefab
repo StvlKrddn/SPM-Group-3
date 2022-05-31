@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 5940178821907547971}
   - component: {fileID: 5961557097805868708}
   m_Layer: 7
-  m_Name: EnemySlime
+  m_Name: EnemySlime sparadenummer
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -126,8 +126,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.25, y: 4, z: 2.5823197}
-  m_Center: {x: 0.0047612786, y: 1.5, z: -0.28475618}
+  m_Size: {x: 0.7576493, y: 1, z: 2.5823197}
+  m_Center: {x: 0.0047612786, y: 0, z: -0.28475624}
 --- !u!114 &5961557097805868708
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -140,26 +140,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2972d638bc5665943b947e47bfcf7e4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 2.5
   health: 10
+  deathEffect: {fileID: 274874695124712471, guid: 9a064edc7c8ce434295d8099b1660d81, type: 3}
   meleeDamage: 5
-<<<<<<< HEAD
-=======
   damageBase: 10
   moneyDrop: 10
   materialDrop: 1
   spread: 0
   path: 0
   changerText: {fileID: 5205185240933545452, guid: c8312052f47b6734d88b2abb7ec0cd2b, type: 3}
->>>>>>> Branch-for-speltest
   spawnTextPosition: {fileID: 3659869939529643269}
-  Speed: 10
-  DeathEffect: {fileID: 274874695124712471, guid: 9a064edc7c8ce434295d8099b1660d81, type: 3}
-  DamageBase: 10
-  MoneyDrop: 10
-  MaterialDrop: 0
-  Path: 0
-  Spread: 0
-  ChangerText: {fileID: 5205185240933545452, guid: c8312052f47b6734d88b2abb7ec0cd2b, type: 3}
 --- !u!1001 &3437361334157506105
 PrefabInstance:
   m_ObjectHideFlags: 0
