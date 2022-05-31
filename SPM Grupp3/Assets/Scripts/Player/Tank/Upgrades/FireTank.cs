@@ -6,8 +6,8 @@ public class FireTank : TankUpgradeTree
 {
 	[SerializeField] private float fireRate = 0.2f;
 	[SerializeField] private GameObject grenade;
-	[SerializeField] private GameObject level1Mesh;
 	[SerializeField] private GameObject level2Mesh;
+	public GameObject level1Mesh;
 
 	public override void UpgradeOne()
 	{

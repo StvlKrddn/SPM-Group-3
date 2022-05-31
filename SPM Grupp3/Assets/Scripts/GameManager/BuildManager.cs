@@ -11,11 +11,13 @@ public class BuildManager : MonoBehaviour
     private GameObject towerToBuild;
     private GameObject clickedArea;
     private Tower tower;
+    [SerializeField] private AudioClip buildSound;
 
     public GameObject CannonTowerPrefab;
     public GameObject MissileTowerPrefab;
     public GameObject SlowTowerPrefab;
     public GameObject PoisonTowerPrefab;
+
 
     public GameObject TowerToBuild { get { return towerToBuild; } set { towerToBuild = value; } }
     public GameObject ClickedArea { get { return clickedArea; } set { clickedArea = value; } }
@@ -78,6 +80,8 @@ public class BuildManager : MonoBehaviour
         towerScript.TowerPlacement = placement;
 
         PlacedTower placedTower = new PlacedTower(newTower, towerScript.TowerPlacement, level);
+
+        EventHandler.InvokeEvent(new PlaySoundEvent("Playing a sound when buying tower", buildSound));
 
         // Måste vara GameManager.Instance då BuildTower ibland körs innan Start
         gameManager.AddPlacedTower(placedTower);
