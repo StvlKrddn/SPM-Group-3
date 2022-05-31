@@ -57,7 +57,7 @@ public class BulletBehavior : MonoBehaviour
 
         if (relativePosition.magnitude < range)
         {
-            transform.position += transform.forward * bulletSpeed * Time.deltaTime;
+            transform.position += bulletSpeed * Time.deltaTime * transform.forward;
         }
         else
         {
