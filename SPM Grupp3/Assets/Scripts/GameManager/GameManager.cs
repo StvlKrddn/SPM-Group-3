@@ -113,10 +113,7 @@ public class GameManager : MonoBehaviour
 
     private void LoadCustomizationData()
     {
-        CustomizationData customData = (CustomizationData) DataManager.ReadFromFile(DataManager.CustomizationData);
-
-        Player1Color = customData.player1Color;
-        Player2Color = customData.player2Color;
+        
     }
 
     private void FixUpgradeDelay(GameObject tank)
@@ -263,12 +260,6 @@ public class GameManager : MonoBehaviour
             UpgradeController.currentUpgradeLevel
         );
         DataManager.WriteToFile(saveData, DataManager.SaveData);
-
-        CustomizationData customData = new CustomizationData(
-            Player1Color,
-            Player2Color
-        );
-        DataManager.WriteToFile(customData, DataManager.CustomizationData);
     }
 
     public void TakeDamage(float damage, GameObject enemy)

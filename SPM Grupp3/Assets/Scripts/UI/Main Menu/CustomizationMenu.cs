@@ -7,12 +7,18 @@ public class CustomizationMenu : MonoBehaviour
 {
     [SerializeField] private Slider[] colorSliders;
     [SerializeField] private GameObject tankBody;
+    [SerializeField] private GameObject hat;
+    [SerializeField] private CustomizationManager customizationManager;
 
     private Material defaultTankMaterial;
-    private Color newColor;
+    private Material defaultHatMaterial;
     private Slider currentSlider;
     private Material newTankMaterial;
+    private Material newHatMaterial;
     private Renderer tankRenderer;
+    private Renderer hatRenderer;
+    
+    public Color newColor;
 
     void Start()
     {
@@ -21,6 +27,12 @@ public class CustomizationMenu : MonoBehaviour
         newTankMaterial = new Material(defaultTankMaterial.shader);
         newTankMaterial.CopyPropertiesFromMaterial(defaultTankMaterial);
         tankRenderer.material = newTankMaterial;
+
+        hatRenderer = hat.GetComponent<Renderer>();
+        defaultHatMaterial = hatRenderer.material;
+        newHatMaterial = new Material(defaultHatMaterial.shader);
+        newHatMaterial.CopyPropertiesFromMaterial(defaultHatMaterial);
+        hatRenderer.material = newHatMaterial;
     }
 
     void OnDestroy() 
@@ -29,12 +41,17 @@ public class CustomizationMenu : MonoBehaviour
         {
             tankRenderer.material = defaultTankMaterial;
         }
+        if (hatRenderer != null)
+        {
+            hatRenderer.material = defaultHatMaterial;
+        }
     }
 
     void Update()
     {
         newColor = new Color(colorSliders[0].value, colorSliders[1].value, colorSliders[2].value);
         newTankMaterial.color = newColor;
+        newHatMaterial.color = newColor;
     }
 
     public void ChangeValue(Text valueText)
@@ -53,9 +70,8 @@ public class CustomizationMenu : MonoBehaviour
     {
         CustomizationData customData = new CustomizationData(
             newColor,
-            newColor
+            false
         );
-        DataManager.WriteToFile(customData, DataManager.CustomizationData);
-        print("Customization saved!");
+        customizationManager.CustomizationData.Add(customData);
     }
 }
