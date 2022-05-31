@@ -9,6 +9,9 @@ public class MusicManager : MonoBehaviour
     private AudioSource audioSource;
     private Slider musicSlider;
 
+
+    
+
     public Slider MusicSlider { get { return musicSlider; } set { musicSlider = value; } }
     private void Start()
     {
@@ -18,6 +21,20 @@ public class MusicManager : MonoBehaviour
         }
         
         audioSource = transform.GetComponent<AudioSource>();
+    }
+
+
+    public void SetMusicPLay(bool state)
+    {
+       // audioSource.Stop();
+        if(state)
+        {
+            audioSource.UnPause();
+        }
+        if(!state)
+        {
+            audioSource.Pause();
+        }
     }
 
     public void SetMusicVolume()
