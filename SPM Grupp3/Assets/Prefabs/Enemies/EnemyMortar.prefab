@@ -110,19 +110,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6145e6b6d2ee97a448139c5e1e820185, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 7
   health: 30
-  deathEffect: {fileID: 274874695124712471, guid: 9a064edc7c8ce434295d8099b1660d81, type: 3}
   meleeDamage: 0
-  damageBase: 10
-  moneyDrop: 1
-  materialDrop: 0
-  spread: 0
-  path: 0
-  changerText: {fileID: 5205185240933545452, guid: c8312052f47b6734d88b2abb7ec0cd2b, type: 3}
   spawnTextPosition: {fileID: 5635171980907730547}
+  Speed: 10
+  DeathEffect: {fileID: 274874695124712471, guid: 9a064edc7c8ce434295d8099b1660d81, type: 3}
+  DamageBase: 10
+  MoneyDrop: 10
+  MaterialDrop: 0
+  Path: 0
+  Spread: 0
+  ChangerText: {fileID: 5205185240933545452, guid: c8312052f47b6734d88b2abb7ec0cd2b, type: 3}
   timer: 2
-  cd: 5
+  cooldown: 5
   mortarRigidbody: {fileID: 454385145843477572, guid: 5db1957be983ffb44897d984b5942274, type: 3}
 --- !u!1 &8375064257352583861
 GameObject:

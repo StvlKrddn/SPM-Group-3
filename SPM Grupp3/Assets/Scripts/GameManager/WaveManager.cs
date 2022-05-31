@@ -136,11 +136,9 @@ public class WaveManager : MonoBehaviour
         {
             n--;
             int k = UnityEngine.Random.Range(0, n + 1);
-            GameObject value = list[k];
-            list[k] = list[n];
-            list[n] = value;
-        }
-    }
+			(list[n], list[k]) = (list[k], list[n]);
+		}
+	}
 
     private IEnumerator ClearInactive()
     {
