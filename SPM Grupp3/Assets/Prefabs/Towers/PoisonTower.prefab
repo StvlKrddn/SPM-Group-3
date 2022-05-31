@@ -205,18 +205,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58c48bdc9ae22e644902a6f96ee7fe15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fadeBehaviour: {fileID: 4415319733659965633}
   enemyTag: Enemy
   turnSpeed: 10
   shot: {fileID: 3201376968240350041, guid: 7e4902a1dd3b3484280a32e92534c4c7, type: 3}
   firePoint: {fileID: 2543076756762422033}
-  radius: {fileID: 2543076757610419390}
-  onHitEffect: {fileID: 6062907644201011195, guid: 0bdcc3aa4ab50af46ab88c1eeecdcf4a, type: 3}
-  tower: {fileID: 2543076757521757243}
-  towerPlacement: {fileID: 0}
-  fadeBehaviour: {fileID: 4415319733659965633}
-  range: 6
-  fireRate: 1
+  Radius: {fileID: 2543076757610419390}
+  OnHitEffect: {fileID: 0}
+  TowerPlacement: {fileID: 0}
   shotDamage: 0
+  fireRate: 1
+  range: 6
   cost: 2100
   materialCost: 0
   poisonTicks: 4

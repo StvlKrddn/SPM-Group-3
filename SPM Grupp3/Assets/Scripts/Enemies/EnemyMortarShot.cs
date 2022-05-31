@@ -25,6 +25,10 @@ public class EnemyMortarShot : MonoBehaviour
         phase = 1;
     }
 
+	private void OnDestroy()
+	{
+        Destroy(radius);
+    }
 
 	// Update is called once per frame
 	void Update()
@@ -61,7 +65,7 @@ public class EnemyMortarShot : MonoBehaviour
                 target = tempVector;
 
 
-                if (radius.transform.parent != null)
+                if (radius.transform.parent == true)
                 {
                     Shot();
                 }
@@ -79,7 +83,7 @@ public class EnemyMortarShot : MonoBehaviour
         radius.SetActive(true);
         transform.position = new Vector3(target.x, transform.position.y + 10, target.z);
         radius.transform.position = new Vector3(target.x, target.y, target.z);
-        if (radius.transform.parent != null)
+        if (radius.transform.parent)
         {
             radius.transform.parent = null;
         }
