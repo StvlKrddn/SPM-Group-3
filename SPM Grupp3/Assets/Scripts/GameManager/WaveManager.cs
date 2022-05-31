@@ -279,6 +279,37 @@ public class WaveManager : MonoBehaviour
         }
     }
 
+    [ContextMenu("Calculate amount of enemies")]
+    public void CalculateAmountOfEnemies()
+    {   int totalenemies = 0; 
+        for (int i = 0; i < waves.Length; i++)
+        {
+            WaveInfo waveInfo = waves[i];
+            waveInfo.waveDuration = 0;
+            int temp = 0;
+            for (int j = 0; j < waveInfo.subWaves.Length; j++)
+            {
+                SubWave subwave = waveInfo.subWaves[j];
+                for (int k = 0; k < subwave.enemies.Length; k++)
+                {
+                    EnemyStruct enemy = subwave.enemies[k];
+
+                    temp += enemy.amount;
+
+                    totalenemies+= enemy.amount;
+
+
+                }
+            }
+           print("Wave " + (i + 1) + " is " + temp + "enemies");
+
+           // print(temp);
+        }
+
+        print("Totala antalet fiender " +totalenemies);
+    }
+
+
     public GameObject GetPooledEnemy(GameObject enemy)
     {
         for (int i = 0; i < poolOfEnemies.Count; i++)

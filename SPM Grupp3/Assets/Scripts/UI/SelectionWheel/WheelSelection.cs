@@ -263,9 +263,9 @@ public class WheelSelection : MonoBehaviour
                 }
                 else
                 {
-                    upgradeLevel1Text.color = Color.white;
-                    upgradeLevel2Text.color = Color.white;
-                    upgradeLevel3Text.color = Color.white;
+                //    upgradeLevel1Text.color = Color.white;
+                //    upgradeLevel2Text.color = Color.white;
+                //    upgradeLevel3Text.color = Color.white;
                 }
             }
         }
