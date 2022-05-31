@@ -18,6 +18,7 @@ public abstract class EnemyController : MonoBehaviour
     [SerializeField] private float health = 100f;
     [SerializeField] private float meleeDamage;
     [SerializeField] private Transform spawnTextPosition;
+    [SerializeField] private PoisonTowerEffect poisonTowerEffect;
 
     protected int currentWaypointIndex = 0;
     protected List<Transform[]> wayPoints;
@@ -170,7 +171,8 @@ public abstract class EnemyController : MonoBehaviour
             {
                 if (GetComponent<EnemyController>().PoisonTickTimers.Count != 0)
                 {
-                    collision.gameObject.GetComponent<EnemyController>
+                    PoisonTower poisonTower = poisonTowerEffect.poisonTower.GetComponent<PoisonTower>();
+                    poisonTowerEffect.HitByPoison(poisonTower.PoisonTicks, poisonTower.OnHitEffect, poisonTower.PoisonDamagePerTick, poisonTower.MaxHealthPerTick, 0);
                 }
             }
         }

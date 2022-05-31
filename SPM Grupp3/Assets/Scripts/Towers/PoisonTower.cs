@@ -75,7 +75,12 @@ public class PoisonTower : Tower
             GameObject effectInstance = Instantiate(hitEffect, enemyTarget.transform.position, enemyTarget.transform.rotation);
 
             Destroy(effectInstance, 1f);
+            if (poisonSpread)
+            {
+                enemyTarget.Spread = true;
+            }
             bullet.DecideTypeOfShot("Poison");
+
         }
     }
 
