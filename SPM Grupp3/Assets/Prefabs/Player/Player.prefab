@@ -10105,11 +10105,11 @@ MonoBehaviour:
   - {fileID: 3688929835740726135}
   - {fileID: 4005078373874826775}
   - {fileID: 7072925918001228257}
-  levelOfTank: 0
-  tankUpgradeTree: {fileID: 0}
+  LevelOfTank: 0
   tankUpgradeTreeOne: {fileID: 3141392934154749895}
   tankUpgradeTreeTwo: {fileID: 3141392934154749894}
   healthBar: {fileID: 0}
+  tankUpgradeTree: {fileID: 0}
 --- !u!114 &3141392934154749890
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10130,7 +10130,7 @@ MonoBehaviour:
   penetrating: 0
   damage: 0
   muzzleFlash: {fileID: 1268366978346221888, guid: b8d1f44446d216c40b96f4b48e372d2a, type: 3}
-  bulletSpawner: {fileID: 513951308009687257}
+  BulletSpawner: {fileID: 0}
 --- !u!114 &3141392934154749889
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10143,6 +10143,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f615dcb75a8e914b8e7101164f82b13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  boostAccelerationTimeMultiplier: 8
   boostSpeedMultiplier: 3
   boostDuration: 1
   boostCooldownTime: 5
@@ -30109,6 +30110,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2697500436050090156, guid: af7fb75393c3564438c968c5094cf341, type: 3}
       propertyPath: m_PresetInfoIsWorld
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2697500436966083812, guid: af7fb75393c3564438c968c5094cf341, type: 3}
+      propertyPath: m_FillAmount
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2697500436966083813, guid: af7fb75393c3564438c968c5094cf341, type: 3}

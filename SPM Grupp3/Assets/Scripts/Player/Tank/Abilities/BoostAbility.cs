@@ -23,6 +23,7 @@ public class BoostAbility : MonoBehaviour
     [SerializeField] private GameObject boosters;
     [SerializeField] private Animator animator;
     [SerializeField] private GameObject boostUI;
+    private FadeBehaviour fadeBehaviour;
     
     // Getters and setters
     public float BoostSpeedMultiplier { get { return boostSpeedMultiplier; } set { boostSpeedMultiplier = value; } }
@@ -35,6 +36,7 @@ public class BoostAbility : MonoBehaviour
         slider = boostUI.GetComponent<Slider>();
         slider.value = 0.5f;
         boostAction = tankState.PlayerInput.actions["Boost"];
+        fadeBehaviour = boostUI.GetComponent<FadeBehaviour>();
         ChangeSpeed();
     }
 
@@ -95,9 +97,9 @@ public class BoostAbility : MonoBehaviour
             animator.SetBool("isBoosting", false);
         }
 
-        if(notInUseTimer > BoostCooldownTime && !boostUI.GetComponent<FadeBehaviour>().Faded())
+        if(notInUseTimer > BoostCooldownTime && !fadeBehaviour.Faded())
         {
-            boostUI.GetComponent<FadeBehaviour>().Fade();
+            fadeBehaviour.Fade();
         }
     }
 
@@ -107,8 +109,8 @@ public class BoostAbility : MonoBehaviour
 
         float elapsed = 0f;
 
-        if(boostUI.GetComponent<FadeBehaviour>().Faded())
-            boostUI.GetComponent<FadeBehaviour>().Fade();
+        if(fadeBehaviour.Faded())
+            fadeBehaviour.Fade();
 
         while (elapsed < boostDuration)
         {

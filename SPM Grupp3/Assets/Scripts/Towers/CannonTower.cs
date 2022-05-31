@@ -19,7 +19,7 @@ public class CannonTower : Tower
 
     private float fireCountdown = 0f;
 
-    public float CostForUpgrade;
+    [System.NonSerialized] public float CostForUpgrade;
     public float FireRate { get { return fireRate; } set { fireRate = value; } }
 
     // Start is called before the first frame update
