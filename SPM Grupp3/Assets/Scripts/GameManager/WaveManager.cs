@@ -153,7 +153,6 @@ public class WaveManager : MonoBehaviour
             }
             else if (poolOfEnemies.Count < poolCount)
             {
-                print("Head out");
                 break;
             }
         }
