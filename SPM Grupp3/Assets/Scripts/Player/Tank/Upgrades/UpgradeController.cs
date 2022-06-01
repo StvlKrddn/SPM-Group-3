@@ -7,7 +7,7 @@ public class UpgradeController : MonoBehaviour
 {
     private static UpgradeController instance;
     [SerializeField] private int moneyCost = 500;
-    [SerializeField] private int materialCost = 0;
+    public int materialCost = 0;
 
     public static int currentUpgradeLevel = 0;
 

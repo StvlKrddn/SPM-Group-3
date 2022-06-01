@@ -250,6 +250,10 @@ public class WheelSelection : MonoBehaviour
                     {
                         UpgradeHighlighted(moneyText, materialText);
                     }
+                    else if (gameObject.name.Equals("TankPanel"))
+                    {
+                        GarageHighlight(materialText);
+                    }
                 }
                 
                 if (MenuItems[i].name.Equals("Upgrade"))
@@ -360,6 +364,20 @@ public class WheelSelection : MonoBehaviour
 
         moneyText.text = tower.UpgradeCostUpdate().ToString();
         materialText.text = tower.materialCost.ToString();
+    }
+
+    void GarageHighlight(Text materialText)
+    {
+        float material = gM.Material;
+
+        if (material < UpgradeController.Instance.materialCost)
+        {
+            materialText.color = Color.red;
+        }
+        else
+        {
+            materialText.color = Color.black;
+        }
     }
 
     public void DecideTowerToBuild(string name)
