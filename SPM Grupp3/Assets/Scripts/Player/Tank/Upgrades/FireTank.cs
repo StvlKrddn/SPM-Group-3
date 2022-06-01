@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class FireTank : TankUpgradeTree
 {
-	[SerializeField] private float fireRate = 0.2f;
-	[SerializeField] private GameObject grenade;
-	[SerializeField] private GameObject level2Mesh;
+	[Space]
+	[SerializeField] private float fireRate;
+	[Space]
 	public GameObject level1Mesh;
+	[SerializeField] private GameObject level2Mesh;
+	[SerializeField] private GameObject grenade;
 
 	public override void UpgradeOne()
 	{
