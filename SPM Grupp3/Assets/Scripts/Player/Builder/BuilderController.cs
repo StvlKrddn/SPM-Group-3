@@ -165,9 +165,13 @@ public class BuilderController : MonoBehaviour
         cursor.ToggleClick(isPressed);
         if (isPressed)
         {
-            ClickedPlacement();
             ClickedTower();
             ClickedGarage();
+            if (!stopMouse)
+            {
+                ClickedPlacement();
+            }
+            
             EventHandler.InvokeEvent(new UIClickedEvent(
                 description: "Accept button clicked",
                 clicker: transform.parent.gameObject
