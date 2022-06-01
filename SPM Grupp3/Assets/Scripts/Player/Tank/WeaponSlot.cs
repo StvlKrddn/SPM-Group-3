@@ -81,23 +81,22 @@ public class WeaponSlot : MonoBehaviour
     }
 
 	void Update()
-    {
-
-        if (shootAction.IsPressed() && animator != null)
+    {  
+        if (shootAction.IsPressed())
         {
+            if (allowedToShoot == true)
+            {
+                StartCoroutine(Shoot());   
+            }
 
-            animator.SetBool("Shoot", true);
+            if (animator != null && animator.isActiveAndEnabled)
+            {
+                animator.SetBool("Shoot", true);
+            }
         }
-        else if (animator != null)
+        else if (animator != null && animator.isActiveAndEnabled)
         {
             animator.SetBool("Shoot", false);
-        }
-
-       
-        if (shootAction.IsPressed() && allowedToShoot)
-        {
-            StartCoroutine(Shoot());
-            
         }
     }
 
@@ -199,6 +198,7 @@ public class WeaponSlot : MonoBehaviour
         }
         else
         {
+            animator.SetBool("Shoot", false);
             animator = null;
         }
     }

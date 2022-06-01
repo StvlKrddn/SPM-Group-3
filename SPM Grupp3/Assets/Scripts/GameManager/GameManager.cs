@@ -116,10 +116,15 @@ public class GameManager : MonoBehaviour
         
     }
 
-    private void FixUpgradeDelay(GameObject tank)
+    private void FixUpgradeDelay()
     {
         UpgradeController.Instance.FixUpgrades(FindObjectOfType<TankState>().gameObject);
-        UpgradeController.Instance.FixUpgrades(tank);
+        Outline[] outlines = FindObjectsOfType<Outline>(true);
+        foreach (Outline outline in outlines)
+        {
+            print("pls fix");
+            outline.Awake();
+        }
     }
 
     private void LoadBase()
@@ -332,8 +337,10 @@ public class GameManager : MonoBehaviour
             {
                 money -= moneySpent;
 
+                /*
                 if (currentMoneyCoroutine != null)
                     StopCoroutine(currentMaterialCoroutine);
+                */
 
                 currentMoneyCoroutine = DoColorBoughtFade(moneyCounterUI, moneyBaseColor, 2f);
 
@@ -348,8 +355,10 @@ public class GameManager : MonoBehaviour
             {
                 material -= materialSpent;
 
+                /*
                 if (currentMaterialCoroutine != null)
                     StopCoroutine(currentMaterialCoroutine);
+                */
 
                 currentMaterialCoroutine = DoColorBoughtFade(materialCounterUI, materialBaseColor, 2f);
 
