@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public abstract class TankUpgradeTree : MonoBehaviour
 {
@@ -15,6 +16,10 @@ public abstract class TankUpgradeTree : MonoBehaviour
     [SerializeField] protected float abilityCD;
     [SerializeField] protected bool abilityReady = false;
 
+    private GameObject abilityUi;
+    private Slider slider;
+    private float notInUseTimer;
+
 
     private void OnEnable()
     {
@@ -24,12 +29,28 @@ public abstract class TankUpgradeTree : MonoBehaviour
         }
     }
 
+
+
     protected virtual void Start()
 	{   
         tankState = GetComponent<TankState>();
         weapon = GetComponent<WeaponSlot>();
-        gameManager = FindObjectOfType<GameManager>(); 
-	}
+        gameManager = FindObjectOfType<GameManager>();
+        abilityUi = gameObject.transform.Find("AbilityUI").gameObject;
+        slider = abilityUi.GetComponent<Slider>();
+	}    
+    
+    private void Update()
+    {
+        if (notInUseTimer > abilityCD + 1f && !abilityUi.GetComponent<FadeBehaviour>().Faded())
+        {
+            abilityUi.GetComponent<FadeBehaviour>().Fade();
+        }
+        else
+        {
+            notInUseTimer += Time.deltaTime;
+        }
+    }
 
     public virtual void UpgradeOne() {}
 
@@ -48,6 +69,8 @@ public abstract class TankUpgradeTree : MonoBehaviour
         if (abilityReady == true)
         {
             abilityReady = false;
+            notInUseTimer = 0;
+            StartCoroutine(UseAbilityBar());
             StartCoroutine(ResetAbility());
             return true;
         }
@@ -60,9 +83,44 @@ public abstract class TankUpgradeTree : MonoBehaviour
         abilityReady = true;
     }
 
+    private IEnumerator UseAbilityBar()
+    {
+        float abilityDuration = 1f;
+
+        float elapsed = 0f;
+
+        if (abilityUi.GetComponent<FadeBehaviour>().Faded())
+            abilityUi.GetComponent<FadeBehaviour>().Fade();
+
+        while (elapsed < abilityDuration)
+        {
+            elapsed += Time.deltaTime;
+
+            // preChangePct is start value and the goal is pct. elapsed / updateSpeedSeconds is the equation per activation
+            slider.value = Mathf.Lerp(1f, 0, elapsed / abilityDuration);
+            yield return null;
+        }
+
+        slider.value = 0f;
+
+        float coolDown = abilityCD - abilityDuration;
+
+        elapsed = 0f;
+
+        while (elapsed < coolDown)
+        {
+            elapsed += Time.deltaTime;
+
+            // preChangePct is start value and the goal is pct. elapsed / updateSpeedSeconds is the equation per activation
+            slider.value = Mathf.Lerp(0, 1f, elapsed / coolDown);
+            yield return null;
+        }
+
+        slider.value = 1f;
+    }
+
     public void ResetCooldown()
     {
         abilityReady = true;
     }
-
 }
