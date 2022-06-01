@@ -51,7 +51,7 @@ public class BulletBehavior : MonoBehaviour
         damage = weapon.BulletDamage;
         penetrating = weapon.BulletPenetration; //The bullet gets the stats from their weapon
         penetrationCountMax = weapon.BulletPenetrationCount;
-        if (material != null && sniperShot != true)
+        if (material != null && sniperShot != true && penetrating == true)
         {
             sniperShot = true;
             transform.localScale *= sniperScale;
