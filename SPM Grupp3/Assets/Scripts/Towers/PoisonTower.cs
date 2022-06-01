@@ -21,7 +21,7 @@ public class PoisonTower : Tower
     [Header("Upgrade Cost")]
     [SerializeField] private float level1Cost;
     [SerializeField] private float level2Cost;
-    [SerializeField] private float level3Cost; 
+    [SerializeField] private float level3Cost;
 
     private float fireCountdown = 0f;
 
@@ -159,7 +159,7 @@ public class PoisonTower : Tower
     protected override void TowerLevel3()
     {
         base.TowerLevel3();
-        if (gameManager.SpendResources(level3Cost, 0f))
+        if (gameManager.SpendResources(level3Cost, Level3MaterialCost))
         {
             towerManager.IncreaseUpgradesPurchased();
             PoisonTower poisonTower = towerManager.ClickedTower.GetComponent<PoisonTower>();

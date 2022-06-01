@@ -16,17 +16,20 @@ public abstract class Tower : MonoBehaviour
     public GameObject OnHitEffect;
     public GameObject TowerPlacement;
 
-    [Header("BaseStats")]
-
+    [Header("BaseStats")]   
     [SerializeField] private float shotDamage = 5000f;
     [SerializeField] protected float fireRate = 1f;
     public float range = 15f;
     public float cost = 150f;
     public float materialCost;
 
+    public float Level3MaterialCost;
+
     protected GameObject level1Visual;
     protected GameObject level2Visual;
     protected GameObject level3Visual;
+
+    
 
     protected List<GameObject> shots = new List<GameObject>();
     protected Transform target;
@@ -96,6 +99,7 @@ public abstract class Tower : MonoBehaviour
         towerManager = TowerManager.Instance;
     }
 
+    //public abstract float GetLevel3MaterialCost();
     protected abstract void Level1(GameObject tower);
     protected abstract void Level2(GameObject tower);
     protected abstract void Level3(GameObject tower);
