@@ -39,19 +39,23 @@ public class AchievementTracker : MonoBehaviour
 
             achievementDictionary = new Dictionary<Achievement, bool>(data);
         }
+        else 
+        {
+            achievementDictionary = new Dictionary<Achievement, bool>();
+        }
     }
 
     void SaveAchievements(AchievementCompletedEvent eventInfo)
     {
-        Achievement achievementName = eventInfo.AchievementType;
+        Achievement achievementType = eventInfo.AchievementType;
         bool completed = eventInfo.Completed;
-        if (achievementDictionary.ContainsKey(achievementName))
+        if (achievementDictionary.ContainsKey(achievementType))
         {
-            achievementDictionary[achievementName] = completed;
+            achievementDictionary[achievementType] = completed;
         }
         else
         {
-            Debug.LogError("Achievement cannot be found in dictionary");
+            achievementDictionary.Add(achievementType, completed);
         }
 
         DataManager.WriteToFile(achievementDictionary, DataManager.AchievementData);

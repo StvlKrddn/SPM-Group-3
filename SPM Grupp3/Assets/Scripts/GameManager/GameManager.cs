@@ -140,11 +140,27 @@ public class GameManager : MonoBehaviour
         Player2Color = baseStats.Player2Color;
     }
 
-    [ContextMenu("Delete Saved Data")]
-    public void DeleteSaveData()
+    [ContextMenu("Data/Delete All Data")]
+    public void DeleteAllData()
     {
         DataManager.DeleteFile(DataManager.SaveData);
         DataManager.DeleteFile(DataManager.CustomizationData);
+        DataManager.DeleteFile(DataManager.AchievementData);
+    }
+    [ContextMenu("Data/Delete Save Data")]
+    public void DeleteSaveData()
+    {
+        DataManager.DeleteFile(DataManager.SaveData);
+    }
+    [ContextMenu("Data/Delete Customization Data")]
+    public void DeleteCustomizationData()
+    {
+        DataManager.DeleteFile(DataManager.CustomizationData);
+    }
+    [ContextMenu("Data/Delete Achievement Data")]
+    public void DeleteAchievementData()
+    {
+        DataManager.DeleteFile(DataManager.AchievementData);
     }
 
     private void Start()
