@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4343389495420075745}
   - component: {fileID: 7425900609644055862}
   - component: {fileID: 6371559711828412329}
+  - component: {fileID: -3999898982294724369}
   m_Layer: 7
   m_Name: EnemyBullet
   m_TagString: EnemyBullet
@@ -29,8 +30,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1373595079946574775}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2, z: 0}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_LocalPosition: {x: 0, y: 2.5, z: 0}
+  m_LocalScale: {x: 4, y: 4, z: 4}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -42,7 +43,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1373595079946574775}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 4711208715938537054, guid: 97e05870822626f489a574f06b94b52a, type: 3}
 --- !u!23 &1467629263989261715
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -62,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 77e7498d7d3ca3c45af9d0b3d2a5dc38, type: 2}
+  - {fileID: 2100000, guid: 7a37e5a1dde075845a3947249e88ec9c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -109,10 +110,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3255cc4b3bc12f74c995e220c97f50e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
-  bulletTime: 7
   timer: 0
-  damage: 5
+  Speed: 10
+  BulletTime: 7
+  Damage: 5
 --- !u!114 &6371559711828412329
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -131,3 +132,15 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &-3999898982294724369
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1373595079946574775}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07cb99ef5993823478610b661b76d181, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

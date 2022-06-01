@@ -5,6 +5,7 @@ using UnityEngine;
 public class EnemyArcher : EnemyController
 {
     private float timer = 2;
+    private readonly float yOffset = 1;
     private readonly List<GameObject> bullets = new List<GameObject>();
     [SerializeField] private int cooldown = 5;
     [SerializeField] private GameObject shot;
@@ -12,13 +13,13 @@ public class EnemyArcher : EnemyController
 	protected override void Awake()
 	{
         base.Awake();
-        timer = Random.Range(timer, cooldown - 1);
+        timer = cooldown - 1;
 	}
 
 	protected override void OnEnable()
 	{
 		base.OnEnable();
-        timer = Random.Range(timer, cooldown - 1);
+        timer = cooldown - 1;
     }
 
 	protected override void FixedUpdate()
@@ -56,6 +57,7 @@ public class EnemyArcher : EnemyController
             bullet.transform.SetPositionAndRotation(transform.position, transform.rotation);
             bullet.SetActive(true);
         }
+        bullet.transform.position += new Vector3(0, yOffset, 0);
     }
 
     private int FindEmptyBullet()
