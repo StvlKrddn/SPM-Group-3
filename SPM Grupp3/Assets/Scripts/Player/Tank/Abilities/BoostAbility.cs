@@ -34,7 +34,7 @@ public class BoostAbility : MonoBehaviour
     {
         tankState = GetComponent<TankState>();
         slider = boostUI.GetComponent<Slider>();
-        slider.value = 0.5f;
+        slider.value = 1f;
         boostAction = tankState.PlayerInput.actions["Boost"];
         fadeBehaviour = boostUI.GetComponent<FadeBehaviour>();
         ChangeSpeed();
@@ -117,7 +117,7 @@ public class BoostAbility : MonoBehaviour
             elapsed += Time.deltaTime;
 
             // preChangePct is start value and the goal is pct. elapsed / updateSpeedSeconds is the equation per activation
-            slider.value = Mathf.Lerp(0.5f, 0, elapsed / boostDuration);
+            slider.value = Mathf.Lerp(1f, 0, elapsed / boostDuration);
             yield return null;
         }
 
@@ -132,11 +132,11 @@ public class BoostAbility : MonoBehaviour
             elapsed += Time.deltaTime;
 
             // preChangePct is start value and the goal is pct. elapsed / updateSpeedSeconds is the equation per activation
-            slider.value = Mathf.Lerp(0, 0.5f, elapsed / coolDown);
+            slider.value = Mathf.Lerp(0, 1f, elapsed / coolDown);
             yield return null;
         }
 
-        slider.value = 0.5f;
+        slider.value = 1f;
     }
 
     IEnumerator BoostCooldown()
