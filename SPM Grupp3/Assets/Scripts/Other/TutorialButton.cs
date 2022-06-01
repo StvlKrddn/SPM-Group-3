@@ -7,7 +7,10 @@ public class TutorialButton : MonoBehaviour
 
 
     public GameObject[] objectsToDisable;
-    public GameObject[] objectsToEnable; 
+    public GameObject[] objectsToEnable;
+
+
+    public bool disableOnActivation = false;
 
     // Start is called before the first frame update
     void Start()
@@ -46,5 +49,11 @@ public class TutorialButton : MonoBehaviour
                 obj.SetActive(true);
             }
         }      
+
+
+        if(disableOnActivation)
+        {
+            this.enabled = false; 
+        }
     }
 }
