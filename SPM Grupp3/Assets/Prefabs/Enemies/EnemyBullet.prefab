@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4343389495420075745}
   - component: {fileID: 7425900609644055862}
   - component: {fileID: 6371559711828412329}
+  - component: {fileID: -3999898982294724369}
   m_Layer: 7
   m_Name: EnemyBullet
   m_TagString: EnemyBullet
@@ -110,8 +111,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timer: 0
-  Speed: 5
-  BulletTime: 5
+  Speed: 10
+  BulletTime: 7
   Damage: 5
 --- !u!114 &6371559711828412329
 MonoBehaviour:
@@ -131,3 +132,15 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!114 &-3999898982294724369
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1373595079946574775}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07cb99ef5993823478610b661b76d181, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -182,7 +182,7 @@ MonoBehaviour:
   OnHitEffect: {fileID: 5202362185975563897, guid: afc452a4019ab8b47ac2ea888849a086, type: 3}
   TowerPlacement: {fileID: 9019748245944013588, guid: 4120c1f7b8f71e94aaf34696a5c7cadc, type: 3}
   shotDamage: 0
-  fireRate: 1
+  fireRate: 0.75
   range: 5
   cost: 1300
   materialCost: 0
@@ -197,7 +197,6 @@ MonoBehaviour:
   level1Cost: 600
   level2Cost: 1500
   level3Cost: 2000
-  CostForUpgrade: 0
 --- !u!114 &-4432665115789053617
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -351,7 +350,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 5561349426305759274, guid: cba0e85616331a7408ff904bd1828a03, type: 3}
+  - {fileID: 2100000, guid: f80814d0b5ab60e4da24b7ad57b34dab, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -823,6 +822,10 @@ PrefabInstance:
     - target: {fileID: 1374403806315087672, guid: fa48ee69068172e468b39c24dcfb80b6, type: 3}
       propertyPath: m_Name
       value: OptionIndicator_Tower
+      objectReference: {fileID: 0}
+    - target: {fileID: 2568418202881796066, guid: fa48ee69068172e468b39c24dcfb80b6, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fa48ee69068172e468b39c24dcfb80b6, type: 3}

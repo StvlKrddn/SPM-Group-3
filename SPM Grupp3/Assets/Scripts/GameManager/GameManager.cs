@@ -109,6 +109,10 @@ public class GameManager : MonoBehaviour
         UpgradeController.currentUpgradeLevel = saveData.tankUpgradeLevel;
         
         Invoke(nameof(FixUpgradeDelay), 0.01f);
+        
+        //Temporary - must fix <----
+        Player1Color = baseStats.Player1Color;
+        Player2Color = baseStats.Player2Color;
     }
 
     private void LoadCustomizationData()
@@ -116,10 +120,9 @@ public class GameManager : MonoBehaviour
         
     }
 
-    private void FixUpgradeDelay(GameObject tank)
+    private void FixUpgradeDelay()
     {
         UpgradeController.Instance.FixUpgrades(FindObjectOfType<TankState>().gameObject);
-        UpgradeController.Instance.FixUpgrades(tank);
     }
 
     private void LoadBase()
@@ -332,8 +335,10 @@ public class GameManager : MonoBehaviour
             {
                 money -= moneySpent;
 
+                /*
                 if (currentMoneyCoroutine != null)
                     StopCoroutine(currentMaterialCoroutine);
+                */
 
                 currentMoneyCoroutine = DoColorBoughtFade(moneyCounterUI, moneyBaseColor, 2f);
 
@@ -348,8 +353,10 @@ public class GameManager : MonoBehaviour
             {
                 material -= materialSpent;
 
+                /*
                 if (currentMaterialCoroutine != null)
                     StopCoroutine(currentMaterialCoroutine);
+                */
 
                 currentMaterialCoroutine = DoColorBoughtFade(materialCounterUI, materialBaseColor, 2f);
 

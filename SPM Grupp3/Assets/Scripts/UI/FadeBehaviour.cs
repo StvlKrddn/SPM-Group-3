@@ -29,7 +29,7 @@ public class FadeBehaviour : MonoBehaviour
 
     public void Fade()
     {
-        if(currentOperation != null)
+        if (currentOperation != null)
             StopCoroutine(currentOperation);
 
         currentOperation = DoFade(canvasGroup.alpha, faded ? 1 : 0);

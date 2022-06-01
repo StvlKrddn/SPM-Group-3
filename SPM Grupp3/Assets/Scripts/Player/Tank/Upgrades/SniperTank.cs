@@ -11,7 +11,7 @@ public class SniperTank : TankUpgradeTree
 	[SerializeField] private int damage = 75;
 	[SerializeField] private GameObject sniperAbility;
 	[SerializeField] private GameObject level1Mesh;
-	[SerializeField] private GameObject level3Mesh;
+	[SerializeField] private GameObject level2Mesh;
 
 
 	public override void UpgradeOne()
@@ -26,12 +26,12 @@ public class SniperTank : TankUpgradeTree
 		base.UpgradeTwo();
         weapon.MakeSniper(range, fireRateSecond, damage);
         weapon.MaxRange();
+		weapon.ChangeTurretMesh(level2Mesh);
 	}
 
 	public override void UpgradeThree()
 	{
 		base.UpgradeThree();
-		weapon.ChangeTurretMesh(level3Mesh);
 	}
 
 	public override bool Ability()

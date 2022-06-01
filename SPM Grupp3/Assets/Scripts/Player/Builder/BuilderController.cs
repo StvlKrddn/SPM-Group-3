@@ -165,9 +165,13 @@ public class BuilderController : MonoBehaviour
         cursor.ToggleClick(isPressed);
         if (isPressed)
         {
-            ClickedPlacement();
             ClickedTower();
             ClickedGarage();
+            if (!stopMouse)
+            {
+                ClickedPlacement();
+            }
+            
             EventHandler.InvokeEvent(new UIClickedEvent(
                 description: "Accept button clicked",
                 clicker: transform.parent.gameObject
@@ -385,11 +389,11 @@ public class BuilderController : MonoBehaviour
             garageSelection = selection;
         }
 
-        if (garageSelection != null && selection == null)
+/*        if (garageSelection != null && selection == null)
         {
             garageSelection.GetComponent<GarageTrigger>().CloseIndicator();
             garageSelection = null;
-        }
+        }*/
     }
 
     void Hover(RaycastHit hit)
