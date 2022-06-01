@@ -15,6 +15,15 @@
                     "initialStateCheck": true
                 },
                 {
+                    "name": "ProgressDialouge",
+                    "type": "Button",
+                    "id": "72ffa713-88db-447e-bf61-ab50f35f98ce",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Shoot",
                     "type": "Button",
                     "id": "ad02b34a-b708-4620-8330-1dabce0c8c6d",
@@ -419,6 +428,17 @@
                     "action": "Pause",
                     "isComposite": false,
                     "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2ef4aee4-b521-4d4f-ad10-724e4b8010f2",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ProgressDialouge",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },
@@ -431,6 +451,15 @@
                     "type": "PassThrough",
                     "id": "03b5c188-6ac2-4613-819c-2c5eb0dbd747",
                     "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ProgressDialouge",
+                    "type": "Button",
+                    "id": "082eef80-0872-4da6-98b7-36b7d72f19f7",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -625,6 +654,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Information",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e101b14e-1604-4f0d-acd7-ff30cd41a192",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ProgressDialouge",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

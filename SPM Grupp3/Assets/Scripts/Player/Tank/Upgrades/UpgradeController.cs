@@ -63,6 +63,7 @@ public class UpgradeController : MonoBehaviour
 
     public void FixUpgrades(GameObject player)
     {
+        bool upgraded = false;
         TankState tS = player.GetComponentInChildren<TankState>();
         for (int i = tS.LevelOfTank; i < currentUpgradeLevel; i++)
         {
@@ -71,18 +72,21 @@ public class UpgradeController : MonoBehaviour
             {
                 case 1:
                     tS.tankUpgradeTree.UpgradeOne();
+                    upgraded = true;
                     break;
 
                 case 2:
                     tS.tankUpgradeTree.UpgradeTwo();
+                    upgraded = true;
                     break;
 
                 case 3:
                     tS.tankUpgradeTree.UpgradeThree();
+                    upgraded = true;
                     break;
             }
         }
-        if (tS.GetComponent<WeaponSlot>())
+        if (upgraded == true && tS.GetComponent<WeaponSlot>())
         {
             tS.GetComponent<WeaponSlot>().UpgradeShots();
         }

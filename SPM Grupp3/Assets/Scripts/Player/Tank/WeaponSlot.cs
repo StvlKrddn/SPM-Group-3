@@ -23,6 +23,7 @@ public class WeaponSlot : MonoBehaviour
     [SerializeField] private float bulletSpeed;
     [SerializeField] private bool penetrating;
     [SerializeField] private float damage;
+    [SerializeField] private int penetrationCount;
     [Space]
     [SerializeField] private GameObject muzzleFlash;
     private Animator animator;
@@ -37,6 +38,8 @@ public class WeaponSlot : MonoBehaviour
     public float BulletSpeed { get { return bulletSpeed; } set { bulletSpeed = value; } }
     public float BulletDamage { get { return damage; } set { damage = value; } }
     public bool BulletPenetration { get { return penetrating; } set { penetrating = value; } }
+    public int BulletPenetrationCount { get { return penetrationCount; } set { penetrationCount = value; } }
+
 
     void Start()
     {
@@ -55,6 +58,11 @@ public class WeaponSlot : MonoBehaviour
         BulletSpawner = turretObject.Find("BarrelEnd");
 
         shootAction = tank.PlayerInput.actions["Shoot"];
+
+        if (AchievementTracker.Instance.IsAchievementCompleted(Achievement.CompleteStageThree))
+        {
+            turretMesh.transform.Find("Cap").gameObject.SetActive(true);
+        }
     }
 
 	private void OnEnable()
@@ -71,6 +79,7 @@ public class WeaponSlot : MonoBehaviour
         bulletSpeed = equippedWeapon.bulletSpeed;
         bulletPrefab = equippedWeapon.bulletPrefab;
         damage = equippedWeapon.damage;
+        penetrationCount = equippedWeapon.penetratonCount;
     }
 
     public void UpgradeShots()
@@ -159,25 +168,31 @@ public class WeaponSlot : MonoBehaviour
         return Quaternion.Euler(randomDirection);
     }
 
-    public void UpgradeFirerate(float modifier)
+    public void UpgradeFirerate(float fireRateUpdate)
 	{
-        fireRate = modifier;
+        fireRate = fireRateUpdate;
     }
 
-    public void MaxRange()
+    public void UpgradeDamage(int damageUpdate)
+    {
+        BulletDamage = damageUpdate;
+    }
+
+    public void MaxRange(int newPenetrationCount)
     {
         range = 1000;
-        penetrating = true;
+        BulletPenetrationCount = newPenetrationCount;
     }
 
 	public void MakeSniper(float range, float fireRateMultiply, float damageIncrease)
 	{
 		fireRate = fireRateMultiply;
-        damage = damageIncrease;
+        BulletDamage = damageIncrease;
         this.range = range;
         spread = 0;
-        bulletSpeed += 15;
+        BulletSpeed += 15;
         BulletColor = Color.blue;
+        BulletPenetration = true;
     }
 
     public void ClearBullets()
@@ -196,6 +211,11 @@ public class WeaponSlot : MonoBehaviour
         turretMesh.SetActive(true);
         BulletSpawner = turretMesh.transform.Find("BarrelEnd");
         tank.TurretObject = mesh.transform;
+
+        if (AchievementTracker.Instance.IsAchievementCompleted(Achievement.CompleteStageThree))
+        {
+            turretMesh.transform.Find("Cap").gameObject.SetActive(true);
+        }
 
         if (GetComponent<FireTank>().level1Mesh != null)
         {

@@ -40,6 +40,7 @@ public class WheelSelection : MonoBehaviour
     private Vector2 stickInput;
     private InputAction infoAction;
 
+    private UpgradeController upgradeController;
     private TowerManager towerManager;
     private GameManager gM;
     private GameObject towerToDisplay;
@@ -50,9 +51,27 @@ public class WheelSelection : MonoBehaviour
     private Text upgradeLevel2Text;
     private Text upgradeLevel3Text;
 
+    private GameObject p1StatPanel;
+    private GameObject p2StatPanel;
+
+    private Text tankUpgradeTitleP1;
+    private Text tankUpgradeTitleP2;
+
+    private Text p1Damage;
+    private Text p1FireRate;
+    private Text p1Range;
+    private Text p1Penetration;
+    private Text p1Ability;
+
+
+    private Text p2Damage;
+    private Text p2FireRate;
+    private Text p2Range;
+    private Text p2Ability;
 
     private void Start() 
     {
+        upgradeController = UpgradeController.Instance;
         towerManager = TowerManager.Instance;
         gM = GameManager.Instance;
         numberOfMenuItems = MenuItems.Length;
@@ -74,6 +93,7 @@ public class WheelSelection : MonoBehaviour
         selectAction = playerInput.actions["Accept"];
         infoAction = playerInput.actions["Information"];
 
+
         if (!gameObject.name.Equals("BuildPanel") && !gameObject.name.Equals("TankPanel"))
         {
             statisticPanel = MenuItems[0].transform.Find("StatisticPanel").gameObject;
@@ -83,7 +103,32 @@ public class WheelSelection : MonoBehaviour
             upgradeLevel3Text = upgradeTitleText.transform.Find("Level3").GetComponent<Text>();
 
             SetStartValuesOnUpgrades();
-        }        
+        }  
+        else if (gameObject.name.Equals("TankPanel"))
+        {
+            FindTankUpgradePanels();
+        }
+    }
+
+
+    void FindTankUpgradePanels()
+    {
+        p1StatPanel = MenuItems[0].transform.Find("TankP1StatisticPanel").gameObject;
+        p2StatPanel = MenuItems[0].transform.Find("TankP2StatisticPanel").gameObject;
+
+
+        tankUpgradeTitleP1 = p1StatPanel.transform.Find("Title").GetComponent<Text>();
+        p1Damage = tankUpgradeTitleP1.transform.Find("Damage").GetComponent<Text>();
+        p1FireRate = tankUpgradeTitleP1.transform.Find("FireRate").GetComponent<Text>();
+        p1Range = tankUpgradeTitleP1.transform.Find("Range").GetComponent<Text>();
+        p1Penetration = tankUpgradeTitleP1.transform.Find("Penetration").GetComponent<Text>();
+        p1Ability = tankUpgradeTitleP1.transform.Find("Ability").GetComponent<Text>();
+
+        tankUpgradeTitleP2 = p2StatPanel.transform.Find("Title").GetComponent<Text>();
+        p2Damage = tankUpgradeTitleP2.transform.Find("Damage").GetComponent<Text>();
+        p2FireRate = tankUpgradeTitleP2.transform.Find("FireRate").GetComponent<Text>();
+        p2Range = tankUpgradeTitleP2.transform.Find("Range").GetComponent<Text>();
+        p2Ability = tankUpgradeTitleP2.transform.Find("Ability").GetComponent<Text>();
     }
 
     /* Sets the correct values on the statistics of the towers for statistic panel when upgradeing */
@@ -134,6 +179,19 @@ public class WheelSelection : MonoBehaviour
             upgradeLevel1Text.color = Color.white;
             upgradeLevel2Text.color = Color.white;
             upgradeLevel3Text.color = Color.white;
+        }
+        if (gameObject.name.Equals("TankPanel"))
+        {
+            p1Range.color = Color.white;
+            p1Penetration.color = Color.white;
+            p1FireRate.color = Color.white;
+            p1Damage.color = Color.white;
+            p1Ability.color = Color.white;
+
+            p2Ability.color = Color.white;
+            p2Damage.color = Color.white;
+            p2FireRate.color = Color.white;
+            //p2Range.color = Color.white;
         }
 
 
@@ -224,7 +282,7 @@ public class WheelSelection : MonoBehaviour
                 costPanel.SetActive(true);
                 Text moneyText = costPanel.transform.Find("MoneyCost").GetComponentInChildren<Text>();
                 Text materialText = costPanel.transform.Find("MaterialCost").GetComponentInChildren<Text>();
-                    
+
                 Tower tower;
 
                 DecideTowerToBuild(MenuItems[i].name);
@@ -256,12 +314,26 @@ public class WheelSelection : MonoBehaviour
                     }
                 }
                 
-                if (MenuItems[i].name.Equals("Upgrade"))
+                if (!MenuItems[i].name.Equals("Delete/Sell"))
                 {
                     ShowStatisticPanel();
                 }
                 
-                
+                if (MenuItems[0].name.Equals("Upgrade") && !gameObject.name.Equals("TankPanel"))
+                {
+                    if (stickAction.ReadValue<Vector2>().y < 0.4f)
+                    {
+                        statisticPanel.SetActive(false);
+                    }
+                }
+                else if(gameObject.name.Equals("TankPanel"))
+                {
+                    if (stickAction.ReadValue<Vector2>().y < 0.4f)
+                    {
+                        p1StatPanel.SetActive(false);
+                        p2StatPanel.SetActive(false);
+                    }                   
+                }
 
                 selectHint.SetActive(true);
                 infoHint.SetActive(true);               
@@ -273,10 +345,12 @@ public class WheelSelection : MonoBehaviour
 
                 MenuItems[i].transform.Find("Cost").gameObject.SetActive(false);
 
+
                 if (gameObject.name.Equals("BuildPanel"))
                 {
-                    statisticPanel.SetActive(false);                    
+                    statisticPanel.SetActive(false);
                 }
+
             }
         }
     }
@@ -284,27 +358,72 @@ public class WheelSelection : MonoBehaviour
     // Decides which statistic panel to show
     private void ShowStatisticPanel()
     {
-        if (statisticPanel != null)
-        {
 
-            if (transform.name.Equals("BuildPanel")) //Build
-            {
-                if (infoAction.IsPressed())
-                {
-                    statisticPanel.SetActive(true);
-                }
-            }
-            else if (gameObject.name.Equals("TankPanel")) //Tank Upgrade (Not Implemented Jet)
-            {
-                return;
-            }
-            else //Tower Upgrade
+        if (transform.name.Equals("BuildPanel")) //Build
+        {
+            if (infoAction.IsPressed())
             {
                 statisticPanel.SetActive(true);
-                upgradeTitleText.text = towerManager.GetNameOfTowerClicked() + " (Lv " + towerManager.GetUpgradesPurchased() + ")";
-                ChangeUpgradeTextColorToGreen();
             }
         }
+        else if (gameObject.name.Equals("TankPanel")) //Tank Upgrade (Not Implemented Jet)
+        {
+            if (infoAction.IsPressed())
+            {
+                p1StatPanel.SetActive(true);
+                p2StatPanel.SetActive(true);               
+            }
+            ChangeTankUpgradeTextColorToGreen();
+        }
+        else //Tower Upgrade
+        {
+            if (infoAction.IsPressed())
+            {
+                statisticPanel.SetActive(true);
+            }
+            upgradeTitleText.text = towerManager.GetNameOfTowerClicked() + " (Lv " + towerManager.GetUpgradesPurchased() + ")";
+            ChangeUpgradeTextColorToGreen();
+        }
+        
+    }
+
+    private void ChangeTankUpgradeTextColorToGreen()
+    {
+        switch (upgradeController.GetUpgradesPurchased())
+        {
+            case 0:
+                p1Damage.color = Color.green;
+                p1FireRate.color = Color.green;
+                p1Range.color = Color.green;
+
+                p2FireRate.color = Color.green;
+
+                tankUpgradeTitleP1.text = "Player 1 Tank (LVL 1)";
+                tankUpgradeTitleP2.text = "Player 2 Tank (LVL 1)";
+                break;
+            case 1:
+                p1Range.color = Color.green;
+                p1Penetration.color = Color.green;
+
+                p2Damage.color = Color.green;
+                p2FireRate.color = Color.green;
+
+                tankUpgradeTitleP1.text = "Player 1 Tank (LVL 2)";
+                tankUpgradeTitleP2.text = "Player 2 Tank (LVL 2)";
+                break;
+            case 2:
+                p1Ability.color = Color.green;
+                p2Ability.color = Color.green;
+
+                tankUpgradeTitleP1.text = "Player 1 Tank (LVL 3)";
+                tankUpgradeTitleP2.text = "Player 2 Tank (LVL 3)";
+                break;
+            case 3:
+                tankUpgradeTitleP1.text = "Player 1 Tank (LVL Max)";
+                tankUpgradeTitleP2.text = "Player 2 Tank (LVL Max)";
+                break;
+        }
+
     }
 
     private void ChangeUpgradeTextColorToGreen()
@@ -331,6 +450,7 @@ public class WheelSelection : MonoBehaviour
     {
         Tower tower;
         tower = towerManager.ClickedTower.GetComponent<Tower>();
+
         if (towerManager.GetUpgradesPurchased() == 3)
         {
             moneyText.text = "MAX";
@@ -339,6 +459,14 @@ public class WheelSelection : MonoBehaviour
             moneyText.color = Color.red;
             materialText.color = Color.red;
             return;
+        }
+        else if (towerManager.GetUpgradesPurchased() == 2)
+        {
+            GameObject materialPanel = costPanel.transform.GetChild(1).gameObject;
+            materialPanel.SetActive(true);
+            materialText = materialPanel.GetComponentInChildren<Text>();
+
+            materialText.text = tower.Level3MaterialCost.ToString();
         }
         
         float money = gM.Money;
@@ -363,14 +491,21 @@ public class WheelSelection : MonoBehaviour
         }
 
         moneyText.text = tower.UpgradeCostUpdate().ToString();
-        materialText.text = tower.materialCost.ToString();
+        //materialText.text = tower.materialCost.ToString();
     }
 
     void GarageHighlight(Text materialText)
     {
         float material = gM.Material;
 
-        if (material < UpgradeController.Instance.materialCost)
+        if (upgradeController.GetUpgradesPurchased() == 3)
+        {
+            materialText.text = "MAX";
+            materialText.color = Color.red;
+            return;
+        }
+
+        if (material < upgradeController.materialCost)
         {
             materialText.color = Color.red;
         }
@@ -420,6 +555,10 @@ public class WheelSelection : MonoBehaviour
                 UpdateUpgradeLevelText();                              
             }
 
+            else if (gameObject.name.Equals("TankPanel"))
+            {
+                UpdateTankUpgradeLevelText();
+            }
             stickInput = Vector2.zero;
         }
         else
@@ -428,6 +567,32 @@ public class WheelSelection : MonoBehaviour
         }
     }
 
+    private void UpdateTankUpgradeLevelText()
+    {
+        switch (upgradeController.GetUpgradesPurchased())
+        {
+            case 1:
+                p1Damage.text = "Damage: 90";
+                p1FireRate.text = "FireRate: 0.75";
+                p1Range.text = "Range: 25";
+
+                p2FireRate.text = "FireRate: 8";
+
+                break;
+            case 2:
+                p1Range.text = "Range: 100";
+                p1Penetration.text = "Penetration: 4";
+
+                p2Damage.text = "Damage: 7.5/s";
+                p2FireRate.text = "FireRate: 100";
+                break;
+            case 3:
+                p1Ability.text = "Damage To The Enemy Type (Active)";
+                p2Ability.text = "Drops Bomb (Active)";
+
+                break;
+        }
+    }
 
     private void UpdateUpgradeLevelText()
     {

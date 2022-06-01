@@ -41,7 +41,7 @@ public class CannonTower : Tower
         {
             if (CanYouShoot())
             {
-                animator.SetTrigger("Shooting");
+               // animator.SetTrigger("Shooting");
                 Shoot();
                 if (shootTwice)
                 {
@@ -192,7 +192,7 @@ public class CannonTower : Tower
 
         animator = level3Visual.GetComponent<Animator>();
 
-        if (gameManager.SpendResources(level3Cost, 0f))
+        if (gameManager.SpendResources(level3Cost, Level3MaterialCost))
         {
             towerManager.IncreaseUpgradesPurchased();
             CannonTower cannonTower = towerManager.ClickedTower.GetComponent<CannonTower>();
