@@ -17,11 +17,6 @@ public class BulletBehavior : MonoBehaviour
     public float BulletDamage { get { return damage; } set { damage = value; } }
     public float BulletRange { get { return range; } set { range = value; } }
 
-	private void Awake()
-	{
-        penetrationCountMax = penetrationCount;
-	}
-
 	protected virtual void Start()
     {
         GameObject tank = GetComponentInParent<TankState>().gameObject;
@@ -49,6 +44,7 @@ public class BulletBehavior : MonoBehaviour
         range = weapon.BulletRange;
         damage = weapon.BulletDamage;
         penetrating = weapon.BulletPenetration; //The bullet gets the stats from their weapon
+        penetrationCountMax = weapon.BulletPenetrationCount;
         if (weapon.BulletColor != Color.white)
         {
             Material bulletMaterial = GetComponent<Renderer>().material;
