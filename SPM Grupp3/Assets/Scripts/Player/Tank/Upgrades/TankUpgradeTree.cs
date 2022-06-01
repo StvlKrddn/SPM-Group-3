@@ -18,7 +18,7 @@ public abstract class TankUpgradeTree : MonoBehaviour
 
     private GameObject abilityUi;
     private Slider slider;
-    private float notInUseTimer;
+    private float notInUseTimer = 0f;
 
 
     private void OnEnable()
@@ -29,8 +29,6 @@ public abstract class TankUpgradeTree : MonoBehaviour
         }
     }
 
-
-
     protected virtual void Start()
 	{   
         tankState = GetComponent<TankState>();
@@ -38,11 +36,16 @@ public abstract class TankUpgradeTree : MonoBehaviour
         gameManager = FindObjectOfType<GameManager>();
         abilityUi = gameObject.transform.Find("AbilityUI").gameObject;
         slider = abilityUi.GetComponent<Slider>();
-	}    
-    
+	}
+
     private void Update()
     {
-        if (notInUseTimer > abilityCD + 1f && !abilityUi.GetComponent<FadeBehaviour>().Faded())
+        if(UpgradeController.currentUpgradeLevel != 3)
+        {
+            return;
+        }
+
+        if (notInUseTimer > abilityCD && !abilityUi.GetComponent<FadeBehaviour>().Faded())
         {
             abilityUi.GetComponent<FadeBehaviour>().Fade();
         }
@@ -69,7 +72,6 @@ public abstract class TankUpgradeTree : MonoBehaviour
         if (abilityReady == true)
         {
             abilityReady = false;
-            notInUseTimer = 0;
             StartCoroutine(UseAbilityBar());
             StartCoroutine(ResetAbility());
             return true;
@@ -85,7 +87,9 @@ public abstract class TankUpgradeTree : MonoBehaviour
 
     private IEnumerator UseAbilityBar()
     {
-        float abilityDuration = 1f;
+        notInUseTimer = 0;
+
+        float abilityDuration = 0.5f;
 
         float elapsed = 0f;
 
