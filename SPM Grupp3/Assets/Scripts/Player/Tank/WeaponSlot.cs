@@ -167,11 +167,16 @@ public class WeaponSlot : MonoBehaviour
     public void MaxRange()
     {
         range = 1000;
+        
+        
+            
         penetrating = true;
     }
 
 	public void MakeSniper(float range, float fireRateMultiply, float damageIncrease)
 	{
+        penetrating = true; 
+
 		fireRate = fireRateMultiply;
         damage = damageIncrease;
         this.range = range;
