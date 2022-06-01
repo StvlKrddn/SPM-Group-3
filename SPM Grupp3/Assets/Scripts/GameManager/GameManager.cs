@@ -89,24 +89,24 @@ public class GameManager : MonoBehaviour
     private void LoadSaveData()
     {
         SaveData saveData = (SaveData) DataManager.ReadFromFile(DataManager.SaveData);
-        money = saveData.money;
-        material = saveData.material;
-        currentWave = saveData.currentWave;
-        baseHealth = saveData.currentBaseHealth;
+        money = saveData.Money;
+        material = saveData.Material;
+        currentWave = saveData.CurrentWave;
+        baseHealth = saveData.CurrentBaseHealth;
 
-        enemiesKilled = saveData.enemiesKilled;
-        moneyCollected = saveData.moneyCollected;
-        materialCollected = saveData.materialCollected;
+        enemiesKilled = saveData.EnemiesKilled;
+        moneyCollected = saveData.MoneyCollected;
+        materialCollected = saveData.MaterialCollected;
 
-        startingMode = saveData.startingMode;
+        startingMode = saveData.StartingMode;
 
-        List<TowerData> towerData = new List<TowerData>(saveData.towerData);
+        List<TowerData> towerData = new List<TowerData>(saveData.TowerData);
 
         foreach (TowerData tower in towerData)
         {
             buildManager.LoadTower(tower);
         }
-        UpgradeController.currentUpgradeLevel = saveData.tankUpgradeLevel;
+        UpgradeController.currentUpgradeLevel = saveData.TankUpgradeLevel;
         
         Invoke(nameof(FixUpgradeDelay), 0.01f);
     }

@@ -1,35 +1,33 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 [Serializable]
 public struct SaveData
 {
-    public float money, material, currentBaseHealth;
-    public int currentWave, enemiesKilled, moneyCollected, materialCollected, currentScene, tankUpgradeLevel;
-    public PlayerMode startingMode;
-    public List<TowerData> towerData;
+    public float Money, Material, CurrentBaseHealth;
+    public int CurrentWave, EnemiesKilled, MoneyCollected, MaterialCollected, CurrentScene, TankUpgradeLevel;
+    public PlayerMode StartingMode;
+    public List<TowerData> TowerData;
     public SaveData(int currentWave, int enemiesKilled, int moneyCollected, int materialCollected, float money, float material, float baseHealth, int currentScene, PlayerMode startingMode, List<PlacedTower> towersPlaced, int tankUpgradeLevel)
     {
-        this.tankUpgradeLevel = tankUpgradeLevel;
-        this.money = money;
-        this.material = material;
-        this.currentBaseHealth = baseHealth;
-        this.currentWave = currentWave;
+        TankUpgradeLevel = tankUpgradeLevel;
+        Money = money;
+        Material = material;
+        CurrentBaseHealth = baseHealth;
+        CurrentWave = currentWave;
 
-        this.enemiesKilled = enemiesKilled;
-        this.moneyCollected = moneyCollected;
-        this.materialCollected = materialCollected;
+        EnemiesKilled = enemiesKilled;
+        MoneyCollected = moneyCollected;
+        MaterialCollected = materialCollected;
 
-        this.currentScene = currentScene;
+        CurrentScene = currentScene;
 
-        this.startingMode = startingMode;
-        towerData = new List<TowerData>();
+        StartingMode = startingMode;
+        TowerData = new List<TowerData>();
         
         foreach (PlacedTower tower in towersPlaced)
         {
-            towerData.Add(new TowerData(tower));
+            TowerData.Add(new TowerData(tower));
         }
     }
 }
