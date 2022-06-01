@@ -7,6 +7,7 @@ public class BulletBehavior : MonoBehaviour
     private int penetrationCountMax;
     private WeaponSlot weapon;
     private Vector3 originalPosition;
+    private readonly float sniperScale = 1.5f;
     [SerializeField] private int penetrationCount = 2;
     [SerializeField] private float bulletSpeed;
     [SerializeField] private float range;
@@ -48,6 +49,12 @@ public class BulletBehavior : MonoBehaviour
         range = weapon.BulletRange;
         damage = weapon.BulletDamage;
         penetrating = weapon.BulletPenetration; //The bullet gets the stats from their weapon
+        if (weapon.BulletColor != Color.white)
+        {
+            Material bulletMaterial = GetComponent<Renderer>().material;
+            bulletMaterial.SetColor("_EmissionColor", weapon.BulletColor);
+            transform.localScale *= sniperScale;
+        }
     }
 
 

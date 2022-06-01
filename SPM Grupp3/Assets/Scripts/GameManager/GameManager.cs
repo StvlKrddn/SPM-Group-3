@@ -109,15 +109,13 @@ public class GameManager : MonoBehaviour
         UpgradeController.currentUpgradeLevel = saveData.tankUpgradeLevel;
         
         Invoke(nameof(FixUpgradeDelay), 0.01f);
-        
-        //Temporary - must fix <----
-        Player1Color = baseStats.Player1Color;
-        Player2Color = baseStats.Player2Color;
     }
 
     private void LoadCustomizationData()
     {
-        
+        List<CustomizationData> dataList = (List<CustomizationData>) DataManager.ReadFromFile(DataManager.CustomizationData);
+        Player1Color = dataList[0].PlayerColor;
+        Player2Color = dataList[1].PlayerColor;
     }
 
     private void FixUpgradeDelay()

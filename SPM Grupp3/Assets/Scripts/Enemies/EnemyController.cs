@@ -59,8 +59,7 @@ public abstract class EnemyController : MonoBehaviour
 
         ChangerText.GetComponentInChildren<Text>().text = MoneyDrop.ToString();
         ChangerText.GetComponentInChildren<Text>().color = moneyColor;
-        ChangerText = Instantiate(ChangerText, spawnTextPosition.position, spawnTextPosition.rotation, GameManager.Instance.transform.Find("DropTexts"));
-        ChangerText.SetActive(false);
+
         //Set base values. Gets changertext, movement, health and healthbar, speed and waypoints/path
     }
     protected virtual void Start() {}
@@ -85,7 +84,7 @@ public abstract class EnemyController : MonoBehaviour
 
 	protected virtual void OnDestroy()
 	{
-        Destroy(ChangerText);
+        
 	}
 
 
@@ -124,8 +123,7 @@ public abstract class EnemyController : MonoBehaviour
 
         if(ChangerText != null && spawnTextPosition != null)
         {
-            ChangerText.transform.SetPositionAndRotation(spawnTextPosition.position, spawnTextPosition.rotation);
-            ChangerText.SetActive(true);
+            Instantiate(ChangerText, spawnTextPosition.position, spawnTextPosition.rotation, GameManager.Instance.transform.Find("DropTexts"));
         }
 
         if (MaterialDrop == true)

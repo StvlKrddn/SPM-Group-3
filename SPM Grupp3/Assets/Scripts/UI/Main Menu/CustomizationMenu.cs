@@ -7,26 +7,38 @@ public class CustomizationMenu : MonoBehaviour
 {
     [SerializeField] private Slider[] colorSliders;
     [SerializeField] private GameObject tankBody;
+    [SerializeField] private GameObject turret;
     [SerializeField] private GameObject hat;
     [SerializeField] private CustomizationManager customizationManager;
-
+    
     private Material defaultTankMaterial;
+    private Material defaultTurretMaterial;
     private Material defaultHatMaterial;
-    private Slider currentSlider;
     private Material newTankMaterial;
+    private Material newTurretMaterial;
     private Material newHatMaterial;
     private Renderer tankRenderer;
+    private Renderer turretRenderer;
     private Renderer hatRenderer;
+    private Slider currentSlider;
     
-    public Color newColor;
+    [System.NonSerialized] public Color newColor;
 
-    void Start()
+    void Awake()
     {
+        // Cache default materials and create new copies for preview
+
         tankRenderer = tankBody.GetComponent<Renderer>();
         defaultTankMaterial = tankRenderer.material;
         newTankMaterial = new Material(defaultTankMaterial.shader);
         newTankMaterial.CopyPropertiesFromMaterial(defaultTankMaterial);
         tankRenderer.material = newTankMaterial;
+
+        turretRenderer = turret.GetComponent<Renderer>();
+        defaultTurretMaterial = turretRenderer.material;
+        newTurretMaterial = new Material(defaultTurretMaterial.shader);
+        newTurretMaterial.CopyPropertiesFromMaterial(defaultTurretMaterial);
+        turretRenderer.material = newTurretMaterial;
 
         hatRenderer = hat.GetComponent<Renderer>();
         defaultHatMaterial = hatRenderer.material;
@@ -40,9 +52,7 @@ public class CustomizationMenu : MonoBehaviour
         if (tankRenderer != null)
         {
             tankRenderer.material = defaultTankMaterial;
-        }
-        if (hatRenderer != null)
-        {
+            turretRenderer.material = defaultTurretMaterial;
             hatRenderer.material = defaultHatMaterial;
         }
     }
@@ -51,11 +61,14 @@ public class CustomizationMenu : MonoBehaviour
     {
         newColor = new Color(colorSliders[0].value, colorSliders[1].value, colorSliders[2].value);
         newTankMaterial.color = newColor;
+        newTurretMaterial.color = newColor;
         newHatMaterial.color = newColor;
     }
 
     public void ChangeValue(Text valueText)
     {
+        // Slider value is a percentage and must be converted
+
         float value = Mathf.Round(255 * (currentSlider.value / 2));
         
         valueText.text = value.ToString();
@@ -66,7 +79,7 @@ public class CustomizationMenu : MonoBehaviour
         currentSlider = slider;
     }
 
-    public void SaveCustomization()
+    public void SavePlayerCustomization()
     {
         CustomizationData customData = new CustomizationData(
             newColor,

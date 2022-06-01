@@ -385,13 +385,13 @@ public class BuilderController : MonoBehaviour
         if (garageHover.collider != null)
         {
             selection = garageHover.transform;
-            selection.GetComponent<GarageTrigger>().ShowHover();
+            selection.GetComponent<GarageTrigger>().ShowIndicator();
             garageSelection = selection;
         }
 
 /*        if (garageSelection != null && selection == null)
         {
-            garageSelection.GetComponent<GarageTrigger>().HideHover();
+            garageSelection.GetComponent<GarageTrigger>().CloseIndicator();
             garageSelection = null;
         }*/
     }
