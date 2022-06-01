@@ -191,7 +191,7 @@ public class WheelSelection : MonoBehaviour
             p2Ability.color = Color.white;
             p2Damage.color = Color.white;
             p2FireRate.color = Color.white;
-            p2Range.color = Color.white;
+            //p2Range.color = Color.white;
         }
 
 
