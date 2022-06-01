@@ -164,7 +164,7 @@ public class MissileTower : Tower
     protected override void TowerLevel3()
     {
         base.TowerLevel3();
-        if (gameManager.SpendResources(level3Cost, 0f))
+        if (gameManager.SpendResources(level3Cost, Level3MaterialCost))
         {
             towerManager.IncreaseUpgradesPurchased();
             MissileTower missileTower = towerManager.ClickedTower.GetComponent<MissileTower>();
