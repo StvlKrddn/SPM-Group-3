@@ -6,34 +6,33 @@ using UnityEngine.UI;
 
 public abstract class EnemyController : MonoBehaviour
 {
-    public float speed = 10f;
-    [SerializeField] private float health = 100f;
-    public GameObject deathEffect;
-    [SerializeField] private float meleeDamage;
-    private GameManager gM;
-    private Transform target;
+    private GameManager gameManager;
     private HealthBar healthBar;
-    protected int currWaypointIndex = 0;
-    public int damageBase = 10;
-    public int moneyDrop = 10;
-    public bool materialDrop = false;
-
-    private GameObject hitByPoisonEffect;
     private float defaultSpeed;
-    private List<float> poisonTickTimers = new List<float>();
-    public bool spread = false;
-    private float amountOfTicks;
-    private float amountOfDps;
-    private float maxHealthDamage;
-    private bool dead = false;
     private float currentHealth;
-    public int path;
-    protected List<Transform[]> wayPoints;
+    private List<float> poisonTickTimers = new List<float>();
+    private bool dead = false;
     private MaterialHolder materialHolder;
-
     private Color moneyColor = new Color(255, 100, 0, 255);
-    public GameObject changerText;
+    private float defaultAnimationSpeed;
+    [SerializeField] private float health = 100f;
+    [SerializeField] private float meleeDamage;
     [SerializeField] private Transform spawnTextPosition;
+    [SerializeField] private PoisonTowerEffect poisonTowerEffect;
+    [SerializeField] protected Animator animator;
+
+    protected Transform target;
+    protected int currentWaypointIndex = 0;
+    protected List<Transform[]> wayPoints;
+
+    public float Speed = 10f;
+    public GameObject DeathEffect;
+    public int DamageBase = 10;
+    public int MoneyDrop = 10;
+    public bool MaterialDrop = false;
+    public int Path;
+    public bool Spread = false;
+    public GameObject ChangerText;
 
     public List<float> PoisonTickTimers { get { return poisonTickTimers; } set { poisonTickTimers = value; } }
     public float DefaultSpeed {  get { return defaultSpeed; } set { defaultSpeed = value; } }
@@ -41,42 +40,29 @@ public abstract class EnemyController : MonoBehaviour
     public float Health { get { return health; } }
 
 	// Start is called before the first frame update
-	protected virtual void OnEnable()
-	{
-        
-        currentHealth = health;
-        currWaypointIndex = 0;
-        poisonTickTimers.Clear();
-        dead = false;
-        //healthBar.ResetHealth();
-        healthBar.slider.maxValue = health;
-        healthBar.slider.value = health;
-        path = Waypoints.instance.GivePath();
-        target = wayPoints[path][currWaypointIndex];
-    }
-
-	private void OnDestroy()
-	{
-        Destroy(changerText);
-	}
 
 	protected virtual void Awake() 
     {
-        defaultSpeed = speed;
+        defaultSpeed = Speed;
         currentHealth = health;
-        gM = GameManager.Instance;
+        gameManager = GameManager.Instance;
         healthBar = GetComponentInChildren<HealthBar>();
         healthBar.slider.maxValue = health;
         healthBar.slider.value = health;
+        if (animator != null)
+        {
+            defaultAnimationSpeed = animator.speed;
+        }
+
         wayPoints = Waypoints.instance.GetWaypoints();
         materialHolder = FindObjectOfType<MaterialHolder>();
-        changerText.GetComponentInChildren<Text>().text = moneyDrop.ToString();
-        changerText.GetComponentInChildren<Text>().color = moneyColor;
-        changerText = Instantiate(changerText, spawnTextPosition.position, spawnTextPosition.rotation, GameManager.Instance.transform.Find("DropTexts"));
-        changerText.SetActive(false);
-        //Change to right tank when done with tanks
-    }
 
+        ChangerText.GetComponentInChildren<Text>().text = MoneyDrop.ToString();
+        ChangerText.GetComponentInChildren<Text>().color = moneyColor;
+        ChangerText = Instantiate(ChangerText, spawnTextPosition.position, spawnTextPosition.rotation, GameManager.Instance.transform.Find("DropTexts"));
+        ChangerText.SetActive(false);
+        //Set base values. Gets changertext, movement, health and healthbar, speed and waypoints/path
+    }
     protected virtual void Start() {}
 
     // Update is called once per frame
@@ -85,44 +71,89 @@ public abstract class EnemyController : MonoBehaviour
         MoveStep();   
     }
 
+	protected virtual void OnEnable()
+	{
+        currentHealth = health;
+        currentWaypointIndex = 0;
+        poisonTickTimers.Clear();
+        dead = false;
+        healthBar.slider.maxValue = health;
+        healthBar.slider.value = health;
+        Path = Waypoints.instance.GivePath();
+        target = wayPoints[Path][currentWaypointIndex];
+    }
+
+	protected virtual void OnDestroy()
+	{
+        Destroy(ChangerText);
+	}
+
+
 	public void MoveStep()
     {
         //WIP Enemy moves right direction
         Vector3 direction = target.position - transform.position;
         direction.Normalize();
-        transform.position += speed * direction * Time.deltaTime;
+        transform.position += Speed * Time.deltaTime * direction;
+        if (Vector3.Distance(transform.position, target.transform.position) < 0.2f)
+        {
+            if (wayPoints[Path].Length - 1 <= currentWaypointIndex) // Changes waypoint to til the enemy reaches the last waypoint
+            {
+                EnemyDeathBase();
+                return;
+            }
+            currentWaypointIndex++;
+            target = wayPoints[Path][currentWaypointIndex];
+            transform.LookAt(target);
+        }
     }
 
     private void EnemyDeathBase()
     {
-        gM.TakeDamage(damageBase, gameObject);
-        DieEvent dieEvent = new DieEvent("död från bas", gameObject, null, null);
+        gameManager.TakeDamage(DamageBase, gameObject);
+        DieEvent dieEvent = new DieEvent("dead of base", gameObject, null, null);
         EventHandler.InvokeEvent(dieEvent);
+        gameObject.SetActive(false);
+    }
+
+    public void EnemyDeath()
+    {
+        gameManager.AddMoney(MoneyDrop); // add money and spawn material
+        
+        // Spawns a changerText for indikation for gaining money
+
+        if(ChangerText != null && spawnTextPosition != null)
+        {
+            ChangerText.transform.SetPositionAndRotation(spawnTextPosition.position, spawnTextPosition.rotation);
+            ChangerText.SetActive(true);
+        }
+
+        if (MaterialDrop == true)
+        {
+			materialHolder.GiveMaterial(transform.position, transform.rotation);
+        }
+        //Deathevent to wavemanager
+        DieEvent dieEvent = new DieEvent("dead", gameObject, null, null);
+        EventHandler.InvokeEvent(dieEvent);
+        Destroy(Instantiate(DeathEffect, transform.position, Quaternion.identity), 1f);
         gameObject.SetActive(false);
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Waypoint"))
-        {
-            if (wayPoints[path].Length - 1 <= currWaypointIndex) // Changes waypoint to til the enemy reaches the last waypoint
-            {
-                EnemyDeathBase();
-                return;
-            }
-            currWaypointIndex++;
-            target = wayPoints[path][currWaypointIndex];
-            transform.LookAt(target);
-        }
-
         if (other.gameObject.CompareTag("PlayerShots"))
         {
             BulletBehavior playerBullet = other.GetComponent<BulletBehavior>();
-            
             TakeDamage(playerBullet.BulletDamage);
         }
     }
-
+    private void OnParticleCollision(GameObject other)
+    {
+        if (other.CompareTag("Flamethrower"))
+        {
+            HitByFire(Flamethrower.FireDamage * Time.fixedDeltaTime);
+        }
+    }
     public virtual void TakeDamage(float damage)
     {
         currentHealth -= damage;
@@ -134,125 +165,41 @@ public abstract class EnemyController : MonoBehaviour
         }
     }
 
-    public void EnemyDeath()
-    {
-        gM.AddMoney(moneyDrop); // add money and spawn material
-        
-        // Spawns a changerText for indikation for gaining money
-
-        if(changerText != null && spawnTextPosition != null)
-        {
-            changerText.transform.position = spawnTextPosition.position;
-            changerText.transform.rotation = spawnTextPosition.rotation;
-            changerText.SetActive(true);
-        }
-
-        if (materialDrop == true)
-        {
-			materialHolder.GiveMaterial(transform.position, transform.rotation);
-        }
-        DieEvent dieEvent = new DieEvent("d�d", gameObject, null, null);
-        EventHandler.InvokeEvent(dieEvent);
-        Destroy(Instantiate(deathEffect, transform.position, Quaternion.identity), 1f);
-        gameObject.SetActive(false);
-    }
-
-    private void OnParticleCollision(GameObject other)
-    {
-        if (other.CompareTag("Flamethrower"))
-        {
-            HitByFire(Flamethrower.FireDamage * Time.fixedDeltaTime);
-        }
-    }
-
     public virtual void HitByFire(float damage)
 	{
+        //Used for specific enemy
 		TakeDamage(damage);
 	}
 
-/*    public void HitBySlow(float slowProc, float radius, bool areaOfEffect)
+    public void HitBySlow()
     {
-        if (!areaOfEffect)
+        if (animator != null)
         {
-            speed *= slowProc;
-            Invoke(nameof(SlowDuration), 3f);
-        }
-        else
-        {
-            Collider[] colliders = Physics.OverlapSphere(transform.position, radius);
-            foreach (Collider c in colliders)
-            {
-                if (c.GetComponent<EnemyController>())
-                {
-                    EnemyController eC = c.GetComponent<EnemyController>();
-                    eC.speed *= slowProc;
-                    eC.Invoke(nameof(SlowDuration), 3f);
-                }
-            }
+            animator.speed = Speed / DefaultSpeed; 
         }
     }
 
-    private void SlowDuration()
+    public void ResetAnimator()
     {
-        speed = defaultSpeed;
+        if (animator != null)
+        {
+            animator.speed = defaultAnimationSpeed;
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (spread)
+        if (Spread)
         {
             if (collision.gameObject.CompareTag("Enemy"))
             {
-                if (poisonTickTimers != null)
+                if (GetComponent<EnemyController>().PoisonTickTimers.Count != 0)
                 {
-                    print("DamageTaken");
-                    EnemyController eC = collision.gameObject.GetComponent<EnemyController>();
-                    eC.HitByPoison(amountOfTicks, hitByPoisonEffect, amountOfDps, maxHealthDamage);
+                    PoisonTower poisonTower = poisonTowerEffect.poisonTower.GetComponent<PoisonTower>();
+                    poisonTowerEffect.HitByPoison(poisonTower.PoisonTicks, poisonTower.OnHitEffect, poisonTower.PoisonDamagePerTick, poisonTower.MaxHealthPerTick, 0);
                 }
             }
         }
+        
     }
-
-
-
-    public void HitByPoison(float ticks, GameObject hitEffect, float dps, float currentHealthDamage)
-    {
-        amountOfTicks = ticks;
-        amountOfDps = dps;
-        maxHealthDamage = currentHealthDamage;
-        GameObject poisonEffect = Instantiate(hitEffect, gameObject.transform);
-        Destroy(poisonEffect, ticks);
-        if (poisonTickTimers.Count <= 0)
-        {
-            poisonTickTimers.Add(ticks);
-            StartCoroutine(PoisonTick(dps, currentHealthDamage));
-        }
-    }
-
-    private IEnumerator PoisonTick(float dps, float maxHealthDamage)
-    {
-        while (poisonTickTimers.Count > 0)
-        {
-            for (int i = 0; i < poisonTickTimers.Count; i++)
-            {
-                poisonTickTimers[i]--;
-            }
-            TakeDamage(dps);
-            TakeDamage(health * maxHealthDamage);
-            poisonTickTimers.RemoveAll(i => i == 0);
-            yield return new WaitForSeconds(0.75f);
-        }
-    }
-
-    public virtual void HitBySplash(float radius, float splashDamage)
-    {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, radius);
-        foreach (Collider c in colliders)
-        {
-            if (c.GetComponent<EnemyController>())
-            {
-                c.GetComponent<EnemyController>().TakeDamage(splashDamage);
-            }
-        }
-    }*/
 }

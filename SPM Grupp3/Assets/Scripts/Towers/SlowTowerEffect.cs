@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class SlowTowerEffect : MonoBehaviour
 {
-    private EnemyController enemy;
+    private float effectDuration = 3f;
+    private EnemyController enemyController;
 
 	public void HitBySlow(EnemyController enemy, float slowProc, float radius, bool areaOfEffect, bool stun)
     {
-        this.enemy = enemy;
         if (!areaOfEffect)
         {
-            enemy.speed *= slowProc;
-            StartCoroutine(SlowDuration(enemy));
+            enemyController = enemy;
+            SlowEnemy(slowProc);
         }
         else
         {
@@ -21,23 +21,28 @@ public class SlowTowerEffect : MonoBehaviour
             {
                 if (enemyCollider.GetComponent<EnemyController>())
                 {
-                    EnemyController enemyController = enemyCollider.GetComponent<EnemyController>();
+                    enemyController = enemyCollider.GetComponent<EnemyController>();
                     if (stun)
                     {
-                        enemyController.speed = 0;
-                        StartCoroutine(SlowDuration(enemyController));
-                        return;
+                        slowProc = 0;
                     }
-                    enemyController.speed *= slowProc;
-                    StartCoroutine(SlowDuration(enemyController));
+                    SlowEnemy(slowProc);
                 }
             }
         }
     }
 
-    private IEnumerator SlowDuration(EnemyController enemyController)
+    private void SlowEnemy(float slowProc)
     {
-        yield return new WaitForSeconds(3f);
-        enemyController.speed = enemyController.DefaultSpeed;
+        enemyController.Speed = enemyController.DefaultSpeed * slowProc;
+        enemyController.HitBySlow();
+        StartCoroutine(SlowDuration());
+    }
+
+    private IEnumerator SlowDuration()
+    {
+        yield return new WaitForSeconds(effectDuration);
+        enemyController.Speed = enemyController.DefaultSpeed;
+        enemyController.ResetAnimator();
     }
 }

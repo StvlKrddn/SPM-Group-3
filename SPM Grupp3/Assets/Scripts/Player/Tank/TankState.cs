@@ -10,41 +10,41 @@ public class TankState : MonoBehaviour
     [SerializeField] private float health = 50f;
     [SerializeField] private Animator animator;
     [SerializeField] private GameObject destroyEffect;
-    public int levelOfTank;
+    [SerializeField] private ParticleSystem[] hitEffects;
+    public int LevelOfTank;
 
     // Components
-    Rigidbody rb;
-    Transform turretObject;
+    private Rigidbody rb;
 
     // Input components
-    InputAction moveAction;
-    InputAction aimAction;
-    InputAction abilityAction;
+    private InputAction moveAction;
+    private InputAction aimAction;
+    private InputAction abilityAction;
 
     // Instance variables
-    Vector2 gamepadInputVector;
-    protected Vector3 aimInputVector;
-    float aimSpeed;
-    float standardSpeed;
-    Matrix4x4 isoMatrix;
-
-    Transform spawnPoint;
-    Transform garage;
-    PlayerInput playerInput;
-    PlayerHandler playerHandler;
-
-    float currentHealth;
-    float playerID;
-    public TankUpgradeTree tankUpgradeTree;
-    [SerializeField] private TankUpgradeTree tankUpgradeTreeOne;
-    [SerializeField] private TankUpgradeTree tankUpgradeTreeTwo;
-    [SerializeField] private HealthBar healthBar;
-
+    private Vector2 gamepadInputVector;
+    private float aimSpeed;
+    private float standardSpeed;
+    private Matrix4x4 isoMatrix;
+    private Transform garage;
+    private PlayerInput playerInput;
+    private PlayerHandler playerHandler;
+    private float currentHealth;
+    private Transform spawnPoint;
+    private float playerID;
     private int hurMangaGangerDamage = 0;
     private bool invincibilityFrame = false;
     private Color player1Color;
     private Color player2Color;
 
+    [SerializeField] private HealthBar healthBar;
+    [SerializeField] private TankUpgradeTree tankUpgradeTreeOne;
+    [SerializeField] private TankUpgradeTree tankUpgradeTreeTwo;
+
+    protected Vector3 aimInputVector;
+
+    public TankUpgradeTree tankUpgradeTree;
+    public Transform TurretObject;
 
     // Getters and Setters
     public float StandardSpeed { 
@@ -91,7 +91,7 @@ public class TankState : MonoBehaviour
         healthBar.slider.maxValue = health;
         healthBar.HandleHealthChanged(health);
 
-        turretObject = transform.GetChild(0);
+        TurretObject = transform.GetChild(0);
         
         aimSpeed = standardSpeed * 5;
 
@@ -163,7 +163,6 @@ public class TankState : MonoBehaviour
         animator.SetBool("isMoving", moveAction.IsPressed());
 
         Move();
-        //levelOfTank = UpgradeController.instance.currentUpgradeLevel;
     }
 
     void Move()
@@ -174,7 +173,7 @@ public class TankState : MonoBehaviour
         // Translate vector to an isometric viewpoint
         Vector3 skewedVector = TranslateToIsometric(movementVector);
         
-        Vector3 movement = skewedVector * standardSpeed * Time.deltaTime;
+        Vector3 movement = standardSpeed * Time.deltaTime * skewedVector;
 
         rb.MovePosition(transform.position + movement);
 
@@ -193,7 +192,7 @@ public class TankState : MonoBehaviour
 
         if (aimAction.IsPressed())
         {
-            turretObject.rotation = Quaternion.Slerp(turretObject.rotation, Quaternion.LookRotation(skewedVector), Time.deltaTime * aimSpeed);
+            TurretObject.rotation = Quaternion.Slerp(TurretObject.rotation, Quaternion.LookRotation(skewedVector), Time.deltaTime * aimSpeed);
         }
     } 
 
@@ -208,13 +207,13 @@ public class TankState : MonoBehaviour
         if (other.CompareTag("EnemyBullet"))
         {
             EnemyBullet enemyBullet = other.gameObject.GetComponent<EnemyBullet>();
-            TakeDamage(enemyBullet.damage);
+            TakeDamage(enemyBullet.Damage);
         }
         else if (other.CompareTag("MortarBullet"))
         {
             hurMangaGangerDamage += 1; 
             EnemyMortarShot enemyMortarShot = other.gameObject.GetComponentInParent<EnemyMortarShot>();
-            TakeDamage(enemyMortarShot.damage);
+            TakeDamage(enemyMortarShot.Damage);
 
         }
     }
@@ -245,6 +244,10 @@ public class TankState : MonoBehaviour
             invincibilityFrame = true;
             currentHealth -= damage;
             healthBar.HandleHealthChanged(currentHealth);
+
+            for(int i = 0; i < hitEffects.Length; i++)
+                hitEffects[i].Play();
+
             if (currentHealth <= 0 && !playerHandler.Destroyed)
             {
                 DestroyTank();

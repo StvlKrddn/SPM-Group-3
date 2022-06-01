@@ -5,45 +5,49 @@ using UnityEngine;
 public abstract class Tower : MonoBehaviour
 {
     [Header("Unity Setup Fields")]
-
+    [SerializeField] private FadeBehaviour fadeBehaviour;
     [SerializeField] protected string enemyTag = "Enemy";
     [SerializeField] protected float turnSpeed = 10f;
     [SerializeField] protected GameObject shot;
     [SerializeField] protected Transform firePoint;
-    public GameObject radius;
-    protected GameManager gM;
-    public GameObject onHitEffect;
-    protected TowerUpgradeController tUC;
-    public GameObject tower;
-    public GameObject towerPlacement;
-
-    [SerializeField] private FadeBehaviour fadeBehaviour;
+    protected TowerManager towerManager;
+    protected GameManager gameManager;
+    public GameObject Radius;
+    public GameObject OnHitEffect;
+    public GameObject TowerPlacement;
 
     [Header("BaseStats")]
 
-    public float range = 15f;
-    [SerializeField] protected float fireRate = 1f;
     [SerializeField] private float shotDamage = 5000f;
+    [SerializeField] protected float fireRate = 1f;
+    public float range = 15f;
     public float cost = 150f;
     public float materialCost;
+
+    protected GameObject level1Visual;
+    protected GameObject level2Visual;
+    protected GameObject level3Visual;
+
     protected List<GameObject> shots = new List<GameObject>();
-
-    public float ShotDamage { get { return shotDamage; } set { shotDamage = value; } }
-
     protected Transform target;
-
     protected Shot bullet;
-
-
+    public float ShotDamage { get { return shotDamage; } set { shotDamage = value; } }
 
     public abstract void HitTarget(GameObject hit, GameObject hitEffect);
     public abstract void ShowUpgradeUI(Transform towerMenu);
     public abstract float UpgradeCostUpdate();
 
+    protected virtual void GetVisualUpgrade(Tower tower)
+    {
+        level1Visual = tower.transform.Find("Container").Find("Level1").gameObject;
+        level2Visual = tower.transform.Find("Container").Find("Level2").gameObject;
+        level3Visual = tower.transform.Find("Container").Find("Level3").gameObject;
+    }
+
     public void LevelUpTower()
     {
-        tUC = TowerUpgradeController.Instance;
-        switch (tUC.GetUpgradesPurchased())
+        towerManager = TowerManager.Instance;
+        switch (towerManager.GetUpgradesPurchased())
         {
             case 0:
                 TowerLevel1();
@@ -78,31 +82,33 @@ public abstract class Tower : MonoBehaviour
 
     protected virtual void TowerLevel1()
     {
-        gM = GameManager.Instance;
-        tUC = TowerUpgradeController.Instance;
+        gameManager = GameManager.Instance;
+        towerManager = TowerManager.Instance;
     }
     protected virtual void TowerLevel2()
     {
-        gM = GameManager.Instance;
-        tUC = TowerUpgradeController.Instance;
+        gameManager = GameManager.Instance;
+        towerManager = TowerManager.Instance;
     }
     protected virtual void TowerLevel3()
     {
-        gM = GameManager.Instance;
-        tUC = TowerUpgradeController.Instance;
+        gameManager = GameManager.Instance;
+        towerManager = TowerManager.Instance;
     }
 
     protected abstract void Level1(GameObject tower);
     protected abstract void Level2(GameObject tower);
     protected abstract void Level3(GameObject tower);
 
-    public void ShowHoverEffect()
+    public void ShowHover()
     {
-        fadeBehaviour.Hover();
+        if(fadeBehaviour.Faded())
+            fadeBehaviour.Fade();
     }
-    public void HideHoverEffect()
+    public void HideHover()
     {
-        fadeBehaviour.HideHover();
+        if (!fadeBehaviour.Faded())
+            fadeBehaviour.Fade();
     }
 
     void UpdateTarget()
@@ -153,12 +159,10 @@ public abstract class Tower : MonoBehaviour
     {
         if (target != null)
         {
-            // Lock on target
             Vector3 direction = target.position - transform.position;
             Quaternion lookRotation = Quaternion.LookRotation(direction);
             Vector3 rotation = Quaternion.Lerp(transform.rotation, lookRotation, Time.deltaTime * turnSpeed).eulerAngles;
-            transform.rotation = Quaternion.Euler(0f, rotation.y, 0f);
-  
+            transform.rotation = Quaternion.Euler(0f, rotation.y, 0f);  
         }
     }
 }

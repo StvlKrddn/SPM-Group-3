@@ -24,17 +24,16 @@ public class WaveManager : MonoBehaviour
     private float spawnRate = 0;
     private bool spawnEnemies = true;
     private int waveMoneyBonus;
-    private List<GameObject> currentWaveEnemies = new List<GameObject>();
-    private List<GameObject> poolOfEnemies = new List<GameObject>();
+    private readonly List<GameObject> currentWaveEnemies = new List<GameObject>();
+    private readonly List<GameObject> poolOfEnemies = new List<GameObject>();
     private Text waveUI;
     private GameObject startHint;
     private GameObject waveStarted;
     private GameObject waveCleared;
-    private Dictionary<int, float> changeSpawnRate = new Dictionary<int, float>();
+    private readonly Dictionary<int, float> changeSpawnRate = new Dictionary<int, float>();
     private Waypoints wayPoints;
     private List<Transform[]> wayPostions;
-
-    //public int timeToWaitBetweenWave; 
+ 
 
     private void Awake()
     {
@@ -56,10 +55,6 @@ public class WaveManager : MonoBehaviour
         gameManager = GameManager.Instance;
         currentWave = gameManager.CurrentWave;
 
-    }
-
-    private void OnEnable()
-    {
     }
 
     private void OnDestroy()
@@ -142,11 +137,9 @@ public class WaveManager : MonoBehaviour
         {
             n--;
             int k = UnityEngine.Random.Range(0, n + 1);
-            GameObject value = list[k];
-            list[k] = list[n];
-            list[n] = value;
-        }
-    }
+			(list[n], list[k]) = (list[k], list[n]);
+		}
+	}
 
     private IEnumerator ClearInactive()
     {
@@ -161,7 +154,6 @@ public class WaveManager : MonoBehaviour
             }
             else if (poolOfEnemies.Count < poolCount)
             {
-                print("Head out");
                 break;
             }
         }
@@ -253,8 +245,8 @@ public class WaveManager : MonoBehaviour
     private void UseInactive(GameObject enemy, int givenPath)
     {
         EnemyController enemyController = enemy.GetComponent<EnemyController>();
-        enemyController.path = givenPath;
-        enemyController.transform.position = wayPostions[enemyController.path][0].position;
+        enemyController.Path = givenPath;
+        enemyController.transform.position = wayPostions[enemyController.Path][0].position;
         enemyController.gameObject.SetActive(true);
     }
 
@@ -293,6 +285,37 @@ public class WaveManager : MonoBehaviour
             print("Wave " + (i + 1) + " is " + waveInfo.waveDuration + " seconds long");
         }
     }
+
+    [ContextMenu("Calculate amount of enemies")]
+    public void CalculateAmountOfEnemies()
+    {   int totalenemies = 0; 
+        for (int i = 0; i < waves.Length; i++)
+        {
+            WaveInfo waveInfo = waves[i];
+            waveInfo.waveDuration = 0;
+            int temp = 0;
+            for (int j = 0; j < waveInfo.subWaves.Length; j++)
+            {
+                SubWave subwave = waveInfo.subWaves[j];
+                for (int k = 0; k < subwave.enemies.Length; k++)
+                {
+                    EnemyStruct enemy = subwave.enemies[k];
+
+                    temp += enemy.amount;
+
+                    totalenemies+= enemy.amount;
+
+
+                }
+            }
+           print("Wave " + (i + 1) + " is " + temp + "enemies");
+
+           // print(temp);
+        }
+
+        print("Totala antalet fiender " +totalenemies);
+    }
+
 
     public GameObject GetPooledEnemy(GameObject enemy)
     {
@@ -386,12 +409,6 @@ public struct SubWave
 {
     public EnemyStruct[] enemies;
     public float spawnRate;
- //   public bool waitBetweenWave;
-  //  public int timeToWait;
-    //public bool waitBetweenWave; 
-
-
- 
 }
 
 [Serializable]

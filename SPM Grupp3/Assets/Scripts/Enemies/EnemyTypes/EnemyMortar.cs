@@ -4,28 +4,29 @@ using UnityEngine;
 
 public class EnemyMortar : EnemyController
 {
-    public float timer = 2;
-    public int cd = 5;
-    private TankState[] tanks;
+    private readonly List<GameObject> shots = new List<GameObject>();
     private Transform explosionRadius = null;
-    public Rigidbody mortarRigidbody;
-    private List<GameObject> shots = new List<GameObject>();
+    private TankState[] tanks;
+	[SerializeField] private float timer = 2;
+    [SerializeField] private int cooldown = 5;
+    [SerializeField] private Rigidbody mortarRigidbody;
 
     // Update is called once per frame
     protected override void Awake()
     {
         base.Awake();
-        timer = Random.Range(timer, cd - 1);
+        timer = Random.Range(timer, cooldown - 1);
     }
 
 	protected override void OnEnable()
 	{
 		base.OnEnable();
-        timer = Random.Range(timer, cd - 1);
+        timer = Random.Range(timer, cooldown - 1);
     }
 
-	private void OnDestroy()
+	protected override void OnDestroy()
 	{
+		base.OnDestroy();
         foreach (GameObject shot in shots)
         {
             Destroy(shot);
@@ -37,7 +38,7 @@ public class EnemyMortar : EnemyController
     {
         MoveStep();
         timer += Time.deltaTime;
-        if (timer >= cd)
+        if (timer >= cooldown)
         {
             CalculateTarget();
             if (explosionRadius != null)
@@ -72,12 +73,20 @@ public class EnemyMortar : EnemyController
 
     private void LaunchShot()
     {
+        Rigidbody rigidbody;
         int mortarIndex = FindEmptyMortar();
         if (mortarIndex < 0)
         {
-            Rigidbody rigidbody = Instantiate(mortarRigidbody, transform.position, mortarRigidbody.rotation, GameManager.Instance.transform.Find("EnemyContainer"));
+            rigidbody = Instantiate(mortarRigidbody, transform.position, mortarRigidbody.rotation, GameManager.Instance.transform.Find("EnemyContainer"));
             rigidbody.velocity = explosionRadius.position;
             shots.Add(rigidbody.gameObject);
+        }
+        else
+        {
+            rigidbody = shots[mortarIndex].GetComponent<Rigidbody>();
+            rigidbody.velocity = explosionRadius.position;
+            rigidbody.transform.SetPositionAndRotation(transform.position, transform.rotation);
+            rigidbody.gameObject.SetActive(true);
         }
     }
 

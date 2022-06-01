@@ -8,10 +8,6 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    //[Header("Stats: ")]
-    //[SerializeField] private float baseHealth = 100f;
-    //[SerializeField] private float material = 0f;
-    //[SerializeField] private float money = 350f;
     [SerializeField] private BaseStats baseStats;
 
     [Header("UI: ")]
@@ -19,9 +15,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Text materialCounterUI;
     [SerializeField] private ParticleSystem moneyParticle;
     [SerializeField] private ParticleSystem materialParticle;
+    private Color moneyBaseColor;
+    private Color materialBaseColor;
+    [SerializeField] private GameObject SpendEffektPrefab;
 
-    //[Header("Players: ")]
-    //[SerializeField] private PlayerMode startingMode;
     [NonSerialized] public Color Player1Color;
     [NonSerialized] public Color Player2Color;
 
@@ -36,7 +33,7 @@ public class GameManager : MonoBehaviour
     private GameObject damagingEnemy;
     private WaveManager waveManager;
     private Canvas canvas;
-    private Slider livesSlider;
+    private GameObject livesSlider;
     private HealthBar healthBar;
     private float money;
     private float material;
@@ -71,6 +68,7 @@ public class GameManager : MonoBehaviour
 
     void Awake() 
     {
+
 
         EventHandler.RegisterListener<SaveGameEvent>(SaveGame);
         buildManager = FindObjectOfType<BuildManager>();
@@ -111,20 +109,20 @@ public class GameManager : MonoBehaviour
         UpgradeController.currentUpgradeLevel = saveData.tankUpgradeLevel;
         
         Invoke(nameof(FixUpgradeDelay), 0.01f);
+        
+        //Temporary - must fix <----
+        Player1Color = baseStats.Player1Color;
+        Player2Color = baseStats.Player2Color;
     }
 
     private void LoadCustomizationData()
     {
-        CustomizationData customData = (CustomizationData) DataManager.ReadFromFile(DataManager.CustomizationData);
-
-        Player1Color = customData.player1Color;
-        Player2Color = customData.player2Color;
+        
     }
 
-    private void FixUpgradeDelay(GameObject tank)
+    private void FixUpgradeDelay()
     {
         UpgradeController.Instance.FixUpgrades(FindObjectOfType<TankState>().gameObject);
-        UpgradeController.Instance.FixUpgrades(tank);
     }
 
     private void LoadBase()
@@ -164,7 +162,12 @@ public class GameManager : MonoBehaviour
 
         canvas = UI.Canvas;
 
+        moneyBaseColor = moneyCounterUI.color;
+        materialBaseColor = materialCounterUI.color;
+
         UpdateUI();
+
+        
 
         victoryPanel.SetActive(false);
         defeatPanel.SetActive(false);
@@ -179,8 +182,12 @@ public class GameManager : MonoBehaviour
         moneyCounterUI = topPanel.Find("MoneyHolder").Find("MoneyCounter").GetComponent<Text>();
         materialCounterUI = topPanel.Find("MaterialHolder").Find("MaterialCounter").GetComponent<Text>();
 
+        
+
         healthBar = canvas.GetComponent<HealthBar>();
-        //livesSlider = canvas.Find("LivesSlider").GetComponent<Slider>();
+        livesSlider = canvas.Find("LivesSlider").gameObject;
+
+        livesSlider.SetActive(true);
 
         victoryPanel = canvas.Find("VictoryPanel").gameObject;        
         defeatPanel = canvas.Find("DefeatPanel").gameObject;
@@ -235,6 +242,7 @@ public class GameManager : MonoBehaviour
 
 
         }
+           
         UpdateUI();
     }
 
@@ -255,12 +263,6 @@ public class GameManager : MonoBehaviour
             UpgradeController.currentUpgradeLevel
         );
         DataManager.WriteToFile(saveData, DataManager.SaveData);
-
-        CustomizationData customData = new CustomizationData(
-            Player1Color,
-            Player2Color
-        );
-        DataManager.WriteToFile(customData, DataManager.CustomizationData);
     }
 
     public void TakeDamage(float damage, GameObject enemy)
@@ -268,7 +270,6 @@ public class GameManager : MonoBehaviour
         damagingEnemy = enemy;
         currentBaseHealth -= damage;
         healthBar.HandleHealthChanged(currentBaseHealth);
-        //livesSlider.value -= damage;
         if (currentBaseHealth <= 0)
         {
             Defeat();
@@ -301,18 +302,10 @@ public class GameManager : MonoBehaviour
         {
             materialCounterUI.text = mat.ToString();
         }
-
-        /*waveCounter.GetComponent<Text>().text = (currentWave + 1) + "/" + GetComponent<WaveManager>().waves.Length;*/
     }
 
     public void AddMoney(float addMoney)
     {
-        /*      moneyChangerUI.color = colorGain;
-                moneyChangerUI.text = "+" + addMoney;
-
-                Instantiate(moneyChangerUI, moneyUI.transform);
-        */
-
         if (moneyParticle != null)
             moneyParticle.Play();
 
@@ -323,11 +316,6 @@ public class GameManager : MonoBehaviour
 
     public void AddMaterial(float addMaterial)
     {
-        /*      materialChangerUI.color = colorGain;
-                materialChangerUI.text = "+" + addMaterial;
-
-                Instantiate(materialChangerUI, materialUI.transform);*/
-
         if(materialParticle != null)
             materialParticle.Play();
 
@@ -336,31 +324,71 @@ public class GameManager : MonoBehaviour
         UpdateUI();
     }
 
+    private IEnumerator currentMoneyCoroutine;
+    private IEnumerator currentMaterialCoroutine;
+
     public bool SpendResources(float moneySpent, float materialSpent)
     {
         if (moneySpent <= money && materialSpent <= material)
         {
-            money -= moneySpent;
-/*          moneyChangerUI.color = Color.red;
-            moneyChangerUI.text = "-" + moneySpent;*//*
-
-            Instantiate(moneyChangerUI, moneyUI.transform);*/
-
-            material -= materialSpent;
-/*            if (materialSpent > 0) 
+            if(moneySpent > 0)
             {
-                materialChangerUI.color = Color.red;
-                materialChangerUI.text = "-" + materialSpent;
+                money -= moneySpent;
 
-                Instantiate(materialChangerUI, materialUI.transform);
-            }*/
-               
+                /*
+                if (currentMoneyCoroutine != null)
+                    StopCoroutine(currentMaterialCoroutine);
+                */
 
+                currentMoneyCoroutine = DoColorBoughtFade(moneyCounterUI, moneyBaseColor, 2f);
+
+                StartCoroutine(currentMoneyCoroutine);
+
+                SpendEffektPrefab.GetComponentInChildren<Text>().text = moneySpent.ToString();
+
+                Instantiate(SpendEffektPrefab, moneyCounterUI.transform);
+            }
+            
+            if(materialSpent > 0)
+            {
+                material -= materialSpent;
+
+                /*
+                if (currentMaterialCoroutine != null)
+                    StopCoroutine(currentMaterialCoroutine);
+                */
+
+                currentMaterialCoroutine = DoColorBoughtFade(materialCounterUI, materialBaseColor, 2f);
+
+                StartCoroutine(currentMaterialCoroutine);
+
+                SpendEffektPrefab.GetComponentInChildren<Text>().text = materialSpent.ToString();
+
+                Instantiate(SpendEffektPrefab, materialCounterUI.transform);
+            }
+            
             UpdateUI();
             return true;
         }
         //Show Error
         return false;
+    }
+
+    private IEnumerator DoColorBoughtFade(Text textUI, Color toColor, float duration)
+    {
+        float counter = 0f;
+
+        textUI.color = Color.red;
+
+        yield return new WaitForSeconds(1f);
+
+        while (counter < duration)
+        {
+            counter += Time.deltaTime;
+            textUI.color = Color.Lerp(textUI.color, toColor, counter / duration);
+
+            yield return null;
+        }
     }
 
     public bool CheckIfEnoughResources(Tower tower)
@@ -379,7 +407,7 @@ public class GameManager : MonoBehaviour
 
     public void RemovePlacedTower(GameObject tower)
     {
-        PlacedTower clickedTower = TowerUpgradeController.Instance.GetPlacedTower(tower);
+        PlacedTower clickedTower = TowerManager.Instance.GetPlacedTower(tower);
         towersPlaced.Remove(clickedTower);
     }
 
@@ -399,6 +427,8 @@ public class GameManager : MonoBehaviour
 
         waveManager.Restart();
 
+        livesSlider.SetActive(false);
+
         defeatPanel.SetActive(true);
 
         buildManager.TowerToBuild = null;
@@ -411,8 +441,8 @@ public class GameManager : MonoBehaviour
 
         EventHandler.InvokeEvent(new VictoryEvent(
             description: "Victory",
-            money: (int) moneyCollected,
-            material: (int) materialCollected,
+            money: moneyCollected,
+            material: materialCollected,
             enemiesKilled: enemiesKilled,
             towersBuilt: 0
         ));
@@ -431,7 +461,6 @@ public class GameManager : MonoBehaviour
     {
         currentBaseHealth = baseHealth;
         healthBar.HandleHealthChanged(currentBaseHealth);
-        //livesSlider.value = currentBaseHealth;
     }
 }
 

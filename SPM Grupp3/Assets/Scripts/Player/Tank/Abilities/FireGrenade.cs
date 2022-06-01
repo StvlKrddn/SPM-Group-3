@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class FireGrenade : MonoBehaviour
 {
-    [SerializeField] private int damage;
     private SphereCollider sphereCollider;
+    [SerializeField] private int damage;
     [SerializeField] private float timer;
 
 
@@ -15,16 +15,6 @@ public class FireGrenade : MonoBehaviour
         sphereCollider = GetComponent<SphereCollider>();
 		StartCoroutine(TooLate());
     }
-
-    /*
-	public void OnCollisionEnter(Collision collision)
-	{
-        if (collision.collider.tag == "Enemy")
-        {
-	      //  StartCoroutine(Detonate());
-        }
-	}
-    */
 
 	public IEnumerator TooLate()
 	{

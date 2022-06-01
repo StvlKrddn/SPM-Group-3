@@ -8,7 +8,7 @@ public class GarageTrigger : MonoBehaviour
 {
     private InputAction acceptAction;
     private GameObject hintEnterUI;
-    private bool limit = false;
+    private readonly bool limit = false;
 
     [SerializeField] private FadeBehaviour fadeBehaviour;
 
@@ -17,23 +17,14 @@ public class GarageTrigger : MonoBehaviour
         hintEnterUI = UI.Canvas.transform.Find("EnterGarageHint").gameObject;
     }
 
-/*    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Tank"))
-        {
-            hintEnterUI.GetComponent<FadeBehaviour>().Fade();
-            //hintEnterUI.SetActive(true);
-        }
-    }*/
-
     public void ShowHover()
     {
-        fadeBehaviour.Hover();
+        fadeBehaviour.Fade();
     }
 
     public void HideHover()
-    {
-        fadeBehaviour.HideHover();
+    {   
+        fadeBehaviour.Fade();
     }
 
     private void OnTriggerStay(Collider other)
@@ -48,22 +39,13 @@ public class GarageTrigger : MonoBehaviour
 
             if (acceptAction.IsPressed() && limit == false)
             {
- 
-
-                print("kommer den hit");
-                hintEnterUI.SetActive(false);
-
                 if (!hintEnterUI.GetComponent<FadeBehaviour>().Faded())
                     hintEnterUI.GetComponent<FadeBehaviour>().Fade();
-
-                //hintEnterUI.SetActive(false);
 
                 EventHandler.InvokeEvent(new PlayerSwitchEvent(
                     description: "A player switched mode",
                     playerContainer: other.transform.parent.gameObject
                     ));
-
-                //hintEnterUI.SetActive(false);
 
             }
         }
@@ -75,12 +57,6 @@ public class GarageTrigger : MonoBehaviour
         {
             if(!hintEnterUI.GetComponent<FadeBehaviour>().Faded())
                 hintEnterUI.GetComponent<FadeBehaviour>().Fade();
-            //hintEnterUI.SetActive(false);
         }
-    }
-
-    public void ChangeLimit()
-    {
-        //limit = !limit; 
     }
 }

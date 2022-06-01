@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class PoisonTowerEffect : MonoBehaviour
 {
+    public Tower poisonTower;
     public void HitByPoison(float ticks, GameObject hitEffect, float dps, float currentHealthDamage, float range)
     {
+        poisonTower = GetComponent<PoisonTower>();
         Collider[] colliders = Physics.OverlapSphere(transform.position, range);
         foreach (Collider enemyCollider in colliders)
         {

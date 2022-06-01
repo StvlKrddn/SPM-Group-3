@@ -4,19 +4,14 @@ using UnityEngine;
 
 public class BulletBehavior : MonoBehaviour
 {
-    [SerializeField] protected float damage;
-    public bool penetrating;
-
+    private int penetrationCountMax;
     private WeaponSlot weapon;
-
+    private Vector3 originalPosition;
+    [SerializeField] private int penetrationCount = 2;
     [SerializeField] private float bulletSpeed;
     [SerializeField] private float range;
-    [SerializeField] private GameObject muzzleFlash;
-    
-    Vector3 originalPosition;
-    [SerializeField] private int penetrationCount = 2;
-    private int penetrationCountMax;
-    
+    [SerializeField] protected float damage;
+    [SerializeField] private bool penetrating;
 
     public float BulletDamage { get { return damage; } set { damage = value; } }
     public float BulletRange { get { return range; } set { range = value; } }
@@ -26,7 +21,7 @@ public class BulletBehavior : MonoBehaviour
         penetrationCountMax = penetrationCount;
 	}
 
-	void Start()
+	protected virtual void Start()
     {
         GameObject tank = GetComponentInParent<TankState>().gameObject;
         weapon = tank.GetComponent<WeaponSlot>();
@@ -62,7 +57,7 @@ public class BulletBehavior : MonoBehaviour
 
         if (relativePosition.magnitude < range)
         {
-            transform.position += transform.forward * bulletSpeed * Time.deltaTime;
+            transform.position += bulletSpeed * Time.deltaTime * transform.forward;
         }
         else
         {

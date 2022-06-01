@@ -4,38 +4,38 @@ using UnityEngine;
 
 public class EnemyArcher : EnemyController
 {
-    public float timer = 2;
-    public int cd = 5;
-    public GameObject shot;
-    private List<GameObject> bullets = new List<GameObject>();
-
-	// Update is called once per frame
-	protected override void OnEnable()
-	{
-		base.OnEnable();
-        timer = Random.Range(timer, cd - 1);
-    }
+    private float timer = 2;
+    private readonly float yOffset = 1;
+    private readonly List<GameObject> bullets = new List<GameObject>();
+    [SerializeField] private int cooldown = 5;
+    [SerializeField] private GameObject shot;
 
 	protected override void Awake()
 	{
         base.Awake();
-        timer = Random.Range(timer, cd - 1);
+        timer = cooldown - 1;
 	}
+
+	protected override void OnEnable()
+	{
+		base.OnEnable();
+        timer = cooldown - 1;
+    }
 
 	protected override void FixedUpdate()
     {
-
         MoveStep();
         timer += Time.deltaTime;
-        if (timer >= cd)
+        if (timer >= cooldown)
         {
             ShootPlayer();
             timer = 0;
         }
     }
 
-	private void OnDestroy()
+	protected override void OnDestroy()
 	{
+        base.OnDestroy();
         foreach (GameObject bullet in bullets)
         {
             Destroy(bullet);
@@ -54,10 +54,10 @@ public class EnemyArcher : EnemyController
         else
         {
             bullet = bullets[bulletIndex];
-            bullet.transform.position = transform.position;
-            bullet.transform.rotation = transform.rotation;
+            bullet.transform.SetPositionAndRotation(transform.position, transform.rotation);
             bullet.SetActive(true);
         }
+        bullet.transform.position += new Vector3(0, yOffset, 0);
     }
 
     private int FindEmptyBullet()

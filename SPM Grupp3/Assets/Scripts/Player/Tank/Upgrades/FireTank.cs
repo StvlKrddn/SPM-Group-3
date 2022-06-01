@@ -5,20 +5,22 @@ using UnityEngine;
 public class FireTank : TankUpgradeTree
 {
 	[SerializeField] private float fireRate = 0.2f;
-	[SerializeField] private Transform flameThrower;
 	[SerializeField] private GameObject grenade;
-
+	[SerializeField] private GameObject level2Mesh;
+	public GameObject level1Mesh;
 
 	public override void UpgradeOne()
 	{
 		weapon.UpgradeFirerate(fireRate);
+		weapon.ChangeTurretMesh(level1Mesh);
 	}
 	public override void UpgradeTwo()
 	{
 		base.UpgradeTwo();
 		weapon.ClearBullets();
+		weapon.ChangeTurretMesh(level2Mesh);
 		weapon.enabled = false;
-		flameThrower.gameObject.SetActive(true);
+		weapon.transform.Find("FireLVL2").GetComponent<Outline>().enabled = false;
 	}
 
 	public override bool Ability()

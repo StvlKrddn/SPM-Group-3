@@ -17,16 +17,19 @@ public class CannonTower : Tower
     [SerializeField] private float level2Cost;
     [SerializeField] private float level3Cost;
 
-    public float costForUpgrade;
+    [Space]
+    [SerializeField] private Animator animator;
+
     private float fireCountdown = 0f;
 
+    [System.NonSerialized] public float CostForUpgrade;
     public float FireRate { get { return fireRate; } set { fireRate = value; } }
 
     // Start is called before the first frame update
     void Start()
     {
-        InvokeRepeating("UpdateTarget", 0f, 0.5f);
-        radius.transform.localScale = new Vector3(range * 2f, 0.01f, range * 2f);
+        InvokeRepeating("UpdateTarget", 0f, 0.2f);
+        Radius.transform.localScale = new Vector3(range * 2f, 0.01f, range * 2f);
     }
 
     // Update is called once per frame
@@ -38,12 +41,17 @@ public class CannonTower : Tower
         {
             if (CanYouShoot())
             {
+                animator.SetTrigger("Shooting");
                 Shoot();
                 if (shootTwice)
                 {
                     Invoke(nameof(DubbelShot), 0.1f);
                 }
             }
+/*            else
+            {
+                animator.SetBool("Shooting", false);
+            }*/
 
         }
     }
@@ -51,19 +59,19 @@ public class CannonTower : Tower
     public override float UpgradeCostUpdate()
     {
         base.TowerLevel1();
-        switch (tUC.GetUpgradesPurchased())
+        switch (towerManager.GetUpgradesPurchased())
         {
             case 0:
-                costForUpgrade = level1Cost;
+                CostForUpgrade = level1Cost;
                 break;
             case 1:
-                costForUpgrade = level2Cost;
+                CostForUpgrade = level2Cost;
                 break;
             case 2:
-                costForUpgrade = level3Cost;
+                CostForUpgrade = level3Cost;
                 break;
         }
-        return costForUpgrade;
+        return CostForUpgrade;
     }
 
     void DubbelShot()
@@ -77,9 +85,6 @@ public class CannonTower : Tower
         {
             EnemyController enemyTarget = target.GetComponent<EnemyController>();
             Destroy(Instantiate(hitEffect, enemyTarget.transform.position + Vector3.up * 2, Quaternion.LookRotation(transform.position - enemyTarget.transform.position)), 1f);
-            // GameObject effectInstance = Instantiate(hitEffect, enemyTarget.transform.position, enemyTarget.transform.rotation);
-
-            // Destroy(effectInstance, 1f);
             bullet.DecideTypeOfShot("Cannon");
         }
     }
@@ -97,6 +102,7 @@ public class CannonTower : Tower
 
     protected void Shoot()
     {
+        
         int bulletIndex = FindShot();
         if (bulletIndex < 0)
         {
@@ -117,6 +123,7 @@ public class CannonTower : Tower
         {
             bullet.Seek(target);
         }
+
     }
 
     public override void ShowUpgradeUI(Transform towerMenu)
@@ -136,42 +143,45 @@ public class CannonTower : Tower
     {
         base.TowerLevel1();
 
-        if (gM.SpendResources(level1Cost, 0f))
+        if (gameManager.SpendResources(level1Cost, 0f))
         {
-            tUC.IncreaseUpgradesPurchased();
-            CannonTower cT = tUC.ClickedTower.GetComponent<CannonTower>();
-            Level1(cT.gameObject);
+            towerManager.IncreaseUpgradesPurchased();
+            CannonTower cannonTower = towerManager.ClickedTower.GetComponent<CannonTower>();
+            Level1(cannonTower.gameObject);
         }      
     }
 
     protected override void Level1(GameObject tower)
     {
-        tower.GetComponent<CannonTower>().fireRate += upgradeFireRateAmount;
+        CannonTower cannonTower = tower.GetComponent<CannonTower>();
+        cannonTower.fireRate += upgradeFireRateAmount;
+        GetVisualUpgrade(cannonTower);
     }
 
     protected override void TowerLevel2()
     {
         base.TowerLevel2();
 
-        if (gM.SpendResources(level2Cost, 0f))
+        if (gameManager.SpendResources(level2Cost, 0f))
         {
-            tUC.IncreaseUpgradesPurchased();
-            CannonTower cT = tUC.ClickedTower.GetComponent<CannonTower>();
-            Level2(cT.gameObject);
+            towerManager.IncreaseUpgradesPurchased();
+            CannonTower cannonTower = towerManager.ClickedTower.GetComponent<CannonTower>();
+            Level2(cannonTower.gameObject);
+
+            animator.SetInteger("Level", 1);
         }
     }
 
     protected override void Level2(GameObject tower)
     {
-        CannonTower cT = tower.GetComponent<CannonTower>();
+        CannonTower cannonTower = tower.GetComponent<CannonTower>();
 
-        cT.ShotDamage += upgradeDamageAmount;
+        cannonTower.ShotDamage += upgradeDamageAmount;
 
-        GameObject towerUpgradeVisual1 = cT.transform.Find("Container").Find("Level1").gameObject;
-        GameObject towerUpgradeVisual2 = cT.transform.Find("Container").Find("Level2").gameObject;
+        
 
-        towerUpgradeVisual1.SetActive(false);
-        towerUpgradeVisual2.SetActive(true);
+        level1Visual.SetActive(false);
+        level2Visual.SetActive(true);
     }
 
     
@@ -180,25 +190,23 @@ public class CannonTower : Tower
     {
         base.TowerLevel3();
 
-        if (gM.SpendResources(level3Cost, 0f))
+        animator = level3Visual.GetComponent<Animator>();
+
+        if (gameManager.SpendResources(level3Cost, 0f))
         {
-            tUC.IncreaseUpgradesPurchased();
-            CannonTower cT = tUC.ClickedTower.GetComponent<CannonTower>();
-            Level3(cT.gameObject);
+            towerManager.IncreaseUpgradesPurchased();
+            CannonTower cannonTower = towerManager.ClickedTower.GetComponent<CannonTower>();
+            Level3(cannonTower.gameObject);
         }     
     }
 
     protected override void Level3(GameObject tower)
     {
         
-        CannonTower cT = tower.GetComponent<CannonTower>();
-        cT.shootTwice = true;
+        CannonTower cannonTower = tower.GetComponent<CannonTower>();
+        cannonTower.shootTwice = true;
 
-        GameObject towerUpgradeVisual2 = cT.transform.Find("Container").Find("Level2").gameObject;
-        GameObject towerUpgradeVisual3 = cT.transform.Find("Container").Find("Level3").gameObject;
-
-
-        towerUpgradeVisual2.SetActive(false);
-        towerUpgradeVisual3.SetActive(true);
+        level2Visual.SetActive(false);
+        level3Visual.SetActive(true);
     }
 }

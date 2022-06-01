@@ -4,13 +4,14 @@ using UnityEngine;
 
 public class EnemyMortarShot : MonoBehaviour
 {
-    [SerializeField] private float speed = 20;
     private int phase = 1;
     private Vector3 target;
-    public float damage;
-    [SerializeField] private GameObject radius;
     private Vector3 direction;
     private ParticleSystem[] particle;
+    [SerializeField] private float speed = 20;
+    [SerializeField] private GameObject radius;
+    
+    public float Damage;
 
     // Start is called before the first frame update
     void Start()
@@ -22,13 +23,18 @@ public class EnemyMortarShot : MonoBehaviour
 	{
         gameObject.SetActive(true);
         radius.transform.parent = transform;
+        phase = 1;
     }
 
+	private void OnDestroy()
+	{
+        Destroy(radius);
+    }
 
 	// Update is called once per frame
 	void Update()
     {
-        switch (phase)
+        switch (phase) //Checks phase of shot
         {
             case 1:
             direction = Vector3.up;
@@ -49,27 +55,28 @@ public class EnemyMortarShot : MonoBehaviour
 	{
         if (phase == 1)
         {
-            if (FindObjectOfType<TankState>())
+            FindTarget();
+        }
+    }
+    private void FindTarget()
+    {
+        if (FindObjectOfType<TankState>()) //Finds a random target with an offset
+        {
+            TankState[] tanks;
+            tanks = FindObjectsOfType<TankState>();
+
+            TankState tankToTarget = tanks[Random.Range(0, tanks.Length)];
+            Vector3 tempVector = new Vector3(tankToTarget.transform.position.x + Random.Range(-4, 4), tankToTarget.transform.position.y, tankToTarget.transform.position.z + Random.Range(-4, 4));
+            target = tempVector;
+            if (radius.transform.parent == true)
             {
-                TankState[] tanks;
-                tanks = FindObjectsOfType<TankState>();
-
-                TankState tankToTarget = tanks[Random.Range(0, tanks.Length)];
-                Vector3 tempVector = new Vector3(tankToTarget.transform.position.x + Random.Range(-4, 4), tankToTarget.transform.position.y, tankToTarget.transform.position.z + Random.Range(-4, 4));
-
-                target = tempVector;
-
-
-                if (radius.transform.parent != null)
-                {
-                    Shot();
-                }
-                phase = 2;
+                Shot();
             }
-            else
-            {
-                gameObject.SetActive(false);
-            }
+            phase = 2;
+        }
+        else
+        {
+            gameObject.SetActive(false);
         }
     }
 
@@ -78,24 +85,12 @@ public class EnemyMortarShot : MonoBehaviour
         radius.SetActive(true);
         transform.position = new Vector3(target.x, transform.position.y + 10, target.z);
         radius.transform.position = new Vector3(target.x, target.y, target.z);
-        if (radius.transform.parent != null)
+        if (radius.transform.parent)
         {
             radius.transform.parent = null;
         }
     }
 
-    private void OnTriggerEnter(Collider collider)
-    {
-        if (phase == 2)
-        {
-            if (collider.gameObject.CompareTag("Tank") || collider.gameObject.CompareTag("GameBoard"))
-            {
-                radius.SetActive(false);
-                StartCoroutine(Particle());
-            }
-        }
-        
-    }
 
     private IEnumerator Particle()
     {
@@ -113,5 +108,17 @@ public class EnemyMortarShot : MonoBehaviour
             radius.transform.parent = transform;
             gameObject.SetActive(false);
         }
+    }
+    private void OnTriggerEnter(Collider collider)
+    {
+        if (phase == 2)
+        {
+            if (collider.gameObject.CompareTag("Tank") || collider.gameObject.CompareTag("GameBoard"))
+            {
+                radius.SetActive(false);
+                StartCoroutine(Particle());
+            }
+        }
+        
     }
 }

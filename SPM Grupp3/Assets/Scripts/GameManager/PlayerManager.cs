@@ -9,7 +9,7 @@ public class PlayerManager : MonoBehaviour
     [System.NonSerialized] public bool InBuildMode;
     [SerializeField] private Transform[] spawnPositions;
     private PlayerInputManager playerManager;
-    private List<PlayerHandler> players = new List<PlayerHandler>();
+    private readonly List<PlayerHandler> players = new List<PlayerHandler>();
 
     void Awake()
     {

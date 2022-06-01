@@ -40,7 +40,7 @@ public class WheelSelection : MonoBehaviour
     private Vector2 stickInput;
     private InputAction infoAction;
 
-    private TowerUpgradeController tUC;
+    private TowerManager towerManager;
     private GameManager gM;
     private GameObject towerToDisplay;
     private GameObject statisticPanel;
@@ -53,7 +53,7 @@ public class WheelSelection : MonoBehaviour
 
     private void Start() 
     {
-        tUC = TowerUpgradeController.Instance;
+        towerManager = TowerManager.Instance;
         gM = GameManager.Instance;
         numberOfMenuItems = MenuItems.Length;
         degreesPerItem = 360 / numberOfMenuItems;
@@ -89,33 +89,33 @@ public class WheelSelection : MonoBehaviour
     /* Sets the correct values on the statistics of the towers for statistic panel when upgradeing */
     private void SetStartValuesOnUpgrades()
     {
-        switch (tUC.GetNameOfTowerClicked())
+        switch (towerManager.GetNameOfTowerClicked())
         {
             case "Cannon Tower":
-                CannonTower cT = tUC.ClickedTower.GetComponent<CannonTower>();
-                upgradeLevel1Text.text = "Basic Fire rate: " + cT.FireRate;
-                upgradeLevel2Text.text = "Basic Damage: " + cT.ShotDamage;
+                CannonTower cannonTower = towerManager.ClickedTower.GetComponent<CannonTower>();
+                upgradeLevel1Text.text = "Basic Fire rate: " + cannonTower.FireRate;
+                upgradeLevel2Text.text = "Basic Damage: " + cannonTower.ShotDamage;
                 upgradeLevel3Text.text = "Double Shot: (Inactive)";
 
                 break;
             case "Missile Tower":
-                MissileTower mT = tUC.ClickedTower.GetComponent<MissileTower>();
-                upgradeLevel1Text.text = "Basic AoE Radius: " + mT.SplashRadius;
-                upgradeLevel2Text.text = "Basic AoE Damage: " + mT.SplashDamage;
+                MissileTower missileTower = towerManager.ClickedTower.GetComponent<MissileTower>();
+                upgradeLevel1Text.text = "Basic AoE Radius: " + missileTower.SplashRadius;
+                upgradeLevel2Text.text = "Basic AoE Damage: " + missileTower.SplashDamage;
                 upgradeLevel3Text.text = "Increased Third Missle Dmg (Inactive)";
 
                 break;
             case "Slow Tower":
-                SlowTower sT = tUC.ClickedTower.GetComponent<SlowTower>();
+                SlowTower sT = towerManager.ClickedTower.GetComponent<SlowTower>();
                 upgradeLevel1Text.text = "Basic Range: " + sT.range;
                 upgradeLevel2Text.text = "Basic Area Effect: (Active)";
                 upgradeLevel3Text.text = "Periodic Halts All Enemies: (Inactive)";
 
                 break;
             case "Poison Tower":
-                PoisonTower pT = tUC.ClickedTower.GetComponent<PoisonTower>();
-                upgradeLevel1Text.text = "Basic Poison Duration: " + pT.PoisonTicks;
-                upgradeLevel2Text.text = "Basic DoT: " + pT.PoisonDamagePerTick;
+                PoisonTower poisonTower = towerManager.ClickedTower.GetComponent<PoisonTower>();
+                upgradeLevel1Text.text = "Basic Poison Duration: " + poisonTower.PoisonTicks;
+                upgradeLevel2Text.text = "Basic DoT: " + poisonTower.PoisonDamagePerTick;
                 upgradeLevel3Text.text = "Contagious: (Inactive)";
 
                 break;
@@ -246,9 +246,13 @@ public class WheelSelection : MonoBehaviour
                 }
                 else
                 {                  
-                    if (tUC.ClickedTower != null) //Checks upgrade and changes the UI based on upgradelevel
+                    if (towerManager.ClickedTower != null) //Checks upgrade and changes the UI based on upgradelevel
                     {
                         UpgradeHighlighted(moneyText, materialText);
+                    }
+                    else if (gameObject.name.Equals("TankPanel"))
+                    {
+                        GarageHighlight(materialText);
                     }
                 }
                 
@@ -297,7 +301,7 @@ public class WheelSelection : MonoBehaviour
             else //Tower Upgrade
             {
                 statisticPanel.SetActive(true);
-                upgradeTitleText.text = tUC.GetNameOfTowerClicked() + " (Lv " + tUC.GetUpgradesPurchased() + ")";
+                upgradeTitleText.text = towerManager.GetNameOfTowerClicked() + " (Lv " + towerManager.GetUpgradesPurchased() + ")";
                 ChangeUpgradeTextColorToGreen();
             }
         }
@@ -305,7 +309,7 @@ public class WheelSelection : MonoBehaviour
 
     private void ChangeUpgradeTextColorToGreen()
     {
-        switch (tUC.GetUpgradesPurchased()) //Which level the tower is in and which text to turn green
+        switch (towerManager.GetUpgradesPurchased()) //Which level the tower is in and which text to turn green
         {
             case 0:
                 upgradeLevel1Text.color = Color.green;
@@ -317,7 +321,7 @@ public class WheelSelection : MonoBehaviour
                 upgradeLevel3Text.color = Color.green;
                 break;
             case 3:
-                upgradeTitleText.text = tUC.GetNameOfTowerClicked() + " (Lv MAX)";
+                upgradeTitleText.text = towerManager.GetNameOfTowerClicked() + " (Lv MAX)";
                 break;
         }
     }
@@ -326,8 +330,8 @@ public class WheelSelection : MonoBehaviour
     private void UpgradeHighlighted(Text moneyText, Text materialText)
     {
         Tower tower;
-        tower = tUC.ClickedTower.GetComponent<Tower>();
-        if (tUC.GetUpgradesPurchased() == 3)
+        tower = towerManager.ClickedTower.GetComponent<Tower>();
+        if (towerManager.GetUpgradesPurchased() == 3)
         {
             moneyText.text = "MAX";
             materialText.text = "MAX";
@@ -362,24 +366,38 @@ public class WheelSelection : MonoBehaviour
         materialText.text = tower.materialCost.ToString();
     }
 
+    void GarageHighlight(Text materialText)
+    {
+        float material = gM.Material;
+
+        if (material < UpgradeController.Instance.materialCost)
+        {
+            materialText.color = Color.red;
+        }
+        else
+        {
+            materialText.color = Color.black;
+        }
+    }
+
     public void DecideTowerToBuild(string name)
     {
         switch (name) // Which tower that is selected
         {
             case "Cannon":
-                towerToDisplay = buildManager.cannonTowerPrefab;
+                towerToDisplay = buildManager.CannonTowerPrefab;
                 break;
 
             case "Missile":
-                towerToDisplay = buildManager.missileTowerPrefab;
+                towerToDisplay = buildManager.MissileTowerPrefab;
                 break;
 
             case "Slow":
-                towerToDisplay = buildManager.slowTowerPrefab;
+                towerToDisplay = buildManager.SlowTowerPrefab;
                 break;
 
             case "Poison":
-                towerToDisplay = buildManager.poisonTowerPrefab;
+                towerToDisplay = buildManager.PoisonTowerPrefab;
                 break;
 
             default:
@@ -413,18 +431,18 @@ public class WheelSelection : MonoBehaviour
 
     private void UpdateUpgradeLevelText()
     {
-        switch (tUC.GetNameOfTowerClicked()) //Which Tower That Is Clicked
+        switch (towerManager.GetNameOfTowerClicked()) //Which Tower That Is Clicked
         {
             case "Cannon Tower":
-                CannonTower cT = tUC.ClickedTower.GetComponent<CannonTower>();
+                CannonTower cannonTower = towerManager.ClickedTower.GetComponent<CannonTower>();
 
-                switch (tUC.GetUpgradesPurchased()) // Which Level the CannonTower is in
+                switch (towerManager.GetUpgradesPurchased()) // Which Level the CannonTower is in
                 {
                     case 1:
-                        upgradeLevel1Text.text = "Basic Fire rate: " + cT.FireRate;
+                        upgradeLevel1Text.text = "Basic Fire rate: " + cannonTower.FireRate;
                         break;
                     case 2:
-                        upgradeLevel2Text.text = "Basic Damage: " + cT.ShotDamage;
+                        upgradeLevel2Text.text = "Basic Damage: " + cannonTower.ShotDamage;
                         break;
                     case 3:
                         upgradeLevel3Text.text = "Double Shot: (Active)";
@@ -433,15 +451,15 @@ public class WheelSelection : MonoBehaviour
 
                 break;
             case "Missile Tower":
-                MissileTower mT = tUC.ClickedTower.GetComponent<MissileTower>();
+                MissileTower missileTower = towerManager.ClickedTower.GetComponent<MissileTower>();
 
-                switch (tUC.GetUpgradesPurchased()) // Which Level the MissileTower is in
+                switch (towerManager.GetUpgradesPurchased()) // Which Level the MissileTower is in
                 {
                     case 1:
-                        upgradeLevel1Text.text = "Basic AoE Radius: " + mT.SplashRadius;
+                        upgradeLevel1Text.text = "Basic AoE Radius: " + missileTower.SplashRadius;
                         break;
                     case 2:
-                        upgradeLevel2Text.text = "Basic AoE Damage: " + mT.SplashDamage;
+                        upgradeLevel2Text.text = "Basic AoE Damage: " + missileTower.SplashDamage;
                         break;
                     case 3:
                         upgradeLevel3Text.text = "Increased Third Missle Dmg (Active)";
@@ -449,12 +467,12 @@ public class WheelSelection : MonoBehaviour
                 }
                 break;
             case "Slow Tower":
-                SlowTower sT = tUC.ClickedTower.GetComponent<SlowTower>();
+                SlowTower slowTower = towerManager.ClickedTower.GetComponent<SlowTower>();
 
-                switch (tUC.GetUpgradesPurchased()) // Which Level the SlowTower is in
+                switch (towerManager.GetUpgradesPurchased()) // Which Level the SlowTower is in
                 {
                     case 1:
-                        upgradeLevel1Text.text = "Basic Range: " + sT.range;
+                        upgradeLevel1Text.text = "Basic Range: " + slowTower.range;
                         break;
                     case 2:
                         upgradeLevel2Text.text = "Basic Area Effect: (Active)";
@@ -465,15 +483,15 @@ public class WheelSelection : MonoBehaviour
                 }
                 break;
             case "Poison Tower":
-                PoisonTower pT = tUC.ClickedTower.GetComponent<PoisonTower>();
+                PoisonTower poisonTower = towerManager.ClickedTower.GetComponent<PoisonTower>();
 
-                switch (tUC.GetUpgradesPurchased()) // Which Level the PoisonTower is in
+                switch (towerManager.GetUpgradesPurchased()) // Which Level the PoisonTower is in
                 {
                     case 1:
-                        upgradeLevel1Text.text = "Basic Poison Duration: " + pT.PoisonTicks;
+                        upgradeLevel1Text.text = "Basic Poison Duration: " + poisonTower.PoisonTicks;
                         break;
                     case 2:
-                        upgradeLevel2Text.text = "Basic DoT: " + pT.PoisonDamagePerTick;
+                        upgradeLevel2Text.text = "Basic DoT: " + poisonTower.PoisonDamagePerTick;
                         break;
                     case 3:
                         upgradeLevel3Text.text = "Contagious: (Active)";

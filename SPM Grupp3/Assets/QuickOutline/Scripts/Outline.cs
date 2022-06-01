@@ -80,7 +80,7 @@ public class Outline : MonoBehaviour {
 
   private bool needsUpdate;
 
-  void Awake() {
+  public void Awake() {
 
     // Cache renderers
     renderers = GetComponentsInChildren<Renderer>();
@@ -103,7 +103,7 @@ public class Outline : MonoBehaviour {
 	{
         if (GetComponentInParent<TankState>())
         {
-            outlineColor = GetComponentInParent<TankState>().PlayerInput.playerIndex == 0 ? GameManager.Instance.Player1Color: GameManager.Instance.Player1Color;
+            outlineColor = GetComponentInParent<TankState>().PlayerInput.playerIndex == 0 ? GameManager.Instance.Player1Color: GameManager.Instance.Player2Color;
         }
 	}
 

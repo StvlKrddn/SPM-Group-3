@@ -14,7 +14,7 @@ public class MainMenu : MonoBehaviour
 
     private void Awake() 
     {
-        // Set only MainMenu as active
+        //Set only MainMenu as active
         foreach (GameObject item in menuItems)
         {
             if (item.name.Equals("MainMenu"))

@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class EnemyBullet : MonoBehaviour
 {
-    public float speed = 5f;
     private Transform target;
     private TankState[] tanks;
-    Vector3 direction;
-    public float bulletTime = 5f;
-    public float timer = 0;
-    public float damage = 5;
     private Transform garageTrigger;
+    private Vector3 direction;
+    [SerializeField] private float timer = 0;
+
+    public float Speed = 5f;
+    public float BulletTime = 5f;
+    public int Damage = 5;
 	// Start is called before the first frame update
 
 	private void OnEnable()
@@ -24,7 +25,7 @@ public class EnemyBullet : MonoBehaviour
     {
         garageTrigger = FindObjectOfType<GarageTrigger>().transform.parent;
         FindTarget();
-        //Checks who is closer between tank1 and tank2
+        //Gets one random tank, if there is not one tank he focuses on the garage
     }
 
     private void FindTarget()
@@ -58,14 +59,10 @@ public class EnemyBullet : MonoBehaviour
 	void Update()
     {
         timer += Time.deltaTime;
-        transform.Translate(speed * Time.deltaTime * direction, Space.World); //Bullet travels
-        if (timer >= bulletTime)
+        transform.Translate(Speed * Time.deltaTime * direction, Space.World); //Bullet travels
+        if (timer >= BulletTime)
         {
             gameObject.SetActive(false);
         }
-    }
-    public int GetDamage()
-    {
-        return (int) damage;
     }
 }

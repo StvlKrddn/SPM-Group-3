@@ -140,17 +140,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2972d638bc5665943b947e47bfcf7e4e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2.5
   health: 10
-  deathEffect: {fileID: 274874695124712471, guid: 9a064edc7c8ce434295d8099b1660d81, type: 3}
   meleeDamage: 5
-  damageBase: 10
-  moneyDrop: 1
-  materialDrop: 1
-  spread: 0
-  path: 0
-  changerText: {fileID: 5205185240933545452, guid: c8312052f47b6734d88b2abb7ec0cd2b, type: 3}
   spawnTextPosition: {fileID: 3659869939529643269}
+  poisonTowerEffect: {fileID: 0}
+  animator: {fileID: 0}
+  Speed: 2.5
+  DeathEffect: {fileID: 274874695124712471, guid: 9a064edc7c8ce434295d8099b1660d81, type: 3}
+  DamageBase: 10
+  MoneyDrop: 10
+  MaterialDrop: 1
+  Path: 0
+  Spread: 0
+  ChangerText: {fileID: 5205185240933545452, guid: c8312052f47b6734d88b2abb7ec0cd2b, type: 3}
 --- !u!1001 &3437361334157506105
 PrefabInstance:
   m_ObjectHideFlags: 0

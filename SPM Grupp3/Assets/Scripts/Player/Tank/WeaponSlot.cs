@@ -7,8 +7,16 @@ using UnityEngine.InputSystem;
 public class WeaponSlot : MonoBehaviour
 {
 
+    private TankState tank;
+    private Transform turretObject;
+    private GameObject spawnedBullet;
+    private InputAction shootAction;
+    private GameObject bulletPrefab;
+    private readonly List<GameObject> bullets = new List<GameObject>();
+    private bool allowedToShoot = true;
     [SerializeField] TankWeapon equippedWeapon;
 
+    [SerializeField] private GameObject turretMesh;
     [SerializeField] private float fireRate;
     [SerializeField] private float spread;
     [SerializeField] private float range;
@@ -17,16 +25,9 @@ public class WeaponSlot : MonoBehaviour
     [SerializeField] private float damage;
     [Space]
     [SerializeField] private GameObject muzzleFlash;
-    private GameObject bulletPrefab;
-    private List<GameObject> bullets = new List<GameObject>();
+    private Animator animator;
 
-    TankState tank;
-    public Transform bulletSpawner;
-    Transform turretObject;
-    GameObject spawnedBullet;
-    InputAction shootAction;
-
-    bool allowedToShoot = true;
+    public Transform BulletSpawner;
 
     public float FireRate { get { return fireRate; } set { fireRate = value; } }
     public float BulletSpread { get { return spread; } set { spread = value; } }
@@ -47,7 +48,7 @@ public class WeaponSlot : MonoBehaviour
 
         turretObject = transform.GetChild(0);
 
-        bulletSpawner = turretObject.Find("BarrelEnd");
+        BulletSpawner = turretObject.Find("BarrelEnd");
 
         shootAction = tank.PlayerInput.actions["Shoot"];
     }
@@ -80,10 +81,22 @@ public class WeaponSlot : MonoBehaviour
     }
 
 	void Update()
-    {
-        if (shootAction.IsPressed() && allowedToShoot)
+    {  
+        if (shootAction.IsPressed())
         {
-            StartCoroutine(Shoot());
+            if (allowedToShoot == true)
+            {
+                StartCoroutine(Shoot());   
+            }
+
+            if (animator != null && animator.isActiveAndEnabled)
+            {
+                animator.SetBool("Shoot", true);
+            }
+        }
+        else if (animator != null && animator.isActiveAndEnabled)
+        {
+            animator.SetBool("Shoot", false);
         }
     }
 
@@ -97,15 +110,15 @@ public class WeaponSlot : MonoBehaviour
 
     void SpawnBullet()
     {
-        Destroy(Instantiate(muzzleFlash, bulletSpawner.position, bulletSpawner.rotation, bulletSpawner.parent), 0.1f);
+        Destroy(Instantiate(muzzleFlash, BulletSpawner.position, BulletSpawner.rotation, BulletSpawner.parent), 0.1f);
         Quaternion spreadDirection = ComputeBulletSpread();
         int bulletIndex = FindShot();
         if (bulletIndex < 0)
         {
             spawnedBullet = Instantiate(
             original: bulletPrefab,
-            position: bulletSpawner.position,
-            rotation: bulletSpawner.rotation * spreadDirection,
+            position: BulletSpawner.position,
+            rotation: BulletSpawner.rotation * spreadDirection,
             parent: transform
             );
             bullets.Add(spawnedBullet);
@@ -113,8 +126,7 @@ public class WeaponSlot : MonoBehaviour
         else
         {
             GameObject bullet = bullets[bulletIndex];
-            bullet.transform.position = bulletSpawner.position;
-            bullet.transform.rotation = bulletSpawner.rotation * spreadDirection;
+            bullet.transform.SetPositionAndRotation(BulletSpawner.position, BulletSpawner.rotation * spreadDirection);
             bullet.SetActive(true);
         }
     }
@@ -135,7 +147,7 @@ public class WeaponSlot : MonoBehaviour
     Quaternion ComputeBulletSpread()
     {
         // Produce a random rotation within a certain radius
-        Vector3 randomDirection = bulletSpawner.forward + Random.insideUnitSphere * spread;
+        Vector3 randomDirection = BulletSpawner.forward + Random.insideUnitSphere * spread;
 
         // Prevent too much spread up and down
         randomDirection = new Vector3(Mathf.Clamp01(randomDirection.x), randomDirection.y, randomDirection.z);
@@ -150,7 +162,7 @@ public class WeaponSlot : MonoBehaviour
 
     public void MaxRange()
     {
-        range = 100;
+        range = 1000;
         penetrating = true;
     }
 
@@ -170,5 +182,24 @@ public class WeaponSlot : MonoBehaviour
             Destroy(bullet);
         }
         bullets.Clear();
+    }
+
+    public void ChangeTurretMesh(GameObject mesh)
+    {
+        turretMesh.SetActive(false);
+        turretMesh = mesh;
+        turretMesh.SetActive(true);
+        BulletSpawner = turretMesh.transform.Find("BarrelEnd");
+        tank.TurretObject = mesh.transform;
+
+        if (GetComponent<FireTank>().level1Mesh != null)
+        {
+            animator = GetComponent<FireTank>().level1Mesh.GetComponentInChildren<Animator>();
+        }
+        else
+        {
+            animator.SetBool("Shoot", false);
+            animator = null;
+        }
     }
 }
