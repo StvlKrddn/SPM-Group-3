@@ -1018,7 +1018,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2631724411681290083, guid: e69b554477972e34f80c3193812c535d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -19
+      value: -18.999939
       objectReference: {fileID: 0}
     - target: {fileID: 2631724411968714277, guid: e69b554477972e34f80c3193812c535d, type: 3}
       propertyPath: m_AnchorMax.x
@@ -87300,6 +87300,17 @@ Transform:
   m_Father: {fileID: 1307419896}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1581472029 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 857825062828728647, guid: 4f95bb92a89cca74587a804b809bab20, type: 3}
+  m_PrefabInstance: {fileID: 6726519399045763872}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 081e3dea97e8ecb499a7d80ba6b2d40e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1582905077
 GameObject:
   m_ObjectHideFlags: 0
@@ -106687,6 +106698,17 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1929725858}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1931562831 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7916417008062740524, guid: e69b554477972e34f80c3193812c535d, type: 3}
+  m_PrefabInstance: {fileID: 13269634}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 081e3dea97e8ecb499a7d80ba6b2d40e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1933646527
 GameObject:
   m_ObjectHideFlags: 0
@@ -119420,6 +119442,22 @@ PrefabInstance:
     - target: {fileID: 3005607917554422248, guid: 4f95bb92a89cca74587a804b809bab20, type: 3}
       propertyPath: m_RootOrder
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4206621434703794901, guid: 4f95bb92a89cca74587a804b809bab20, type: 3}
+      propertyPath: fadeBehaviour
+      value: 
+      objectReference: {fileID: 1931562831}
+    - target: {fileID: 4206621434703794901, guid: 4f95bb92a89cca74587a804b809bab20, type: 3}
+      propertyPath: OptionGarageIndicator
+      value: 
+      objectReference: {fileID: 1581472029}
+    - target: {fileID: 4658163268240282102, guid: 4f95bb92a89cca74587a804b809bab20, type: 3}
+      propertyPath: m_BlocksRaycasts
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6080656292751577012, guid: 4f95bb92a89cca74587a804b809bab20, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7863501824899845158, guid: 4f95bb92a89cca74587a804b809bab20, type: 3}
       propertyPath: m_LocalPosition.x

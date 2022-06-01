@@ -34,9 +34,9 @@ public class FadeBehaviour : MonoBehaviour
 
         currentOperation = DoFade(canvasGroup.alpha, faded ? 1 : 0);
 
-        StartCoroutine(currentOperation);
-
         faded = !faded;
+
+        StartCoroutine(currentOperation);
     }
 
     private IEnumerator DoFade(float start, float end)
