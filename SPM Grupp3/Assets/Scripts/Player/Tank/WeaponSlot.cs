@@ -28,6 +28,8 @@ public class WeaponSlot : MonoBehaviour
     private Animator animator;
 
     public Transform BulletSpawner;
+    public Color BulletColor;
+
 
     public float FireRate { get { return fireRate; } set { fireRate = value; } }
     public float BulletSpread { get { return spread; } set { spread = value; } }
@@ -41,7 +43,9 @@ public class WeaponSlot : MonoBehaviour
         if (equippedWeapon != null){
             ConstructWeapon();
         }
-        
+
+        BulletColor = Color.white;
+
         tank = GetComponent<TankState>();
 
         spread = Mathf.Clamp(spread, 0, 50);
@@ -173,6 +177,7 @@ public class WeaponSlot : MonoBehaviour
         this.range = range;
         spread = 0;
         bulletSpeed += 15;
+        BulletColor = Color.blue;
     }
 
     public void ClearBullets()
