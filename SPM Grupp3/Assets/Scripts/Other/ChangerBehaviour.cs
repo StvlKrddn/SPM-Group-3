@@ -25,22 +25,20 @@ public class ChangerBehaviour : MonoBehaviour
     {
         transform.position = transform.parent.position;
         canvasGroup = GetComponent<CanvasGroup>();
+        lookAt = GameObject.FindGameObjectWithTag("Look").transform;
 
         if (canvasGroup.alpha < 1)
             faded = true;
         else
             faded = false;
 
-        
-        lookAt = GameObject.FindGameObjectWithTag("Look").transform;
-
-        Faded();
+        Fade();
 
         if(scaleMultiplier != 1)
             StartCoroutine(DoScale());
     }
 
-    public void Faded()
+    public void Fade()
     {
         StartCoroutine(DoFade(canvasGroup.alpha, faded ? 1 : 0));
 

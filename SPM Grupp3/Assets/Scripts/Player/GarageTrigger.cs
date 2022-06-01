@@ -10,21 +10,23 @@ public class GarageTrigger : MonoBehaviour
     private GameObject hintEnterUI;
     private readonly bool limit = false;
 
-    [SerializeField] private FadeBehaviour fadeBehaviour;
+    [SerializeField] private FadeBehaviour OptionGarageIndicator;
 
     void Awake() 
     {
         hintEnterUI = UI.Canvas.transform.Find("EnterGarageHint").gameObject;
     }
 
-    public void ShowHover()
+    public void ShowIndicator()
     {
-        fadeBehaviour.Fade();
+        if(OptionGarageIndicator.Faded())
+            OptionGarageIndicator.Fade();
     }
 
-    public void HideHover()
-    {   
-        fadeBehaviour.Fade();
+    public void CloseIndicator()
+    {
+        if (!OptionGarageIndicator.Faded())
+            OptionGarageIndicator.Fade();
     }
 
     private void OnTriggerStay(Collider other)
