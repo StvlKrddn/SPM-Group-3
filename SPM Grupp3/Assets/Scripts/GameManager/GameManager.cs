@@ -109,6 +109,10 @@ public class GameManager : MonoBehaviour
         UpgradeController.currentUpgradeLevel = saveData.tankUpgradeLevel;
         
         Invoke(nameof(FixUpgradeDelay), 0.01f);
+        
+        //Temporary - must fix <----
+        Player1Color = baseStats.Player1Color;
+        Player2Color = baseStats.Player2Color;
     }
 
     private void LoadCustomizationData()
@@ -119,12 +123,6 @@ public class GameManager : MonoBehaviour
     private void FixUpgradeDelay()
     {
         UpgradeController.Instance.FixUpgrades(FindObjectOfType<TankState>().gameObject);
-        Outline[] outlines = FindObjectsOfType<Outline>(true);
-        foreach (Outline outline in outlines)
-        {
-            print("pls fix");
-            outline.Awake();
-        }
     }
 
     private void LoadBase()
