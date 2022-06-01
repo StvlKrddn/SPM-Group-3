@@ -4,10 +4,7 @@ using UnityEngine;
 
 public class CustomizationManager : MonoBehaviour
 {
-    [SerializeField] private CustomizationMenu player1Panel;
-    [SerializeField] private CustomizationMenu player2Panel;
-
-    public List<CustomizationData> CustomizationData = new List<CustomizationData>();
+    [System.NonSerialized] public List<CustomizationData> CustomizationData = new List<CustomizationData>();
 
     public void SaveCustomization()
     {
