@@ -389,11 +389,11 @@ public class BuilderController : MonoBehaviour
             garageSelection = selection;
         }
 
-        if (garageSelection != null && selection == null)
+/*        if (garageSelection != null && selection == null)
         {
             garageSelection.GetComponent<GarageTrigger>().HideHover();
             garageSelection = null;
-        }
+        }*/
     }
 
     void Hover(RaycastHit hit)
