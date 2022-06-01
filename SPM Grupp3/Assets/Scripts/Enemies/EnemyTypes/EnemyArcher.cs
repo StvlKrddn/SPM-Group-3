@@ -13,13 +13,13 @@ public class EnemyArcher : EnemyController
 	protected override void Awake()
 	{
         base.Awake();
-        timer = Random.Range(timer, cooldown - 1);
+        timer = cooldown - 1;
 	}
 
 	protected override void OnEnable()
 	{
 		base.OnEnable();
-        timer = Random.Range(timer, cooldown - 1);
+        timer = cooldown - 1;
     }
 
 	protected override void FixedUpdate()
