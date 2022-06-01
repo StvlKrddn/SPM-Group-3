@@ -41,7 +41,7 @@ public class CannonTower : Tower
         {
             if (CanYouShoot())
             {
-                animator.SetTrigger("Shooting");
+               // animator.SetTrigger("Shooting");
                 Shoot();
                 if (shootTwice)
                 {
