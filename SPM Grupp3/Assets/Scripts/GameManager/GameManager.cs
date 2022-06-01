@@ -118,6 +118,7 @@ public class GameManager : MonoBehaviour
         Player2Color = dataList[1].PlayerColor;
     }
 
+
     private void FixUpgradeDelay()
     {
         UpgradeController.Instance.FixUpgrades(FindObjectOfType<TankState>().gameObject);
@@ -444,6 +445,16 @@ public class GameManager : MonoBehaviour
             enemiesKilled: enemiesKilled,
             towersBuilt: 0
         ));
+
+        // If this is the third level, invoke achievement
+        if (SceneManager.GetActiveScene().buildIndex == 3)
+        {
+            EventHandler.InvokeEvent(new AchievementCompletedEvent(
+                description: "Achievement reached",
+                achievementType: Achievement.CompleteStageThree,
+                completed: true
+            ));
+        }
 
         canvas.GetComponent<UI>().SetSelectedButton("Continue");
         UI.OpenMenu();

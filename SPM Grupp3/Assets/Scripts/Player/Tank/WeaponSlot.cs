@@ -207,6 +207,11 @@ public class WeaponSlot : MonoBehaviour
         BulletSpawner = turretMesh.transform.Find("BarrelEnd");
         tank.TurretObject = mesh.transform;
 
+        if (AchievementTracker.Instance.IsAchievementCompleted(Achievement.CompleteStageThree))
+        {
+            turretMesh.transform.Find("Cap").gameObject.SetActive(true);
+        }
+
         if (GetComponent<FireTank>().level1Mesh != null)
         {
             animator = GetComponent<FireTank>().level1Mesh.GetComponentInChildren<Animator>();

@@ -1,7 +1,3 @@
-using System.Runtime.Serialization;
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
@@ -10,6 +6,7 @@ public class DataManager
 {
     public static string SaveData = "SaveData";
     public static string CustomizationData = "CustomizationData";
+    public static string AchievementData = "AchievementData";
 
     /// <summary> 
     /// Pass in a data structure and save it to a binary file in the default path.
