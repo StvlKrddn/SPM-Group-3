@@ -24,7 +24,6 @@ public class FadeBehaviour : MonoBehaviour
             faded = true;
         else
             faded = false;
-
     }
 
     public void ResetFade()

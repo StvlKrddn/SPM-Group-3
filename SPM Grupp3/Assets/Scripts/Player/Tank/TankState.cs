@@ -133,6 +133,14 @@ public class TankState : MonoBehaviour
             transform.Find("TankMesh").Find("TankBody").GetComponent<Renderer>().material.color = player2Color;
         }
         tankUpgradeTree = playerInput.playerIndex == 0 ? tankUpgradeTreeOne : tankUpgradeTreeTwo;
+        if (playerInput.playerIndex == 0)
+        {
+            tankUpgradeTreeTwo.enabled = false;
+        }
+        else
+        {
+            tankUpgradeTreeOne.enabled = false;
+        }
     }
 
     void FindGarage()
