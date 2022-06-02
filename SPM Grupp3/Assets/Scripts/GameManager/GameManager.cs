@@ -444,7 +444,7 @@ public class GameManager : MonoBehaviour
 
         builderController.HideCursor();
 
-        canvas.GetComponent<UI>().SetSelectedButton("Restart");
+        canvas.GetComponent<UI>().SetFirstSelectedButton("Restart");
         UI.OpenMenu();
 
         waveManager.Restart();
