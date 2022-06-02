@@ -40,13 +40,10 @@ public class GameManager : MonoBehaviour
     private float baseHealth;
     private PlayerMode startingMode;
 
-    private int currentWave = -1;
     private float currentBaseHealth;
     private int enemiesKilled;
     private int moneyCollected;
     private int materialCollected;
-
-    public int CurrentWave { get { return currentWave; } set { currentWave = value; } }
     public PlayerMode StartingMode { get { return startingMode; } }
     public int EnemiesKilled { get { return enemiesKilled; } set { enemiesKilled = value; } }
     public float Money { get { return money; } set { money = value; } }
@@ -70,6 +67,8 @@ public class GameManager : MonoBehaviour
     {
         EventHandler.RegisterListener<SaveGameEvent>(SaveGame);
         buildManager = FindObjectOfType<BuildManager>();
+        waveManager = GetComponent<WaveManager>();
+
         if (DataManager.FileExists(DataManager.SaveData))
         {
             LoadSaveData();
@@ -82,6 +81,22 @@ public class GameManager : MonoBehaviour
         {
             LoadCustomizationData();
         }
+
+        InitializeUIElements();
+
+        currentBaseHealth = baseHealth;
+        healthBar.HandleHealthChanged(currentBaseHealth);
+
+
+        canvas = UI.Canvas;
+
+        moneyBaseColor = moneyCounterUI.color;
+        materialBaseColor = materialCounterUI.color;
+
+        UpdateUI();
+
+        victoryPanel.SetActive(false);
+        defeatPanel.SetActive(false);
     }
 
     private void LoadSaveData()
@@ -89,9 +104,8 @@ public class GameManager : MonoBehaviour
         SaveData saveData = (SaveData)DataManager.ReadFromFile(DataManager.SaveData);
         money = saveData.Money;
         material = saveData.Material;
-        currentWave = saveData.CurrentWave;
         baseHealth = saveData.CurrentBaseHealth;
-
+        waveManager.CurrentWave = saveData.CurrentWave;
         enemiesKilled = saveData.EnemiesKilled;
         moneyCollected = saveData.MoneyCollected;
         materialCollected = saveData.MaterialCollected;
@@ -107,6 +121,12 @@ public class GameManager : MonoBehaviour
         UpgradeController.currentUpgradeLevel = saveData.TankUpgradeLevel;
 
         Invoke(nameof(FixUpgradeDelay), 0.01f);
+
+        if (!DataManager.FileExists(DataManager.CustomizationData))
+        {
+            Player1Color = baseStats.Player1Color;
+            Player2Color = baseStats.Player2Color;
+        }
     }
 
     private void LoadCustomizationData()
@@ -115,7 +135,6 @@ public class GameManager : MonoBehaviour
         Player1Color = dataList[0].PlayerColor;
         Player2Color = dataList[1].PlayerColor;
     }
-
 
     private void FixUpgradeDelay()
     {
@@ -126,7 +145,7 @@ public class GameManager : MonoBehaviour
     {
         money = baseStats.money;
         material = baseStats.material;
-        currentWave = -1;
+        waveManager.CurrentWave = -1;
         baseHealth = baseStats.baseHealth;
         startingMode = baseStats.startingMode;
 
@@ -159,29 +178,6 @@ public class GameManager : MonoBehaviour
     public void DeleteAchievementData()
     {
         DataManager.DeleteFile(DataManager.AchievementData);
-    }
-
-    private void Start()
-    {
-        InitializeUIElements();
-
-        currentBaseHealth = baseHealth;
-        healthBar.HandleHealthChanged(currentBaseHealth);
-
-        /*livesSlider.maxValue = baseStats.baseHealth;
-        livesSlider.value = currentBaseHealth;*/
-
-        waveManager = GetComponent<WaveManager>();
-
-        canvas = UI.Canvas;
-
-        moneyBaseColor = moneyCounterUI.color;
-        materialBaseColor = materialCounterUI.color;
-
-        UpdateUI();
-
-        victoryPanel.SetActive(false);
-        defeatPanel.SetActive(false);
     }
 
     void InitializeUIElements()
@@ -229,29 +225,24 @@ public class GameManager : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Alpha4))
         {
-            CurrentWave = 4;
+            waveManager.CurrentWave = 4;
         }
         if (Input.GetKeyDown(KeyCode.Alpha5))
         {
-            CurrentWave = 5;
-
-
-        }
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            EventHandler.InvokeEvent(new SaveGameEvent("Debug Save"));
+            waveManager.CurrentWave = 5;
         }
         if (Input.GetKeyDown(KeyCode.Alpha6))
         {
-            CurrentWave = 6;
-
-
+            waveManager.CurrentWave = 6;
         }
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
-            CurrentWave = 9;
-
-
+            waveManager.CurrentWave = 9;
+        }
+        
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            EventHandler.InvokeEvent(new SaveGameEvent("Debug Save"));
         }
 
         UpdateUI();
@@ -261,7 +252,7 @@ public class GameManager : MonoBehaviour
     {
         print("Game Saved");
         SaveData saveData = new SaveData(
-            currentWave,
+            waveManager.CurrentWave,
             enemiesKilled,
             moneyCollected,
             materialCollected,
@@ -428,7 +419,7 @@ public class GameManager : MonoBehaviour
 
         EventHandler.InvokeEvent(new DefeatEvent(
             description: "Defeat",
-            wave: currentWave + 1,
+            wave: waveManager.CurrentWave + 1,
             killedBy: damagingEnemy,
             enemiesKilled: 0
         ));
