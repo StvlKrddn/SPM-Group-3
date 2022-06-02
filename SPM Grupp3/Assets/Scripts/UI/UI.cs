@@ -55,6 +55,9 @@ public class UI : MonoBehaviour
             Time.timeScale = 0f;
             pauseMenu.SetActive(true);
             IsPaused = true;
+
+            EventSystem.current.SetSelectedGameObject(null);
+            EventSystem.current.SetSelectedGameObject(resumeButton);
         }
         else
         {

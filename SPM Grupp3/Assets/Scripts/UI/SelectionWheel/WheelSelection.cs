@@ -322,7 +322,7 @@ public class WheelSelection : MonoBehaviour
                 if (MenuItems[0].name.Equals("Upgrade") && !gameObject.name.Equals("TankPanel"))
                 {
                     if (stickAction.ReadValue<Vector2>().y < 0.4f)
-                    {
+                    {                     
                         statisticPanel.SetActive(false);
                     }
                 }
@@ -341,7 +341,7 @@ public class WheelSelection : MonoBehaviour
             else
             {
                 // Remove hover effect from all other items
-                MenuItems[i].transform.GetChild(0).GetComponent<Image>().color = hidden;
+                MenuItems[i].transform.Find("Background").GetComponent<Image>().color = hidden;
 
                 MenuItems[i].transform.Find("Cost").gameObject.SetActive(false);
 

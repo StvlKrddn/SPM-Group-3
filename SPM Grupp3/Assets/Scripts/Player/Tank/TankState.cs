@@ -106,6 +106,7 @@ public class TankState : MonoBehaviour
 
     private void OnEnable()
     {
+        healthBar.HandleHealthChanged(currentHealth);
         invincibilityFrame = false;
     }
 

@@ -5,6 +5,7 @@ using System;
 using UnityEngine.InputSystem;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 
 public class GameManager : MonoBehaviour
 {
@@ -45,6 +46,8 @@ public class GameManager : MonoBehaviour
     private int enemiesKilled;
     private int moneyCollected;
     private int materialCollected;
+    private BuilderController builderController;
+
 
     public int CurrentWave { get { return currentWave; } set { currentWave = value; } }
     public PlayerMode StartingMode { get { return startingMode; } }
@@ -84,6 +87,8 @@ public class GameManager : MonoBehaviour
         {
             LoadCustomizationData();
         }
+
+        builderController = FindObjectOfType<BuilderController>();
     }
 
     private void LoadSaveData()
@@ -115,7 +120,7 @@ public class GameManager : MonoBehaviour
     {
         List<CustomizationData> dataList = (List<CustomizationData>)DataManager.ReadFromFile(DataManager.CustomizationData);
         Player1Color = dataList[0].PlayerColor;
-        Player2Color = dataList[1].PlayerColor;
+        //Player2Color = dataList[1].PlayerColor;
     }
 
 
@@ -218,7 +223,7 @@ public class GameManager : MonoBehaviour
         {
             Defeat();
         }
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+        if (Input.GetKey(KeyCode.UpArrow))
         {
             money += 1000;
             material += 50;
@@ -298,7 +303,7 @@ public class GameManager : MonoBehaviour
 
         if (mon >= 10000)
         {
-            int holeNumb = (int)mon / 10000;
+            int holeNumb = (int) mon / 1000;
             moneyCounterUI.text = holeNumb.ToString() + "K";
         }
         else
@@ -310,7 +315,7 @@ public class GameManager : MonoBehaviour
 
         if (mat >= 10000)
         {
-            int holeNumb = (int)mat / 10000;
+            int holeNumb = (int) mat / 1000;
             materialCounterUI.text = holeNumb.ToString() + "K";
         }
         else
@@ -437,7 +442,13 @@ public class GameManager : MonoBehaviour
             enemiesKilled: 0
         ));
 
-        canvas.GetComponent<UI>().SetFirstSelectedButton("Restart");
+        GameObject restartButton = defeatPanel.transform.Find("Buttons").Find("RestartButton").gameObject;
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(restartButton);
+
+        builderController.HideCursor();
+
+        canvas.GetComponent<UI>().SetSelectedButton("Restart");
         UI.OpenMenu();
 
         waveManager.Restart();
@@ -461,6 +472,14 @@ public class GameManager : MonoBehaviour
             enemiesKilled: enemiesKilled,
             towersBuilt: 0
         ));
+
+        GameObject continueButton = victoryPanel.transform.Find("Buttons").Find("ContinueButton").gameObject;
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(continueButton);
+
+        
+
+        builderController.HideCursor();
 
         // If this is the third level, invoke achievement
         if (SceneManager.GetActiveScene().buildIndex == 3)
