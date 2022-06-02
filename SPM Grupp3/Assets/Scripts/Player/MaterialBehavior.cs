@@ -29,10 +29,11 @@ public class MaterialBehavior : MonoBehaviour
 
     [SerializeField] private float[] xValues = new float[2];
     [SerializeField] private float[] zValues = new float[2];
+	[SerializeField] private AudioClip pickUpSound;
 
 
-    // Sverkers remake på materialkoden
-    // Han tyckte att att det skulle vara mer hårdkodade värden
+	// Sverkers remake på materialkoden
+	// Han tyckte att att det skulle vara mer hårdkodade värden
 
 	private void Awake()
 	{
@@ -113,6 +114,7 @@ public class MaterialBehavior : MonoBehaviour
 		if (other.gameObject.CompareTag("Tank"))
         {
             gameManager.AddMaterial(materialValue);
+			EventHandler.InvokeEvent(new PlaySoundEvent("Picking up material sound", pickUpSound));
 
             if (changerText != null && spawnTextPosition != null)
             {

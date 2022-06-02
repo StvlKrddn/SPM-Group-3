@@ -60,8 +60,8 @@ public class UI : MonoBehaviour
         }
         else
         {
-            MusicManager.instance.SetMusicPLay(true);
             Resume();
+            MusicManager.instance.SetMusicPLay(true);
         }
         
     }
