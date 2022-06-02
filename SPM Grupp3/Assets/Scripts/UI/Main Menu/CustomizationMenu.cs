@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,23 +7,30 @@ using UnityEngine.UI;
 public class CustomizationMenu : MonoBehaviour
 {
     [SerializeField] private Slider[] colorSliders;
+    [SerializeField] private Text classText;
     [SerializeField] private GameObject tankBody;
-    [SerializeField] private GameObject turret;
+    [SerializeField] private GameObject sniperTurret;
+    [SerializeField] private GameObject fireTurret;
     [SerializeField] private GameObject hat;
     [SerializeField] private CustomizationManager customizationManager;
 
     private Material defaultTankMaterial;
-    private Material defaultTurretMaterial;
+    private Material defaultSniperTurretMaterial;
+    private Material defaultFireTurretMaterial;
     private Material defaultHatMaterial;
     private Material newTankMaterial;
-    private Material newTurretMaterial;
+    private Material newSniperTurretMaterial;
+    private Material newFireTurretMaterial;
     private Material newHatMaterial;
     private Renderer tankRenderer;
-    private Renderer turretRenderer;
+    private Renderer sniperTurretRenderer;
+    private Renderer fireTurretRenderer;
     private Renderer hatRenderer;
     private Slider currentSlider;
 
-    [System.NonSerialized] public Color newColor;
+    [NonSerialized] public int TankClass;
+
+    [NonSerialized] public Color newColor;
 
     void Awake()
     {
@@ -34,11 +42,17 @@ public class CustomizationMenu : MonoBehaviour
         newTankMaterial.CopyPropertiesFromMaterial(defaultTankMaterial);
         tankRenderer.material = newTankMaterial;
 
-        turretRenderer = turret.GetComponent<Renderer>();
-        defaultTurretMaterial = turretRenderer.material;
-        newTurretMaterial = new Material(defaultTurretMaterial.shader);
-        newTurretMaterial.CopyPropertiesFromMaterial(defaultTurretMaterial);
-        turretRenderer.material = newTurretMaterial;
+        sniperTurretRenderer = sniperTurret.GetComponent<Renderer>();
+        defaultSniperTurretMaterial = sniperTurretRenderer.material;
+        newSniperTurretMaterial = new Material(defaultSniperTurretMaterial.shader);
+        newSniperTurretMaterial.CopyPropertiesFromMaterial(defaultSniperTurretMaterial);
+        sniperTurretRenderer.material = newSniperTurretMaterial;
+
+        fireTurretRenderer = fireTurret.GetComponent<Renderer>();
+        defaultFireTurretMaterial = fireTurretRenderer.material;
+        newFireTurretMaterial = new Material(defaultFireTurretMaterial.shader);
+        newFireTurretMaterial.CopyPropertiesFromMaterial(defaultFireTurretMaterial);
+        fireTurretRenderer.material = newFireTurretMaterial;
 
         hatRenderer = hat.GetComponent<Renderer>();
         defaultHatMaterial = hatRenderer.material;
@@ -68,7 +82,7 @@ public class CustomizationMenu : MonoBehaviour
         if (tankRenderer != null)
         {
             tankRenderer.material = defaultTankMaterial;
-            turretRenderer.material = defaultTurretMaterial;
+            sniperTurretRenderer.material = defaultSniperTurretMaterial;
             hatRenderer.material = defaultHatMaterial;
         }
     }
@@ -77,7 +91,8 @@ public class CustomizationMenu : MonoBehaviour
     {
         newColor = new Color(colorSliders[0].value, colorSliders[1].value, colorSliders[2].value);
         newTankMaterial.color = newColor;
-        newTurretMaterial.color = newColor;
+        newSniperTurretMaterial.color = newColor;
+        newFireTurretMaterial.color = newColor;
         newHatMaterial.color = newColor;
     }
 
@@ -99,8 +114,40 @@ public class CustomizationMenu : MonoBehaviour
     {
         CustomizationData customData = new CustomizationData(
             newColor,
-            false
+            TankClass
         );
-        customizationManager.CustomizationData.Add(customData);
+        customizationManager.Customizations.Add(customData);
+    }
+
+    public void SetPlayerClass(float classIndex)
+    {
+        switch (classIndex)
+        {
+            case 0:
+                SetSniper();
+                break;
+            case 1:
+                SetFire();
+                break;
+            default:
+                SetSniper();
+                break;
+        }
+
+        void SetSniper()
+        {
+            classText.text = ": Sniper";
+            TankClass = 0;
+            fireTurret.SetActive(false);
+            sniperTurret.SetActive(true);
+        }
+
+        void SetFire()
+        {
+            classText.text = ": Fire";
+            TankClass = 1;
+            fireTurret.SetActive(true);
+            sniperTurret.SetActive(false);
+        }
     }
 }
