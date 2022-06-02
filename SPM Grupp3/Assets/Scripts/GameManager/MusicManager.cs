@@ -7,26 +7,19 @@ public class MusicManager : MonoBehaviour
 {
     public static MusicManager instance;
     private AudioSource audioSource;
-    private Slider musicSlider;
-
-
-    
-
-    public Slider MusicSlider { get { return musicSlider; } set { musicSlider = value; } }
-    private void Start()
+    private void Awake()
     {
         if (instance == null)
         {
             instance = this;
         }
         
-        audioSource = transform.GetComponent<AudioSource>();
+        audioSource = GetComponent<AudioSource>();
+        audioSource.volume = PlayerPrefs.GetFloat("MusicVolume");
     }
-
 
     public void SetMusicPLay(bool state)
     {
-       // audioSource.Stop();
         if(state)
         {
             audioSource.UnPause();
@@ -37,8 +30,9 @@ public class MusicManager : MonoBehaviour
         }
     }
 
-    public void SetMusicVolume()
+    public void SetMusicVolume(float volume)
     {
-        audioSource.volume = musicSlider.value;
+        PlayerPrefs.SetFloat("MusicVolume", volume);
+        audioSource.volume = volume;
     }
 }

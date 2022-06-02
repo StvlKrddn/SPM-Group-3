@@ -6,20 +6,20 @@ using UnityEngine.UI;
 public class VolumeSlider : MonoBehaviour
 {
     private Slider slider;
-    // Start is called before the first frame update
-    void Start()
+
+    void Awake()
     {
         slider = GetComponent<Slider>();
 
         if (gameObject.name.Equals("MusicVolume"))
         {
-            MusicManager.instance.MusicSlider = slider;
-            slider.onValueChanged.AddListener(delegate { MusicManager.instance.SetMusicVolume(); });
+            slider.value = PlayerPrefs.GetFloat("MusicVolume");
+            slider.onValueChanged.AddListener(delegate { MusicManager.instance.SetMusicVolume(slider.value); });
         }
         else if (gameObject.name.Equals("EffectVolume"))
         {
-            SoundSystem.instance.EffectSlider = slider;
-            slider.onValueChanged.AddListener(delegate { SoundSystem.instance.SetVolume(); });
+            slider.value = PlayerPrefs.GetFloat("EffectsVolume");
+            slider.onValueChanged.AddListener(delegate { SoundSystem.instance.SetVolume(slider.value); });
         }
     }
 }
