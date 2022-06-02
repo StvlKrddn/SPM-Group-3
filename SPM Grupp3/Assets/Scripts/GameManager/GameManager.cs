@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Other")]
     [NonSerialized] public List<PlacedTower> towersPlaced = new List<PlacedTower>();
-    
+
     private GameObject victoryPanel;
     private GameObject defeatPanel;
     private GameObject waveCounter;
@@ -53,20 +53,20 @@ public class GameManager : MonoBehaviour
     public float Material { get { return material; } set { material = value; } }
 
     private static GameManager instance;
-    public static GameManager Instance 
-    { 
-        get 
+    public static GameManager Instance
+    {
+        get
         {
             // "Lazy loading" to prevent Unity load order error
             if (instance == null)
             {
                 instance = FindObjectOfType<GameManager>();
             }
-            return instance; 
-        } 
+            return instance;
+        }
     }
 
-    void Awake() 
+    void Awake()
     {
 
 
@@ -76,7 +76,7 @@ public class GameManager : MonoBehaviour
         {
             LoadSaveData();
         }
-        else 
+        else
         {
             LoadBase();
         }
@@ -88,7 +88,7 @@ public class GameManager : MonoBehaviour
 
     private void LoadSaveData()
     {
-        SaveData saveData = (SaveData) DataManager.ReadFromFile(DataManager.SaveData);
+        SaveData saveData = (SaveData)DataManager.ReadFromFile(DataManager.SaveData);
         money = saveData.Money;
         material = saveData.Material;
         currentWave = saveData.CurrentWave;
@@ -107,13 +107,13 @@ public class GameManager : MonoBehaviour
             buildManager.LoadTower(tower);
         }
         UpgradeController.currentUpgradeLevel = saveData.TankUpgradeLevel;
-        
+
         Invoke(nameof(FixUpgradeDelay), 0.01f);
     }
 
     private void LoadCustomizationData()
     {
-        List<CustomizationData> dataList = (List<CustomizationData>) DataManager.ReadFromFile(DataManager.CustomizationData);
+        List<CustomizationData> dataList = (List<CustomizationData>)DataManager.ReadFromFile(DataManager.CustomizationData);
         Player1Color = dataList[0].PlayerColor;
         Player2Color = dataList[1].PlayerColor;
     }
@@ -131,7 +131,7 @@ public class GameManager : MonoBehaviour
         currentWave = -1;
         baseHealth = baseStats.baseHealth;
         startingMode = baseStats.startingMode;
-        
+
         enemiesKilled = 0;
         moneyCollected = 0;
         materialCollected = 0;
@@ -182,7 +182,7 @@ public class GameManager : MonoBehaviour
 
         UpdateUI();
 
-        
+
 
         victoryPanel.SetActive(false);
         defeatPanel.SetActive(false);
@@ -191,26 +191,26 @@ public class GameManager : MonoBehaviour
     void InitializeUIElements()
     {
         Transform canvas = UI.Canvas.transform;
-        
+
         Transform topPanel = canvas.GetChild(0);
         waveCounter = topPanel.Find("WaveHolder").Find("WaveCounter").gameObject;
         moneyCounterUI = topPanel.Find("MoneyHolder").Find("MoneyCounter").GetComponent<Text>();
         materialCounterUI = topPanel.Find("MaterialHolder").Find("MaterialCounter").GetComponent<Text>();
 
-        
+
 
         healthBar = canvas.GetComponent<HealthBar>();
         livesSlider = canvas.Find("LivesSlider").gameObject;
 
         livesSlider.SetActive(true);
 
-        victoryPanel = canvas.Find("VictoryPanel").gameObject;        
+        victoryPanel = canvas.Find("VictoryPanel").gameObject;
         defeatPanel = canvas.Find("DefeatPanel").gameObject;
     }
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             Victory();
         }
@@ -237,7 +237,7 @@ public class GameManager : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Alpha5))
         {
-            CurrentWave = 5; 
+            CurrentWave = 5;
 
 
         }
@@ -257,7 +257,7 @@ public class GameManager : MonoBehaviour
 
 
         }
-           
+
         UpdateUI();
     }
 
@@ -296,9 +296,9 @@ public class GameManager : MonoBehaviour
     {
         float mon = money;
 
-        if(mon >= 10000)
+        if (mon >= 10000)
         {
-            int holeNumb = (int) mon / 10000;
+            int holeNumb = (int)mon / 10000;
             moneyCounterUI.text = holeNumb.ToString() + "K";
         }
         else
@@ -308,9 +308,9 @@ public class GameManager : MonoBehaviour
 
         float mat = material;
 
-        if(mat >= 10000)
+        if (mat >= 10000)
         {
-            int holeNumb = (int) mat / 10000;
+            int holeNumb = (int)mat / 10000;
             materialCounterUI.text = holeNumb.ToString() + "K";
         }
         else
@@ -325,17 +325,17 @@ public class GameManager : MonoBehaviour
             moneyParticle.Play();
 
         money += addMoney;
-        moneyCollected += (int) addMoney;
+        moneyCollected += (int)addMoney;
         UpdateUI();
     }
 
     public void AddMaterial(float addMaterial)
     {
-        if(materialParticle != null)
+        if (materialParticle != null)
             materialParticle.Play();
 
         material += addMaterial;
-        materialCollected += (int) addMaterial;
+        materialCollected += (int)addMaterial;
         UpdateUI();
     }
 
@@ -346,7 +346,7 @@ public class GameManager : MonoBehaviour
     {
         if (moneySpent <= money && materialSpent <= material)
         {
-            if(moneySpent > 0)
+            if (moneySpent > 0)
             {
                 money -= moneySpent;
 
@@ -363,8 +363,8 @@ public class GameManager : MonoBehaviour
 
                 Instantiate(SpendEffektPrefab, moneyCounterUI.transform);
             }
-            
-            if(materialSpent > 0)
+
+            if (materialSpent > 0)
             {
                 material -= materialSpent;
 
@@ -381,7 +381,7 @@ public class GameManager : MonoBehaviour
 
                 Instantiate(SpendEffektPrefab, materialCounterUI.transform);
             }
-            
+
             UpdateUI();
             return true;
         }
@@ -417,7 +417,7 @@ public class GameManager : MonoBehaviour
 
     public void AddPlacedTower(PlacedTower tower)
     {
-        towersPlaced.Add(tower); 
+        towersPlaced.Add(tower);
     }
 
     public void RemovePlacedTower(GameObject tower)
@@ -434,10 +434,10 @@ public class GameManager : MonoBehaviour
             description: "Defeat",
             wave: currentWave + 1,
             killedBy: damagingEnemy,
-            enemiesKilled: 0 
+            enemiesKilled: 0
         ));
 
-        canvas.GetComponent<UI>().SetSelectedButton("Restart");
+        canvas.GetComponent<UI>().SetFirstSelectedButton("Restart");
         UI.OpenMenu();
 
         waveManager.Restart();
@@ -472,7 +472,7 @@ public class GameManager : MonoBehaviour
             ));
         }
 
-        canvas.GetComponent<UI>().SetSelectedButton("Continue");
+        canvas.GetComponent<UI>().SetFirstSelectedButton("Continue");
         UI.OpenMenu();
 
         waveManager.Restart();

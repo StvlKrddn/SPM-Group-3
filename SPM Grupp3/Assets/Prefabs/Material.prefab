@@ -98,10 +98,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f87a6f892a6bc94c8ff3e4364fb7679, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  yMovement: -0.016666666
   materialValue: 1
   bobbingSpeed: 5
   bobbingStrength: 0.2
   duration: 10
+  secondsBeforeLanding: 3
+  blinkDuration: 5
   changerText: {fileID: 5205185240933545452, guid: c8312052f47b6734d88b2abb7ec0cd2b, type: 3}
   spawnTextPosition: {fileID: 1921693313432702708}
   xValues:
@@ -110,8 +113,7 @@ MonoBehaviour:
   zValues:
   - -30
   - 0
-  secondsBeforeLanding: 3
-  yMovement: -0.016666666
+  pickUpSound: {fileID: 8300000, guid: d52c2f795a992d545a8fb4a099a61283, type: 3}
 --- !u!54 &5351140838038142085
 Rigidbody:
   m_ObjectHideFlags: 0
