@@ -6,7 +6,6 @@ public class WaveEndSystem : MonoBehaviour
 {
     private WaveManager waveManager;
 
-    private TankUpgradeTree tank;
     //private SniperTank sniperTank; 
     private TutorialUI tutorial;
 
@@ -17,24 +16,15 @@ public class WaveEndSystem : MonoBehaviour
         {
             tutorial = FindObjectOfType<TutorialUI>();
         }
-        //player =
-        
-        if(FindObjectOfType<TankUpgradeTree>())
-        {
-            tank = FindObjectOfType<TankUpgradeTree>();
-        }
 
         // If any DebugEvent is invoked, call the PrintMessage-method
-        EventHandler.RegisterListener<WaveEndEvent>(waveDone);
-
-
-        
+        EventHandler.RegisterListener<WaveEndEvent>(WaveDone);
     }
 
 
 
 
-    void waveDone(WaveEndEvent waveEndEvent)
+    void WaveDone(WaveEndEvent waveEndEvent)
     {
         // waveManager.StartWave(waveEndEvent.CurrentWave);
         if (tutorial != null)
@@ -42,10 +32,6 @@ public class WaveEndSystem : MonoBehaviour
             tutorial.waveEnded();
         }
 
-        if(tank != null)
-        {
-            tank.ResetCooldown();
-        }
         EventHandler.InvokeEvent(new SaveGameEvent(
             description: "Game is saving"
         ));

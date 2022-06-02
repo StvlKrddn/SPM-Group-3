@@ -47,7 +47,11 @@ public class BoostAbility : MonoBehaviour
 
     private void OnEnable() 
     {
-        allowedToBoost = true;
+        if (allowedToBoost == false)
+        {
+            slider.value = 0;
+            StartCoroutine(BoostCooldown());
+        }
     }
 
     public void ChangeSpeed()
@@ -109,16 +113,19 @@ public class BoostAbility : MonoBehaviour
 
         float elapsed = 0f;
 
-        if(fadeBehaviour.Faded())
+        if(fadeBehaviour.Faded() == true)
             fadeBehaviour.Fade();
 
-        while (elapsed < boostDuration)
-        {
-            elapsed += Time.deltaTime;
+        if (slider.value != 0)
+        { 
+            while (elapsed < boostDuration)
+            {
+                elapsed += Time.deltaTime;
 
-            // preChangePct is start value and the goal is pct. elapsed / updateSpeedSeconds is the equation per activation
-            slider.value = Mathf.Lerp(1f, 0, elapsed / boostDuration);
-            yield return null;
+                // preChangePct is start value and the goal is pct. elapsed / updateSpeedSeconds is the equation per activation
+                slider.value = Mathf.Lerp(1f, 0, elapsed / boostDuration);
+                yield return null;
+            }
         }
 
         slider.value = 0;
@@ -136,6 +143,8 @@ public class BoostAbility : MonoBehaviour
             yield return null;
         }
 
+        if (fadeBehaviour.Faded() == false)
+            fadeBehaviour.Fade();
         slider.value = 1f;
     }
 
