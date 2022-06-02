@@ -100,6 +100,7 @@ public class UI : MonoBehaviour
         // NOTE(August): "Are you sure you want to quit?..." prompt?
         Resume();
         CloseMenu();
+        UpgradeController.Instance.ResetUpgrades();
         SceneManager.LoadScene(0);
     }
 
