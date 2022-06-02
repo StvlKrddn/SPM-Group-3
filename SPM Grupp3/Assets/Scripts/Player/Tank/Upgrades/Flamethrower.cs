@@ -10,6 +10,7 @@ public class Flamethrower : MonoBehaviour
     private InputAction fireAction;
     [SerializeField] private float damage;
     [SerializeField] private ParticleSystem fireParticles;
+    [SerializeField] private AudioClip flameThrowerSound;
 
     public static float FireDamage;
 
@@ -27,11 +28,17 @@ public class Flamethrower : MonoBehaviour
 	{
         if(fireAction.IsPressed())
         {
+            if (!SoundSystem.instance.audioSource.isPlaying)
+            {
+                EventHandler.InvokeEvent(new PlaySoundEvent("Player Fire Shooting", flameThrowerSound));
+            }
+            
             fireParticles.Play();
         }
         else
         {
             fireParticles.Stop();
+            SoundSystem.instance.StopAudio();
         }
     }
 }

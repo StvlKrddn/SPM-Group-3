@@ -8,7 +8,7 @@ public class SoundSystem : MonoBehaviour
     public static SoundSystem instance;
     [SerializeField] private int maxBufferSize = 2;
 
-    private AudioSource audioSource;
+    public AudioSource audioSource;
     private List<AudioSource> soundBuffer = new List<AudioSource>();
 
     void Awake()
@@ -36,6 +36,11 @@ public class SoundSystem : MonoBehaviour
             audioSource.PlayOneShot(clip);
             soundBuffer.Add(audioSource);
         }
+    }
+
+    public void StopAudio()
+    {
+        audioSource.Stop();
     }
 
     void Update()
