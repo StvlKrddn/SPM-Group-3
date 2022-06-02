@@ -190,9 +190,11 @@ public class PoisonTower : Tower
 
     protected override void Level3(GameObject tower)
     {
-        PoisonTower poisonTower = tower.GetComponent<PoisonTower>();
-        poisonTower.poisonSpread = true;
+       
 
+        PoisonTower poisonTower = tower.GetComponent<PoisonTower>();
+        // poisonTower.poisonSpread = true;
+        poisonTower.poisonTicks += 2;
         level2Visual.SetActive(false);
         level3Visual.SetActive(true);
     }

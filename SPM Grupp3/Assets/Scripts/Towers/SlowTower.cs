@@ -58,6 +58,10 @@ public class SlowTower : Tower
         Radius.transform.localScale = new Vector3(range * 2f, 0.01f, range * 2f);
         InvokeRepeating("UpdateTarget", 0f, 0.2f);
         SlowTowerEffect slowTowerEffect = GetComponent<SlowTowerEffect>();
+        print("vad blir slow toerefefct");
+
+        print(slowTowerEffect);
+        
     }
 
     // Update is called once per frame
@@ -129,7 +133,7 @@ public class SlowTower : Tower
     }
 
     private void  AOESlow(int shotIndex)
-    {
+    {   
         if (currentShots <= 0 && StunActive)
         {
             currentShots = shotsBeforeStun;
@@ -153,11 +157,16 @@ public class SlowTower : Tower
         }
         effectInstance.SetActive(true);
 
+        print(effectInstance);
+
         StartCoroutine(DisableEffect(effectInstance));
-        
+
+        slowTowerEffect = GetComponent<SlowTowerEffect>();
+        print("är slow tower effect null");
+        print(slowTowerEffect);
 
         if (StunActive && CurrentShots <= 0f)
-        {
+        {   
             slowTowerEffect.HitBySlow(null, SlowProc, range, AreaOfEffect, true);
         }
         else
