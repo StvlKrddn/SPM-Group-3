@@ -21,16 +21,13 @@ public abstract class EnemyController : MonoBehaviour
     [SerializeField] private Transform spawnTextPosition;
     [SerializeField] protected Animator animator;
 
-
-   
-
     protected Transform target;
     protected int currentWaypointIndex = 0;
     protected List<Transform[]> wayPoints;
 
     public float Speed = 10f;
     public GameObject DeathEffect;
-    public GameObject ChangerText;
+    public GameObject gainText;
     public int DamageBase = 10;
     public int MoneyDrop = 10;
     public int Path;
@@ -60,8 +57,8 @@ public abstract class EnemyController : MonoBehaviour
         wayPoints = Waypoints.instance.GetWaypoints();
         materialHolder = FindObjectOfType<MaterialHolder>();
 
-        ChangerText.GetComponentInChildren<Text>().text = MoneyDrop.ToString();
-        ChangerText.GetComponentInChildren<Text>().color = moneyColor;
+        gainText.GetComponentInChildren<Text>().text = MoneyDrop.ToString();
+        gainText.GetComponentInChildren<Text>().color = moneyColor;
 
         //Set base values. Gets changertext, movement, health and healthbar, speed and waypoints/path
     }
@@ -124,9 +121,9 @@ public abstract class EnemyController : MonoBehaviour
         
         // Spawns a changerText for indikation for gaining money
 
-        if(ChangerText != null && spawnTextPosition != null)
+        if(gainText != null && spawnTextPosition != null)
         {
-            Instantiate(ChangerText, spawnTextPosition.position, spawnTextPosition.rotation, GameManager.Instance.transform.Find("DropTexts"));
+            Instantiate(gainText, spawnTextPosition.position, spawnTextPosition.rotation, GameManager.Instance.transform.Find("DropTexts"));
         }
 
         if (MaterialDrop == true)

@@ -23,7 +23,7 @@ public class ChangerBehaviour : MonoBehaviour
 
     private void OnEnable()
     {
-        transform.position = transform.parent.position;
+        //transform.position = transform.parent.position;
         canvasGroup = GetComponent<CanvasGroup>();
         lookAt = GameObject.FindGameObjectWithTag("Look").transform;
 
@@ -58,7 +58,7 @@ public class ChangerBehaviour : MonoBehaviour
         }
 
         if (destroyAfterFade)
-            Destroy(transform.parent.gameObject);
+            Destroy(gameObject);
     }
 
     private IEnumerator DoScale()

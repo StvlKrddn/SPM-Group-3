@@ -398,8 +398,8 @@ public class WheelSelection : MonoBehaviour
 
                 p2FireRate.color = Color.green;
 
-                tankUpgradeTitleP1.text = "Player 1 Tank (LVL 1)";
-                tankUpgradeTitleP2.text = "Player 2 Tank (LVL 1)";
+                tankUpgradeTitleP1.text = "Player 1: Sniper (LVL 1)";
+                tankUpgradeTitleP2.text = "Player 2: Fire (LVL 1)";
                 break;
             case 1:
                 p1Range.color = Color.green;
@@ -408,19 +408,19 @@ public class WheelSelection : MonoBehaviour
                 p2Damage.color = Color.green;
                 p2FireRate.color = Color.green;
 
-                tankUpgradeTitleP1.text = "Player 1 Tank (LVL 2)";
-                tankUpgradeTitleP2.text = "Player 2 Tank (LVL 2)";
+                tankUpgradeTitleP1.text = "Player 1: Sniper (LVL 2)";
+                tankUpgradeTitleP2.text = "Player 2 Fire (LVL 2)";
                 break;
             case 2:
                 p1Ability.color = Color.green;
                 p2Ability.color = Color.green;
 
-                tankUpgradeTitleP1.text = "Player 1 Tank (LVL 3)";
-                tankUpgradeTitleP2.text = "Player 2 Tank (LVL 3)";
+                tankUpgradeTitleP1.text = "Player 1: Sniper (LVL 3)";
+                tankUpgradeTitleP2.text = "Player 2: Fire (LVL 3)";
                 break;
             case 3:
-                tankUpgradeTitleP1.text = "Player 1 Tank (LVL Max)";
-                tankUpgradeTitleP2.text = "Player 2 Tank (LVL Max)";
+                tankUpgradeTitleP1.text = "Player 1: Sniper (LVL Max)";
+                tankUpgradeTitleP2.text = "Player 2: Fire (LVL Max)";
                 break;
         }
 

@@ -8,7 +8,7 @@ using Random = UnityEngine.Random;
 public class MaterialBehavior : MonoBehaviour
 {
     private GameManager gameManager;
-    private Color dropTextColor = new Color(164,164,164,255);
+    [SerializeField] private Color dropTextColor = new Color(164,164,164,255);
     private MeshRenderer mRenderer;
     private bool landed = false;
 	private Vector3 originalPosition;
@@ -24,7 +24,7 @@ public class MaterialBehavior : MonoBehaviour
     [SerializeField] private float duration = 5f;
     [SerializeField] private float secondsBeforeLanding = 3;
     [SerializeField] private float blinkDuration = 5;
-    [SerializeField] private GameObject changerText;
+    [SerializeField] private GameObject gainText;
     [SerializeField] private Transform spawnTextPosition;
 
     [SerializeField] private float[] xValues = new float[2];
@@ -38,10 +38,10 @@ public class MaterialBehavior : MonoBehaviour
 	private void Awake()
 	{
         mRenderer = GetComponent<MeshRenderer>();
-        changerText = Instantiate(changerText, spawnTextPosition.position, spawnTextPosition.rotation, GameManager.Instance.transform.Find("DropTexts"));
-		changerText.GetComponentInChildren<Text>().text = materialValue.ToString();
-        changerText.GetComponentInChildren<Text>().color = dropTextColor;
-        changerText.SetActive(false);
+        //changerText = Instantiate(changerText, spawnTextPosition.position, spawnTextPosition.rotation, GameManager.Instance.transform.Find("DropTexts"));
+        gainText.GetComponentInChildren<Text>().text = materialValue.ToString();
+        gainText.GetComponentInChildren<Text>().color = dropTextColor;
+        //changerText.SetActive(false);
         gameManager = GameManager.Instance;
 	}
     void Start()
@@ -116,10 +116,10 @@ public class MaterialBehavior : MonoBehaviour
             gameManager.AddMaterial(materialValue);
 			EventHandler.InvokeEvent(new PlaySoundEvent("Picking up material sound", pickUpSound));
 
-            if (changerText != null && spawnTextPosition != null)
+            if (gainText != null && spawnTextPosition != null)
             {
-                changerText.transform.SetPositionAndRotation(transform.position, transform.rotation);
-                changerText.SetActive(true);
+                Instantiate(gainText, spawnTextPosition.position, spawnTextPosition.rotation, GameManager.Instance.transform.Find("DropTexts"));
+
             }
             gameObject.SetActive(false);
         }
