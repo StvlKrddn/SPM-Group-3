@@ -88,7 +88,7 @@ public class MaterialBehavior : MonoBehaviour
     private void Landed()
     {
         originalPosition = transform.position;
-		originalPosition.y += 1;
+		originalPosition.y += 0.5f;
 
         landed = true;
 		StartCoroutine(SelfDestruct());
