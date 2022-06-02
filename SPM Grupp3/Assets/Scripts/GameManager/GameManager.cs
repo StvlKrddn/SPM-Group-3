@@ -20,6 +20,9 @@ public class GameManager : MonoBehaviour
     private Color materialBaseColor;
     [SerializeField] private GameObject SpendEffektPrefab;
 
+    [SerializeField] private AudioClip victorySound;
+    [SerializeField] private AudioClip defeatSound;
+
     [NonSerialized] public Color Player1Color;
     [NonSerialized] public Color Player2Color;
 
@@ -413,6 +416,7 @@ public class GameManager : MonoBehaviour
 
     private void Defeat()
     {
+        EventHandler.InvokeEvent(new PlaySoundEvent(("Defeat"), defeatSound));
         Debug.Log("Defeat");
 
         EventHandler.InvokeEvent(new DefeatEvent(
@@ -445,6 +449,7 @@ public class GameManager : MonoBehaviour
 
     public void Victory()
     {
+        EventHandler.InvokeEvent(new PlaySoundEvent(("Victory"), victorySound));
         Debug.Log("Victory");
 
         EventHandler.InvokeEvent(new VictoryEvent(
