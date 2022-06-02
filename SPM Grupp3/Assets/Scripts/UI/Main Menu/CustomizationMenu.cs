@@ -10,7 +10,7 @@ public class CustomizationMenu : MonoBehaviour
     [SerializeField] private GameObject turret;
     [SerializeField] private GameObject hat;
     [SerializeField] private CustomizationManager customizationManager;
-    
+
     private Material defaultTankMaterial;
     private Material defaultTurretMaterial;
     private Material defaultHatMaterial;
@@ -21,7 +21,7 @@ public class CustomizationMenu : MonoBehaviour
     private Renderer turretRenderer;
     private Renderer hatRenderer;
     private Slider currentSlider;
-    
+
     [System.NonSerialized] public Color newColor;
 
     void Awake()
@@ -45,9 +45,25 @@ public class CustomizationMenu : MonoBehaviour
         newHatMaterial = new Material(defaultHatMaterial.shader);
         newHatMaterial.CopyPropertiesFromMaterial(defaultHatMaterial);
         hatRenderer.material = newHatMaterial;
+
+        if (AchievementTracker.Instance.IsAchievementCompleted(Achievement.CompleteStageThree))
+        {
+            EnableHatPanel();
+        }
     }
 
-    void OnDestroy() 
+    void EnableHatPanel()
+    {
+
+        GameObject hatPanel = transform.Find("HatPanel").gameObject;
+        hatPanel.SetActive(true);
+
+        GameObject colorPanel = transform.Find("ColorPanel").gameObject;
+        Vector2 panelPosition = new Vector3(-210, 0);
+        colorPanel.GetComponent<RectTransform>().anchoredPosition = panelPosition;
+    }
+
+    void OnDestroy()
     {
         if (tankRenderer != null)
         {
@@ -70,7 +86,7 @@ public class CustomizationMenu : MonoBehaviour
         // Slider value is a percentage and must be converted
 
         float value = Mathf.Round(255 * (currentSlider.value / 2));
-        
+
         valueText.text = value.ToString();
     }
 

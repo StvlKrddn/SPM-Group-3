@@ -36,10 +36,10 @@ public class MainMenu : MonoBehaviour
             EventSystem.current.SetSelectedGameObject(null);
             EventSystem.current.SetSelectedGameObject(continueButton);
         }
-        if (!hatNoticeShown && AchievementTracker.Instance != null && AchievementTracker.Instance.IsAchievementCompleted(Achievement.CompleteStageThree))
+        if (!hatNoticeShown && AchievementTracker.Instance.IsAchievementCompleted(Achievement.CompleteStageThree))
         {
             hatNoticeShown = true;
-            transform.Find("NewHatNotice").gameObject.SetActive(true);
+            mainMenu.transform.Find("NewHatNotice").gameObject.SetActive(true);
         }
     }
     
