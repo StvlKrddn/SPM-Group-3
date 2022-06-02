@@ -563,8 +563,12 @@ public class BuilderController : MonoBehaviour
         cursorTransform.gameObject.SetActive(false);
         stopHover = true;
         stopMouse = true;
-        Renderer selectionRenderer = _selection.GetComponent<Renderer>();
-        selectionRenderer.material.color = startColor;
+        if (_selection != null)
+        {
+            Renderer selectionRenderer = _selection.GetComponent<Renderer>();
+            selectionRenderer.material.color = startColor;
+        }
+
         playerUI.gameObject.SetActive(false);
         if (preTower != null)
         {

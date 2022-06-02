@@ -300,9 +300,9 @@ public class TankState : MonoBehaviour
         ));
     }
 
-    public void IncreaseSpeed(float speedIncrease)
+    public void IncreaseSpeed(float newSpeed)
     {
-        standardSpeed += speedIncrease;
+        standardSpeed = newSpeed;
         GetComponent<BoostAbility>().ChangeSpeed();
     }
 

@@ -24,6 +24,11 @@ public class UpgradeController : MonoBehaviour
         }
     }
 
+    public void ResetUpgrades()
+    {
+        currentUpgradeLevel = 0;
+    }
+
     public int GetUpgradesPurchased()
     {
         return currentUpgradeLevel;

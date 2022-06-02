@@ -88,7 +88,7 @@ public class GameManager : MonoBehaviour
             LoadCustomizationData();
         }
 
-        builderController = FindObjectOfType<BuilderController>();
+       
     }
 
     private void LoadSaveData()
@@ -446,10 +446,12 @@ public class GameManager : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(null);
         EventSystem.current.SetSelectedGameObject(restartButton);
 
-        builderController.HideCursor();
+        HidePlayerCursor();
 
-        canvas.GetComponent<UI>().SetSelectedButton("Restart");
+        canvas.GetComponent<UI>().SetSelectedButton(restartButton);
         UI.OpenMenu();
+
+        UpgradeController.Instance.ResetUpgrades();
 
         waveManager.Restart();
 
@@ -477,9 +479,9 @@ public class GameManager : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(null);
         EventSystem.current.SetSelectedGameObject(continueButton);
 
-        
+        UpgradeController.Instance.ResetUpgrades();
 
-        builderController.HideCursor();
+        
 
         // If this is the third level, invoke achievement
         if (SceneManager.GetActiveScene().buildIndex == 3)
@@ -491,6 +493,10 @@ public class GameManager : MonoBehaviour
             ));
         }
 
+        HidePlayerCursor();
+
+
+
         canvas.GetComponent<UI>().SetFirstSelectedButton("Continue");
         UI.OpenMenu();
 
@@ -499,6 +505,15 @@ public class GameManager : MonoBehaviour
         victoryPanel.SetActive(true);
 
         buildManager.TowerToBuild = null;
+    }
+
+    private void HidePlayerCursor()
+    {
+        BuilderController[] builderController = FindObjectsOfType<BuilderController>();
+        foreach (BuilderController player in builderController)
+        {
+            player.HideCursor();
+        }
     }
 
     private void ResetBaseHealth()

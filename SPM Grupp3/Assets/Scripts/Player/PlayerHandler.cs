@@ -13,7 +13,7 @@ public class PlayerHandler : MonoBehaviour
     [SerializeField] private GameObject cursor;
 
     private PlayerMode currentMode;
-    private GameObject canvas;
+    private UI uiCanvas;
     private PlayerInput playerInput;
     private bool destroyed;
 
@@ -24,7 +24,7 @@ public class PlayerHandler : MonoBehaviour
     {
         destroyed = false;
 
-        canvas = UI.Canvas.gameObject;
+        uiCanvas = UI.Canvas.GetComponent<UI>();
 
         currentMode = GameManager.Instance.StartingMode;
 
@@ -133,11 +133,10 @@ public class PlayerHandler : MonoBehaviour
 
     public void PauseGame(InputAction.CallbackContext context)
     {
-        if (context.performed && !UI.MenuOpen)
+        if (context.performed && UI.MenuOpen == false)
         {
-            UI ui = canvas.GetComponent<UI>();
-            ui.SetFirstSelectedButton("Resume");
-            ui.PauseGame();
+            uiCanvas.SetFirstSelectedButton("Resume");
+            uiCanvas.PauseGame();
         }
     }
 

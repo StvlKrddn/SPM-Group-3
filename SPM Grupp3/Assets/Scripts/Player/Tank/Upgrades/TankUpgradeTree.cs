@@ -27,7 +27,11 @@ public abstract class TankUpgradeTree : MonoBehaviour
     {
         if (UpgradeController.currentUpgradeLevel == 3 && abilityReady == false)
         {
-            StartCoroutine(ResetAbility());
+            if (slider != null)
+            {
+                slider.value = 1;
+                StartCoroutine(UseAbilityBar());
+            }
         }
     }
 
@@ -50,7 +54,7 @@ public abstract class TankUpgradeTree : MonoBehaviour
 
     public virtual void UpgradeThree()
     {
-        abilityReady = true;
+        StartCoroutine(UseAbilityBar());
     }
 
     public virtual bool Ability()
@@ -58,17 +62,10 @@ public abstract class TankUpgradeTree : MonoBehaviour
         if (abilityReady == true)
         {
             abilityReady = false;
-            StartCoroutine(UseAbilityBar());
-            StartCoroutine(ResetAbility());
+            StartCoroutine(UseAbilityBar());          
             return true;
         }
         return false;
-    }
-
-    protected IEnumerator ResetAbility()
-    {
-        yield return new WaitForSeconds(abilityCD);
-        abilityReady = true;
     }
 
     private IEnumerator UseAbilityBar()
@@ -79,16 +76,17 @@ public abstract class TankUpgradeTree : MonoBehaviour
         if (fadeBehaviour.Faded())
           fadeBehaviour.Fade();
 
-        while (elapsed < abilityDuration)
+        if (slider.value != 0)
         {
-            elapsed += Time.deltaTime;
+            while (elapsed < abilityDuration)
+            {
+                elapsed += Time.deltaTime;
 
-            // preChangePct is start value and the goal is pct. elapsed / updateSpeedSeconds is the equation per activation
-            slider.value = Mathf.Lerp(1f, 0, elapsed / abilityDuration);
-            yield return null;
+                // preChangePct is start value and the goal is pct. elapsed / updateSpeedSeconds is the equation per activation
+                slider.value = Mathf.Lerp(slider.value, slider.minValue, elapsed / abilityDuration);
+                yield return null;
+            }
         }
-
-        slider.value = 0f;
 
         float coolDown = abilityCD - abilityDuration;
 
@@ -99,11 +97,12 @@ public abstract class TankUpgradeTree : MonoBehaviour
             elapsed += Time.deltaTime;
 
             // preChangePct is start value and the goal is pct. elapsed / updateSpeedSeconds is the equation per activation
-            slider.value = Mathf.Lerp(0, 1f, elapsed / coolDown);
+            slider.value = Mathf.Lerp(slider.minValue, slider.maxValue, elapsed / coolDown);
             yield return null;
         }
-        fadeBehaviour.Fade();
-        slider.value = 1f;
+        abilityReady = true;
+        if (fadeBehaviour.Faded() == false)
+            fadeBehaviour.Fade();
     }
 
     public void ResetCooldown()
