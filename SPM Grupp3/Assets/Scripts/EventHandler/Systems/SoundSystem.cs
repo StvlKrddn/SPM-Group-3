@@ -11,10 +11,7 @@ public class SoundSystem : MonoBehaviour
     private AudioSource audioSource;
     private List<AudioSource> soundBuffer = new List<AudioSource>();
 
-    private Slider effectSlider;
-
-    public Slider EffectSlider { get { return effectSlider; } set { effectSlider = value; } }
-    void Start()
+    void Awake()
     {
         if (instance == null)
         {
@@ -22,11 +19,13 @@ public class SoundSystem : MonoBehaviour
         }
         EventHandler.RegisterListener<PlaySoundEvent>(PlaySound);
         audioSource = GetComponent<AudioSource>();
+        audioSource.volume = PlayerPrefs.GetFloat("EffectsVolume");
     }
 
-    public void SetVolume()
+    public void SetVolume(float volume)
     {
-        audioSource.volume = effectSlider.value;
+        PlayerPrefs.SetFloat("EffectsVolume", volume);
+        audioSource.volume = volume;
     }
 
     void PlaySound(PlaySoundEvent eventInfo)
@@ -38,7 +37,7 @@ public class SoundSystem : MonoBehaviour
             soundBuffer.Add(audioSource);
         }
     }
-    
+
     void Update()
     {
         // Clear sound buffer every half-second
