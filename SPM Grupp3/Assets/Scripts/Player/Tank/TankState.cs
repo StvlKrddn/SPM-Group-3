@@ -138,14 +138,56 @@ public class TankState : MonoBehaviour
         {
             transform.Find("TankMesh").Find("TankBody").GetComponent<Renderer>().material.color = player2Color;
         }
-        tankUpgradeTree = playerInput.playerIndex == 0 ? tankUpgradeTreeOne : tankUpgradeTreeTwo;
-        if (playerInput.playerIndex == 0)
+
+        if (DataManager.FileExists(DataManager.CustomizationData))
         {
-            tankUpgradeTreeTwo.enabled = false;
+            List<CustomizationData> data = (List<CustomizationData>)DataManager.ReadFromFile(DataManager.CustomizationData);
+
+            if (playerInput.playerIndex == 0)
+            {
+                // Player 1
+                if (data[0].PlayerClass == 0)
+                {
+                    // Sniper
+                    tankUpgradeTreeTwo.enabled = false;
+                    tankUpgradeTree = tankUpgradeTreeOne;
+                }
+                else
+                {
+                    // Fire
+                    tankUpgradeTreeOne.enabled = false;
+                    tankUpgradeTree = tankUpgradeTreeTwo;
+                }
+            }
+            else
+            {
+                // Player 2
+                if (data[1].PlayerClass == 0)
+                {
+                    // Sniper
+                    tankUpgradeTreeTwo.enabled = false;
+                    tankUpgradeTree = tankUpgradeTreeOne;
+                }
+                else
+                {
+                    // Fire
+                    tankUpgradeTreeOne.enabled = false;
+                    tankUpgradeTree = tankUpgradeTreeTwo;
+                }
+            }
         }
         else
         {
-            tankUpgradeTreeOne.enabled = false;
+            if (playerInput.playerIndex == 0)
+            {
+                tankUpgradeTreeTwo.enabled = false;
+                tankUpgradeTree = tankUpgradeTreeOne;
+            }
+            else
+            {
+                tankUpgradeTreeOne.enabled = false;
+                tankUpgradeTree = tankUpgradeTreeTwo;
+            }
         }
     }
 
