@@ -34,7 +34,8 @@ public class BoostAbility : MonoBehaviour
     {
         tankState = GetComponent<TankState>();
         slider = boostUI.GetComponent<Slider>();
-        slider.value = 1f;
+        slider.maxValue = 1f;
+        slider.minValue = 0f;
         boostAction = tankState.PlayerInput.actions["Boost"];
         fadeBehaviour = boostUI.GetComponent<FadeBehaviour>();
         ChangeSpeed();
@@ -50,7 +51,7 @@ public class BoostAbility : MonoBehaviour
         if (allowedToBoost == false)
         {
             slider.value = 0;
-            StartCoroutine(BoostCooldown());
+            StartCoroutine(RechargeBoostBar());
         }
     }
 
@@ -84,8 +85,6 @@ public class BoostAbility : MonoBehaviour
             // Multiply movement speed
             tankState.StandardSpeed = Mathf.Lerp(tankState.StandardSpeed, speedBeforeBoost * boostSpeedMultiplier, Time.deltaTime * boostAccelerationTimeMultiplier);
 
-            
-
             animator.SetBool("isBoosting", true);
         }
         else
@@ -107,30 +106,34 @@ public class BoostAbility : MonoBehaviour
         }
     }
 
+    private float elapsed = 0f;
+
     private IEnumerator UseBoostBar()
     {
-        float boostDuration = BoostDuration;
-
-        float elapsed = 0f;
 
         if(fadeBehaviour.Faded() == true)
             fadeBehaviour.Fade();
 
-        if (slider.value != 0)
-        { 
-            while (elapsed < boostDuration)
-            {
-                elapsed += Time.deltaTime;
+        elapsed = 0f;
 
-                // preChangePct is start value and the goal is pct. elapsed / updateSpeedSeconds is the equation per activation
-                slider.value = Mathf.Lerp(1f, 0, elapsed / boostDuration);
-                yield return null;
-            }
+        while (elapsed < BoostDuration)
+        {
+             elapsed += Time.deltaTime;
+
+             // preChangePct is start value and the goal is pct. elapsed / updateSpeedSeconds is the equation per activation
+             slider.value = Mathf.Lerp(slider.maxValue, slider.minValue, elapsed / BoostDuration);
+             yield return null;      
         }
 
-        slider.value = 0;
+        slider.value = slider.minValue;
 
+        StartCoroutine(RechargeBoostBar());
+    }
+
+    private IEnumerator RechargeBoostBar()
+    { 
         float coolDown = BoostCooldownTime - BoostDuration;
+        notInUseTimer = 0;
 
         elapsed = 0f;
 
@@ -139,13 +142,16 @@ public class BoostAbility : MonoBehaviour
             elapsed += Time.deltaTime;
 
             // preChangePct is start value and the goal is pct. elapsed / updateSpeedSeconds is the equation per activation
-            slider.value = Mathf.Lerp(0, 1f, elapsed / coolDown);
+            slider.value = Mathf.Lerp(slider.minValue, slider.maxValue, elapsed / coolDown);
             yield return null;
         }
 
-        if (fadeBehaviour.Faded() == false)
+/*        if (fadeBehaviour.Faded() == false)
             fadeBehaviour.Fade();
-        slider.value = 1f;
+*/
+        slider.value = slider.maxValue;
+
+        allowedToBoost = true;
     }
 
     IEnumerator BoostCooldown()
@@ -153,6 +159,6 @@ public class BoostAbility : MonoBehaviour
         allowedToBoost = false;
         StartCoroutine(UseBoostBar());
         yield return new WaitForSeconds(boostCooldownTime);
-        allowedToBoost = true;
+        //allowedToBoost = true;
     }
 }

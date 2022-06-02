@@ -17,8 +17,6 @@ public class HealthBar : MonoBehaviour
     {
         lookAt = GameObject.FindGameObjectWithTag("Look").transform;
         slider = GetComponentInChildren<Slider>();
-        //GetComponentInParent<Health>().UpdateHealthBar += HandleHealthChanged;
-        //GetComponentInParent<Health>().UpdateHealthBar += HandleHealthChanged;
     }
 
     private void OnDestroy()
@@ -58,7 +56,6 @@ public class HealthBar : MonoBehaviour
 
     private void LateUpdate()
     {
-
         if (this.name.Equals("GameManager"))
             return;
 
