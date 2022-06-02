@@ -13,7 +13,6 @@ public class VolumeSlider : MonoBehaviour
 
         if (gameObject.name.Equals("MusicVolume"))
         {
-            print(MusicManager.instance);
             MusicManager.instance.MusicSlider = slider;
             slider.onValueChanged.AddListener(delegate { MusicManager.instance.SetMusicVolume(); });
         }

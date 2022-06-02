@@ -18,7 +18,7 @@ public class PlayerHandler : MonoBehaviour
     private bool destroyed;
 
     public bool Destroyed { get { return destroyed; } set { destroyed = value; } }
-    public PlayerMode CurrentMode { get {return currentMode; } }
+    public PlayerMode CurrentMode { get { return currentMode; } }
 
     void Start()
     {
@@ -36,7 +36,7 @@ public class PlayerHandler : MonoBehaviour
         if (currentMode == PlayerMode.Build)
         {
             EnterBuildMode();
-            
+
         }
         else if (currentMode == PlayerMode.Tank)
         {
@@ -114,14 +114,14 @@ public class PlayerHandler : MonoBehaviour
 
     public void RepairTank()
     {
-        if (GameManager.Instance.SpendResources(500,20))
+        if (GameManager.Instance.SpendResources(500, 20))
         {
             destroyed = false;
             EnterTankMode();
         }
     }
 
-    public void StartWave (InputAction.CallbackContext context)
+    public void StartWave(InputAction.CallbackContext context)
     {
         if (context.performed)
         {
@@ -131,12 +131,12 @@ public class PlayerHandler : MonoBehaviour
         }
     }
 
-    public void PauseGame (InputAction.CallbackContext context)
+    public void PauseGame(InputAction.CallbackContext context)
     {
         if (context.performed && !UI.MenuOpen)
         {
             UI ui = canvas.GetComponent<UI>();
-            ui.SetSelectedButton("Resume");
+            ui.SetFirstSelectedButton("Resume");
             ui.PauseGame();
         }
     }

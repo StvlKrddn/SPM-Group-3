@@ -12,7 +12,7 @@ public class UI : MonoBehaviour
 {
     public static bool IsPaused;
     public static bool MenuOpen;
-    
+
     [SerializeField] private GameObject victoryPanel;
     [SerializeField] private GameObject defeatPanel;
     [SerializeField] private GameObject pauseMenu;
@@ -27,7 +27,7 @@ public class UI : MonoBehaviour
 
     public static Canvas Canvas
     {
-        get 
+        get
         {
             if (canvas == null)
             {
@@ -37,11 +37,11 @@ public class UI : MonoBehaviour
         }
     }
 
-    void Awake() 
+    void Awake()
     {
         canvas = GetComponent<Canvas>();
         resumeButton = pauseMenu.transform.Find("Resume").gameObject;
-        continueButton = victoryPanel.transform.Find("Buttons").Find("ContinueButton").gameObject;        
+        continueButton = victoryPanel.transform.Find("Buttons").Find("ContinueButton").gameObject;
         restartButton = defeatPanel.transform.Find("Buttons").Find("RestartButton").gameObject;
 
         eventSystem = FindObjectOfType<EventSystem>();
@@ -51,8 +51,6 @@ public class UI : MonoBehaviour
     {
         if (!IsPaused)
         {
-
-            print(MusicManager.instance);
             MusicManager.instance.SetMusicPLay(false);
             Time.timeScale = 0f;
             pauseMenu.SetActive(true);
@@ -63,12 +61,12 @@ public class UI : MonoBehaviour
         }
         else
         {
-            MusicManager.instance.SetMusicPLay(true);
             Resume();
+            MusicManager.instance.SetMusicPLay(true);
         }
-        
+
     }
-    
+
     public void Restart()
     {
         Resume();
@@ -84,9 +82,9 @@ public class UI : MonoBehaviour
         Resume();
         CloseMenu();
         victoryPanel.SetActive(false);
-        
+
         int sceneIndex = SceneManager.GetActiveScene().buildIndex;
-        
+
         if ((sceneIndex + 1) > 3)
         {
             SceneManager.LoadScene(0);
@@ -124,7 +122,7 @@ public class UI : MonoBehaviour
         Time.timeScale = 1f;
     }
 
-    public void SetSelectedButton(string buttonName)
+    public void SetFirstSelectedButton(string buttonName)
     {
         switch (buttonName)
         {

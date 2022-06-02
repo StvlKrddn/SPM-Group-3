@@ -31,7 +31,7 @@ public class MusicManager : MonoBehaviour
         {
             audioSource.UnPause();
         }
-        if(!state)
+        else
         {
             audioSource.Pause();
         }
