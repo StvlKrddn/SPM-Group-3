@@ -84,7 +84,7 @@ public class BuildManager : MonoBehaviour
         EventHandler.InvokeEvent(new PlaySoundEvent("Playing a sound when buying tower", buildSound));
 
         // Måste vara GameManager.Instance då BuildTower ibland körs innan Start
-        gameManager.AddPlacedTower(placedTower);
+        GameManager.Instance.AddPlacedTower(placedTower);
 
         towerScript.Radius.SetActive(false);
         if (level != 0)

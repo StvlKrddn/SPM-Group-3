@@ -71,8 +71,6 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-
-
         EventHandler.RegisterListener<SaveGameEvent>(SaveGame);
         buildManager = FindObjectOfType<BuildManager>();
         if (DataManager.FileExists(DataManager.SaveData))
@@ -187,8 +185,6 @@ public class GameManager : MonoBehaviour
 
         UpdateUI();
 
-
-
         victoryPanel.SetActive(false);
         defeatPanel.SetActive(false);
     }
@@ -268,7 +264,7 @@ public class GameManager : MonoBehaviour
 
     void SaveGame(SaveGameEvent eventInfo)
     {
-        print("Game saved");
+        print("Game Saved");
         SaveData saveData = new SaveData(
             currentWave,
             enemiesKilled,
