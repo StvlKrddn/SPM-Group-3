@@ -11,6 +11,7 @@ public class MainMenu : MonoBehaviour
 
     private GameObject mainMenu;
     private int sceneIndex;
+    private bool hatNoticeShown;
 
     private void Awake() 
     {
@@ -34,6 +35,11 @@ public class MainMenu : MonoBehaviour
             continueButton.SetActive(true);
             EventSystem.current.SetSelectedGameObject(null);
             EventSystem.current.SetSelectedGameObject(continueButton);
+        }
+        if (!hatNoticeShown && AchievementTracker.Instance != null && AchievementTracker.Instance.IsAchievementCompleted(Achievement.CompleteStageThree))
+        {
+            hatNoticeShown = true;
+            transform.Find("NewHatNotice").gameObject.SetActive(true);
         }
     }
     

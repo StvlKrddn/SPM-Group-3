@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028334, g: 0.22571328, b: 0.3069217, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3538,6 +3538,7 @@ MonoBehaviour:
   - {fileID: 1476769043}
   objectsToEnable:
   - {fileID: 1996685228}
+  disableOnActivation: 0
 --- !u!114 &328160926
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3839,6 +3840,7 @@ MonoBehaviour:
   - {fileID: 1996685228}
   objectsToEnable:
   - {fileID: 1476769043}
+  disableOnActivation: 0
 --- !u!114 &334743499
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7959,7 +7961,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &651157813
 GameObject:
@@ -10908,6 +10910,7 @@ MonoBehaviour:
   objectsToEnable:
   - {fileID: 1476769043}
   - {fileID: 385850050}
+  disableOnActivation: 0
 --- !u!114 &907847774
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13116,6 +13119,7 @@ MonoBehaviour:
   - {fileID: 1745564371}
   objectsToEnable:
   - {fileID: 385850050}
+  disableOnActivation: 0
 --- !u!114 &1109857326
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17182,6 +17186,7 @@ MonoBehaviour:
   - {fileID: 385850050}
   objectsToEnable:
   - {fileID: 1745564371}
+  disableOnActivation: 0
 --- !u!114 &1433271644
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17245,6 +17250,18 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 943349498}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 314862156}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -19365,6 +19382,7 @@ MonoBehaviour:
   - {fileID: 736367338}
   objectsToEnable:
   - {fileID: 385850050}
+  disableOnActivation: 0
 --- !u!114 &1577164930
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22011,6 +22029,7 @@ MonoBehaviour:
   - {fileID: 385850050}
   objectsToEnable:
   - {fileID: 736367338}
+  disableOnActivation: 0
 --- !u!114 &1725069599
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24790,7 +24809,7 @@ RectTransform:
   - {fileID: 736367339}
   - {fileID: 1745564372}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
