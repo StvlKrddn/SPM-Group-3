@@ -6,7 +6,6 @@ public class EnemyBullet : MonoBehaviour
 {
     private Transform target;
     private TankState[] tanks;
-    private Transform garageTrigger;
     private Vector3 direction;
     [SerializeField] private float timer = 0;
 
@@ -23,7 +22,6 @@ public class EnemyBullet : MonoBehaviour
 
 	void Start()
     {
-        garageTrigger = FindObjectOfType<GarageTrigger>().transform.parent;
         FindTarget();
         //Gets one random tank, if there is not one tank he focuses on the garage
     }
@@ -37,10 +35,7 @@ public class EnemyBullet : MonoBehaviour
             target = tankToTarget.transform;
 
         }
-        else
-        {
-            target = garageTrigger;
-        }
+
         direction = target.position - transform.position; //Checks direction
         direction.Normalize();
         direction.y = 0;

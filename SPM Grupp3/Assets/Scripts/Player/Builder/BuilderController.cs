@@ -77,7 +77,7 @@ public class BuilderController : MonoBehaviour
         buildPanel = towerMenu.Find("BuildPanel").gameObject;
         hintsPanel = towerMenu.Find("Hints").gameObject;
         tankUpgrade = towerMenu.Find("TankPanel").gameObject;
-
+        playerUI.gameObject.SetActive(true);
         buildManager = GetComponentInParent<BuildManager>();
         EventHandler.RegisterListener<BoughtInUIEvent>(SetBoughtInUI);
 
@@ -555,6 +555,20 @@ public class BuilderController : MonoBehaviour
             stopHover = true;
             stopMouse = true;
             placementClicked = true;
+        }
+    }
+
+    public void HideCursor()
+    {
+        cursorTransform.gameObject.SetActive(false);
+        stopHover = true;
+        stopMouse = true;
+        Renderer selectionRenderer = _selection.GetComponent<Renderer>();
+        selectionRenderer.material.color = startColor;
+        playerUI.gameObject.SetActive(false);
+        if (preTower != null)
+        {
+            Destroy(preTower);
         }
     }
 }
