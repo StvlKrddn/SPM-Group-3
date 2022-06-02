@@ -23,15 +23,19 @@ public class tutorialLoadingTextBox : MonoBehaviour
 
     public AudioSource audioSource;
 
-    private InputAction enterGarageTest;
+    private PlayerInput playerInput;
+    private InputAction progressDialogue;
 
    // private PlayerInput playerInput; 
 
     void Start()
     {
+        playerInput = FindObjectOfType<PlayerInput>();
         textToLoad = textBox.text;
 
         textBox.text = "";
+
+        progressDialogue = playerInput.actions["ProgressDialouge"];
 
         StartCoroutine(loadTextBox());
         
@@ -58,6 +62,15 @@ public class tutorialLoadingTextBox : MonoBehaviour
             textBox.text += textToLoad[i];
 
             yield return new WaitForSeconds(speedOfTextLoad);
+
+            if(progressDialogue.triggered)
+            {
+                isTextLoading = false;
+                audioSource.Stop();
+                textBox.text = textToLoad;
+
+                yield break;
+            }
         }
 
         audioSource.Stop();
@@ -77,19 +90,26 @@ public class tutorialLoadingTextBox : MonoBehaviour
         {
 
         }
-        if(Gamepad.current.aButton.wasPressedThisFrame)
+        if(//progressDialogue.triggered ||
+            Gamepad.current.aButton.wasPressedThisFrame)
         {
             if(isTextLoading)
             {
                 StopCoroutine(loadTextBox());
 
+                
+                StopAllCoroutines();
                 isTextLoading = false;
                 audioSource.Stop();
                 textBox.text = textToLoad;
             }
             else
             {
-                buttonToActivate.loadNextDialogue();
+                if(buttonToActivate != null)
+                {
+                    buttonToActivate.loadNextDialogue();
+                }
+             
             }
         }
     }

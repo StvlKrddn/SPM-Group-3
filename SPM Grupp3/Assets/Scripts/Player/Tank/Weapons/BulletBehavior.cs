@@ -7,6 +7,8 @@ public class BulletBehavior : MonoBehaviour
     private int penetrationCountMax;
     private WeaponSlot weapon;
     private Vector3 originalPosition;
+    private Material material;
+    private bool sniperShot;
     private readonly float sniperScale = 1.5f;
     [SerializeField] private int penetrationCount = 2;
     [SerializeField] private float bulletSpeed;
@@ -21,6 +23,10 @@ public class BulletBehavior : MonoBehaviour
     {
         GameObject tank = GetComponentInParent<TankState>().gameObject;
         weapon = tank.GetComponent<WeaponSlot>();
+        if (GetComponent<Renderer>())
+        {
+            material = GetComponent<Renderer>().material;
+        }
         UpdateBulletStats();
         transform.parent = null;
         originalPosition = transform.position;
@@ -45,11 +51,11 @@ public class BulletBehavior : MonoBehaviour
         damage = weapon.BulletDamage;
         penetrating = weapon.BulletPenetration; //The bullet gets the stats from their weapon
         penetrationCountMax = weapon.BulletPenetrationCount;
-        if (weapon.BulletColor != Color.white)
+        if (material != null && sniperShot != true && penetrating == true)
         {
-            Material bulletMaterial = GetComponent<Renderer>().material;
-            bulletMaterial.SetColor("_EmissionColor", weapon.BulletColor);
+            sniperShot = true;
             transform.localScale *= sniperScale;
+            material.SetColor("_EmissionColor", weapon.BulletColor);
         }
     }
 

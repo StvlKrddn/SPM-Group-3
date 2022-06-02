@@ -4,9 +4,9 @@ using System;
 [Serializable]
 public struct AchievementData
 {
-    public bool CompletedStageThree;
+    public Achievement CompletedStageThree;
 
-    public AchievementData(bool completedStageThree)
+    public AchievementData(Achievement completedStageThree)
     {
         CompletedStageThree = completedStageThree;
     }
