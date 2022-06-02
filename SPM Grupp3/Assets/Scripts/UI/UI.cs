@@ -83,6 +83,7 @@ public class UI : MonoBehaviour
         CloseMenu();
         victoryPanel.SetActive(false);
 
+        DataManager.DeleteFile(DataManager.SaveData);
         int sceneIndex = SceneManager.GetActiveScene().buildIndex;
 
         if ((sceneIndex + 1) > 3)

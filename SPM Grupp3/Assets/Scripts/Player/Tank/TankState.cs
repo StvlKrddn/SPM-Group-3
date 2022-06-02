@@ -311,13 +311,15 @@ public class TankState : MonoBehaviour
     private void ResetHealth()
     {
         currentHealth = health;
+        healthBar.UpdateHealthBarInstant(currentHealth);
+        /*
         if (tankUI.activeSelf == true)
         {
             healthBar.HandleHealthChanged(currentHealth);
         }
         else
         {
-            healthBar.UpdateHealthBarInstant(currentHealth);
         }
+        */
     }
 }
