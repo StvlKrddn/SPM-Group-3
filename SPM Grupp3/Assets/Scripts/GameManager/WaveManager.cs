@@ -13,6 +13,9 @@ public class WaveManager : MonoBehaviour
     [Space]
     public WaveInfo[] waves;
 
+    [Header("Debug")]
+    [SerializeField] private int startingWave = 1;
+
 
     private int enemyCount;
     private GameManager gameManager;
@@ -30,14 +33,15 @@ public class WaveManager : MonoBehaviour
     private readonly Dictionary<int, float> changeSpawnRate = new Dictionary<int, float>();
     private Waypoints wayPoints;
     private List<Transform[]> wayPostions;
-    
-    public int CurrentWave { get { return currentWave; } set { currentWave = value; } }
  
 
     private void Awake()
     {
         EventHandler.RegisterListener<NewWaveEvent>(OnStartWave);
-        
+        if (startingWave != 1)
+        {
+            currentWave = startingWave - 2;
+        }
         Transform waveHolder = UI.Canvas.transform.GetChild(0).Find("WaveHolder");
         waveUI = waveHolder.Find("WaveCounter").GetComponent<Text>();
         waveCleared = waveHolder.Find("WaveCleared").gameObject;
@@ -45,8 +49,12 @@ public class WaveManager : MonoBehaviour
         startHint = waveHolder.Find("StartWaveHint").gameObject;
         
         victoryWave = waves.Length;
-        
+
+        /*waveClear.SetActive(false);
+        waveStarted.SetActive(false);*/
         gameManager = GameManager.Instance;
+        currentWave = gameManager.CurrentWave;
+
     }
 
     private void OnDestroy()
@@ -64,7 +72,7 @@ public class WaveManager : MonoBehaviour
         {
             currentWave -= 1;
         }
-        UpdateUI();
+
     }
     private void Start()
     {
@@ -305,7 +313,7 @@ public class WaveManager : MonoBehaviour
            // print(temp);
         }
 
-        print("Totala antalet fiender " + totalenemies);
+        print("Totala antalet fiender " +totalenemies);
     }
 
 
@@ -362,7 +370,7 @@ public class WaveManager : MonoBehaviour
                 
             }
 
-            print("Sï¿½hï¿½r mï¿½nga fiender ï¿½r det " + totalEnemies);
+            print("Såhär många fiender är det " + totalEnemies);
 
             totalEnemies = 0;
 
