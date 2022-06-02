@@ -27,7 +27,7 @@ public class WeaponSlot : MonoBehaviour
     [SerializeField] private int penetrationCount;
     [SerializeField] private AudioClip shootSound;
     [SerializeField] private AudioClip sniperShotSound;
-    [SerializeField] private AudioClip flameThrowerSound;
+
     [Space]
     [SerializeField] private GameObject muzzleFlash;
     private Animator animator;
@@ -121,14 +121,14 @@ public class WeaponSlot : MonoBehaviour
     }
 
     void ShootingSound()
-    {
-        
+    {        
         if (UpgradeController.currentUpgradeLevel == 0)
         {
             EventHandler.InvokeEvent(new PlaySoundEvent("Player Shooting", shootSound));
         }
         else if (UpgradeController.currentUpgradeLevel == 1)
         {
+            print(UpgradeController.currentUpgradeLevel);
             if (playerInput.playerIndex == 0)
             {
                 EventHandler.InvokeEvent(new PlaySoundEvent("Player Sniper Shooting", sniperShotSound));
@@ -140,14 +140,7 @@ public class WeaponSlot : MonoBehaviour
         }
         else
         {
-            if (playerInput.playerIndex == 0)
-            {
-                EventHandler.InvokeEvent(new PlaySoundEvent("Player Sniper Shooting", sniperShotSound));
-            }
-            else
-            {
-                EventHandler.InvokeEvent(new PlaySoundEvent("Player Fire Shooting", flameThrowerSound));
-            }
+            EventHandler.InvokeEvent(new PlaySoundEvent("Player Sniper Shooting", sniperShotSound));          
         }
     }
 
