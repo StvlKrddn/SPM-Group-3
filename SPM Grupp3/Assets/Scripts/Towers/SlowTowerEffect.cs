@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class SlowTowerEffect : MonoBehaviour
 {
-    private float effectDuration = 3f;
-    private EnemyController enemyController;
+    private float effectDuration = 9f;
+    
 
 	public void HitBySlow(EnemyController enemy, float slowProc, float radius, bool areaOfEffect, bool stun)
     {
         if (!areaOfEffect)
         {
-            enemyController = enemy;
-            SlowEnemy(slowProc);
+            
+            SlowEnemy(slowProc, enemy);
         }
         else
         {
@@ -20,29 +20,29 @@ public class SlowTowerEffect : MonoBehaviour
             foreach (Collider enemyCollider in colliders)
             {
                 if (enemyCollider.GetComponent<EnemyController>())
-                {
-                    enemyController = enemyCollider.GetComponent<EnemyController>();
+                {   
+                    EnemyController tempenemy = enemyCollider.GetComponent<EnemyController>();
                     if (stun)
                     {
                         slowProc = 0;
                     }
-                    SlowEnemy(slowProc);
+                    SlowEnemy(slowProc, tempenemy);
                 }
             }
         }
     }
 
-    private void SlowEnemy(float slowProc)
+    private void SlowEnemy(float slowProc, EnemyController enemy)
     {
-        enemyController.Speed = enemyController.DefaultSpeed * slowProc;
-        enemyController.HitBySlow();
-        StartCoroutine(SlowDuration());
+        enemy.Speed = enemy.DefaultSpeed * slowProc;
+        enemy.HitBySlow();
+        StartCoroutine(SlowDuration(enemy));
     }
 
-    private IEnumerator SlowDuration()
+    private IEnumerator SlowDuration(EnemyController enemy)
     {
         yield return new WaitForSeconds(effectDuration);
-        enemyController.Speed = enemyController.DefaultSpeed;
-        enemyController.ResetAnimator();
+        enemy.Speed = enemy.DefaultSpeed;
+        enemy.ResetAnimator();
     }
 }
