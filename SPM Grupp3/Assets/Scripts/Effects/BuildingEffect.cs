@@ -16,18 +16,18 @@ public class BuildingEffect : MonoBehaviour
     {
         material = GetComponent<Renderer>().material;
         height = material.GetFloat("CutoffHeight");
-        tower.GetComponent<Renderer>().enabled = false;
+        tower.SetActive(false);
     }
 
     private void Update()
     {
-        if (transform.position.y > tower.transform.position.y)
+        if (transform.localPosition.y > 0)
         {
-            transform.position -= Vector3.up * sinkSpeed * Time.deltaTime;
+            transform.localPosition -= Vector3.up * sinkSpeed * Time.deltaTime;
         }
         else 
         {
-            transform.position = new Vector3(transform.position.x, tower.transform.position.y, transform.position.z);
+            transform.localPosition = new Vector3(transform.localPosition.x, 0, transform.localPosition.z);
             if (height < objectHeight)
             {
                 height += sinkSpeed * Time.deltaTime;
@@ -35,7 +35,7 @@ public class BuildingEffect : MonoBehaviour
             }
             else
             {
-                tower.GetComponent<Renderer>().enabled = true;
+                tower.SetActive(true);
                 transform.parent.gameObject.SetActive(false);
             }
         }

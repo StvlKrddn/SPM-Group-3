@@ -396,8 +396,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2001246845628198429}
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: 0, y: 0.5, z: 0.23045816}
-  m_LocalScale: {x: 100, y: 100, z: 100}
+  m_LocalPosition: {x: 0, y: 0.73, z: 0.23}
+  m_LocalScale: {x: 170, y: 170, z: 170}
   m_Children:
   - {fileID: 2154230010584709883}
   - {fileID: 2335741153395481215}
@@ -1179,15 +1179,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2496762209944008695, guid: d6a7fdb4f8bce744d880b5db05b2423c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.171
       objectReference: {fileID: 0}
     - target: {fileID: 2496762209944008695, guid: d6a7fdb4f8bce744d880b5db05b2423c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.007
       objectReference: {fileID: 0}
     - target: {fileID: 2496762209944008695, guid: d6a7fdb4f8bce744d880b5db05b2423c, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7071068
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2496762209944008695, guid: d6a7fdb4f8bce744d880b5db05b2423c, type: 3}
       propertyPath: m_LocalRotation.x
@@ -1195,7 +1195,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2496762209944008695, guid: d6a7fdb4f8bce744d880b5db05b2423c, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.7071068
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2496762209944008695, guid: d6a7fdb4f8bce744d880b5db05b2423c, type: 3}
       propertyPath: m_LocalRotation.z
@@ -1207,7 +1207,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2496762209944008695, guid: d6a7fdb4f8bce744d880b5db05b2423c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 90
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2496762209944008695, guid: d6a7fdb4f8bce744d880b5db05b2423c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -1216,10 +1216,30 @@ PrefabInstance:
     - target: {fileID: 7164862882887822452, guid: d6a7fdb4f8bce744d880b5db05b2423c, type: 3}
       propertyPath: tower
       value: 
-      objectReference: {fileID: 1569145758302136571}
+      objectReference: {fileID: 2001246845628198429}
+    - target: {fileID: 7164862882887822452, guid: d6a7fdb4f8bce744d880b5db05b2423c, type: 3}
+      propertyPath: sinkSpeed
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 8058561614497999955, guid: d6a7fdb4f8bce744d880b5db05b2423c, type: 3}
       propertyPath: m_Name
       value: BuildEffect
+      objectReference: {fileID: 0}
+    - target: {fileID: 8151166012470368272, guid: d6a7fdb4f8bce744d880b5db05b2423c, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8151166012470368272, guid: d6a7fdb4f8bce744d880b5db05b2423c, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8151166012470368272, guid: d6a7fdb4f8bce744d880b5db05b2423c, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8151166012470368272, guid: d6a7fdb4f8bce744d880b5db05b2423c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d6a7fdb4f8bce744d880b5db05b2423c, type: 3}
@@ -1322,6 +1342,10 @@ PrefabInstance:
     - target: {fileID: 1374403806315087672, guid: fa48ee69068172e468b39c24dcfb80b6, type: 3}
       propertyPath: m_Name
       value: OptionIndicator_Tower
+      objectReference: {fileID: 0}
+    - target: {fileID: 2568418202881796066, guid: fa48ee69068172e468b39c24dcfb80b6, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fa48ee69068172e468b39c24dcfb80b6, type: 3}

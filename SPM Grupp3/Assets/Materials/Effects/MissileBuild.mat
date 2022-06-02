@@ -20,11 +20,15 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - BaseMap:
-        m_Texture: {fileID: 2800000, guid: dac66f05b9d26dc44a9dcf6ef101a817, type: 3}
+        m_Texture: {fileID: 2800000, guid: e217a0263f6f11d48a232d8b26117861, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - MetallicMap:
+        m_Texture: {fileID: 2800000, guid: 462af060ebeffcb43a42c1783d93b581, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - NormalMap:
-        m_Texture: {fileID: 2800000, guid: b26112557887d5d46825ee6df0f2f208, type: 3}
+        m_Texture: {fileID: 2800000, guid: b3f9ef7badb9e004784ff7884abb4ada, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - Texture2D_7e13b489ee094ba7b90525fb0635d7d4:
@@ -88,11 +92,12 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - CutoffHeight: 1.7
+    - CutoffHeight: 1.3
     - EdgeWidth: 0.25
     - NoiceScale: 50
     - NoiceStrength: 0.4
     - NoiseStrength: 0.1
+    - Smoothness: 0.5
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
