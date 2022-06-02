@@ -26,6 +26,7 @@ public class WaveManager : MonoBehaviour
     private GameObject startHint;
     private GameObject waveStarted;
     private GameObject waveCleared;
+    private GameObject savedGame;
     private readonly Dictionary<int, float> changeSpawnRate = new Dictionary<int, float>();
     private Waypoints wayPoints;
     private List<Transform[]> wayPostions;
@@ -42,7 +43,8 @@ public class WaveManager : MonoBehaviour
         waveCleared = waveHolder.Find("WaveCleared").gameObject;
         waveStarted = waveHolder.Find("WaveStarted").gameObject;
         startHint = waveHolder.Find("StartWaveHint").gameObject;
-        
+        savedGame = waveHolder.Find("SavedGame").gameObject;
+
         victoryWave = waves.Length;
         
         gameManager = GameManager.Instance;
@@ -85,7 +87,9 @@ public class WaveManager : MonoBehaviour
 
         if(!waveCleared.GetComponent<FadeBehaviour>().Faded())
             waveCleared.GetComponent<FadeBehaviour>().Fade();
-        print(startHint);
+
+        if (savedGame.GetComponent<FadeBehaviour>().Faded() == false)
+        savedGame.GetComponent<FadeBehaviour>().Fade();
 
         startHint.GetComponent<FadeBehaviour>().Fade();
         WaveConstructor(waves[currentWave]);
@@ -186,6 +190,7 @@ public class WaveManager : MonoBehaviour
                 //startHint.transform.position = waveClear.transform.position;
                 startHint.transform.localPosition = new Vector3(startHint.transform.localPosition.x, -370, startHint.transform.localPosition.z);
                 startHint.GetComponent<FadeBehaviour>().Fade();
+                savedGame.GetComponent<FadeBehaviour>().Fade();
                 spawnEnemies = true;
                 Debug.Log("Wave " + currentWave + " cleared");
                 GameManager.Instance.AddMoney(waveMoneyBonus);
