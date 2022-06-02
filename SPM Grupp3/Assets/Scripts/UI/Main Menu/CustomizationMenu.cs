@@ -136,7 +136,7 @@ public class CustomizationMenu : MonoBehaviour
 
         void SetSniper()
         {
-            classText.text = ": Sniper";
+            classText.text = "Sniper";
             TankClass = 0;
             fireTurret.SetActive(false);
             sniperTurret.SetActive(true);
@@ -144,7 +144,7 @@ public class CustomizationMenu : MonoBehaviour
 
         void SetFire()
         {
-            classText.text = ": Fire";
+            classText.text = "Fire";
             TankClass = 1;
             fireTurret.SetActive(true);
             sniperTurret.SetActive(false);
