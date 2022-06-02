@@ -239,7 +239,12 @@ public class BuilderController : MonoBehaviour
         stopHover = false;
         stopMouse = false;
         placementClicked = false;
-/*        towerPanel.SetActive(true);*/
+        /*        towerPanel.SetActive(true);*/
+       
+        foreach (FadeBehaviour fadeBehaviour in FindObjectsOfType<FadeBehaviour>())
+        {
+            fadeBehaviour.ResetFade();
+        }
     }
 
     private void OnEnable()
