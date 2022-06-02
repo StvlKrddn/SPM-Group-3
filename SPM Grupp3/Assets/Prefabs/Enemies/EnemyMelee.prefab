@@ -27,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4264572846131703882}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.05, z: 0}
+  m_LocalPosition: {x: 0, y: 2.1791, z: 0.045639}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_Children:
   - {fileID: 8776580188451035266}
@@ -68,12 +68,13 @@ MonoBehaviour:
   animator: {fileID: 0}
   Speed: 5
   DeathEffect: {fileID: 274874695124712471, guid: 9a064edc7c8ce434295d8099b1660d81, type: 3}
+  ChangerText: {fileID: 5205185240933545452, guid: c8312052f47b6734d88b2abb7ec0cd2b, type: 3}
   DamageBase: 10
   MoneyDrop: 10
-  MaterialDrop: 0
   Path: 0
+  MaterialDrop: 0
   Spread: 0
-  ChangerText: {fileID: 5205185240933545452, guid: c8312052f47b6734d88b2abb7ec0cd2b, type: 3}
+  offset: {x: 0, y: 0, z: 0}
 --- !u!95 &6223144268630724467
 Animator:
   serializedVersion: 3
@@ -242,6 +243,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HealthBar_Enemy
       objectReference: {fileID: 0}
+    - target: {fileID: 9099198633358382241, guid: 6c76fb6c527c1db4d85a2e5af6aab512, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9099198633358382243, guid: 6c76fb6c527c1db4d85a2e5af6aab512, type: 3}
       propertyPath: m_PresetInfoIsWorld
       value: 1
@@ -319,6 +324,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: a8462e451b8165446948dd3bf04d92ad, type: 3}
       propertyPath: m_Name
       value: SharkAlien@Mutant Run
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: a8462e451b8165446948dd3bf04d92ad, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a8462e451b8165446948dd3bf04d92ad, type: 3}

@@ -55,6 +55,9 @@ public class UI : MonoBehaviour
             Time.timeScale = 0f;
             pauseMenu.SetActive(true);
             IsPaused = true;
+
+            EventSystem.current.SetSelectedGameObject(null);
+            EventSystem.current.SetSelectedGameObject(resumeButton);
         }
         else
         {
@@ -97,6 +100,7 @@ public class UI : MonoBehaviour
         // NOTE(August): "Are you sure you want to quit?..." prompt?
         Resume();
         CloseMenu();
+        UpgradeController.Instance.ResetUpgrades();
         SceneManager.LoadScene(0);
     }
 

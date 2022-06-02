@@ -25,12 +25,15 @@ public class EnemyArcher : EnemyController
 	protected override void FixedUpdate()
     {
         MoveStep();
-        timer += Time.deltaTime;
-        if (timer >= cooldown)
+        if (FindObjectOfType<TankState>())
         {
-            ShootPlayer();
-            timer = 0;
-        }
+            timer += Time.deltaTime;
+            if (timer >= cooldown)
+            {
+                ShootPlayer();
+                timer = 0;
+            }
+        }      
     }
 
 	protected override void OnDestroy()

@@ -5,6 +5,7 @@ using System;
 using UnityEngine.InputSystem;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 
 public class GameManager : MonoBehaviour
 {
@@ -207,7 +208,7 @@ public class GameManager : MonoBehaviour
         {
             Defeat();
         }
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+        if (Input.GetKey(KeyCode.UpArrow))
         {
             money += 1000;
             material += 50;
@@ -282,7 +283,7 @@ public class GameManager : MonoBehaviour
 
         if (mon >= 10000)
         {
-            int holeNumb = (int)mon / 10000;
+            int holeNumb = (int) mon / 1000;
             moneyCounterUI.text = holeNumb.ToString() + "K";
         }
         else
@@ -294,7 +295,7 @@ public class GameManager : MonoBehaviour
 
         if (mat >= 10000)
         {
-            int holeNumb = (int)mat / 10000;
+            int holeNumb = (int) mat / 1000;
             materialCounterUI.text = holeNumb.ToString() + "K";
         }
         else
@@ -421,8 +422,16 @@ public class GameManager : MonoBehaviour
             enemiesKilled: 0
         ));
 
-        canvas.GetComponent<UI>().SetFirstSelectedButton("Restart");
+        GameObject restartButton = defeatPanel.transform.Find("Buttons").Find("RestartButton").gameObject;
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(restartButton);
+
+        HidePlayerCursor();
+
+        canvas.GetComponent<UI>().SetSelectedButton(restartButton);
         UI.OpenMenu();
+
+        UpgradeController.Instance.ResetUpgrades();
 
         waveManager.Restart();
 
@@ -446,6 +455,14 @@ public class GameManager : MonoBehaviour
             towersBuilt: 0
         ));
 
+        GameObject continueButton = victoryPanel.transform.Find("Buttons").Find("ContinueButton").gameObject;
+        EventSystem.current.SetSelectedGameObject(null);
+        EventSystem.current.SetSelectedGameObject(continueButton);
+
+        UpgradeController.Instance.ResetUpgrades();
+
+        
+
         // If this is the third level, invoke achievement
         if (SceneManager.GetActiveScene().buildIndex == 3)
         {
@@ -456,6 +473,10 @@ public class GameManager : MonoBehaviour
             ));
         }
 
+        HidePlayerCursor();
+
+
+
         canvas.GetComponent<UI>().SetFirstSelectedButton("Continue");
         UI.OpenMenu();
 
@@ -464,6 +485,15 @@ public class GameManager : MonoBehaviour
         victoryPanel.SetActive(true);
 
         buildManager.TowerToBuild = null;
+    }
+
+    private void HidePlayerCursor()
+    {
+        BuilderController[] builderController = FindObjectsOfType<BuilderController>();
+        foreach (BuilderController player in builderController)
+        {
+            player.HideCursor();
+        }
     }
 
     private void ResetBaseHealth()

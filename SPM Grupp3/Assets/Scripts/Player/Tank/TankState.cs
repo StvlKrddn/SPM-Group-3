@@ -106,6 +106,7 @@ public class TankState : MonoBehaviour
 
     private void OnEnable()
     {
+        healthBar.HandleHealthChanged(currentHealth);
         invincibilityFrame = false;
     }
 
@@ -299,9 +300,9 @@ public class TankState : MonoBehaviour
         ));
     }
 
-    public void IncreaseSpeed(float speedIncrease)
+    public void IncreaseSpeed(float newSpeed)
     {
-        standardSpeed += speedIncrease;
+        standardSpeed = newSpeed;
         GetComponent<BoostAbility>().ChangeSpeed();
     }
 

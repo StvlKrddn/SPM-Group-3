@@ -167,8 +167,6 @@ public class CannonTower : Tower
             towerManager.IncreaseUpgradesPurchased();
             CannonTower cannonTower = towerManager.ClickedTower.GetComponent<CannonTower>();
             Level2(cannonTower.gameObject);
-
-            animator.SetInteger("Level", 1);
         }
     }
 
