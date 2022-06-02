@@ -15,10 +15,10 @@ public abstract class EnemyController : MonoBehaviour
     private MaterialHolder materialHolder;
     private Color moneyColor = new Color(255, 100, 0, 255);
     private float defaultAnimationSpeed;
+    private PoisonTowerEffect poisonTowerEffect;
     [SerializeField] private float health = 100f;
     [SerializeField] private float meleeDamage;
     [SerializeField] private Transform spawnTextPosition;
-    [SerializeField] private PoisonTowerEffect poisonTowerEffect;
     [SerializeField] protected Animator animator;
 
 

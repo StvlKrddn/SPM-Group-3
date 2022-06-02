@@ -36,6 +36,7 @@ public class TankState : MonoBehaviour
     private bool invincibilityFrame = false;
     private Color player1Color;
     private Color player2Color;
+    private GameObject tankUI;
 
     [SerializeField] private HealthBar healthBar;
     [SerializeField] private TankUpgradeTree tankUpgradeTreeOne;
@@ -95,6 +96,7 @@ public class TankState : MonoBehaviour
         
         aimSpeed = standardSpeed * 5;
 
+        tankUI = transform.Find("TankUI").gameObject;
 
         //Create isometric matrix
         isoMatrix = Matrix4x4.Rotate(Quaternion.Euler(0, 45, 0));
@@ -309,6 +311,13 @@ public class TankState : MonoBehaviour
     private void ResetHealth()
     {
         currentHealth = health;
-        healthBar.UpdateHealthBarInstant(currentHealth);
+        if (tankUI.activeSelf == true)
+        {
+            healthBar.HandleHealthChanged(currentHealth);
+        }
+        else
+        {
+            healthBar.UpdateHealthBarInstant(currentHealth);
+        }
     }
 }

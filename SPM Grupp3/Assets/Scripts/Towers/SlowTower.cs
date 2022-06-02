@@ -121,9 +121,13 @@ public class SlowTower : Tower
             bulletGO.SetActive(true);
             bullet = bulletGO.GetComponent<Shot>();
 
-            if (bullet != null)
+            if (bullet != null && target != null)
             {
                 bullet.Seek(target);
+            }
+            else if (target == null)
+            {
+                bullet.gameObject.SetActive(false);
             }
         }
         else

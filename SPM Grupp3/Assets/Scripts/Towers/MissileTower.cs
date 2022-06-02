@@ -122,9 +122,13 @@ public class MissileTower : Tower
         bulletGO.SetActive(true);
         bullet = bulletGO.GetComponent<Shot>();
 
-        if (bullet != null)
+        if (bullet != null && target != null)
         {
             bullet.Seek(target);
+        }
+        else if (target == null)
+        {
+            bullet.gameObject.SetActive(false);
         }
     }
     public override void ShowUpgradeUI(Transform towerMenu)

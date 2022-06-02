@@ -119,9 +119,13 @@ public class CannonTower : Tower
             bullet.gameObject.SetActive(true);
         }
 
-        if (bullet != null)
+        if (bullet != null && target != null)
         {
             bullet.Seek(target);
+        }
+        else if (target == null)
+        {
+            bullet.gameObject.SetActive(false);
         }
 
     }
