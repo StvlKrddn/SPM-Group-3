@@ -188,9 +188,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3435093063915731395}
-  m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 100, y: 100, z: 100}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.276, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6647420682819283678}
   m_Father: {fileID: 6606443283641741317}
@@ -203,7 +203,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3435093063915731395}
-  m_Mesh: {fileID: 2959467708922500008, guid: 355711256b1d9524abacd97203219851, type: 3}
+  m_Mesh: {fileID: 3075948395464482577, guid: 23ce6e2e85c29f44e9617faca38d927f, type: 3}
 --- !u!23 &348686675610069645
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -377,7 +377,7 @@ MonoBehaviour:
   level1Cost: 700
   level2Cost: 1200
   level3Cost: 2000
-  animator: {fileID: 0}
+  animator: {fileID: 174041319458792941}
 --- !u!1 &6433795424573960509
 GameObject:
   m_ObjectHideFlags: 0
@@ -888,7 +888,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6478217573927817931, guid: cf91e1ab0bb7ae144819e6c65f5e867a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.276
       objectReference: {fileID: 0}
     - target: {fileID: 6478217573927817931, guid: cf91e1ab0bb7ae144819e6c65f5e867a, type: 3}
       propertyPath: m_LocalPosition.z
