@@ -12,8 +12,7 @@ public class WaveManager : MonoBehaviour
     
     [Space]
     public WaveInfo[] waves;
-
-
+    
     private int enemyCount;
     private GameManager gameManager;
     private int currentWave = -1;

@@ -87,7 +87,6 @@ public class GameManager : MonoBehaviour
         currentBaseHealth = baseHealth;
         healthBar.HandleHealthChanged(currentBaseHealth);
 
-
         canvas = UI.Canvas;
 
         moneyBaseColor = moneyCounterUI.color;
@@ -188,8 +187,6 @@ public class GameManager : MonoBehaviour
         waveCounter = topPanel.Find("WaveHolder").Find("WaveCounter").gameObject;
         moneyCounterUI = topPanel.Find("MoneyHolder").Find("MoneyCounter").GetComponent<Text>();
         materialCounterUI = topPanel.Find("MaterialHolder").Find("MaterialCounter").GetComponent<Text>();
-
-
 
         healthBar = canvas.GetComponent<HealthBar>();
         livesSlider = canvas.Find("LivesSlider").gameObject;
