@@ -20,6 +20,7 @@ public abstract class EnemyController : MonoBehaviour
     [SerializeField] private float meleeDamage;
     [SerializeField] private Transform spawnTextPosition;
     [SerializeField] protected Animator animator;
+    [SerializeField] protected AudioClip enemyDeathSound;
 
     protected Transform target;
     protected int currentWaypointIndex = 0;
@@ -135,6 +136,8 @@ public abstract class EnemyController : MonoBehaviour
         EventHandler.InvokeEvent(dieEvent);
         Destroy(Instantiate(DeathEffect, transform.position, Quaternion.identity), 1f);
         gameObject.SetActive(false);
+
+        EventHandler.InvokeEvent(new PlaySoundEvent("EnemyDied", enemyDeathSound));
     }
 
     private void OnTriggerEnter(Collider other)

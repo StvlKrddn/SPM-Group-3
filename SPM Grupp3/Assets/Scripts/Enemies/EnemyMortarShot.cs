@@ -10,7 +10,8 @@ public class EnemyMortarShot : MonoBehaviour
     private ParticleSystem[] particle;
     [SerializeField] private float speed = 20;
     [SerializeField] private GameObject radius;
-    
+    [SerializeField] private AudioClip mortarHitSound;
+
     public float Damage;
 
     // Start is called before the first frame update
@@ -115,6 +116,7 @@ public class EnemyMortarShot : MonoBehaviour
         {
             if (collider.gameObject.CompareTag("Tank") || collider.gameObject.CompareTag("GameBoard"))
             {
+                EventHandler.InvokeEvent(new PlaySoundEvent("MortarShot Explode", mortarHitSound));
                 radius.SetActive(false);
                 StartCoroutine(Particle());
             }

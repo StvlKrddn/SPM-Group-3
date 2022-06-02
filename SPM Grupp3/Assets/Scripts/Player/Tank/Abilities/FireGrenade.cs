@@ -7,6 +7,8 @@ public class FireGrenade : MonoBehaviour
     private SphereCollider sphereCollider;
     [SerializeField] private int damage;
     [SerializeField] private float timer;
+    [SerializeField] private AudioClip dynamiteExplosionSound;
+    [SerializeField] private AudioClip dynamitePlaceSound;
 
 
     // Start is called before the first frame update
@@ -14,6 +16,7 @@ public class FireGrenade : MonoBehaviour
     {
         sphereCollider = GetComponent<SphereCollider>();
 		StartCoroutine(TooLate());
+        EventHandler.InvokeEvent(new PlaySoundEvent("Dynamite Placed", dynamitePlaceSound));
     }
 
 	public IEnumerator TooLate()
@@ -24,6 +27,7 @@ public class FireGrenade : MonoBehaviour
 
 	private IEnumerator Detonate()
     {
+        EventHandler.InvokeEvent(new PlaySoundEvent("Dynamite Explode", dynamiteExplosionSound));
         Collider[] enemies = Physics.OverlapSphere(transform.position, sphereCollider.radius);
         foreach (Collider c in enemies)
         {
