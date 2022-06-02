@@ -7,6 +7,8 @@ public class SniperAbility : BulletBehavior
     [SerializeField] private float damageOfAbility;
     [SerializeField] private GameObject startObject;
     [SerializeField] private GameObject hitObject;
+    [SerializeField] private AudioClip sniperAbilityHitSound;
+    [SerializeField] private AudioClip sniperAbilityFireSound;
     private BoxCollider boxCollider;
     private ParticleSystem hitParticle;
     private ParticleSystem startParticle;
@@ -17,7 +19,8 @@ public class SniperAbility : BulletBehavior
 	    hitParticle = hitObject.GetComponent<ParticleSystem>();
         boxCollider = GetComponent<BoxCollider>();
         startParticle = startObject.GetComponent<ParticleSystem>();
-	}
+        EventHandler.InvokeEvent(new PlaySoundEvent("Sniper Ability is fired", sniperAbilityFireSound));
+    }
 
 	protected override void OnBecameInvisible()
 	{
@@ -28,6 +31,7 @@ public class SniperAbility : BulletBehavior
     {
         if (other.CompareTag("Enemy"))
         {
+            EventHandler.InvokeEvent(new PlaySoundEvent("Sniper Ability", sniperAbilityHitSound));
             boxCollider.enabled = false;
             GetComponentInChildren<MeshRenderer>().gameObject.SetActive(false);
             startParticle.Stop();

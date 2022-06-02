@@ -101,7 +101,8 @@ public class SlowTower : Tower
 
 
     private void Shoot()
-    {   
+    {
+        EventHandler.InvokeEvent(new PlaySoundEvent("Tower shot", towerShotSound));
         int shotIndex = FindShot();
         if (!areaOfEffect)
         {

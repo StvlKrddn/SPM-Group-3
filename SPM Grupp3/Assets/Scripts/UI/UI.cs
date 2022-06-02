@@ -62,7 +62,7 @@ public class UI : MonoBehaviour
         else
         {
             Resume();
-            MusicManager.instance.SetMusicPLay(true);
+            
         }
 
     }
@@ -107,6 +107,7 @@ public class UI : MonoBehaviour
 
     public void Resume()
     {
+        MusicManager.instance.SetMusicPLay(true);
         IsPaused = false;
         Time.timeScale = 1f;
         pauseMenu.SetActive(false);

@@ -102,7 +102,7 @@ public class CannonTower : Tower
 
     protected void Shoot()
     {
-        
+        EventHandler.InvokeEvent(new PlaySoundEvent("Tower shot", towerShotSound));
         int bulletIndex = FindShot();
         if (bulletIndex < 0)
         {

@@ -5,11 +5,11 @@ using UnityEngine;
 public struct CustomizationData
 {
     public SerializableColor PlayerColor;
-    public bool HasHat;
+    public int PlayerClass;
 
-    public CustomizationData(Color player1Color, bool hasHat)
+    public CustomizationData(Color player1Color, int playerClass)
     {
         PlayerColor = player1Color;
-        HasHat = hasHat;
+        PlayerClass = playerClass;
     }
 }

@@ -105,6 +105,7 @@ public class MissileTower : Tower
 
     protected void Shoot()
     {
+        EventHandler.InvokeEvent(new PlaySoundEvent("Tower shot", towerShotSound));
         shotsFired++;
         int missileIndex = FindShot();
         GameObject bulletGO;

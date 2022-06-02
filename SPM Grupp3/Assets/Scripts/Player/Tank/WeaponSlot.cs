@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(TankState))]
 public class WeaponSlot : MonoBehaviour
@@ -24,9 +25,13 @@ public class WeaponSlot : MonoBehaviour
     [SerializeField] private bool penetrating;
     [SerializeField] private float damage;
     [SerializeField] private int penetrationCount;
+    [SerializeField] private AudioClip shootSound;
+    [SerializeField] private AudioClip sniperShotSound;
+
     [Space]
     [SerializeField] private GameObject muzzleFlash;
     private Animator animator;
+    private PlayerInput playerInput;
 
     public Transform BulletSpawner;
     public Color BulletColor;
@@ -43,6 +48,8 @@ public class WeaponSlot : MonoBehaviour
 
     void Start()
     {
+        playerInput = GetComponentInParent<PlayerInput>();
+
         if (equippedWeapon != null){
             ConstructWeapon();
         }
@@ -113,8 +120,35 @@ public class WeaponSlot : MonoBehaviour
         }
     }
 
+    void ShootingSound()
+    {        
+        if (UpgradeController.currentUpgradeLevel == 0)
+        {
+            EventHandler.InvokeEvent(new PlaySoundEvent("Player Shooting", shootSound));
+        }
+        else if (UpgradeController.currentUpgradeLevel == 1)
+        {
+            print(UpgradeController.currentUpgradeLevel);
+            if (playerInput.playerIndex == 0)
+            {
+                EventHandler.InvokeEvent(new PlaySoundEvent("Player Sniper Shooting", sniperShotSound));
+            }
+            else
+            {
+                EventHandler.InvokeEvent(new PlaySoundEvent("Player Fire Shooting", shootSound));
+            }
+        }
+        else
+        {
+            EventHandler.InvokeEvent(new PlaySoundEvent("Player Sniper Shooting", sniperShotSound));          
+        }
+    }
+
     IEnumerator Shoot()
     {
+        ShootingSound();
+
+
         allowedToShoot = false;
         SpawnBullet();
         yield return new WaitForSeconds(1 / fireRate);
