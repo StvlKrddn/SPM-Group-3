@@ -5,9 +5,9 @@ using UnityEngine.UI;
 
 public abstract class TankUpgradeTree : MonoBehaviour
 {
-    private GameObject abilityUi;
+    private FadeBehaviour abilityFill;
+    private FadeBehaviour abilityIcon;
     private Slider slider;
-    private FadeBehaviour fadeBehaviour;
     private float abilityDuration = 0.5f;
 
     protected GameManager gameManager;
@@ -21,8 +21,6 @@ public abstract class TankUpgradeTree : MonoBehaviour
     [SerializeField] protected float abilityCD;
     [SerializeField] protected bool abilityReady = false;
 
-
-
     private void OnEnable()
     {
         if (UpgradeController.currentUpgradeLevel == 3 && abilityReady == false)
@@ -31,8 +29,8 @@ public abstract class TankUpgradeTree : MonoBehaviour
             {
                 slider.value = 0;
 
-                if (fadeBehaviour.Faded())
-                    fadeBehaviour.Fade();
+                if (abilityFill.Faded())
+                    abilityFill.Fade();
 
                 StartCoroutine(RechargeAbilityBar());
             }
@@ -44,9 +42,16 @@ public abstract class TankUpgradeTree : MonoBehaviour
         tankState = GetComponent<TankState>();
         weapon = GetComponent<WeaponSlot>();
         gameManager = FindObjectOfType<GameManager>();
-        abilityUi = gameObject.transform.Find("AbilityUI").gameObject;
+        GameObject abilityUi = gameObject.transform.Find("AbilityUI").gameObject;
+
+        if(tankState.playerID == 0)
+            abilityIcon = abilityUi.gameObject.transform.Find("SniperIcon").gameObject.GetComponent<FadeBehaviour>();
+        else
+            abilityIcon = abilityUi.gameObject.transform.Find("DynamiteIcon").gameObject.GetComponent<FadeBehaviour>();
+
         slider = abilityUi.GetComponent<Slider>();
-        fadeBehaviour = abilityUi.GetComponent<FadeBehaviour>();
+
+        abilityFill = abilityUi.transform.Find("Fill").GetComponent<FadeBehaviour>();
 	}
 
     public virtual void UpgradeOne() {}
@@ -78,9 +83,11 @@ public abstract class TankUpgradeTree : MonoBehaviour
         abilityReady = false;
 
         elapsed = 0f;
+        if (!abilityIcon.Faded())
+            abilityIcon.Fade();
 
-        if (fadeBehaviour.Faded())
-            fadeBehaviour.Fade();
+        if (abilityFill.Faded())
+            abilityFill.Fade();
 
         while (elapsed < abilityDuration)
         {
@@ -109,8 +116,11 @@ public abstract class TankUpgradeTree : MonoBehaviour
             yield return null;
         }
 
-        if (!fadeBehaviour.Faded())
-            fadeBehaviour.Fade();
+        if (abilityIcon.Faded())
+            abilityIcon.Fade();
+
+        if (!abilityFill.Faded())
+            abilityFill.Fade();
 
         ResetCooldown();
     }

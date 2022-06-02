@@ -10416,6 +10416,7 @@ MonoBehaviour:
   - {fileID: 4005078373874826775}
   - {fileID: 7072925918001228257}
   LevelOfTank: 0
+  playerID: 0
   healthBar: {fileID: 705580134563855951}
   tankUpgradeTreeOne: {fileID: 3141392934154749895}
   tankUpgradeTreeTwo: {fileID: 3141392934154749894}
@@ -32199,6 +32200,10 @@ PrefabInstance:
       propertyPath: m_Value
       value: 0.9
       objectReference: {fileID: 0}
+    - target: {fileID: 4044825584007802260, guid: 4090237500fc1c646bffc7f713bce17a, type: 3}
+      propertyPath: m_Alpha
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5306285413542456573, guid: 4090237500fc1c646bffc7f713bce17a, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -32269,7 +32274,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5306285413542456573, guid: 4090237500fc1c646bffc7f713bce17a, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 4
+      value: 3.3
       objectReference: {fileID: 0}
     - target: {fileID: 5306285413542456573, guid: 4090237500fc1c646bffc7f713bce17a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

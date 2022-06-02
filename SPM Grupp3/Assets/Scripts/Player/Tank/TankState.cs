@@ -31,7 +31,7 @@ public class TankState : MonoBehaviour
     private PlayerHandler playerHandler;
     private float currentHealth;
     private Transform spawnPoint;
-    private float playerID;
+    public float playerID;
     private int hurMangaGangerDamage = 0;
     private bool invincibilityFrame = false;
     private Color player1Color;
@@ -154,6 +154,7 @@ public class TankState : MonoBehaviour
         spawnPoint = garage.Find("SpawnPoints").GetChild(playerInput.playerIndex);
         transform.position = spawnPoint.position;
     }
+
     void Update()
     {
         gamepadInputVector = moveAction.ReadValue<Vector2>();
