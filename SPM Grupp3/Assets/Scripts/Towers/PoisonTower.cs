@@ -103,6 +103,7 @@ public class PoisonTower : Tower
 
     protected void Shoot()
     {
+        EventHandler.InvokeEvent(new PlaySoundEvent("Tower shot", towerShotSound));
         GameObject effectInstance;
         int bulletIndex = FindShot();
         if (bulletIndex < 0)

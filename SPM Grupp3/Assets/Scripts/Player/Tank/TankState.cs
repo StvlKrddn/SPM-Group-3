@@ -11,6 +11,7 @@ public class TankState : MonoBehaviour
     [SerializeField] private Animator animator;
     [SerializeField] private GameObject destroyEffect;
     [SerializeField] private ParticleSystem[] hitEffects;
+    [SerializeField] private AudioClip tankTakeDamageSound;
     public int LevelOfTank;
 
     // Components
@@ -295,6 +296,7 @@ public class TankState : MonoBehaviour
 
         if (!invincibilityFrame)
         {
+            EventHandler.InvokeEvent(new PlaySoundEvent("TankTakeDamage", tankTakeDamageSound));
             Invoke(nameof(InvincibilityDuration), 0.15f);
             invincibilityFrame = true;
             currentHealth -= damage;

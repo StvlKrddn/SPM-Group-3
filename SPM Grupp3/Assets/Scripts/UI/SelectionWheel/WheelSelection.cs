@@ -310,7 +310,7 @@ public class WheelSelection : MonoBehaviour
                     }
                     else if (gameObject.name.Equals("TankPanel"))
                     {
-                        GarageHighlight(materialText);
+                        GarageHighlight(materialText, i);
                     }
                 }
                 
@@ -494,11 +494,11 @@ public class WheelSelection : MonoBehaviour
         //materialText.text = tower.materialCost.ToString();
     }
 
-    void GarageHighlight(Text materialText)
+    void GarageHighlight(Text materialText, int i)
     {
         float material = gM.Material;
 
-        if (upgradeController.GetUpgradesPurchased() == 3)
+        if (upgradeController.GetUpgradesPurchased() == 3 && MenuItems[i].name.Equals("Upgrade"))
         {
             materialText.text = "MAX";
             materialText.color = Color.red;
