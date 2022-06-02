@@ -21,19 +21,22 @@ public abstract class EnemyController : MonoBehaviour
     [SerializeField] private PoisonTowerEffect poisonTowerEffect;
     [SerializeField] protected Animator animator;
 
+
+   
+
     protected Transform target;
     protected int currentWaypointIndex = 0;
     protected List<Transform[]> wayPoints;
 
     public float Speed = 10f;
     public GameObject DeathEffect;
+    public GameObject ChangerText;
     public int DamageBase = 10;
     public int MoneyDrop = 10;
-    public bool MaterialDrop = false;
     public int Path;
+    public bool MaterialDrop = false;
     public bool Spread = false;
-    public GameObject ChangerText;
-
+  
     public List<float> PoisonTickTimers { get { return poisonTickTimers; } set { poisonTickTimers = value; } }
     public float DefaultSpeed {  get { return defaultSpeed; } set { defaultSpeed = value; } }
     public float MeleeDamage { get { return meleeDamage; } set { meleeDamage = value; } }

@@ -153,6 +153,8 @@ public class SlowTower : Tower
         }
         effectInstance.SetActive(true);
 
+        print(effectInstance);
+
         StartCoroutine(DisableEffect(effectInstance));
         
 
@@ -162,6 +164,12 @@ public class SlowTower : Tower
         }
         else
         {
+            print(slowTowerEffect);
+
+            print(range);
+            print(slowProc);
+            print(AreaOfEffect);
+            
             slowTowerEffect.HitBySlow(null, SlowProc, range, AreaOfEffect, false);
         }
 

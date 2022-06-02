@@ -23140,7 +23140,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 435294823}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 45.81294, y: -11.657651, z: -42.951313}
+  m_LocalPosition: {x: 45.81294, y: -12.17, z: -42.951313}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 711665693}
@@ -34227,6 +34227,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2526039856264053529, guid: 84213d05f2889da4e94a3f4c1c2e4f23, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2995108320585735742, guid: 84213d05f2889da4e94a3f4c1c2e4f23, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2995108320585735742, guid: 84213d05f2889da4e94a3f4c1c2e4f23, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
@@ -113973,11 +113981,17 @@ MonoBehaviour:
     subWaves:
     - enemies:
       - enemyPrefab: {fileID: 4264572846131703882, guid: 2d4349db505aec44a877c3bc1f47965b, type: 3}
-        amount: 100
+        amount: 5
       - enemyPrefab: {fileID: 5940178821907547970, guid: 3da10c386b23dcd4fb83590a6b67370e, type: 3}
-        amount: 0
+        amount: 5
+      - enemyPrefab: {fileID: 5940178821907547970, guid: 46eebcf2257a1344983bf26fd371e49f, type: 3}
+        amount: 5
       - enemyPrefab: {fileID: 5940178821907547970, guid: 2d58c5c9792dba04da822e43cf28112c, type: 3}
-        amount: 0
+        amount: 5
+      - enemyPrefab: {fileID: 5940178821907547970, guid: f3cdae9303da05b4a8d7adbc9c7eaef0, type: 3}
+        amount: 5
+      - enemyPrefab: {fileID: 5940178821907547970, guid: b57826fc685def9419bc9115924fbf68, type: 3}
+        amount: 5
       spawnRate: 0.9
     - enemies:
       - enemyPrefab: {fileID: 4264572846131703882, guid: 2d4349db505aec44a877c3bc1f47965b, type: 3}
