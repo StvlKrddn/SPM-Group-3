@@ -48,28 +48,30 @@ public class TankState : MonoBehaviour
     public Transform TurretObject;
 
     // Getters and Setters
-    public float StandardSpeed { 
-        get 
-        { 
+    public float StandardSpeed
+    {
+        get
+        {
             if (standardSpeed == 0)
             {
                 standardSpeed = movementSpeed;
             }
-            return standardSpeed; 
-        } 
-        set { standardSpeed = value; } 
+            return standardSpeed;
+        }
+        set { standardSpeed = value; }
     }
     public float Health { get { return health; } }
 
-    public PlayerInput PlayerInput { 
-        get 
+    public PlayerInput PlayerInput
+    {
+        get
         {
             if (playerInput == null)
             {
                 playerInput = GetComponentInParent<PlayerInput>();
             }
-            return playerInput; 
-        } 
+            return playerInput;
+        }
     }
 
     void Awake()
@@ -93,7 +95,7 @@ public class TankState : MonoBehaviour
         healthBar.HandleHealthChanged(health);
 
         TurretObject = transform.GetChild(0);
-        
+
         aimSpeed = standardSpeed * 5;
 
         tankUI = transform.Find("TankUI").gameObject;
@@ -183,7 +185,7 @@ public class TankState : MonoBehaviour
 
         // Translate vector to an isometric viewpoint
         Vector3 skewedVector = TranslateToIsometric(movementVector);
-        
+
         Vector3 movement = standardSpeed * Time.deltaTime * skewedVector;
 
         rb.MovePosition(transform.position + movement);
@@ -205,7 +207,7 @@ public class TankState : MonoBehaviour
         {
             TurretObject.rotation = Quaternion.Slerp(TurretObject.rotation, Quaternion.LookRotation(skewedVector), Time.deltaTime * aimSpeed);
         }
-    } 
+    }
 
     Vector3 TranslateToIsometric(Vector3 vector)
     {
@@ -222,21 +224,21 @@ public class TankState : MonoBehaviour
         }
         else if (other.CompareTag("MortarBullet"))
         {
-            hurMangaGangerDamage += 1; 
+            hurMangaGangerDamage += 1;
             EnemyMortarShot enemyMortarShot = other.gameObject.GetComponentInParent<EnemyMortarShot>();
             TakeDamage(enemyMortarShot.Damage);
 
         }
     }
 
-	private void OnCollisionStay(Collision collision)
-	{
+    private void OnCollisionStay(Collision collision)
+    {
         if (collision.gameObject.CompareTag("Enemy"))
         {
             EnemyController enemy = collision.gameObject.GetComponent<EnemyController>();
             TakeDamage(enemy.MeleeDamage);
         }
-	}
+    }
 
     private void Ability()
     {
@@ -256,7 +258,7 @@ public class TankState : MonoBehaviour
             currentHealth -= damage;
             healthBar.HandleHealthChanged(currentHealth);
 
-            for(int i = 0; i < hitEffects.Length; i++)
+            for (int i = 0; i < hitEffects.Length; i++)
                 hitEffects[i].Play();
 
             if (currentHealth <= 0 && !playerHandler.Destroyed)
@@ -278,7 +280,7 @@ public class TankState : MonoBehaviour
 
         transform.position = spawnPoint.position;
         playerHandler.Destroyed = true;
-            
+
         EventHandler.InvokeEvent(new PlayerSwitchEvent(
             description: "Player switching mode",
             playerContainer: transform.parent.gameObject
@@ -294,7 +296,6 @@ public class TankState : MonoBehaviour
     {
         playerHandler.Destroyed = false;
         ResetHealth();
-        //currentHealth = health;
 
         EventHandler.InvokeEvent(new EnterTankModeEvent(
             description: "Player switching mode",
