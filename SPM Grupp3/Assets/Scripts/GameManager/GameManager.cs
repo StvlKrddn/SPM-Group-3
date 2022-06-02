@@ -89,24 +89,24 @@ public class GameManager : MonoBehaviour
     private void LoadSaveData()
     {
         SaveData saveData = (SaveData) DataManager.ReadFromFile(DataManager.SaveData);
-        money = saveData.money;
-        material = saveData.material;
-        currentWave = saveData.currentWave;
-        baseHealth = saveData.currentBaseHealth;
+        money = saveData.Money;
+        material = saveData.Material;
+        currentWave = saveData.CurrentWave;
+        baseHealth = saveData.CurrentBaseHealth;
 
-        enemiesKilled = saveData.enemiesKilled;
-        moneyCollected = saveData.moneyCollected;
-        materialCollected = saveData.materialCollected;
+        enemiesKilled = saveData.EnemiesKilled;
+        moneyCollected = saveData.MoneyCollected;
+        materialCollected = saveData.MaterialCollected;
 
-        startingMode = saveData.startingMode;
+        startingMode = saveData.StartingMode;
 
-        List<TowerData> towerData = new List<TowerData>(saveData.towerData);
+        List<TowerData> towerData = new List<TowerData>(saveData.TowerData);
 
         foreach (TowerData tower in towerData)
         {
             buildManager.LoadTower(tower);
         }
-        UpgradeController.currentUpgradeLevel = saveData.tankUpgradeLevel;
+        UpgradeController.currentUpgradeLevel = saveData.TankUpgradeLevel;
         
         Invoke(nameof(FixUpgradeDelay), 0.01f);
     }
@@ -117,6 +117,7 @@ public class GameManager : MonoBehaviour
         Player1Color = dataList[0].PlayerColor;
         Player2Color = dataList[1].PlayerColor;
     }
+
 
     private void FixUpgradeDelay()
     {
@@ -139,11 +140,27 @@ public class GameManager : MonoBehaviour
         Player2Color = baseStats.Player2Color;
     }
 
-    [ContextMenu("Delete Saved Data")]
-    public void DeleteSaveData()
+    [ContextMenu("Data/Delete All Data")]
+    public void DeleteAllData()
     {
         DataManager.DeleteFile(DataManager.SaveData);
         DataManager.DeleteFile(DataManager.CustomizationData);
+        DataManager.DeleteFile(DataManager.AchievementData);
+    }
+    [ContextMenu("Data/Delete Save Data")]
+    public void DeleteSaveData()
+    {
+        DataManager.DeleteFile(DataManager.SaveData);
+    }
+    [ContextMenu("Data/Delete Customization Data")]
+    public void DeleteCustomizationData()
+    {
+        DataManager.DeleteFile(DataManager.CustomizationData);
+    }
+    [ContextMenu("Data/Delete Achievement Data")]
+    public void DeleteAchievementData()
+    {
+        DataManager.DeleteFile(DataManager.AchievementData);
     }
 
     private void Start()
@@ -444,6 +461,16 @@ public class GameManager : MonoBehaviour
             enemiesKilled: enemiesKilled,
             towersBuilt: 0
         ));
+
+        // If this is the third level, invoke achievement
+        if (SceneManager.GetActiveScene().buildIndex == 3)
+        {
+            EventHandler.InvokeEvent(new AchievementCompletedEvent(
+                description: "Achievement reached",
+                achievementType: Achievement.CompleteStageThree,
+                completed: true
+            ));
+        }
 
         canvas.GetComponent<UI>().SetSelectedButton("Continue");
         UI.OpenMenu();

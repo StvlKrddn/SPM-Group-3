@@ -53,7 +53,7 @@ public class MainMenu : MonoBehaviour
     public void Continue()
     {
         SaveData data = (SaveData) DataManager.ReadFromFile(DataManager.SaveData);
-        SceneManager.LoadScene(data.currentScene);
+        SceneManager.LoadScene(data.CurrentScene);
     }
 
     public void Confirm()

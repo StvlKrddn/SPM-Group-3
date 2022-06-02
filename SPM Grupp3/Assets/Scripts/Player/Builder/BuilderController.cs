@@ -239,7 +239,12 @@ public class BuilderController : MonoBehaviour
         stopHover = false;
         stopMouse = false;
         placementClicked = false;
-/*        towerPanel.SetActive(true);*/
+        /*        towerPanel.SetActive(true);*/
+       
+        foreach (FadeBehaviour fadeBehaviour in FindObjectsOfType<FadeBehaviour>())
+        {
+            fadeBehaviour.ResetFade();
+        }
     }
 
     private void OnEnable()
@@ -389,11 +394,11 @@ public class BuilderController : MonoBehaviour
             garageSelection = selection;
         }
 
-/*        if (garageSelection != null && selection == null)
+        if (garageSelection != null && selection == null)
         {
             garageSelection.GetComponent<GarageTrigger>().CloseIndicator();
             garageSelection = null;
-        }*/
+        }
     }
 
     void Hover(RaycastHit hit)

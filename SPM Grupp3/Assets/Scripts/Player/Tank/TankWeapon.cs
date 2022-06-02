@@ -10,6 +10,7 @@ public class TankWeapon : ScriptableObject
     public float spread = 20f;
     public float range = 20f;
     public float bulletSpeed = 35f;
+    public int penetratonCount = 2;
     public bool penetrating = false;
 
     [Header("Bullet prefab: ")]

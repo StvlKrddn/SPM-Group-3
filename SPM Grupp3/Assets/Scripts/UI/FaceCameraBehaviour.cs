@@ -5,6 +5,7 @@ using UnityEngine;
 public class FaceCameraBehaviour : MonoBehaviour
 {
     private Transform lookAt;
+    public bool isHealth = true;
 
     private void Awake()
     {
@@ -15,6 +16,9 @@ public class FaceCameraBehaviour : MonoBehaviour
     {
         transform.LookAt(lookAt);
 
-        transform.Rotate(90, 180, 0);
+        if(isHealth)
+            transform.Rotate(90, 180, 0);
+        else
+            transform.Rotate(0, 180, -90);
     }
 }

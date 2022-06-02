@@ -4,19 +4,23 @@ using UnityEngine;
 
 public class SniperTank : TankUpgradeTree
 {
+	[Space]
 	[SerializeField] private int range = 25;
-	[SerializeField] private float fireRateFirst = 1.2f;
-    [SerializeField] private float fireRateSecond = 0.5f;
-
-	[SerializeField] private int damage = 75;
-	[SerializeField] private GameObject sniperAbility;
+	[SerializeField] private float level1FireRate = 1.2f;
+	[SerializeField] private int level1Damage = 75;
+	[Space]
+	[SerializeField] private float level2FireRate = 0.5f;
+	[SerializeField] private int level2Penetration;
+	[SerializeField] private int level2Damage = 75;
+	[Space]
 	[SerializeField] private GameObject level1Mesh;
 	[SerializeField] private GameObject level2Mesh;
+	[SerializeField] private GameObject sniperAbility;
 
 
 	public override void UpgradeOne()
 	{
-		weapon.MakeSniper(range, fireRateFirst, damage);
+		weapon.MakeSniper(range, level1FireRate, level1Damage);
 		weapon.ClearBullets();
 		weapon.ChangeTurretMesh(level1Mesh);
 		
@@ -24,8 +28,9 @@ public class SniperTank : TankUpgradeTree
 	public override void UpgradeTwo()
 	{   
 		base.UpgradeTwo();
-        weapon.MakeSniper(range, fireRateSecond, damage);
-        weapon.MaxRange();
+		weapon.UpgradeFirerate(level2FireRate);
+		weapon.UpgradeDamage(level2Damage);
+        weapon.MaxRange(level2Penetration);
 		weapon.ChangeTurretMesh(level2Mesh);
 	}
 
