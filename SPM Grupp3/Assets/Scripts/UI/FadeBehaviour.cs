@@ -26,6 +26,14 @@ public class FadeBehaviour : MonoBehaviour
             faded = false;
     }
 
+    public void ResetFade()
+    {
+        if (canvasGroup.alpha == 1)
+        {
+            StartCoroutine(DoFade(1f, 0f));
+        }        
+    }
+
     public void Fade()
     {
         if (currentOperation != null)
