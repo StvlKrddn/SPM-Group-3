@@ -51,11 +51,10 @@ public class HealthBar : MonoBehaviour
         slider.value = currentHealth;
     }
 
-/*    public void UpdateHealthBar(float currentHealth)
+    public void UpdateHealthBarInstant(float currentHealth)
     {
-        print(currentHealth);
         slider.value = currentHealth;
-    }*/
+    }
 
     private void LateUpdate()
     {

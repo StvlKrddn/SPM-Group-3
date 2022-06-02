@@ -309,6 +309,6 @@ public class TankState : MonoBehaviour
     private void ResetHealth()
     {
         currentHealth = health;
-        healthBar.HandleHealthChanged(health);
+        healthBar.UpdateHealthBarInstant(currentHealth);
     }
 }
