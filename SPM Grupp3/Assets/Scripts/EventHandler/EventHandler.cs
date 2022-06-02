@@ -7,7 +7,7 @@ public class EventHandler : MonoBehaviour
     delegate void EventListener(Event info);
     static Dictionary<Type, List<EventListener>> eventListeners = new Dictionary<Type, List<EventListener>>();
 
-    void OnDestroy() 
+    void OnDestroy()
     {
         eventListeners.Clear();
     }
