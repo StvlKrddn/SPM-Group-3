@@ -5,6 +5,11 @@ using UnityEngine.UI;
 
 public abstract class TankUpgradeTree : MonoBehaviour
 {
+    private GameObject abilityUi;
+    private Slider slider;
+    private FadeBehaviour fadeBehaviour;
+    private float abilityDuration = 0.5f;
+
     protected GameManager gameManager;
     protected TankState tankState;
     protected WeaponSlot weapon;
@@ -16,9 +21,6 @@ public abstract class TankUpgradeTree : MonoBehaviour
     [SerializeField] protected float abilityCD;
     [SerializeField] protected bool abilityReady = false;
 
-    private GameObject abilityUi;
-    private Slider slider;
-    private float notInUseTimer = 0f;
 
 
     private void OnEnable()
@@ -36,24 +38,8 @@ public abstract class TankUpgradeTree : MonoBehaviour
         gameManager = FindObjectOfType<GameManager>();
         abilityUi = gameObject.transform.Find("AbilityUI").gameObject;
         slider = abilityUi.GetComponent<Slider>();
+        fadeBehaviour = abilityUi.GetComponent<FadeBehaviour>();
 	}
-
-    private void Update()
-    {
-        if(UpgradeController.currentUpgradeLevel != 3)
-        {
-            return;
-        }
-
-        if (notInUseTimer > abilityCD && !abilityUi.GetComponent<FadeBehaviour>().Faded())
-        {
-            abilityUi.GetComponent<FadeBehaviour>().Fade();
-        }
-        else
-        {
-            notInUseTimer += Time.deltaTime;
-        }
-    }
 
     public virtual void UpgradeOne() {}
 
@@ -87,14 +73,11 @@ public abstract class TankUpgradeTree : MonoBehaviour
 
     private IEnumerator UseAbilityBar()
     {
-        notInUseTimer = 0;
-
-        float abilityDuration = 0.5f;
 
         float elapsed = 0f;
 
-        if (abilityUi.GetComponent<FadeBehaviour>().Faded())
-            abilityUi.GetComponent<FadeBehaviour>().Fade();
+        if (fadeBehaviour.Faded())
+          fadeBehaviour.Fade();
 
         while (elapsed < abilityDuration)
         {
@@ -119,7 +102,7 @@ public abstract class TankUpgradeTree : MonoBehaviour
             slider.value = Mathf.Lerp(0, 1f, elapsed / coolDown);
             yield return null;
         }
-
+        fadeBehaviour.Fade();
         slider.value = 1f;
     }
 
