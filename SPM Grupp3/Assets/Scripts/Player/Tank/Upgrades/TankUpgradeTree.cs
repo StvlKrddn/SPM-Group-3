@@ -29,8 +29,12 @@ public abstract class TankUpgradeTree : MonoBehaviour
         {
             if (slider != null)
             {
-                slider.value = 1;
-                StartCoroutine(UseAbilityBar());
+                slider.value = 0;
+
+                if (fadeBehaviour.Faded())
+                    fadeBehaviour.Fade();
+
+                StartCoroutine(RechargeAbilityBar());
             }
         }
     }
@@ -61,33 +65,37 @@ public abstract class TankUpgradeTree : MonoBehaviour
     {
         if (abilityReady == true)
         {
-            abilityReady = false;
             StartCoroutine(UseAbilityBar());          
             return true;
         }
         return false;
     }
 
+    private float elapsed = 0f;
+
     private IEnumerator UseAbilityBar()
     {
+        abilityReady = false;
 
-        float elapsed = 0f;
+        elapsed = 0f;
 
         if (fadeBehaviour.Faded())
-          fadeBehaviour.Fade();
+            fadeBehaviour.Fade();
 
-        if (slider.value != 0)
+        while (elapsed < abilityDuration)
         {
-            while (elapsed < abilityDuration)
-            {
-                elapsed += Time.deltaTime;
+            elapsed += Time.deltaTime;
 
-                // preChangePct is start value and the goal is pct. elapsed / updateSpeedSeconds is the equation per activation
-                slider.value = Mathf.Lerp(slider.value, slider.minValue, elapsed / abilityDuration);
-                yield return null;
-            }
+            // preChangePct is start value and the goal is pct. elapsed / updateSpeedSeconds is the equation per activation
+            slider.value = Mathf.Lerp(slider.value, slider.minValue, elapsed / abilityDuration);
+            yield return null;
         }
 
+        StartCoroutine(RechargeAbilityBar());
+    }
+
+    private IEnumerator RechargeAbilityBar()
+    {
         float coolDown = abilityCD - abilityDuration;
 
         elapsed = 0f;
@@ -100,9 +108,11 @@ public abstract class TankUpgradeTree : MonoBehaviour
             slider.value = Mathf.Lerp(slider.minValue, slider.maxValue, elapsed / coolDown);
             yield return null;
         }
-        abilityReady = true;
-        if (fadeBehaviour.Faded() == false)
+
+        if (!fadeBehaviour.Faded())
             fadeBehaviour.Fade();
+
+        ResetCooldown();
     }
 
     public void ResetCooldown()

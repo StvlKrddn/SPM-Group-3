@@ -475,8 +475,6 @@ public class GameManager : MonoBehaviour
 
         HidePlayerCursor();
 
-
-
         canvas.GetComponent<UI>().SetFirstSelectedButton("Continue");
         UI.OpenMenu();
 

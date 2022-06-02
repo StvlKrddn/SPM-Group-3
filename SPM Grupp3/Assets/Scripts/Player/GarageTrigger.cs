@@ -7,14 +7,16 @@ using UnityEngine.InputSystem;
 public class GarageTrigger : MonoBehaviour
 {
     private InputAction acceptAction;
-    private GameObject hintEnterUI;
+    
     private readonly bool limit = false;
 
+    private FadeBehaviour hintUI;
     [SerializeField] private FadeBehaviour OptionGarageIndicator;
 
     void Awake() 
     {
-        hintEnterUI = UI.Canvas.transform.Find("EnterGarageHint").gameObject;
+        GameObject hintEnterUI = UI.Canvas.transform.Find("EnterGarageHint").gameObject;
+        hintUI = hintEnterUI.GetComponent<FadeBehaviour>();
     }
 
     public void ShowIndicator()
@@ -36,13 +38,13 @@ public class GarageTrigger : MonoBehaviour
             PlayerInput playerInput = other.GetComponentInParent<PlayerInput>();
             acceptAction = playerInput.actions["EnterGarage"];
 
-            if(hintEnterUI.GetComponent<FadeBehaviour>().Faded())
-                hintEnterUI.GetComponent<FadeBehaviour>().Fade();
+            if(hintUI.Faded())
+                hintUI.Fade();
 
             if (acceptAction.IsPressed() && limit == false)
             {
-                if (!hintEnterUI.GetComponent<FadeBehaviour>().Faded())
-                    hintEnterUI.GetComponent<FadeBehaviour>().Fade();
+                if (!hintUI.Faded())
+                    hintUI.Fade();
 
                 EventHandler.InvokeEvent(new PlayerSwitchEvent(
                     description: "A player switched mode",
@@ -57,8 +59,8 @@ public class GarageTrigger : MonoBehaviour
     {
         if (other.CompareTag("Tank"))
         {
-            if(!hintEnterUI.GetComponent<FadeBehaviour>().Faded())
-                hintEnterUI.GetComponent<FadeBehaviour>().Fade();
+            if(!hintUI.Faded())
+                hintUI.Fade();
         }
     }
 }
