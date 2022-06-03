@@ -78,4 +78,11 @@ public class MainMenu : MonoBehaviour
         //UnityEditor.EditorApplication.isPlaying = false;
         Application.Quit();
     }
+
+    public void Reset()
+    {
+        DataManager.DeleteFile(DataManager.SaveData);
+        DataManager.DeleteFile(DataManager.CustomizationData);
+        DataManager.DeleteFile(DataManager.AchievementData);
+    }
 }
