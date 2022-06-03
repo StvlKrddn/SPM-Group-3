@@ -44,7 +44,7 @@ public abstract class TankUpgradeTree : MonoBehaviour
         gameManager = FindObjectOfType<GameManager>();
         GameObject abilityUi = gameObject.transform.Find("AbilityUI").gameObject;
 
-        if(tankState.playerID == 0)
+        if(tankState.gameObject.GetComponent<SniperTank>().isActiveAndEnabled == true)
             abilityIcon = abilityUi.gameObject.transform.Find("SniperIcon").gameObject.GetComponent<FadeBehaviour>();
         else
             abilityIcon = abilityUi.gameObject.transform.Find("DynamiteIcon").gameObject.GetComponent<FadeBehaviour>();
