@@ -11,6 +11,7 @@ public class TankState : MonoBehaviour
     [SerializeField] private Animator animator;
     [SerializeField] private GameObject destroyEffect;
     [SerializeField] private ParticleSystem[] hitEffects;
+    [SerializeField] private int repairCost;
     public int LevelOfTank;
 
     // Components
@@ -293,6 +294,14 @@ public class TankState : MonoBehaviour
         RepairTank();
     }
 
+    public void RepairTankInWave()
+    {
+        if (playerHandler.Destroyed == true && GameManager.Instance.SpendResources(repairCost, 0))
+        {
+            RepairTank();
+        }
+    }
+
     public void RepairTank()
     {
         playerHandler.Destroyed = false;
@@ -314,14 +323,5 @@ public class TankState : MonoBehaviour
     {
         currentHealth = health;
         healthBar.UpdateHealthBarInstant(currentHealth);
-        /*
-        if (tankUI.activeSelf == true)
-        {
-            healthBar.HandleHealthChanged(currentHealth);
-        }
-        else
-        {
-        }
-        */
     }
 }

@@ -10420,6 +10420,7 @@ MonoBehaviour:
   - {fileID: 3688929835740726135}
   - {fileID: 4005078373874826775}
   - {fileID: 7072925918001228257}
+  repairCost: 1000
   LevelOfTank: 0
   healthBar: {fileID: 705580134563855951}
   tankUpgradeTreeOne: {fileID: 3141392934154749895}
@@ -19867,7 +19868,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 3141392934154749891}
         m_TargetAssemblyTypeName: TankState, Assembly-CSharp
-        m_MethodName: RepairTank
+        m_MethodName: RepairTankInWave
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
