@@ -11,7 +11,6 @@ public class TankState : MonoBehaviour
     [SerializeField] private Animator animator;
     [SerializeField] private GameObject destroyEffect;
     [SerializeField] private ParticleSystem[] hitEffects;
-    [SerializeField] private AudioClip tankTakeDamageSound;
     public int LevelOfTank;
 
     // Components
@@ -32,7 +31,7 @@ public class TankState : MonoBehaviour
     private PlayerHandler playerHandler;
     private float currentHealth;
     private Transform spawnPoint;
-    public float playerID;
+    private float playerID;
     private int hurMangaGangerDamage = 0;
     private bool invincibilityFrame = false;
     private Color player1Color;
@@ -138,56 +137,14 @@ public class TankState : MonoBehaviour
         {
             transform.Find("TankMesh").Find("TankBody").GetComponent<Renderer>().material.color = player2Color;
         }
-
-        if (DataManager.FileExists(DataManager.CustomizationData))
+        tankUpgradeTree = playerInput.playerIndex == 0 ? tankUpgradeTreeOne : tankUpgradeTreeTwo;
+        if (playerInput.playerIndex == 0)
         {
-            List<CustomizationData> data = (List<CustomizationData>)DataManager.ReadFromFile(DataManager.CustomizationData);
-
-            if (playerInput.playerIndex == 0)
-            {
-                // Player 1
-                if (data[0].PlayerClass == 0)
-                {
-                    // Sniper
-                    tankUpgradeTreeTwo.enabled = false;
-                    tankUpgradeTree = tankUpgradeTreeOne;
-                }
-                else
-                {
-                    // Fire
-                    tankUpgradeTreeOne.enabled = false;
-                    tankUpgradeTree = tankUpgradeTreeTwo;
-                }
-            }
-            else
-            {
-                // Player 2
-                if (data[1].PlayerClass == 0)
-                {
-                    // Sniper
-                    tankUpgradeTreeTwo.enabled = false;
-                    tankUpgradeTree = tankUpgradeTreeOne;
-                }
-                else
-                {
-                    // Fire
-                    tankUpgradeTreeOne.enabled = false;
-                    tankUpgradeTree = tankUpgradeTreeTwo;
-                }
-            }
+            tankUpgradeTreeTwo.enabled = false;
         }
         else
         {
-            if (playerInput.playerIndex == 0)
-            {
-                tankUpgradeTreeTwo.enabled = false;
-                tankUpgradeTree = tankUpgradeTreeOne;
-            }
-            else
-            {
-                tankUpgradeTreeOne.enabled = false;
-                tankUpgradeTree = tankUpgradeTreeTwo;
-            }
+            tankUpgradeTreeOne.enabled = false;
         }
     }
 
@@ -297,7 +254,6 @@ public class TankState : MonoBehaviour
 
         if (!invincibilityFrame)
         {
-            EventHandler.InvokeEvent(new PlaySoundEvent("TankTakeDamage", tankTakeDamageSound));
             Invoke(nameof(InvincibilityDuration), 0.15f);
             invincibilityFrame = true;
             currentHealth -= damage;
