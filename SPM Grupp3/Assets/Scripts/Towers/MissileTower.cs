@@ -198,8 +198,9 @@ public class MissileTower : Tower
     }
 
     protected override void Level3(GameObject tower)
-    {   
-        
+    {
+        level2Visual.SetActive(false);
+        level3Visual.SetActive(true);
         tower.GetComponent<MissileTower>().ThirdShot = true;
     }
 }

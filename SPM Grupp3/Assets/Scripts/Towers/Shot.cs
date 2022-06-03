@@ -53,11 +53,6 @@ public class Shot : MonoBehaviour
 
     }
 
-    public Tower getTowerShotCameFrom()
-    {
-        return tower;
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         tower = gameObject.GetComponentInParent<Tower>();

@@ -395,7 +395,7 @@ public class WheelSelection : MonoBehaviour
                 p1Damage.color = Color.green;
                 p1FireRate.color = Color.green;
                 p1Range.color = Color.green;
-
+                p1Penetration.color = Color.green;
                 p2FireRate.color = Color.green;
 
                 tankUpgradeTitleP1.text = "Player 1: Sniper (LVL 1)";
@@ -404,6 +404,7 @@ public class WheelSelection : MonoBehaviour
             case 1:
                 p1Range.color = Color.green;
                 p1Penetration.color = Color.green;
+                p1Damage.color = Color.green;
 
                 p2Damage.color = Color.green;
                 p2FireRate.color = Color.green;
@@ -572,18 +573,19 @@ public class WheelSelection : MonoBehaviour
         switch (upgradeController.GetUpgradesPurchased())
         {
             case 1:
-                p1Damage.text = "Damage: 90";
+                p1Damage.text = "Damage: 20";
                 p1FireRate.text = "FireRate: 0.75";
                 p1Range.text = "Range: 25";
-
+                p1Penetration.text = "Penetration: 1";
                 p2FireRate.text = "FireRate: 8";
 
                 break;
             case 2:
                 p1Range.text = "Range: 100";
-                p1Penetration.text = "Penetration: 4";
+                p1Penetration.text = "Penetration: 2";
+                p1Damage.text = "Damage: 50";
 
-                p2Damage.text = "Damage: 7.5/s";
+                p2Damage.text = "Damage: 25/s";
                 p2FireRate.text = "FireRate: 100";
                 break;
             case 3:

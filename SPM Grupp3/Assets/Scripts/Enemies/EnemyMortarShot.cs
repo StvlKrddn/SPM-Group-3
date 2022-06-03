@@ -8,6 +8,8 @@ public class EnemyMortarShot : MonoBehaviour
     private Vector3 target;
     private Vector3 direction;
     private ParticleSystem[] particle;
+    private int radiusYRotation = 0;
+    private Quaternion radiusRotation;
     [SerializeField] private float speed = 20;
     [SerializeField] private GameObject radius;
     [SerializeField] private AudioClip mortarHitSound;
@@ -43,6 +45,13 @@ public class EnemyMortarShot : MonoBehaviour
 
             case 2:
             direction = Vector3.down;
+            radiusYRotation++;
+            radiusRotation = Quaternion.Euler(90f, radiusYRotation, 0);
+            radius.transform.rotation = radiusRotation;
+            if (radiusYRotation == 360)
+            {
+                radiusYRotation = 0;
+            }
             break;
 
             case 3:

@@ -114,7 +114,7 @@ MonoBehaviour:
   speed: 20
   radius: {fileID: 2360235166107726281}
   mortarHitSound: {fileID: 8300000, guid: 349e4790d9b277547aba62227364defb, type: 3}
-  Damage: 0
+  Damage: 5
 --- !u!54 &454385145843477572
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -141,7 +141,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5277930609054139512}
   - component: {fileID: 8382967606044380645}
-  - component: {fileID: 1508229486896787898}
   m_Layer: 0
   m_Name: Circle
   m_TagString: MortarBullet
@@ -214,18 +213,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1508229486896787898
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2360235166107726281}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 07cb99ef5993823478610b661b76d181, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1302042605847994260
 PrefabInstance:
   m_ObjectHideFlags: 0
