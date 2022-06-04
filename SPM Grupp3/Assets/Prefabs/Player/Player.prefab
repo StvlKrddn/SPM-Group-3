@@ -10423,11 +10423,9 @@ MonoBehaviour:
   repairCost: 1000
   LevelOfTank: 0
   healthBar: {fileID: 705580134563855951}
-  SniperTree: {fileID: 3141392934154749895}
-  FireTree: {fileID: 3141392934154749894}
+  tankUpgradeTreeOne: {fileID: 3141392934154749895}
+  tankUpgradeTreeTwo: {fileID: 3141392934154749894}
   tankUpgradeTree: {fileID: 0}
-  TankUpgradeTreePlayerOne: {fileID: 3141392934154749894}
-  TankUpgradeTreePlayerTwo: {fileID: 3141392934154749895}
   TurretObject: {fileID: 4638046304985716463}
 --- !u!114 &3141392934154749890
 MonoBehaviour:
@@ -10486,7 +10484,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 632fe7ad3c3e30c4bb9ea28f7c45a7ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 10
+  movementSpeed: 8
   abilityCD: 10
   abilityReady: 0
   range: 25
@@ -10510,7 +10508,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84ddc4bc03d97b24d8474d6ac61bd62d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 10
+  movementSpeed: 8
   abilityCD: 10
   abilityReady: 0
   fireRate: 8
