@@ -19,7 +19,6 @@ public class GameManager : MonoBehaviour
     private Color moneyBaseColor;
     private Color materialBaseColor;
     [SerializeField] private GameObject SpendEffektPrefab;
-    [SerializeField] private GameObject playerPrefab;
 
     [SerializeField] private AudioClip victorySound;
     [SerializeField] private AudioClip defeatSound;
@@ -82,16 +81,9 @@ public class GameManager : MonoBehaviour
         {
             LoadBase();
         }
-
         if (DataManager.FileExists(DataManager.CustomizationData))
         {
             LoadCustomizationData();
-        }
-        else
-        {
-            TankState tankState = playerPrefab.GetComponentInChildren<TankState>();
-            tankState.TankUpgradeTreePlayerOne = tankState.SniperTree;
-            tankState.TankUpgradeTreePlayerTwo = tankState.FireTree;
         }
 
         InitializeUIElements();
@@ -145,17 +137,6 @@ public class GameManager : MonoBehaviour
         List<CustomizationData> dataList = (List<CustomizationData>)DataManager.ReadFromFile(DataManager.CustomizationData);
         Player1Color = dataList[0].PlayerColor;
         Player2Color = dataList[1].PlayerColor;
-        TankState tankState = playerPrefab.GetComponentInChildren<TankState>();
-        if (dataList[0].PlayerClass == 0)
-        {
-            tankState.TankUpgradeTreePlayerOne = tankState.SniperTree;
-            tankState.TankUpgradeTreePlayerTwo = tankState.FireTree;
-        }
-        else
-        {
-            tankState.TankUpgradeTreePlayerOne = tankState.FireTree;
-            tankState.TankUpgradeTreePlayerTwo = tankState.SniperTree;
-        }
     }
 
     private void FixUpgradeDelay()

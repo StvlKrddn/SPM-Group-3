@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -40,15 +39,13 @@ public class TankState : MonoBehaviour
     private Color player2Color;
     private GameObject tankUI;
 
+    [SerializeField] private HealthBar healthBar;
+    [SerializeField] private TankUpgradeTree tankUpgradeTreeOne;
+    [SerializeField] private TankUpgradeTree tankUpgradeTreeTwo;
+
     protected Vector3 aimInputVector;
 
-    [SerializeField] private HealthBar healthBar;
-    public TankUpgradeTree SniperTree;
-    public TankUpgradeTree FireTree;
-    [Space]
     public TankUpgradeTree tankUpgradeTree;
-    public TankUpgradeTree TankUpgradeTreePlayerOne;
-    public TankUpgradeTree TankUpgradeTreePlayerTwo;
     public Transform TurretObject;
 
     // Getters and Setters
@@ -141,7 +138,15 @@ public class TankState : MonoBehaviour
         {
             transform.Find("TankMesh").Find("TankBody").GetComponent<Renderer>().material.color = player2Color;
         }
-        tankUpgradeTree = playerInput.playerIndex == 0 ? TankUpgradeTreePlayerOne : TankUpgradeTreePlayerTwo;
+        tankUpgradeTree = playerInput.playerIndex == 0 ? tankUpgradeTreeOne : tankUpgradeTreeTwo;
+        if (playerInput.playerIndex == 0)
+        {
+            tankUpgradeTreeTwo.enabled = false;
+        }
+        else
+        {
+            tankUpgradeTreeOne.enabled = false;
+        }
     }
 
     void FindGarage()
