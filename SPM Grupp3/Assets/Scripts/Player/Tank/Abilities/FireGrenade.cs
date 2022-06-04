@@ -5,6 +5,7 @@ using UnityEngine;
 public class FireGrenade : MonoBehaviour
 {
     private SphereCollider sphereCollider;
+    private Outline outline;
     [SerializeField] private int damage;
     [SerializeField] private float timer;
     [SerializeField] private AudioClip dynamiteExplosionSound;
@@ -14,6 +15,7 @@ public class FireGrenade : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        outline = GetComponent<Outline>();
         sphereCollider = GetComponent<SphereCollider>();
 		StartCoroutine(TooLate());
         EventHandler.InvokeEvent(new PlaySoundEvent("Dynamite Placed", dynamitePlaceSound));
@@ -27,6 +29,7 @@ public class FireGrenade : MonoBehaviour
 
 	private IEnumerator Detonate()
     {
+        outline.enabled = false;
         EventHandler.InvokeEvent(new PlaySoundEvent("Dynamite Explode", dynamiteExplosionSound));
         Collider[] enemies = Physics.OverlapSphere(transform.position, sphereCollider.radius);
         foreach (Collider c in enemies)
