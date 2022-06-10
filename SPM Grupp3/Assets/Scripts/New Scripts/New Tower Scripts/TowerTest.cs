@@ -5,15 +5,16 @@ using UnityEngine;
 using System.Linq;
 
 [RequireComponent(typeof(BoxCollider))]
-public class TowerTest : Upgradable
+public abstract class TowerTest : MonoBehaviour
 {
     [Header("Setup")]
     [SerializeField] protected float turnSpeed = 10f;
     [SerializeField] protected LayerMask enemyMask;
 
     [Header("Stats")]
-    [SerializeField] protected float range;
-    [SerializeField] protected float fireRate;
+    [SerializeField] protected float range = 10;
+    [SerializeField] protected float fireRate = 1;
+    [SerializeField] protected List<DamageType> damageTypes = new List<DamageType>();
 
     protected string enemyTag = "Enemy";
     protected Transform currentTarget;
@@ -27,9 +28,14 @@ public class TowerTest : Upgradable
         Gizmos.DrawWireSphere(transform.position, range);
     }
 
-    void Start()
+    void Awake()
     {
         boxCollider = GetComponent<BoxCollider>();
+        if (damageTypes.Count == 0)
+        {
+            DamageType normalDamage = Resources.Load<DamageType>("NormalDamage");
+            damageTypes.Add(normalDamage);
+        }
         allowedToFire = true;
     }
 

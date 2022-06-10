@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SplashDamage : Upgradable
+public class SplashDamage : DamageType
 {
     [SerializeField] private float splashDamage;
     [SerializeField] private float splashRadius;

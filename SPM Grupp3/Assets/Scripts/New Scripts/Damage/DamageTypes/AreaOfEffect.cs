@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AreaOfEffectDamage : Upgradable
+public class AreaOfEffectDamage : DamageType
 {
     [SerializeField] private float hitRadius;
     [SerializeField] private DamageType damageType;

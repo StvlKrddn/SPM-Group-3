@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Upgradable : MonoBehaviour
+public abstract class Upgradable : ScriptableObject
 {
     /// <summary> Upgrade a value in a damage type </summary>
     /// <param name="baseValue"> The value to be upgraded </param>
