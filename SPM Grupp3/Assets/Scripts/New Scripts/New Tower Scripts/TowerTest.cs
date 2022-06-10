@@ -13,28 +13,34 @@ public class TowerTest : Upgradable
 
     [Header("Stats")]
     [SerializeField] protected float range;
+    [SerializeField] protected float fireRate;
 
     protected string enemyTag = "Enemy";
-    protected Transform target;
+    protected Transform currentTarget;
     protected BoxCollider boxCollider;
     protected bool isTargeting;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        boxCollider = GetComponent<BoxCollider>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        StartCoroutine(FindTarget());
-    }
+    protected bool allowedToFire;
 
     void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, range);
+    }
+
+    void Start()
+    {
+        boxCollider = GetComponent<BoxCollider>();
+        allowedToFire = true;
+    }
+
+    void Update()
+    {
+        StartCoroutine(FindTarget());
+
+        if (isTargeting && allowedToFire)
+        {
+            StartCoroutine(Weapon());
+        }
     }
 
     private IEnumerator FindTarget()
@@ -44,6 +50,12 @@ public class TowerTest : Upgradable
         float minDistance = Mathf.Infinity;
 
         Collider[] colliders = Physics.OverlapSphere(transform.position, range, enemyMask);
+        if (colliders.Length == 0)
+        {
+            currentTarget = null;
+            isTargeting = false;
+        }
+
         foreach (Collider targetCollider in colliders)
         {
             if (targetCollider.gameObject.Equals(gameObject))
@@ -71,15 +83,29 @@ public class TowerTest : Upgradable
         if (isTargeting)
         {
             Vector3 targetDirection = targets[closestTarget];
+            currentTarget = closestTarget;
             Debug.DrawLine(transform.position, closestTarget.position, Color.red);
             LockOnTarget(targetDirection);
         }
+
+        void LockOnTarget(Vector3 direction)
+        {
+            Quaternion lookRotation = Quaternion.LookRotation(direction);
+            Vector3 rotation = Quaternion.Lerp(transform.rotation, lookRotation, Time.deltaTime * turnSpeed).eulerAngles;
+            transform.rotation = Quaternion.Euler(0f, rotation.y, 0f);
+        }
     }
 
-    private void LockOnTarget(Vector3 direction)
+    private void Shoot()
     {
-        Quaternion lookRotation = Quaternion.LookRotation(direction);
-        Vector3 rotation = Quaternion.Lerp(transform.rotation, lookRotation, Time.deltaTime * turnSpeed).eulerAngles;
-        transform.rotation = Quaternion.Euler(0f, rotation.y, 0f);
+        print("Bang!");
+    }
+
+    private IEnumerator Weapon()
+    {
+        Shoot();
+        allowedToFire = false;
+        yield return new WaitForSeconds(1 / fireRate);
+        allowedToFire = true;
     }
 }
