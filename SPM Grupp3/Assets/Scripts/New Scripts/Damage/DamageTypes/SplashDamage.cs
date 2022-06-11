@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[CreateAssetMenu(fileName = "SplashDamage", menuName = "DamageType/SplashDamage", order = 2)]
 public class SplashDamage : DamageType
 {
     [SerializeField] private float splashDamage;
@@ -15,6 +16,11 @@ public class SplashDamage : DamageType
     public void UpgradeSplashRadius(float amount, bool isPercentual)
     {
         splashRadius = base.UpgradeValue(splashRadius, amount, isPercentual);
+    }
+
+    public override string ToString()
+    {
+        return nameof(SplashDamage);
     }
 
     public float GetSplashDamage { get { return splashDamage; } }

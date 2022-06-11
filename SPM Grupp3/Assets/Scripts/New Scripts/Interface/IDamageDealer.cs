@@ -4,7 +4,12 @@ using UnityEngine;
 
 public interface IDamageDealer
 {
-    public abstract void HitTarget<D>(GameObject target) where D : DamageType;
+    Dictionary<string, DamageType> DamageTypes
+    {
+        get;
+    }
 
     public abstract void AddDamageType<D>() where D : DamageType;
+
+    public abstract void HitTarget(IDamageable target);
 }

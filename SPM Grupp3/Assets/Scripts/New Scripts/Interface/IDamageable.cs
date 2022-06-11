@@ -4,5 +4,11 @@ using UnityEngine;
 
 public interface IDamageable
 {
-    public abstract void TakeDamage<T>() where T : DamageType;
+    float Health
+    {
+        get;
+        set;
+    }
+
+    public abstract void TakeHit(DamageType damageType);
 }
