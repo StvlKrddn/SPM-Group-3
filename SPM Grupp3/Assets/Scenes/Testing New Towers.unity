@@ -815,14 +815,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   turnSpeed: 10
-  enemyLayer:
-    serializedVersion: 2
-    m_Bits: 128
-  isAreaOfAffect: 1
-  range: 10
-  fireRate: 1
-  damageTypes:
-  - {fileID: 11400000, guid: 3f8fbbc25b580e043b618d689d3ac666, type: 2}
 --- !u!65 &3365611352020937473
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -849,9 +841,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actionType: {fileID: 11400000, guid: 3f8fbbc25b580e043b618d689d3ac666, type: 2}
-  range: 0
-  frequency: 0
-  areaOfEffect: 0
+  range: 20
+  frequency: 1
+  areaOfEffect: 1
 --- !u!23 &3870265267495193386
 MeshRenderer:
   m_ObjectHideFlags: 0
