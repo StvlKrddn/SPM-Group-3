@@ -2,9 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Upgradable : ScriptableObject
+public abstract class ActionType : ScriptableObject
 {
-    /// <summary> Upgrade a value in a damage type </summary>
+    [SerializeField] protected LayerMask affectedLayer;
+
+    public LayerMask AffectedLayer { get { return affectedLayer; } }
+
+    /// <summary> Upgrade a value in an action type </summary>
     /// <param name="baseValue"> The value to be upgraded </param>
     /// <param name="increaseValue"> How much the baseValue should increase </param>
     /// <param name="isPercentual"> 

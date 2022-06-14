@@ -56,11 +56,11 @@ public class DamageHandler : MonoBehaviour, IDamageable
     private void TakeDamage(float damage)
     {
         health -= damage;
-        print(gameObject.name + " health: " + health);
         if (health <= 0)
         {
             print("Enemy killed!");
             Destroy(gameObject);
         }
+        print(gameObject.name + " health: " + health);
     }
 }

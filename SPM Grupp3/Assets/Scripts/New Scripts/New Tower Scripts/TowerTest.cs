@@ -1,29 +1,26 @@
+using System;
 using System.Runtime.CompilerServices;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-[RequireComponent(typeof(BoxCollider))]
-public abstract class TowerTest : MonoBehaviour, IDamageDealer
+[RequireComponent(typeof(BoxCollider), typeof(ActionHandler))]
+public abstract class TowerTest : MonoBehaviour, IActionPerformer
 {
     [Header("Setup")]
     [SerializeField] protected float turnSpeed = 10f;
-    [SerializeField] protected LayerMask enemyLayer;
-    [SerializeField] protected bool isAreaOfAffect;
 
-    [Header("Stats")]
-    [SerializeField] protected float range = 10;
-    [SerializeField] protected float fireRate = 1;
-    [SerializeField] private List<DamageType> damageTypes = new List<DamageType>();
-
-    protected Dictionary<string, DamageType> currentDamageTypes = new Dictionary<string, DamageType>();
     protected Transform currentTarget;
     protected BoxCollider boxCollider;
     protected bool targetInRange;
-    protected bool allowedToFire;
-
-    public Dictionary<string, DamageType> DamageTypes { get => currentDamageTypes; }
+    protected bool allowedToPerformAction;
+    protected ActionHandler actionHandler;
+    protected float range;
+    protected float actionFrequency;
+    protected bool areaOfEffect;
+    protected ActionType actionType;
+    protected LayerMask affectedLayer;
 
     void OnDrawGizmos()
     {
@@ -34,25 +31,28 @@ public abstract class TowerTest : MonoBehaviour, IDamageDealer
     void Awake()
     {
         boxCollider = GetComponent<BoxCollider>();
-        if (damageTypes.Count == 0)
-        {
-            DamageType normalDamage = Resources.Load<DamageType>(nameof(NormalDamage));
-            damageTypes.Add(normalDamage);
-        }
-        foreach (DamageType damageType in damageTypes)
-        {
-            currentDamageTypes.Add(nameof(damageType), damageType);
-        }
-        allowedToFire = true;
+        actionHandler = GetComponent<ActionHandler>();
 
-        AddDamageType<NormalDamage>();
+        allowedToPerformAction = true;
+
+    }
+
+    void UpdateAction()
+    {
+        range = actionHandler.Range;
+        actionFrequency = actionHandler.Frequency;
+        areaOfEffect = actionHandler.AreaOfEffect;
+        actionType = actionHandler.ActionType;
+        affectedLayer = actionType.AffectedLayer;
     }
 
     void Update()
     {
+        UpdateAction();
+
         StartCoroutine(FindTarget());
 
-        if (targetInRange && allowedToFire)
+        if (targetInRange && allowedToPerformAction)
         {
             StartCoroutine(Weapon());
         }
@@ -64,7 +64,7 @@ public abstract class TowerTest : MonoBehaviour, IDamageDealer
         Transform closestTarget = null;
         float minDistance = Mathf.Infinity;
 
-        Collider[] colliders = Physics.OverlapSphere(transform.position, range, enemyLayer);
+        Collider[] colliders = Physics.OverlapSphere(transform.position, range, affectedLayer);
         if (colliders.Length == 0)
         {
             currentTarget = null;
@@ -80,7 +80,7 @@ public abstract class TowerTest : MonoBehaviour, IDamageDealer
                     continue;
                 }
 
-                if (isAreaOfAffect)
+                if (areaOfEffect)
                 {
                     Debug.DrawLine(transform.position, targetCollider.transform.position, Color.red);
                 }
@@ -103,7 +103,7 @@ public abstract class TowerTest : MonoBehaviour, IDamageDealer
                 yield return null;
             }
 
-            if (targetInRange && !isAreaOfAffect)
+            if (targetInRange && !areaOfEffect)
             {
                 Vector3 targetDirection = targets[closestTarget];
                 currentTarget = closestTarget;
@@ -122,7 +122,7 @@ public abstract class TowerTest : MonoBehaviour, IDamageDealer
 
     private void Shoot()
     {
-        if (isAreaOfAffect)
+        if (areaOfEffect)
         {
             AreaOfEffect();
         }
@@ -136,7 +136,7 @@ public abstract class TowerTest : MonoBehaviour, IDamageDealer
             Collider[] targetsInRange = Physics.OverlapSphere(
                 position: transform.position,
                 radius: range,
-                enemyLayer
+                layerMask: affectedLayer
             );
             foreach (Collider collider in targetsInRange)
             {
@@ -150,12 +150,13 @@ public abstract class TowerTest : MonoBehaviour, IDamageDealer
 
         void SingleTarget()
         {
+            print("Shooting at a single target");
             bool hit = Physics.Raycast(
                 origin: transform.position,
                 direction: transform.forward,
                 hitInfo: out RaycastHit raycastHit,
                 maxDistance: range,
-                layerMask: enemyLayer
+                layerMask: affectedLayer
             );
 
             if (hit && raycastHit.collider.GetComponent<DamageHandler>())
@@ -168,25 +169,29 @@ public abstract class TowerTest : MonoBehaviour, IDamageDealer
 
     public void HitTarget(IDamageable target)
     {
-        foreach (DamageType damageType in currentDamageTypes.Values)
-        {
-            target.TakeHit(damageType);
-        }
+        target.TakeHit(actionType as DamageType);
+    }
+
+    public void ApplyBuff(IBuffable target)
+    {
+        target.ApplyBuff(actionType as BuffType);
     }
 
     private IEnumerator Weapon()
     {
         Shoot();
-        allowedToFire = false;
-        yield return new WaitForSeconds(1 / fireRate);
-        allowedToFire = true;
+        allowedToPerformAction = false;
+        yield return new WaitForSeconds(1 / actionFrequency);
+        allowedToPerformAction = true;
     }
 
-    public void AddDamageType<D>() where D : DamageType
+    public void AddActionType<A>() where A : ActionType
     {
-        string damageTypeName = typeof(D).ToString();
-        DamageType newDamageType = Resources.Load<DamageType>(damageTypeName);
-        currentDamageTypes.Add(damageTypeName, newDamageType);
+
     }
 
+    public void RemoveActionType<A>() where A : ActionType
+    {
+
+    }
 }
