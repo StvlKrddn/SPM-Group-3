@@ -11,5 +11,11 @@ public interface IDamageable
         set;
     }
 
-    public abstract void TakeHit(DamageType damageType);
+    public abstract void TakeHit(List<ActionType> actionTypes);
+
+    public abstract void TakeDamage(float damage);
+
+    public abstract void ApplyStatusEffect(StatusEffect statusEffect);
+
+    public abstract void RemoveStatusEffect(StatusEffect statusEffect);
 }

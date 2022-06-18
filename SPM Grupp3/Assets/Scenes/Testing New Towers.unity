@@ -233,6 +233,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 100
+  currentStatusEffects: []
 --- !u!1 &1111356788
 GameObject:
   m_ObjectHideFlags: 0
@@ -343,6 +344,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 100
+  currentStatusEffects: []
 --- !u!1 &1146152598
 GameObject:
   m_ObjectHideFlags: 0
@@ -546,6 +548,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 100
+  currentStatusEffects: []
 --- !u!1 &1211089107
 GameObject:
   m_ObjectHideFlags: 0
@@ -794,7 +797,6 @@ GameObject:
   - component: {fileID: 3870265267495193386}
   - component: {fileID: 3365611352020937473}
   - component: {fileID: 3365611352020937472}
-  - component: {fileID: 3365611352020937474}
   m_Layer: 0
   m_Name: CannonTower
   m_TagString: Untagged
@@ -815,6 +817,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   turnSpeed: 10
+  affectedLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  range: 10
+  actionTypes:
+  - {fileID: 11400000, guid: 41fa68ba5b692df479f1425c0e27e7d6, type: 2}
+  areaOfEffect: 0
+  actionFrequency: 2
 --- !u!65 &3365611352020937473
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -828,22 +838,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.2094201, y: 1.3279082, z: 1.3373313}
   m_Center: {x: 0, y: 0.65745205, z: 0.116607815}
---- !u!114 &3365611352020937474
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3365611352020937471}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: def399c52c788a34aaac4deeab3101f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  actionType: {fileID: 11400000, guid: 3f8fbbc25b580e043b618d689d3ac666, type: 2}
-  range: 20
-  frequency: 1
-  areaOfEffect: 1
 --- !u!23 &3870265267495193386
 MeshRenderer:
   m_ObjectHideFlags: 0

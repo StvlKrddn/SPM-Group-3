@@ -23,6 +23,25 @@ public class SplashDamage : DamageType
         return nameof(SplashDamage);
     }
 
+    public override void DealDamage(DamageHandler target)
+    {
+        Collider[] targetsInRange = Physics.OverlapSphere(
+            position: target.transform.position,
+            radius: splashRadius,
+            layerMask: affectedLayer
+        );
+
+        foreach (Collider collider in targetsInRange)
+        {
+            if (collider.GetComponent<DamageHandler>())
+            {
+                DamageHandler targetInRange = collider.GetComponent<DamageHandler>();
+                ApplyStatusEffect(targetInRange);
+                targetInRange.TakeDamage(splashDamage);
+            }
+        }
+    }
+
     public float GetSplashDamage { get { return splashDamage; } }
     public float GetSplashRadius { get { return splashRadius; } }
 }

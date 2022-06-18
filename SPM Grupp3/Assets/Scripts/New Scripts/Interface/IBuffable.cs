@@ -12,6 +12,6 @@ public interface IBuffable
         set;
     }
 
-    public abstract void ApplyBuff(BuffType buffType);
-    public abstract void RemoveBuff(BuffType buffType);
+    public abstract void ApplyBuff(List<ActionType> actionTypes);
+    public abstract void RemoveBuff(List<ActionType> actionTypes);
 }

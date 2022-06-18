@@ -12,5 +12,11 @@ public class NormalDamage : DamageType
         damage = base.UpgradeValue(damage, amount, isPercentual);
     }
 
+    public override void DealDamage(DamageHandler target)
+    {
+        target.TakeDamage(damage);
+        ApplyStatusEffect(target);
+    }
+
     public float GetDamage { get { return damage; } }
 }

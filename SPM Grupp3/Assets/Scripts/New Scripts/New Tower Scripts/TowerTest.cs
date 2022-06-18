@@ -5,22 +5,35 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-[RequireComponent(typeof(BoxCollider), typeof(ActionHandler))]
+[RequireComponent(typeof(BoxCollider))]
 public abstract class TowerTest : MonoBehaviour, IActionPerformer
 {
     [Header("Setup")]
+    [Tooltip("How fast does the Tower turn towards their target")]
     [SerializeField] protected float turnSpeed = 10f;
+
+    [Tooltip("What layer should the Tower target")]
+    [SerializeField] protected LayerMask affectedLayer;
+
+    [Header("Stats")]
+    [Tooltip("The spherical range of the Tower")]
+    [SerializeField] protected float range;
+
+    [Tooltip("What kind of actions will this Tower perform")]
+    [SerializeField] protected List<ActionType> actionTypes;
+
+    [Tooltip("Is this an area of effect or single target Tower")]
+    [SerializeField] private bool areaOfEffect;
+
+    [Tooltip("How often does the Tower perform its action every second")]
+    [SerializeField] private float actionFrequency;
 
     protected Transform currentTarget;
     protected BoxCollider boxCollider;
     protected bool targetInRange;
     protected bool allowedToPerformAction;
-    protected ActionHandler actionHandler;
-    protected float range;
-    protected float actionFrequency;
-    protected bool areaOfEffect;
-    protected ActionType actionType;
-    protected LayerMask affectedLayer;
+
+    public List<ActionType> ActionTypes => actionTypes;
 
     void OnDrawGizmos()
     {
@@ -31,25 +44,18 @@ public abstract class TowerTest : MonoBehaviour, IActionPerformer
     void Awake()
     {
         boxCollider = GetComponent<BoxCollider>();
-        actionHandler = GetComponent<ActionHandler>();
 
         allowedToPerformAction = true;
 
-    }
-
-    void UpdateAction()
-    {
-        range = actionHandler.Range;
-        actionFrequency = actionHandler.Frequency;
-        areaOfEffect = actionHandler.AreaOfEffect;
-        actionType = actionHandler.ActionType;
-        affectedLayer = actionType.AffectedLayer;
+        if (actionTypes.Count == 0)
+        {
+            ActionType actionType = Resources.Load<NormalDamage>("DamageTypes/CannonTower");
+            actionTypes.Add(actionType);
+        }
     }
 
     void Update()
     {
-        UpdateAction();
-
         StartCoroutine(FindTarget());
 
         if (targetInRange && allowedToPerformAction)
@@ -103,11 +109,11 @@ public abstract class TowerTest : MonoBehaviour, IActionPerformer
                 yield return null;
             }
 
-            if (targetInRange && !areaOfEffect)
+            if (closestTarget != null && targetInRange && !areaOfEffect)
             {
                 Vector3 targetDirection = targets[closestTarget];
                 currentTarget = closestTarget;
-                if (closestTarget != null) Debug.DrawLine(transform.position, closestTarget.position, Color.red);
+                Debug.DrawLine(transform.position, closestTarget.position, Color.red);
                 LockOnTarget(targetDirection);
             }
         }
@@ -150,7 +156,6 @@ public abstract class TowerTest : MonoBehaviour, IActionPerformer
 
         void SingleTarget()
         {
-            print("Shooting at a single target");
             bool hit = Physics.Raycast(
                 origin: transform.position,
                 direction: transform.forward,
@@ -169,12 +174,12 @@ public abstract class TowerTest : MonoBehaviour, IActionPerformer
 
     public void HitTarget(IDamageable target)
     {
-        target.TakeHit(actionType as DamageType);
+        target.TakeHit(actionTypes);
     }
 
     public void ApplyBuff(IBuffable target)
     {
-        target.ApplyBuff(actionType as BuffType);
+        target.ApplyBuff(actionTypes);
     }
 
     private IEnumerator Weapon()
@@ -185,12 +190,12 @@ public abstract class TowerTest : MonoBehaviour, IActionPerformer
         allowedToPerformAction = true;
     }
 
-    public void AddActionType<A>() where A : ActionType
+    public void AddActionType(ActionType actionType)
     {
 
     }
 
-    public void RemoveActionType<A>() where A : ActionType
+    public void RemoveActionType(ActionType actionType)
     {
 
     }
