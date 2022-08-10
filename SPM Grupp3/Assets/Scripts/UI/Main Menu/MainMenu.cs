@@ -9,9 +9,17 @@ public class MainMenu : MonoBehaviour
     [SerializeField] private GameObject[] menuItems;
     [SerializeField] private GameObject warningPrompt;
 
+    [SerializeField] private Animator menuAnimator;
+    [SerializeField] private Animator fadeAnimator;
+
     private GameObject mainMenu;
     private int sceneIndex;
     private bool hatNoticeShown;
+
+    private bool hasIntroduced = false;
+
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip pressAnyKeyClip;
 
     private void Awake() 
     {
@@ -42,7 +50,19 @@ public class MainMenu : MonoBehaviour
             mainMenu.transform.Find("NewHatNotice").gameObject.SetActive(true);
         }
     }
-    
+
+    private void Update()
+    {
+        if (Input.anyKey && !hasIntroduced)
+        {
+            menuAnimator.SetTrigger("Introduction");
+
+            audioSource.PlayOneShot(pressAnyKeyClip);
+
+            hasIntroduced = true;
+        }
+    }
+
     public void SelectLevel(int sceneIndex)
     {
         this.sceneIndex = sceneIndex;
@@ -52,20 +72,23 @@ public class MainMenu : MonoBehaviour
         }
         else
         {
-            SceneManager.LoadScene(sceneIndex);
+            //SceneManager.LoadScene(sceneIndex);
+            StartCoroutine(LoadLevel(sceneIndex));
         }
     }
 
     public void Continue()
     {
         SaveData data = (SaveData) DataManager.ReadFromFile(DataManager.SaveData);
-        SceneManager.LoadScene(data.CurrentScene);
+        //SceneManager.LoadScene(data.CurrentScene);
+        StartCoroutine(LoadLevel(data.CurrentScene));
     }
 
     public void Confirm()
     {
         DataManager.DeleteFile(DataManager.SaveData);
-        SceneManager.LoadScene(sceneIndex);
+        //SceneManager.LoadScene(sceneIndex);
+        StartCoroutine(LoadLevel(sceneIndex));
     }
 
     public void Cancel()
@@ -76,7 +99,8 @@ public class MainMenu : MonoBehaviour
     public void Quit()
     {
         //UnityEditor.EditorApplication.isPlaying = false;
-        Application.Quit();
+        //Application.Quit();
+        StartCoroutine(LoadLevel(-1));
     }
 
     public void Reset()
@@ -84,5 +108,17 @@ public class MainMenu : MonoBehaviour
         DataManager.DeleteFile(DataManager.SaveData);
         DataManager.DeleteFile(DataManager.CustomizationData);
         DataManager.DeleteFile(DataManager.AchievementData);
+    }
+
+    private IEnumerator LoadLevel(int levelIndex)
+    {
+        fadeAnimator.SetTrigger("StartFade");
+
+        yield return new WaitForSeconds(2);
+
+        if (levelIndex >= 0)
+            SceneManager.LoadScene(levelIndex);
+        else
+            Application.Quit();
     }
 }
