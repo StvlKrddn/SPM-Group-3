@@ -290,6 +290,20 @@ public class WaveManager : MonoBehaviour
             WaveInfo waveInfo = waves[i];
             waveInfo.waveDuration = 0;
             int temp = 0;
+
+
+            int meeleEnemies = 0;
+
+            int rangedEnemies = 0;
+
+            int tankEnemies = 0;
+
+            int iceEnemies = 0;
+
+            int mortarEnemies = 0;
+
+            int slimeEnemies = 0;
+
             for (int j = 0; j < waveInfo.subWaves.Length; j++)
             {
                 SubWave subwave = waveInfo.subWaves[j];
@@ -301,10 +315,20 @@ public class WaveManager : MonoBehaviour
 
                     totalenemies+= enemy.amount;
 
+                    if (enemy.enemyPrefab.name == "EnemyMelee")
+                    {
+                        meeleEnemies += enemy.amount;
+                    }
+                    if (enemy.enemyPrefab.name == "EnemySlime")
+                    {
+                        slimeEnemies += 1;
+
+
+                    }
 
                 }
             }
-           print("Wave " + (i + 1) + " is " + temp + "enemies");
+           print("Wave " + (i + 1) + " is " + temp + "enemies: Amount of meele enemies: " + meeleEnemies   );
 
            // print(temp);
         }
@@ -347,7 +371,19 @@ public class WaveManager : MonoBehaviour
     [ContextMenu("Calculate total enemies")]
     public void CalculateEnemies()
     {
-        int totalEnemies = 0; 
+        int totalEnemies = 0;
+
+        int meeleEnemies = 0;
+
+        int rangedEnemies = 0;
+
+        int tankEnemies = 0;
+
+        int iceEnemies = 0;
+
+        int mortarEnemies = 0;
+
+        int slimeEnemies = 0; 
 
         for (int i = 0; i < waves.Length; i++)
         {
@@ -361,12 +397,14 @@ public class WaveManager : MonoBehaviour
                 {
                     EnemyStruct enemy = subwave.enemies[k];
                     totalEnemies += enemy.amount;
-                }
 
+
+                }
+                
                 
             }
 
-            print("S�h�r m�nga fiender �r det " + totalEnemies);
+            print("Sahar manga fiender ar det " + totalEnemies);
 
             totalEnemies = 0;
 
