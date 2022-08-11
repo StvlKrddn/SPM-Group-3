@@ -22,6 +22,7 @@ public class BoostAbility : MonoBehaviour
     [SerializeField] private float boostCooldownTime = 5f;
     [SerializeField] private GameObject boosters;
     [SerializeField] private Animator animator;
+    [SerializeField] private Animator boostUIAnimator;
     [SerializeField] private GameObject boostUI;
     private FadeBehaviour fadeBehaviour;
     
@@ -44,6 +45,7 @@ public class BoostAbility : MonoBehaviour
     void Update()
     {
         Boost();
+        boostUIAnimator.SetFloat("Stamina", slider.value);
     }
 
     private void OnEnable() 
@@ -119,12 +121,11 @@ public class BoostAbility : MonoBehaviour
         while (elapsed < BoostDuration)
         {
              elapsed += Time.deltaTime;
-
-             // preChangePct is start value and the goal is pct. elapsed / updateSpeedSeconds is the equation per activation
-             slider.value = Mathf.Lerp(slider.maxValue, slider.minValue, elapsed / BoostDuration);
+            
+            // preChangePct is start value and the goal is pct. elapsed / updateSpeedSeconds is the equation per activation
+            slider.value = Mathf.Lerp(slider.maxValue, slider.minValue, elapsed / BoostDuration);
              yield return null;      
         }
-
         slider.value = slider.minValue;
 
         StartCoroutine(RechargeBoostBar());

@@ -68,7 +68,8 @@ public class MainMenu : MonoBehaviour
         this.sceneIndex = sceneIndex;
         if (DataManager.FileExists(DataManager.SaveData))
         {
-            warningPrompt.SetActive(true);
+            //warningPrompt.SetActive(true);
+            menuAnimator.SetTrigger("ToWarning");
         }
         else
         {
@@ -93,7 +94,8 @@ public class MainMenu : MonoBehaviour
 
     public void Cancel()
     {
-        warningPrompt.SetActive(false);
+        //warningPrompt.SetActive(false);
+        menuAnimator.SetTrigger("ToSelection");
     }
 
     public void Quit()

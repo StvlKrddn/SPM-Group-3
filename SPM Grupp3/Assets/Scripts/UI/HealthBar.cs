@@ -7,6 +7,8 @@ public class HealthBar : MonoBehaviour
 {
     public Slider slider;
     private Transform lookAt;
+    [SerializeField] private Animator healthAnimator;
+
     [SerializeField] private float updateSpeedSeconds = 0.5f;
     //[SerializeField] private GameObject FollowPlayer;
     private float fillAmount;
@@ -17,6 +19,9 @@ public class HealthBar : MonoBehaviour
     {
         lookAt = GameObject.FindGameObjectWithTag("Look").transform;
         slider = GetComponentInChildren<Slider>();
+        //healthAnimator = gameObject.GetComponent<Animator>();
+        if (healthAnimator != null)
+            healthAnimator.SetFloat("Health", 50);
     }
 
     private void OnDestroy()
@@ -36,6 +41,9 @@ public class HealthBar : MonoBehaviour
     {
         float preChangePct = slider.value;
         float elapsed = 0f;
+
+        if (healthAnimator != null && currentHealth < slider.value)
+            healthAnimator.Play("Hit");
 
         while (elapsed < updateSpeedSeconds)
         {
@@ -65,5 +73,8 @@ public class HealthBar : MonoBehaviour
             transform.Rotate(90, 180, 0);
         else
             transform.Rotate(0, 180, 0);
+
+        if (healthAnimator != null)
+            healthAnimator.SetFloat("Health", slider.value);
     }
 }
