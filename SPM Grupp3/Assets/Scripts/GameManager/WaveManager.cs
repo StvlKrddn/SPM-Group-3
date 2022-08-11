@@ -321,14 +321,34 @@ public class WaveManager : MonoBehaviour
                     }
                     if (enemy.enemyPrefab.name == "EnemySlime")
                     {
-                        slimeEnemies += 1;
+                        slimeEnemies += enemy.amount;
 
 
                     }
+                    if(enemy.enemyPrefab.name == "EnemyArcher")
+                    {
+                        rangedEnemies += enemy.amount; 
+                    }
+                    if(enemy.enemyPrefab.name == "EnemyMortar")
+                    {
+                        mortarEnemies += enemy.amount; 
+                    }
+                    if (enemy.enemyPrefab.name == "EnemySpecialFire")
+                    {
+                        iceEnemies += enemy.amount; 
+                    }
+
+                    if (enemy.enemyPrefab.name == "EnemyTank")
+                    {
+                        tankEnemies += enemy.amount;
+                    }
+
 
                 }
             }
-           print("Wave " + (i + 1) + " is " + temp + "enemies: Amount of meele enemies: " + meeleEnemies   );
+           print("Wave " + (i + 1) + " is " + temp + "enemies: \n Amount of meele enemies: " + meeleEnemies  + "\n Amount of Slime: " + slimeEnemies +
+               "\n Amount of Ranged: " + rangedEnemies + "\n Amount of Mortar: " + mortarEnemies + "\n Amount of Ice: "  + 
+               iceEnemies + "\n Amount of Tank: " + tankEnemies);
 
            // print(temp);
         }
