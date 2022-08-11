@@ -21,7 +21,7 @@ public class HealthBar : MonoBehaviour
         slider = GetComponentInChildren<Slider>();
         //healthAnimator = gameObject.GetComponent<Animator>();
         if (healthAnimator != null)
-            healthAnimator.SetFloat("Health", 50);
+            healthAnimator.SetFloat("Health", fillAmount);
     }
 
     private void OnDestroy()
