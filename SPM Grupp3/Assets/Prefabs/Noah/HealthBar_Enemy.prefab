@@ -363,7 +363,8 @@ GameObject:
   - component: {fileID: 9099198633358382242}
   - component: {fileID: 9099198633358382243}
   - component: {fileID: 9099198633358382240}
-  - component: {fileID: 15003163187659497}
+  - component: {fileID: 2256125651056760015}
+  - component: {fileID: 6234896891659306532}
   m_Layer: 0
   m_Name: HealthBar_Enemy
   m_TagString: Untagged
@@ -380,7 +381,7 @@ RectTransform:
   m_GameObject: {fileID: 9099198633358382241}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
+  m_LocalScale: {x: 0.005, y: 0.006, z: 0.05}
   m_Children:
   - {fileID: 8487416554612057647}
   m_Father: {fileID: 0}
@@ -452,7 +453,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &15003163187659497
+--- !u!114 &2256125651056760015
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -461,8 +462,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 9099198633358382241}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 915d5771573c8f84cae6747315b91ef4, type: 3}
+  m_Script: {fileID: 11500000, guid: 3d8ae3632438c234c977f73a808c1784, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   slider: {fileID: 542102987458345382}
-  updateSpeedSeconds: 0.05
+  healthAnimator: {fileID: 6234896891659306532}
+  updateSpeedSeconds: 0.5
+--- !u!95 &6234896891659306532
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9099198633358382241}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f02ee12bd4bb3414aaa28d80aab8da80, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

@@ -12,6 +12,7 @@ public class UI : MonoBehaviour
 {
     public static bool IsPaused;
     public static bool MenuOpen;
+    public static bool ToQuit;
 
     [SerializeField] private GameObject victoryPanel;
     [SerializeField] private GameObject defeatPanel;
@@ -47,7 +48,16 @@ public class UI : MonoBehaviour
         restartButton = defeatPanel.transform.Find("Buttons").Find("RestartButton").gameObject;
         globalAnimator = GetComponent<Animator>();
 
+        ToQuit = false;
+
+        Time.timeScale = 1f;
+
         eventSystem = FindObjectOfType<EventSystem>();
+    }
+
+    private void Start()
+    {
+        fadeAnimator.SetTrigger("StartFade");
     }
 
     public void PauseGame()
@@ -71,6 +81,8 @@ public class UI : MonoBehaviour
 
     public void Restart()
     {
+        ToQuit = true;
+
         Resume();
         CloseMenu();
         //victoryPanel.SetActive(false);
@@ -82,6 +94,8 @@ public class UI : MonoBehaviour
 
     public void Continue()
     {
+        ToQuit = true;
+
         Resume();
         CloseMenu();
         //victoryPanel.SetActive(false);
@@ -105,7 +119,7 @@ public class UI : MonoBehaviour
     {
         fadeAnimator.SetTrigger("StartFade");
 
-        yield return new WaitForSeconds(4);
+        yield return new WaitForSecondsRealtime(4);
 
         SceneManager.LoadScene(levelIndex);
     }
@@ -113,6 +127,8 @@ public class UI : MonoBehaviour
     public void Quit()
     {
         // NOTE(August): "Are you sure you want to quit?..." prompt?
+        ToQuit = true;
+
         Resume();
         CloseMenu();
         UpgradeController.Instance.ResetUpgrades();
@@ -124,7 +140,8 @@ public class UI : MonoBehaviour
     {
         MusicManager.instance.SetMusicPLay(true);
         IsPaused = false;
-        Time.timeScale = 1f;
+        if(ToQuit == false)
+            Time.timeScale = 1f;
         globalAnimator.SetTrigger("UnPause");
         //pauseMenu.SetActive(false);
     }
@@ -138,7 +155,8 @@ public class UI : MonoBehaviour
     public static void CloseMenu()
     {
         MenuOpen = false;
-        Time.timeScale = 1f;
+        if(ToQuit == false)
+            Time.timeScale = 1f;
     }
 
     public void SetFirstSelectedButton(string buttonName)

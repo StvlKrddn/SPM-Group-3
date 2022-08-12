@@ -35,6 +35,8 @@ public class GameManager : MonoBehaviour
     private GameObject waveCounter;
 
     [SerializeField] private Animator globalUI;
+    private Animator gainMoneyUI;
+    private Animator gainMaterialUI;
 
     private BuildManager buildManager;
     private GameObject damagingEnemy;
@@ -106,11 +108,15 @@ public class GameManager : MonoBehaviour
         moneyBaseColor = moneyCounterUI.color;
         materialBaseColor = materialCounterUI.color;
 
+        gainMoneyUI = moneyCounterUI.GetComponentInParent<Animator>();
+
         UpdateUI();
 
         victoryPanel.SetActive(false);
         defeatPanel.SetActive(false);
+
     }
+
 
     private void LoadSaveData()
     {
@@ -335,6 +341,8 @@ public class GameManager : MonoBehaviour
 
         money += addMoney;
         moneyCollected += (int)addMoney;
+
+        gainMoneyUI.SetTrigger("Gain");
         UpdateUI();
     }
 
@@ -345,6 +353,8 @@ public class GameManager : MonoBehaviour
 
         material += addMaterial;
         materialCollected += (int)addMaterial;
+
+        gainMaterialUI.SetTrigger("Gain");
         UpdateUI();
     }
 
@@ -364,12 +374,11 @@ public class GameManager : MonoBehaviour
                     StopCoroutine(currentMaterialCoroutine);
                 */
 
-                currentMoneyCoroutine = DoColorBoughtFade(moneyCounterUI, moneyBaseColor, 2f);
-
-                StartCoroutine(currentMoneyCoroutine);
+                gainMoneyUI.SetTrigger("Buy");
+                //currentMoneyCoroutine = DoColorBoughtFade(moneyCounterUI, moneyBaseColor, 2f);
+                //StartCoroutine(currentMoneyCoroutine);
 
                 SpendEffektPrefab.GetComponentInChildren<Text>().text = moneySpent.ToString();
-
                 Instantiate(SpendEffektPrefab, moneyCounterUI.transform);
             }
 
@@ -382,12 +391,11 @@ public class GameManager : MonoBehaviour
                     StopCoroutine(currentMaterialCoroutine);
                 */
 
-                currentMaterialCoroutine = DoColorBoughtFade(materialCounterUI, materialBaseColor, 2f);
-
-                StartCoroutine(currentMaterialCoroutine);
+                gainMaterialUI.SetTrigger("Buy");
+                //currentMaterialCoroutine = DoColorBoughtFade(materialCounterUI, materialBaseColor, 2f);
+                //StartCoroutine(currentMaterialCoroutine);
 
                 SpendEffektPrefab.GetComponentInChildren<Text>().text = materialSpent.ToString();
-
                 Instantiate(SpendEffektPrefab, materialCounterUI.transform);
             }
 

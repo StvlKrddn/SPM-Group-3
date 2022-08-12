@@ -25,6 +25,8 @@ public class MainMenu : MonoBehaviour
     private void Awake() 
     {
         //Set only MainMenu as active
+        Time.timeScale = 1f;
+
         foreach (GameObject item in menuItems)
         {
             if (item.name.Equals("MainMenu"))
@@ -50,6 +52,11 @@ public class MainMenu : MonoBehaviour
             hatNoticeShown = true;
             mainMenu.transform.Find("NewHatNotice").gameObject.SetActive(true);
         }
+    }
+
+    private void Start()
+    {
+        fadeAnimator.SetTrigger("StartFade");
     }
 
     private void Update()

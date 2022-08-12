@@ -13,7 +13,6 @@ public class ChangerBehaviour : MonoBehaviour
     [SerializeField] private float duration = 0.4f;
 
     [SerializeField] private float moveSpeed = 1;
-    [SerializeField] private float scaleMultiplier = 1;
 
     [SerializeField] private bool destroyAfterFade = true;
     [SerializeField] private bool faceCamera = true;
@@ -33,12 +32,10 @@ public class ChangerBehaviour : MonoBehaviour
             faded = false;
 
         Fade();
-
-        if(scaleMultiplier != 1)
-            StartCoroutine(DoScale());
+        Appear();
     }
 
-    public void Fade()
+    private void Fade()
     {
         StartCoroutine(DoFade(canvasGroup.alpha, faded ? 1 : 0));
 
@@ -61,14 +58,19 @@ public class ChangerBehaviour : MonoBehaviour
             Destroy(gameObject);
     }
 
-    private IEnumerator DoScale()
+    private void Appear()
     {
-        float counter = 0f;
+        StartCoroutine(DoAppear());
+    }
 
-        while (counter < duration)
+    private IEnumerator DoAppear()
+    {
+        float time = 0;
+
+        while (time <= 0.5f)
         {
-            counter += Time.deltaTime;
-            transform.localScale = Vector3.Lerp(transform.localScale, transform.localScale * scaleMultiplier, counter / duration);
+            time += Time.deltaTime;
+            transform.localScale = Vector3.one * Mathfx.Berp(0f, 1f, time);
 
             yield return null;
         }

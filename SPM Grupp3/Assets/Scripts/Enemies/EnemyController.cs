@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public abstract class EnemyController : MonoBehaviour
 {
     private GameManager gameManager;
-    private HealthBar healthBar;
+    private HealthBar_Enemy healthBar;
     private float defaultSpeed;
     private float currentHealth;
     private List<float> poisonTickTimers = new List<float>();
@@ -47,7 +47,7 @@ public abstract class EnemyController : MonoBehaviour
         defaultSpeed = Speed;
         currentHealth = health;
         gameManager = GameManager.Instance;
-        healthBar = GetComponentInChildren<HealthBar>();
+        healthBar = GetComponentInChildren<HealthBar_Enemy>();
         healthBar.slider.maxValue = health;
         healthBar.slider.value = health;
         if (animator != null)
