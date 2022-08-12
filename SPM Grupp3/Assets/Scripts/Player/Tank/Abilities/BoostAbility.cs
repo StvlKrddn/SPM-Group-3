@@ -102,7 +102,7 @@ public class BoostAbility : MonoBehaviour
             animator.SetBool("isBoosting", false);
         }
 
-        if(notInUseTimer > BoostCooldownTime && !fadeBehaviour.Faded())
+        if(notInUseTimer + 2 > BoostCooldownTime && !fadeBehaviour.Faded())
         {
             fadeBehaviour.Fade();
         }

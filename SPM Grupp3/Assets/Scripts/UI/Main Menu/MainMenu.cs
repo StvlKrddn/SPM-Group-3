@@ -116,7 +116,7 @@ public class MainMenu : MonoBehaviour
     {
         fadeAnimator.SetTrigger("StartFade");
 
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(4);
 
         if (levelIndex >= 0)
             SceneManager.LoadScene(levelIndex);
