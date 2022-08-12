@@ -22,6 +22,8 @@ public class UI : MonoBehaviour
     private GameObject restartButton;
     private GameObject continueButton;
     private EventSystem eventSystem;
+    private Animator globalAnimator;
+    [SerializeField] private Animator fadeAnimator;
 
     private static Canvas canvas;
 
@@ -43,6 +45,7 @@ public class UI : MonoBehaviour
         resumeButton = pauseMenu.transform.Find("Resume").gameObject;
         continueButton = victoryPanel.transform.Find("Buttons").Find("ContinueButton").gameObject;
         restartButton = defeatPanel.transform.Find("Buttons").Find("RestartButton").gameObject;
+        globalAnimator = GetComponent<Animator>();
 
         eventSystem = FindObjectOfType<EventSystem>();
     }
@@ -51,9 +54,10 @@ public class UI : MonoBehaviour
     {
         if (!IsPaused)
         {
+            globalAnimator.SetTrigger("Pause");
             MusicManager.instance.SetMusicPLay(false);
             Time.timeScale = 0f;
-            pauseMenu.SetActive(true);
+            //pauseMenu.SetActive(true);
             IsPaused = true;
 
             EventSystem.current.SetSelectedGameObject(null);
@@ -62,38 +66,48 @@ public class UI : MonoBehaviour
         else
         {
             Resume();
-            
         }
-
     }
 
     public void Restart()
     {
         Resume();
         CloseMenu();
-        victoryPanel.SetActive(false);
-        defeatPanel.SetActive(false);
+        //victoryPanel.SetActive(false);
+        //defeatPanel.SetActive(false);
         GameManager.Instance.DeleteSaveData();
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        StartCoroutine(LoadLevel(SceneManager.GetActiveScene().buildIndex));
     }
 
     public void Continue()
     {
         Resume();
         CloseMenu();
-        victoryPanel.SetActive(false);
+        //victoryPanel.SetActive(false);
 
         DataManager.DeleteFile(DataManager.SaveData);
         int sceneIndex = SceneManager.GetActiveScene().buildIndex;
 
         if ((sceneIndex + 1) > 3)
         {
-            SceneManager.LoadScene(0);
+            StartCoroutine(LoadLevel(sceneIndex));
+            //SceneManager.LoadScene(0);
         }
         else
         {
-            SceneManager.LoadScene(sceneIndex + 1);
+            StartCoroutine(LoadLevel(sceneIndex + 1));
+            //SceneManager.LoadScene(sceneIndex + 1);
         }
+    }
+
+    private IEnumerator LoadLevel(int levelIndex)
+    {
+        fadeAnimator.SetTrigger("StartFade");
+
+        yield return new WaitForSeconds(4);
+
+        SceneManager.LoadScene(levelIndex);
     }
 
     public void Quit()
@@ -102,7 +116,8 @@ public class UI : MonoBehaviour
         Resume();
         CloseMenu();
         UpgradeController.Instance.ResetUpgrades();
-        SceneManager.LoadScene(0);
+        StartCoroutine(LoadLevel(0));
+        //SceneManager.LoadScene(0);
     }
 
     public void Resume()
@@ -110,7 +125,8 @@ public class UI : MonoBehaviour
         MusicManager.instance.SetMusicPLay(true);
         IsPaused = false;
         Time.timeScale = 1f;
-        pauseMenu.SetActive(false);
+        globalAnimator.SetTrigger("UnPause");
+        //pauseMenu.SetActive(false);
     }
 
     public static void OpenMenu()

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
@@ -89,6 +90,7 @@ public class MainMenu : MonoBehaviour
     {
         DataManager.DeleteFile(DataManager.SaveData);
         //SceneManager.LoadScene(sceneIndex);
+        menuAnimator.SetTrigger("ToSelection");
         StartCoroutine(LoadLevel(sceneIndex));
     }
 
@@ -107,9 +109,30 @@ public class MainMenu : MonoBehaviour
 
     public void Reset()
     {
+        GameObject continueButton = mainMenu.transform.Find("Continue").gameObject;
+        if (continueButton.active == true)
+            StartCoroutine(DisableButton(continueButton));
+
         DataManager.DeleteFile(DataManager.SaveData);
         DataManager.DeleteFile(DataManager.CustomizationData);
         DataManager.DeleteFile(DataManager.AchievementData);
+    }
+
+    private IEnumerator DisableButton(GameObject button)
+    {
+        button.GetComponent<Button>().interactable = false;
+        float time = 0;
+
+        while(time <= 2)
+        {
+            time += Time.deltaTime;
+            button.transform.localScale = Vector3.one * Mathfx.Berp(1f, 0f, time);
+
+            yield return null;
+        }
+
+        button.SetActive(false);
+        button.transform.localScale = Vector3.one;
     }
 
     private IEnumerator LoadLevel(int levelIndex)

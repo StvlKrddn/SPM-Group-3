@@ -9,7 +9,9 @@ public class WaveManager : MonoBehaviour
     [Header("Enemies: ")]
     [SerializeField] private GameObject enemyContainer;
     [SerializeField] private int poolCount = 20;
-    
+
+    private Animator wavePanelAnimator;
+
     [Space]
     public WaveInfo[] waves;
     
@@ -44,6 +46,8 @@ public class WaveManager : MonoBehaviour
         waveStarted = waveHolder.Find("WaveStarted").gameObject;
         startHint = waveHolder.Find("StartWaveHint").gameObject;
         savedGame = waveHolder.Find("SavedGame").gameObject;
+
+        wavePanelAnimator = waveCleared.GetComponentInParent<Animator>();
 
         victoryWave = waves.Length;
         
@@ -85,13 +89,15 @@ public class WaveManager : MonoBehaviour
     {
         currentWave++;
 
-        if(!waveCleared.GetComponent<FadeBehaviour>().Faded())
-            waveCleared.GetComponent<FadeBehaviour>().Fade();
+        wavePanelAnimator.SetTrigger("StartWave");
 
-        if (savedGame.GetComponent<FadeBehaviour>().Faded() == false)
-        savedGame.GetComponent<FadeBehaviour>().Fade();
+        //if (!waveCleared.GetComponent<FadeBehaviour>().Faded())
+            //waveCleared.GetComponent<FadeBehaviour>().Fade();
 
-        startHint.GetComponent<FadeBehaviour>().Fade();
+        //if (savedGame.GetComponent<FadeBehaviour>().Faded() == false)
+        //savedGame.GetComponent<FadeBehaviour>().Fade();
+
+        //startHint.GetComponent<FadeBehaviour>().Fade();
         WaveConstructor(waves[currentWave]);
         StartCoroutine(SpawnCurrentWave());
         UpdateUI();
@@ -185,12 +191,13 @@ public class WaveManager : MonoBehaviour
                     StartCoroutine(ClearInactive());
                 }
 
-                waveCleared.GetComponent<FadeBehaviour>().Fade();
+                //waveCleared.GetComponent<FadeBehaviour>().Fade();
+                wavePanelAnimator.SetTrigger("WaveEnded");
 
                 //startHint.transform.position = waveClear.transform.position;
-                startHint.transform.localPosition = new Vector3(startHint.transform.localPosition.x, -370, startHint.transform.localPosition.z);
-                startHint.GetComponent<FadeBehaviour>().Fade();
-                savedGame.GetComponent<FadeBehaviour>().Fade();
+                //startHint.transform.localPosition = new Vector3(startHint.transform.localPosition.x, -370, startHint.transform.localPosition.z);
+                //startHint.GetComponent<FadeBehaviour>().Fade();
+                //savedGame.GetComponent<FadeBehaviour>().Fade();
                 spawnEnemies = true;
                 Debug.Log("Wave " + currentWave + " cleared");
                 GameManager.Instance.AddMoney(waveMoneyBonus);
@@ -208,7 +215,7 @@ public class WaveManager : MonoBehaviour
     private IEnumerator SpawnCurrentWave()
     {
 
-        waveStarted.GetComponent<FadeBehaviour>().Fade();
+        //waveStarted.GetComponent<FadeBehaviour>().Fade();
 
         for (int i = 0; i < currentWaveEnemies.Count; i++)
         {
@@ -227,8 +234,8 @@ public class WaveManager : MonoBehaviour
 
             yield return new WaitForSeconds(spawnRate);
 
-            if(!waveStarted.GetComponent<FadeBehaviour>().Faded())
-                waveStarted.GetComponent<FadeBehaviour>().Fade();
+            //if(!waveStarted.GetComponent<FadeBehaviour>().Faded())
+                //waveStarted.GetComponent<FadeBehaviour>().Fade();
 
             if (changeSpawnRate.ContainsKey(i)) //The wave changes spawnrate after a subwave
             {

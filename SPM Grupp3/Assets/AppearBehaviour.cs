@@ -20,7 +20,6 @@ public class AppearBehaviour : MonoBehaviour
 
     private IEnumerator currentOperation;
     private float startScale;
-    [SerializeField] private bool visible;
 
     public void Appear()
     {
@@ -28,7 +27,6 @@ public class AppearBehaviour : MonoBehaviour
             StopCoroutine(currentOperation);
 
         currentOperation = DoAppear();
-        visible = true;
         StartCoroutine(currentOperation);
     }
 
@@ -64,7 +62,6 @@ public class AppearBehaviour : MonoBehaviour
             StopCoroutine(currentOperation);
 
         currentOperation = DoDisappear();
-        visible = false;
         StartCoroutine(currentOperation);
     }
 

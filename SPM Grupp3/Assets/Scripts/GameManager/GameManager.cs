@@ -34,6 +34,8 @@ public class GameManager : MonoBehaviour
     private GameObject defeatPanel;
     private GameObject waveCounter;
 
+    [SerializeField] private Animator globalUI;
+
     private BuildManager buildManager;
     private GameObject damagingEnemy;
     private WaveManager waveManager;
@@ -458,9 +460,10 @@ public class GameManager : MonoBehaviour
 
         waveManager.Restart();
 
-        livesSlider.SetActive(false);
+        //livesSlider.SetActive(false);
 
         defeatPanel.SetActive(true);
+        globalUI.SetTrigger("Defeat");
 
         buildManager.TowerToBuild = null;
 
@@ -505,7 +508,8 @@ public class GameManager : MonoBehaviour
         waveManager.Restart();
 
         victoryPanel.SetActive(true);
-
+        globalUI.SetTrigger("Victory");
+        
         buildManager.TowerToBuild = null;
     }
 
