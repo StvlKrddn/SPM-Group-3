@@ -9,10 +9,13 @@ public abstract class TankUpgradeTree : MonoBehaviour
     private FadeBehaviour abilityIcon;
     private Slider slider;
     private float abilityDuration = 0.5f;
+    private float notInUseTimer = 0;
 
     protected GameManager gameManager;
     protected TankState tankState;
     protected WeaponSlot weapon;
+
+    private Animator abilityAnimator;
 
     [Header("Upgrade 2: ")]
     [SerializeField] protected int movementSpeed = 12;
@@ -32,9 +35,15 @@ public abstract class TankUpgradeTree : MonoBehaviour
                 if (abilityFill.Faded())
                     abilityFill.Fade();
 
-                StartCoroutine(RechargeAbilityBar());
+                ResetCooldown();
+                //StartCoroutine(RechargeAbilityBar());
             }
         }
+    }
+
+    private void Update()
+    {
+        abilityAnimator.SetFloat("Value", slider.value);
     }
 
     protected virtual void Start()
@@ -50,6 +59,8 @@ public abstract class TankUpgradeTree : MonoBehaviour
             abilityIcon = abilityUi.gameObject.transform.Find("DynamiteIcon").gameObject.GetComponent<FadeBehaviour>();
 
         slider = abilityUi.GetComponent<Slider>();
+
+        abilityAnimator = abilityUi.GetComponent<Animator>();
 
         abilityFill = abilityUi.transform.Find("Fill").GetComponent<FadeBehaviour>();
 	}
@@ -81,22 +92,22 @@ public abstract class TankUpgradeTree : MonoBehaviour
     private IEnumerator UseAbilityBar()
     {
         abilityReady = false;
-
+        notInUseTimer = 0;
         elapsed = 0f;
-        if (!abilityIcon.Faded())
-            abilityIcon.Fade();
 
-        if (abilityFill.Faded())
+        if (abilityFill.Faded() == true)
             abilityFill.Fade();
 
-        while (elapsed < abilityDuration)
+        while (elapsed <= abilityDuration)
         {
             elapsed += Time.deltaTime;
 
             // preChangePct is start value and the goal is pct. elapsed / updateSpeedSeconds is the equation per activation
-            slider.value = Mathf.Lerp(slider.value, slider.minValue, elapsed / abilityDuration);
+            slider.value = Mathf.Lerp(slider.maxValue, slider.minValue, elapsed/abilityDuration);
             yield return null;
         }
+
+        slider.value = slider.minValue;
 
         StartCoroutine(RechargeAbilityBar());
     }
@@ -107,22 +118,19 @@ public abstract class TankUpgradeTree : MonoBehaviour
 
         elapsed = 0f;
 
-        while (elapsed < coolDown)
+        while (elapsed <= coolDown)
         {
             elapsed += Time.deltaTime;
 
             // preChangePct is start value and the goal is pct. elapsed / updateSpeedSeconds is the equation per activation
-            slider.value = Mathf.Lerp(slider.minValue, slider.maxValue, elapsed / coolDown);
+            slider.value = Mathf.Lerp(slider.minValue, slider.maxValue, elapsed/coolDown);
             yield return null;
         }
 
-        if (abilityIcon.Faded())
-            abilityIcon.Fade();
-
-        if (!abilityFill.Faded())
-            abilityFill.Fade();
-
+        slider.value = slider.maxValue;
         ResetCooldown();
+
+        abilityFill.Fade();
     }
 
     public void ResetCooldown()

@@ -99,7 +99,7 @@ public class BuilderController : MonoBehaviour
         playerCursor.SetActive(true);
         SetCursorColor(playerCursor);
         cursorTransform = playerCursor.GetComponent<RectTransform>();
-        cursorTransform.gameObject.SetActive(true);
+        cursorTransform.gameObject.GetComponent<CursorHandler>().ShowCursor();
     }
 
     void InitializeVirtualMouse()
@@ -235,7 +235,7 @@ public class BuilderController : MonoBehaviour
         }
         purchasedTower = false;
         hintsPanel.SetActive(false);
-        cursorTransform.gameObject.SetActive(true);
+        cursorTransform.gameObject.GetComponent<CursorHandler>().ShowCursor();
         stopHover = false;
         stopMouse = false;
         placementClicked = false;
@@ -253,7 +253,7 @@ public class BuilderController : MonoBehaviour
         if (cursorTransform != null)
         {
             ResetCursorPosition();
-            cursorTransform.gameObject.SetActive(true);            
+            cursorTransform.gameObject.GetComponent<CursorHandler>().ShowCursor();
         }
     }
 
@@ -263,7 +263,7 @@ public class BuilderController : MonoBehaviour
         if (cursorTransform != null && virtualMouse != null)
         {
             ResetCursorPosition();
-            cursorTransform.gameObject.SetActive(false);
+            cursorTransform.gameObject.GetComponent<CursorHandler>().HideCursor();
         }
     }
 
@@ -434,7 +434,7 @@ public class BuilderController : MonoBehaviour
         placementClicked = false;
         buildManager.TowerToBuild = null;
         buildManager.ClickedArea = null;
-        cursorTransform.gameObject.SetActive(true);
+        cursorTransform.gameObject.GetComponent<CursorHandler>().ShowCursor();
         GhostTower(buildManager.TowerToBuild);
     }
 
@@ -484,7 +484,7 @@ public class BuilderController : MonoBehaviour
                     buildPanel.transform.position = buildManager.ClickedArea.transform.position + new Vector3(0f,0.2f,0f);
                     hintsPanel.transform.position = buildManager.ClickedArea.transform.position;
 
-                    cursorTransform.gameObject.SetActive(false);
+                    cursorTransform.gameObject.GetComponent<CursorHandler>().HideCursor();
 
                     placementHit.layer = LayerMask.NameToLayer("Ignore Raycast");
 
@@ -512,7 +512,7 @@ public class BuilderController : MonoBehaviour
                 towerHit.layer = LayerMask.NameToLayer("Ignore Raycast");
                 selectedTower.ShowUpgradeUI(towerMenu);
                 selectedTower.Radius.SetActive(true);
-                cursorTransform.gameObject.SetActive(false);
+                cursorTransform.gameObject.GetComponent<CursorHandler>().HideCursor();
 
                 EventHandler.InvokeEvent(new TowerClickedEvent("Tower Is clicked", selectedTower.gameObject));
                 tankUpgrade.transform.position = towerHit.transform.position;
@@ -548,7 +548,7 @@ public class BuilderController : MonoBehaviour
             tankUpgrade.transform.position = garageHit.transform.position;
             hintsPanel.transform.position = garageHit.transform.position;
 
-            cursorTransform.gameObject.SetActive(false);
+            cursorTransform.gameObject.GetComponent<CursorHandler>().HideCursor();
             tankUpgrade.SetActive(true);
             hintsPanel.SetActive(true);
 
@@ -560,7 +560,7 @@ public class BuilderController : MonoBehaviour
 
     public void HideCursor()
     {
-        cursorTransform.gameObject.SetActive(false);
+        cursorTransform.gameObject.GetComponent<CursorHandler>().HideCursor();
         stopHover = true;
         stopMouse = true;
         if (_selection != null)

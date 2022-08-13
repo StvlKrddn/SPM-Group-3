@@ -8,11 +8,13 @@ public class CursorHandler : MonoBehaviour
 {
     [SerializeField] private Sprite normalCursor;
     [SerializeField] private Sprite clickedCursor;
+    private Animator cursorAnimator;
     private Image cursorImage;
     private bool isClicking;
 
     private void Awake()
     {
+        cursorAnimator = GetComponent<Animator>();
         cursorImage = GetComponent<Image>();
         cursorImage.sprite = normalCursor;
     }
@@ -20,5 +22,15 @@ public class CursorHandler : MonoBehaviour
     public void ToggleClick(bool isClicked)
     {
         cursorImage.sprite = isClicked ? cursorImage.sprite = clickedCursor : cursorImage.sprite = normalCursor;
+    }
+
+    public void ShowCursor()
+    {
+        cursorAnimator.SetTrigger("Appear");
+    }
+
+    public void HideCursor()
+    {
+        cursorAnimator.SetTrigger("Disappear");
     }
 }
