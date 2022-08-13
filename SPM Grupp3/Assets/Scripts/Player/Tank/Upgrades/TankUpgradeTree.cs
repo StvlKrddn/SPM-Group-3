@@ -98,6 +98,9 @@ public abstract class TankUpgradeTree : MonoBehaviour
         if (abilityFill.Faded() == true)
             abilityFill.Fade();
 
+        if(abilityIcon.Faded() == false)
+            abilityIcon.Fade();
+
         while (elapsed <= abilityDuration)
         {
             elapsed += Time.deltaTime;
@@ -128,6 +131,8 @@ public abstract class TankUpgradeTree : MonoBehaviour
         }
 
         slider.value = slider.maxValue;
+
+        abilityIcon.Fade();
         ResetCooldown();
 
         abilityFill.Fade();
