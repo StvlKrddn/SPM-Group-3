@@ -371,13 +371,13 @@ public class BuilderController : MonoBehaviour
         if (towerHover.collider != null)
         {
             selection = towerHover.transform;
-            selection.GetComponent<Tower>().ShowHover();
+            selection.GetComponent<Tower>().ShowOptionHower();
             towerSelection = selection;
         }
       
         if (towerSelection != null && selection == null)
         {
-            towerSelection.GetComponent<Tower>().HideHover();
+            towerSelection.GetComponent<Tower>().HideOptionHower();
             towerSelection = null;
         }
     }

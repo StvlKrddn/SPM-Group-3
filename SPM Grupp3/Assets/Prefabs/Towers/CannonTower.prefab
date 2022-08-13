@@ -356,7 +356,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be6f1b9e84993ae41a1c787c62870dc7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fadeBehaviour: {fileID: 2819976000372220747}
+  optionFadeBehaviour: {fileID: 2819976000372220747}
   enemyTag: Enemy
   turnSpeed: 10
   shot: {fileID: 3201376968240350041, guid: 7e4902a1dd3b3484280a32e92534c4c7, type: 3}
@@ -686,6 +686,10 @@ PrefabInstance:
       propertyPath: m_PresetInfoIsWorld
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3212807387124110337, guid: fa48ee69068172e468b39c24dcfb80b6, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 4143680b562e0a94bbd45d6e2d4f2554, type: 2}
     - target: {fileID: 7236944087188190357, guid: fa48ee69068172e468b39c24dcfb80b6, type: 3}
       propertyPath: m_Alpha
       value: 0

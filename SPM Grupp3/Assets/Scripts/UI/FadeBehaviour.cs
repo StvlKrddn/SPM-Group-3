@@ -28,10 +28,10 @@ public class FadeBehaviour : MonoBehaviour
 
     public void ResetFade()
     {
-        if (canvasGroup.alpha == 1)
-        {
-            StartCoroutine(DoFade(1f, 0f));
-        }        
+        if (currentOperation != null)
+            StopCoroutine(currentOperation);
+
+        StartCoroutine(DoFade(canvasGroup.alpha, 0f));     
     }
 
     public void Fade()

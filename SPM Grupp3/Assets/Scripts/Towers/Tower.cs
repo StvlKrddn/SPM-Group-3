@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class Tower : MonoBehaviour
 {
     [Header("Unity Setup Fields")]
-    [SerializeField] private FadeBehaviour fadeBehaviour;
+    [SerializeField] private FadeBehaviour optionFadeBehaviour;
     [SerializeField] protected string enemyTag = "Enemy";
     [SerializeField] protected float turnSpeed = 10f;
     [SerializeField] protected GameObject shot;
@@ -105,15 +105,15 @@ public abstract class Tower : MonoBehaviour
     protected abstract void Level2(GameObject tower);
     protected abstract void Level3(GameObject tower);
 
-    public void ShowHover()
+    public void ShowOptionHower()
     {
-        if(fadeBehaviour.Faded())
-            fadeBehaviour.Fade();
+        if(optionFadeBehaviour.Faded())
+            optionFadeBehaviour.Fade();
     }
-    public void HideHover()
+    public void HideOptionHower()
     {
-        if (!fadeBehaviour.Faded())
-            fadeBehaviour.Fade();
+        if (!optionFadeBehaviour.Faded())
+            optionFadeBehaviour.Fade();
     }
 
     void UpdateTarget()

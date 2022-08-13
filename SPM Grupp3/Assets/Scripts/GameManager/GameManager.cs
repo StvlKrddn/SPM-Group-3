@@ -109,6 +109,7 @@ public class GameManager : MonoBehaviour
         materialBaseColor = materialCounterUI.color;
 
         gainMoneyUI = moneyCounterUI.GetComponentInParent<Animator>();
+        gainMaterialUI = materialCounterUI.GetComponentInParent<Animator>();
 
         UpdateUI();
 
@@ -342,7 +343,7 @@ public class GameManager : MonoBehaviour
         money += addMoney;
         moneyCollected += (int)addMoney;
 
-        gainMoneyUI.SetTrigger("Gain");
+        gainMoneyUI.Play("GainMoney");
         UpdateUI();
     }
 
@@ -354,7 +355,7 @@ public class GameManager : MonoBehaviour
         material += addMaterial;
         materialCollected += (int)addMaterial;
 
-        gainMaterialUI.SetTrigger("Gain");
+        gainMaterialUI.Play("GainMaterial");
         UpdateUI();
     }
 
@@ -374,7 +375,7 @@ public class GameManager : MonoBehaviour
                     StopCoroutine(currentMaterialCoroutine);
                 */
 
-                gainMoneyUI.SetTrigger("Buy");
+                gainMoneyUI.Play("LoseMoney");
                 //currentMoneyCoroutine = DoColorBoughtFade(moneyCounterUI, moneyBaseColor, 2f);
                 //StartCoroutine(currentMoneyCoroutine);
 
@@ -391,7 +392,7 @@ public class GameManager : MonoBehaviour
                     StopCoroutine(currentMaterialCoroutine);
                 */
 
-                gainMaterialUI.SetTrigger("Buy");
+                gainMaterialUI.Play("LoseMaterial");
                 //currentMaterialCoroutine = DoColorBoughtFade(materialCounterUI, materialBaseColor, 2f);
                 //StartCoroutine(currentMaterialCoroutine);
 
