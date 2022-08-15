@@ -99,7 +99,7 @@ public class BuilderController : MonoBehaviour
         playerCursor.SetActive(true);
         SetCursorColor(playerCursor);
         cursorTransform = playerCursor.GetComponent<RectTransform>();
-        cursorTransform.gameObject.GetComponent<CursorHandler>().ShowCursor();
+        //cursorTransform.gameObject.GetComponent<CursorHandler>().ShowCursor();
     }
 
     void InitializeVirtualMouse()
@@ -230,7 +230,8 @@ public class BuilderController : MonoBehaviour
         purchasedTower = false;
 
         hintsPanel.GetComponent<Animator>().SetTrigger("Disappear");
-        cursorTransform.gameObject.GetComponent<CursorHandler>().ShowCursor();
+        cursorTransform.gameObject.SetActive(true);
+        //cursorTransform.gameObject.GetComponent<CursorHandler>().ShowCursor();
 
         for (int i = 0; i < towerMenu.childCount; i++)
         {
@@ -255,7 +256,7 @@ public class BuilderController : MonoBehaviour
         {
             ResetCursorPosition();
             cursorTransform.gameObject.SetActive(true);
-            cursorTransform.gameObject.GetComponent<CursorHandler>().ShowCursor();
+            //cursorTransform.gameObject.GetComponent<CursorHandler>().ShowCursor();
         }
     }
 
@@ -264,8 +265,8 @@ public class BuilderController : MonoBehaviour
         InputSystem.onAfterUpdate -= UpdateVirtualMouse;
         if (cursorTransform != null && virtualMouse != null)
         {
+            cursorTransform.gameObject.SetActive(false);
             ResetCursorPosition();
-            cursorTransform.gameObject.GetComponent<CursorHandler>().HideCursor();
         }
     }
 
@@ -436,7 +437,7 @@ public class BuilderController : MonoBehaviour
         placementClicked = false;
         buildManager.TowerToBuild = null;
         buildManager.ClickedArea = null;
-        cursorTransform.gameObject.GetComponent<CursorHandler>().ShowCursor();
+        cursorTransform.gameObject.SetActive(true);
         GhostTower(buildManager.TowerToBuild);
     }
 

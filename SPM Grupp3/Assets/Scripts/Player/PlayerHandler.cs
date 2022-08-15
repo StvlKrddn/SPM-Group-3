@@ -49,7 +49,7 @@ public class PlayerHandler : MonoBehaviour
     {
         // Disable Build
         buildMode.SetActive(false);
-        cursor.SetActive(false);
+        cursor.GetComponent<CursorHandler>().HideCursor();
 
         // Enable Tank
         tankMode.SetActive(true);
@@ -135,7 +135,6 @@ public class PlayerHandler : MonoBehaviour
     {
         if (context.performed && UI.MenuOpen == false)
         {
-            buildMode.SetActive(false);
             uiCanvas.SetFirstSelectedButton("Resume");
             uiCanvas.PauseGame();
         }

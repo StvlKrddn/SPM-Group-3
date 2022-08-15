@@ -33,4 +33,14 @@ public class CursorHandler : MonoBehaviour
     {
         cursorAnimator.SetTrigger("Disappear");
     }
+
+    private void DeActivate()
+    {
+        gameObject.SetActive(false);
+    }
+
+    private void Activate()
+    {
+        gameObject.SetActive(true);
+    }
 }
