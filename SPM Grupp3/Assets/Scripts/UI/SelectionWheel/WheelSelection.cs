@@ -394,7 +394,7 @@ public class WheelSelection : MonoBehaviour
             }
             ChangeTankUpgradeTextColorToGreen();
         }
-        else //Tower Upgrade
+        else if(gameObject.name.Contains("Upgrade"))//Tower Upgrade
         {
             if (infoAction.IsPressed())
             {

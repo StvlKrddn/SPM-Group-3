@@ -22,7 +22,7 @@ public class TowerManager : MonoBehaviour
     private GameManager gameManager;
     private List<PlacedTower> placedTowers;
 
-    [SerializeField] private ParticleSystem upgradeEffect;
+    private ParticleSystem upgradeEffect;
 
     public GameObject ClickedTower { get { return clickedTower; } set { clickedTower = value; } }
     public static TowerManager Instance 

@@ -11,7 +11,7 @@ public class UpgradeController : MonoBehaviour
 
     public static int currentUpgradeLevel = 0;
 
-    private ParticleSystem towerUpgradeEffect;
+    private TankUpgradeBehaviour towerUpgradeEffect;
 
     public static UpgradeController Instance
     {
@@ -24,6 +24,11 @@ public class UpgradeController : MonoBehaviour
             }
             return instance;
         }
+    }
+
+    private void Awake()
+    {
+        towerUpgradeEffect = FindObjectOfType<TankUpgradeBehaviour>();
     }
 
     public void ResetUpgrades()
@@ -43,6 +48,8 @@ public class UpgradeController : MonoBehaviour
             currentUpgradeLevel++;
             if(FindObjectOfType<TankState>())
             {
+                towerUpgradeEffect.PlayUpgradeEffect();
+
                 TankState player = FindObjectOfType<TankState>();
                 player.LevelOfTank++;
                 switch (player.LevelOfTank)
