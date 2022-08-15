@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AppearBehaviour : MonoBehaviour
 {
@@ -48,6 +49,9 @@ public class AppearBehaviour : MonoBehaviour
 
         visible = true;
 
+        if (gameObject.GetComponent<Button>() != null)
+            gameObject.GetComponent<Button>().interactable = true;
+
         if (currentOperation != null)
             StopCoroutine(currentOperation);
 
@@ -79,6 +83,9 @@ public class AppearBehaviour : MonoBehaviour
             return;
 
         visible = false;
+
+        if (gameObject.GetComponent<Button>() != null)
+            gameObject.GetComponent<Button>().interactable = false;
 
         if (currentOperation != null)
             StopCoroutine(currentOperation);

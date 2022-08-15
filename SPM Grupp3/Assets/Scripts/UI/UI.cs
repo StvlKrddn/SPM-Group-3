@@ -143,6 +143,7 @@ public class UI : MonoBehaviour
         if(ToQuit == false)
             Time.timeScale = 1f;
         globalAnimator.SetTrigger("UnPause");
+        
         //pauseMenu.SetActive(false);
     }
 

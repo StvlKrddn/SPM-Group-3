@@ -135,9 +135,9 @@ public class PlayerHandler : MonoBehaviour
     {
         if (context.performed && UI.MenuOpen == false)
         {
+            buildMode.SetActive(false);
             uiCanvas.SetFirstSelectedButton("Resume");
             uiCanvas.PauseGame();
         }
     }
-
 }
