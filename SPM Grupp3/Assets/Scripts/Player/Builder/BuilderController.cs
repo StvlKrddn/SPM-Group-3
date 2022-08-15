@@ -88,6 +88,23 @@ public class BuilderController : MonoBehaviour
         ResetCursorPosition();
     }
 
+    private bool isPaused = false;
+
+    private void LateUpdate()
+    {
+        if(Time.timeScale == 0 && isPaused == false)
+        {
+            Deselect();
+            HideCursor();
+            isPaused = true;
+        }
+        else if(Time.timeScale > 0 && isPaused == true)
+        {
+            isPaused = false;
+            ShowCursor();
+        }
+    }
+
     void InitializeInputSystem()
     {
         playerInput = GetComponentInParent<PlayerInput>();
@@ -157,6 +174,9 @@ public class BuilderController : MonoBehaviour
 
     public void AcceptAction (InputAction.CallbackContext context)
     {
+        if (Time.timeScale == 0)
+            return;
+
         bool isPressed = context.performed;
         virtualMouse.CopyState(out MouseState mouseState);
         mouseState.WithButton(MouseButton.Left, isPressed);
@@ -182,6 +202,9 @@ public class BuilderController : MonoBehaviour
 
     public void BackAction (InputAction.CallbackContext context)
     {
+        if (Time.timeScale == 0)
+            return;
+
         if (context.performed)
         {
             Deselect();    
@@ -190,6 +213,9 @@ public class BuilderController : MonoBehaviour
 
     public void EnterTank(InputAction.CallbackContext context)
     {
+        if (Time.timeScale == 0)
+            return;
+
         if (context.performed && !stopMouse)
         {
             Deselect();
@@ -581,5 +607,14 @@ public class BuilderController : MonoBehaviour
         {
             Destroy(preTower);
         }
+    }
+
+    public void ShowCursor()
+    {
+        playerUI.gameObject.SetActive(true);
+
+        cursorTransform.gameObject.SetActive(true);
+        stopHover = false;
+        stopMouse = false;
     }
 }
