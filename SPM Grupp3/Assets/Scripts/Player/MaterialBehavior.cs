@@ -8,7 +8,7 @@ using Random = UnityEngine.Random;
 public class MaterialBehavior : MonoBehaviour
 {
     private GameManager gameManager;
-    private Color dropTextColor = new Color(164,164,164,255);
+    [SerializeField] private Color dropTextColor;
     private MeshRenderer mRenderer;
     private bool landed = false;
 	private Vector3 originalPosition;
