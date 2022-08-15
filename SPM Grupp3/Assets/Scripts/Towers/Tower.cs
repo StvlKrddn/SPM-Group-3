@@ -30,8 +30,6 @@ public abstract class Tower : MonoBehaviour
     protected GameObject level2Visual;
     protected GameObject level3Visual;
 
-    
-
     protected List<GameObject> shots = new List<GameObject>();
     protected Transform target;
     protected Shot bullet;
@@ -51,6 +49,7 @@ public abstract class Tower : MonoBehaviour
     public void LevelUpTower()
     {
         towerManager = TowerManager.Instance;
+        
         switch (towerManager.GetUpgradesPurchased())
         {
             case 0:

@@ -26,7 +26,7 @@ public class CursorHandler : MonoBehaviour
 
     public void ShowCursor()
     {
-        cursorAnimator.SetTrigger("Appear");
+        cursorAnimator.Play("Appear");
     }
 
     public void HideCursor()

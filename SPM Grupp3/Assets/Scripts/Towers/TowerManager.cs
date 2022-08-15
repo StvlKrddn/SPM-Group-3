@@ -22,6 +22,8 @@ public class TowerManager : MonoBehaviour
     private GameManager gameManager;
     private List<PlacedTower> placedTowers;
 
+    [SerializeField] private ParticleSystem upgradeEffect;
+
     public GameObject ClickedTower { get { return clickedTower; } set { clickedTower = value; } }
     public static TowerManager Instance 
     { 
@@ -40,6 +42,8 @@ public class TowerManager : MonoBehaviour
     {
         gameManager = GameManager.Instance;
         placedTowers = gameManager.towersPlaced;
+
+        upgradeEffect = gameObject.GetComponentInChildren<ParticleSystem>();
 
         EventHandler.RegisterListener<TowerClickedEvent>(GetTowerClicked);
     }
@@ -113,6 +117,8 @@ public class TowerManager : MonoBehaviour
         {
             if (placedTowers[i].tower == clickedTower)
             {
+                upgradeEffect.gameObject.transform.position = ClickedTower.gameObject.transform.position + new Vector3( 0, 0.2f, 0); ;
+                upgradeEffect.Play();
                 placedTowers[i].upgradesPurchased++;
             }
         }

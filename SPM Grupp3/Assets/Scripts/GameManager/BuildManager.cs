@@ -18,6 +18,7 @@ public class BuildManager : MonoBehaviour
     public GameObject SlowTowerPrefab;
     public GameObject PoisonTowerPrefab;
 
+    private ParticleSystem buildingEffect;
 
     public GameObject TowerToBuild { get { return towerToBuild; } set { towerToBuild = value; } }
     public GameObject ClickedArea { get { return clickedArea; } set { clickedArea = value; } }
@@ -25,6 +26,7 @@ public class BuildManager : MonoBehaviour
     private void Start()
     {
         gameManager = GameManager.Instance;
+        buildingEffect = gameObject.transform.Find("BuildingEffect").GetComponent<ParticleSystem>();
     }
 
     public void InstantiateTower()
@@ -50,6 +52,8 @@ public class BuildManager : MonoBehaviour
         if (gameManager.SpendResources(tower.cost, tower.materialCost))
         {
             BuildTower(TowerToBuild, ClickedArea.transform.GetChild(0).position, 0);
+
+            PlayBuildingEffect(ClickedArea.transform.GetChild(0));
 
 			ClickedArea = null;
 
@@ -123,5 +127,11 @@ public class BuildManager : MonoBehaviour
             }
         }
         return placement;
+    }
+
+    public void PlayBuildingEffect(Transform placement)
+    {
+        buildingEffect.transform.position = placement.position + new Vector3(0, 0.1f, 0);
+        buildingEffect.Play();
     }
 }

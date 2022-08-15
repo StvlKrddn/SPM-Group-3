@@ -184,8 +184,7 @@ public class BuilderController : MonoBehaviour
     {
         if (context.performed)
         {
-            Deselect();
-            
+            Deselect();    
         }
     }
 
@@ -211,11 +210,6 @@ public class BuilderController : MonoBehaviour
             selectionRenderer.material.color = startColor;
         }
 
-        for (int i = 0; i < towerMenu.childCount; i++)
-        {
-            towerMenu.GetChild(i).gameObject.SetActive(false);
-        }
-
         if (placementHit != null && placementHit.layer == LayerMask.NameToLayer("Ignore Raycast"))
         {
             placementHit.layer = LayerMask.NameToLayer("PlaceForTower");
@@ -234,8 +228,15 @@ public class BuilderController : MonoBehaviour
             selectedTower.Radius.SetActive(false);
         }
         purchasedTower = false;
-        hintsPanel.SetActive(false);
+
+        hintsPanel.GetComponent<Animator>().SetTrigger("Disappear");
         cursorTransform.gameObject.GetComponent<CursorHandler>().ShowCursor();
+
+        for (int i = 0; i < towerMenu.childCount; i++)
+        {
+            towerMenu.GetChild(i).gameObject.SetActive(false);
+        }
+
         stopHover = false;
         stopMouse = false;
         placementClicked = false;
@@ -253,6 +254,7 @@ public class BuilderController : MonoBehaviour
         if (cursorTransform != null)
         {
             ResetCursorPosition();
+            cursorTransform.gameObject.SetActive(true);
             cursorTransform.gameObject.GetComponent<CursorHandler>().ShowCursor();
         }
     }
@@ -489,6 +491,7 @@ public class BuilderController : MonoBehaviour
                     placementHit.layer = LayerMask.NameToLayer("Ignore Raycast");
 
                     buildPanel.SetActive(true);
+                    buildPanel.SetActive(true);
                     hintsPanel.SetActive(true);
                     stopHover = true;
                     stopMouse = true;
@@ -512,6 +515,7 @@ public class BuilderController : MonoBehaviour
                 towerHit.layer = LayerMask.NameToLayer("Ignore Raycast");
                 selectedTower.ShowUpgradeUI(towerMenu);
                 selectedTower.Radius.SetActive(true);
+
                 cursorTransform.gameObject.GetComponent<CursorHandler>().HideCursor();
 
                 EventHandler.InvokeEvent(new TowerClickedEvent("Tower Is clicked", selectedTower.gameObject));
@@ -532,6 +536,7 @@ public class BuilderController : MonoBehaviour
 		{
 			selectedTower.TowerPlacement.layer = LayerMask.NameToLayer("PlaceForTower");
             GameManager.Instance.RemovePlacedTower(selectedTower.gameObject);
+            buildManager.PlayBuildingEffect(selectedTower.gameObject.transform);
 			Destroy(selectedTower.gameObject);
 			Deselect();
 		}
@@ -549,6 +554,7 @@ public class BuilderController : MonoBehaviour
             hintsPanel.transform.position = garageHit.transform.position;
 
             cursorTransform.gameObject.GetComponent<CursorHandler>().HideCursor();
+
             tankUpgrade.SetActive(true);
             hintsPanel.SetActive(true);
 

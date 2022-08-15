@@ -169,8 +169,6 @@ public class WheelSelection : MonoBehaviour
 
     private void Update() 
     {
-        selectHint.SetActive(false);
-        infoHint.SetActive(false);
 
         builderController.DestroyPreTower();
 
@@ -215,6 +213,10 @@ public class WheelSelection : MonoBehaviour
             else
             {
                 selectedIndex = -1;
+                if (selectHint.activeInHierarchy) { 
+                    selectHint.GetComponent<Animator>().SetTrigger("Disappear");
+                    infoHint.GetComponent<Animator>().SetTrigger("Disappear");
+                }
             }
 
             HighlightItem(selectedIndex);
@@ -261,6 +263,7 @@ public class WheelSelection : MonoBehaviour
         {
             return;
         }
+
         for (int i = 0; i < numberOfMenuItems; i++)
         {            
             if (MenuItems[i].transform.Find("Cost"))
@@ -278,8 +281,9 @@ public class WheelSelection : MonoBehaviour
                 //print(i + " - " + index);
                 // Hover effect
                 MenuItems[i].transform.GetChild(0).GetComponent<Image>().color = highLight;
-                    
+                
                 costPanel.SetActive(true);
+                costPanel.GetComponent<AppearBehaviour>().Appear();
                 Text moneyText = costPanel.transform.Find("MoneyCost").GetComponentInChildren<Text>();
                 Text materialText = costPanel.transform.Find("MaterialCost").GetComponentInChildren<Text>();
 
@@ -295,11 +299,13 @@ public class WheelSelection : MonoBehaviour
                     if (gM.CheckIfEnoughResources(towerToDisplay.GetComponent<Tower>()))
                     {
                         moneyText.color = Color.black;
+                        materialText.color = Color.black;
                         builderController.GhostTower(towerToDisplay);
                     }
                     else
                     {
                         moneyText.color = Color.red;
+                        materialText.color = Color.red;
                     }
                 }
                 else
@@ -308,7 +314,8 @@ public class WheelSelection : MonoBehaviour
                     {
                         UpgradeHighlighted(moneyText, materialText);
                     }
-                    else if (gameObject.name.Equals("TankPanel"))
+                    
+                    if (gameObject.name.Equals("TankPanel"))
                     {
                         GarageHighlight(materialText, i);
                     }
@@ -316,22 +323,29 @@ public class WheelSelection : MonoBehaviour
                 
                 if (!MenuItems[i].name.Equals("Delete/Sell"))
                 {
-                    ShowStatisticPanel();
+                    ShowStatisticPanel(i);
                 }
                 
                 if (MenuItems[0].name.Equals("Upgrade") && !gameObject.name.Equals("TankPanel"))
                 {
                     if (stickAction.ReadValue<Vector2>().y < 0.4f)
-                    {                     
-                        statisticPanel.SetActive(false);
+                    {
+                        //statisticPanel.SetActive(false);
+                        if (statisticPanel.activeInHierarchy)
+                            statisticPanel.GetComponent<AppearBehaviour>().Disappear();
                     }
                 }
                 else if(gameObject.name.Equals("TankPanel"))
                 {
                     if (stickAction.ReadValue<Vector2>().y < 0.4f)
                     {
-                        p1StatPanel.SetActive(false);
-                        p2StatPanel.SetActive(false);
+                        //p1StatPanel.SetActive(false);
+                        //p2StatPanel.SetActive(false);
+                        if (p1StatPanel.activeInHierarchy)
+                        {
+                            p1StatPanel.GetComponent<AppearBehaviour>().Disappear();
+                            p2StatPanel.GetComponent<AppearBehaviour>().Disappear();
+                        }
                     }                   
                 }
 
@@ -343,20 +357,22 @@ public class WheelSelection : MonoBehaviour
                 // Remove hover effect from all other items
                 MenuItems[i].transform.Find("Background").GetComponent<Image>().color = hidden;
 
-                MenuItems[i].transform.Find("Cost").gameObject.SetActive(false);
+                if(MenuItems[i].transform.Find("Cost").gameObject.activeInHierarchy)
+                    MenuItems[i].transform.Find("Cost").gameObject.GetComponent<AppearBehaviour>().Disappear();
 
 
                 if (gameObject.name.Equals("BuildPanel"))
                 {
-                    statisticPanel.SetActive(false);
+                    //statisticPanel.SetActive(false);
+                    if(statisticPanel.activeInHierarchy)
+                        statisticPanel.GetComponent<AppearBehaviour>().Disappear();
                 }
-
             }
         }
     }
 
     // Decides which statistic panel to show
-    private void ShowStatisticPanel()
+    private void ShowStatisticPanel(int menuInt)
     {
 
         if (transform.name.Equals("BuildPanel")) //Build
@@ -364,14 +380,17 @@ public class WheelSelection : MonoBehaviour
             if (infoAction.IsPressed())
             {
                 statisticPanel.SetActive(true);
+                statisticPanel.GetComponent<AppearBehaviour>().Appear();
             }
         }
-        else if (gameObject.name.Equals("TankPanel")) //Tank Upgrade (Not Implemented Jet)
+        else if (gameObject.name.Equals("TankPanel") && menuInt != 1) //Tank Upgrade (Not Implemented Jet)
         {
             if (infoAction.IsPressed())
             {
                 p1StatPanel.SetActive(true);
-                p2StatPanel.SetActive(true);               
+                p2StatPanel.SetActive(true);
+                p1StatPanel.GetComponent<AppearBehaviour>().Appear();
+                p2StatPanel.GetComponent<AppearBehaviour>().Appear();
             }
             ChangeTankUpgradeTextColorToGreen();
         }
@@ -380,6 +399,7 @@ public class WheelSelection : MonoBehaviour
             if (infoAction.IsPressed())
             {
                 statisticPanel.SetActive(true);
+                statisticPanel.GetComponent<AppearBehaviour>().Appear();
             }
             upgradeTitleText.text = towerManager.GetNameOfTowerClicked() + " (Lv " + towerManager.GetUpgradesPurchased() + ")";
             ChangeUpgradeTextColorToGreen();
@@ -469,6 +489,10 @@ public class WheelSelection : MonoBehaviour
 
             materialText.text = tower.Level3MaterialCost.ToString();
         }
+        else
+        {
+            materialText.text = "0";
+        }
         
         float money = gM.Money;
         float material = gM.Material;
@@ -492,13 +516,14 @@ public class WheelSelection : MonoBehaviour
         }
 
         moneyText.text = tower.UpgradeCostUpdate().ToString();
-        //materialText.text = tower.materialCost.ToString();
+        //materialText.text = tower.Level3MaterialCost.ToString();
     }
 
     void GarageHighlight(Text materialText, int i)
     {
         float material = gM.Material;
 
+        //upgradeController.GetUpgradesPurchased()
         if (upgradeController.GetUpgradesPurchased() == 3 && MenuItems[i].name.Equals("Upgrade"))
         {
             materialText.text = "MAX";
@@ -506,13 +531,18 @@ public class WheelSelection : MonoBehaviour
             return;
         }
 
-        if (material < upgradeController.materialCost)
+        else if(upgradeController.GetUpgradesPurchased() <= 2 && MenuItems[i].name.Equals("Upgrade"))
         {
-            materialText.color = Color.red;
-        }
-        else
-        {
-            materialText.color = Color.black;
+            materialText.text = upgradeController.materialCost.ToString();
+
+            if (material < 10)
+            {
+                materialText.color = Color.red;
+            }
+            else
+            {
+                materialText.color = Color.black;
+            }
         }
     }
 
@@ -597,7 +627,8 @@ public class WheelSelection : MonoBehaviour
     }
 
     private void UpdateUpgradeLevelText()
-    {
+    { 
+
         switch (towerManager.GetNameOfTowerClicked()) //Which Tower That Is Clicked
         {
             case "Cannon Tower":

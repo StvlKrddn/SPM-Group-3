@@ -117,7 +117,7 @@ public class MainMenu : MonoBehaviour
     public void Reset()
     {
         GameObject continueButton = mainMenu.transform.Find("Continue").gameObject;
-        if (continueButton.active == true)
+        if (continueButton.activeInHierarchy == true)
             StartCoroutine(DisableButton(continueButton));
 
         DataManager.DeleteFile(DataManager.SaveData);

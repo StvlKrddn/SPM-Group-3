@@ -9,7 +9,6 @@ public abstract class TankUpgradeTree : MonoBehaviour
     private FadeBehaviour abilityIcon;
     private Slider slider;
     private float abilityDuration = 0.5f;
-    private float notInUseTimer = 0;
 
     protected GameManager gameManager;
     protected TankState tankState;
@@ -92,7 +91,6 @@ public abstract class TankUpgradeTree : MonoBehaviour
     private IEnumerator UseAbilityBar()
     {
         abilityReady = false;
-        notInUseTimer = 0;
         elapsed = 0f;
 
         if (abilityFill.Faded() == true)

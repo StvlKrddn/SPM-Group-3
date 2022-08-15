@@ -11,6 +11,8 @@ public class UpgradeController : MonoBehaviour
 
     public static int currentUpgradeLevel = 0;
 
+    private ParticleSystem towerUpgradeEffect;
+
     public static UpgradeController Instance
     {
         get

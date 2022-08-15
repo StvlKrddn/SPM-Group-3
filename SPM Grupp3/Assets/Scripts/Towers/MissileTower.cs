@@ -189,8 +189,6 @@ public class MissileTower : Tower
     {
         MissileTower missileTower = tower.GetComponent<MissileTower>();
 
-
-
         level1Visual.SetActive(false);
         level2Visual.SetActive(true);
 
