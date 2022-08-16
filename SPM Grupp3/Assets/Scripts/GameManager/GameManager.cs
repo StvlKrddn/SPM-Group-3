@@ -231,20 +231,20 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && Input.GetKeyDown(KeyCode.LeftAlt))
         {
             Victory();
         }
-        if (Input.GetKeyDown(KeyCode.Backspace))
+        if (Input.GetKeyDown(KeyCode.Backspace) && Input.GetKeyDown(KeyCode.LeftAlt))
         {
             Defeat();
         }
-        if (Input.GetKey(KeyCode.UpArrow))
+        if (Input.GetKey(KeyCode.UpArrow) && Input.GetKeyDown(KeyCode.LeftAlt))
         {
             money += 1000;
             material += 50;
         }
-        if (Input.GetKeyDown(KeyCode.DownArrow))
+        if (Input.GetKeyDown(KeyCode.DownArrow) && Input.GetKeyDown(KeyCode.LeftAlt))
         {
             if (money - 1000 > 0 && material - 50 > 0)
             {
@@ -405,23 +405,6 @@ public class GameManager : MonoBehaviour
         }
         //Show Error
         return false;
-    }
-
-    private IEnumerator DoColorBoughtFade(Text textUI, Color toColor, float duration)
-    {
-        float counter = 0f;
-
-        textUI.color = Color.red;
-
-        yield return new WaitForSeconds(1f);
-
-        while (counter < duration)
-        {
-            counter += Time.deltaTime;
-            textUI.color = Color.Lerp(textUI.color, toColor, counter / duration);
-
-            yield return null;
-        }
     }
 
     public bool CheckIfEnoughResources(Tower tower)

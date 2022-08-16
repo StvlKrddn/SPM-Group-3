@@ -21,4 +21,9 @@ public class TankUpgradeBehaviour : MonoBehaviour
     {
         effect.Stop();
     }
+
+    public void PlaySound()
+    {
+        effect.Play();
+    }
 }
