@@ -78,6 +78,7 @@ public class MainMenu : MonoBehaviour
         {
             //warningPrompt.SetActive(true);
             menuAnimator.SetTrigger("ToWarning");
+            
         }
         else
         {

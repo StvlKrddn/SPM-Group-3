@@ -231,20 +231,20 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && Input.GetKeyDown(KeyCode.LeftAlt))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             Victory();
         }
-        if (Input.GetKeyDown(KeyCode.Backspace) && Input.GetKeyDown(KeyCode.LeftAlt))
+        if (Input.GetKeyDown(KeyCode.Backspace))
         {
             Defeat();
         }
-        if (Input.GetKey(KeyCode.UpArrow) && Input.GetKeyDown(KeyCode.LeftAlt))
+        if (Input.GetKey(KeyCode.UpArrow))
         {
             money += 1000;
             material += 50;
         }
-        if (Input.GetKeyDown(KeyCode.DownArrow) && Input.GetKeyDown(KeyCode.LeftAlt))
+        if (Input.GetKeyDown(KeyCode.DownArrow))
         {
             if (money - 1000 > 0 && material - 50 > 0)
             {

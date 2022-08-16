@@ -109,7 +109,7 @@ public class TowerManager : MonoBehaviour
         return null;
     }
 
-    private Transform currenPosition;
+    private Transform currentPosition;
 
     public void IncreaseUpgradesPurchased()
     {        
@@ -118,8 +118,8 @@ public class TowerManager : MonoBehaviour
 
             if (placedTowers[i].tower == clickedTower)
             {
-                currenPosition = clickedTower.gameObject.transform;
-                upgradeEffect.gameObject.transform.position = currenPosition.position + new Vector3(0, 0.2f, 0);
+                currentPosition = clickedTower.gameObject.transform;
+                upgradeEffect.gameObject.transform.position = currentPosition.position + new Vector3(0, 0.2f, 0);
                 upgradeEffect.Play();
                 placedTowers[i].upgradesPurchased++;
             }

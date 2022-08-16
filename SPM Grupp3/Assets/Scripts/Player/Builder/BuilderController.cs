@@ -39,6 +39,7 @@ public class BuilderController : MonoBehaviour
     private InputAction pointerAction;
     private Vector2 newPosition;
     private Vector2 screenMiddle;
+    private Vector2 pausePosition;
     private bool previousMouseState;
     private readonly bool previousYState;
     private GameObject preTower;
@@ -65,6 +66,7 @@ public class BuilderController : MonoBehaviour
         GameObject placement = GameObject.Find("PlaceForTower");
         startColor = placement.GetComponent<Renderer>().material.color;
         screenMiddle = new Vector2(Screen.width / 2, Screen.height / 2);
+        pausePosition = new Vector2(Screen.width, Screen.height);
 
         player1Color = GameManager.Instance.Player1Color;
         player2Color = GameManager.Instance.Player2Color;
@@ -595,8 +597,10 @@ public class BuilderController : MonoBehaviour
     public void HideCursor()
     {
         cursorTransform.gameObject.GetComponent<CursorHandler>().HideCursor();
+        
         stopHover = true;
         stopMouse = true;
+
         if (_selection != null)
         {
             Renderer selectionRenderer = _selection.GetComponent<Renderer>();
