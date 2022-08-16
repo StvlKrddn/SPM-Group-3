@@ -114,8 +114,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d464ae898f37b0444aed480a2a9e0fd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  effect: {fileID: 1237558814429842647}
-  effect1: {fileID: 0}
 --- !u!95 &1588214263963028605
 Animator:
   serializedVersion: 3
@@ -438,10 +436,6 @@ PrefabInstance:
       value: TankUpgradeEffect
       objectReference: {fileID: 0}
     - target: {fileID: 5509543839947695390, guid: 8287b04d26e8770438321e17f8e7f80f, type: 3}
-      propertyPath: lengthInSec
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5509543839947695390, guid: 8287b04d26e8770438321e17f8e7f80f, type: 3}
       propertyPath: moveWithTransform
       value: 0
       objectReference: {fileID: 0}
@@ -506,10 +500,5 @@ PrefabInstance:
 --- !u!4 &1237558814429842646 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5509543839947695391, guid: 8287b04d26e8770438321e17f8e7f80f, type: 3}
-  m_PrefabInstance: {fileID: 6726519398799550921}
-  m_PrefabAsset: {fileID: 0}
---- !u!198 &1237558814429842647 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 5509543839947695390, guid: 8287b04d26e8770438321e17f8e7f80f, type: 3}
   m_PrefabInstance: {fileID: 6726519398799550921}
   m_PrefabAsset: {fileID: 0}

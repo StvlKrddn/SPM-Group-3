@@ -11,7 +11,7 @@ public class UpgradeController : MonoBehaviour
 
     public static int currentUpgradeLevel = 0;
 
-    private TankUpgradeBehaviour towerUpgradeEffect;
+    [SerializeField] private TankUpgradeBehaviour tankUpgradeEffect;
 
     public static UpgradeController Instance
     {
@@ -28,7 +28,7 @@ public class UpgradeController : MonoBehaviour
 
     private void Awake()
     {
-        towerUpgradeEffect = FindObjectOfType<TankUpgradeBehaviour>();
+        tankUpgradeEffect = FindObjectOfType<TankUpgradeBehaviour>();
     }
 
     public void ResetUpgrades()
@@ -45,26 +45,28 @@ public class UpgradeController : MonoBehaviour
     {
         if (currentUpgradeLevel < 3 && GameManager.Instance.SpendResources(moneyCost, materialCost))
         {
+            tankUpgradeEffect.PlayUpgradeEffect();
+
             currentUpgradeLevel++;
+
             if(FindObjectOfType<TankState>())
             {
-                towerUpgradeEffect.PlayUpgradeEffect();
 
                 TankState player = FindObjectOfType<TankState>();
                 player.LevelOfTank++;
                 switch (player.LevelOfTank)
                 {
                     case 1:
-                    player.tankUpgradeTree.UpgradeOne();
-                    break;
+                        player.tankUpgradeTree.UpgradeOne();
+                        break;
 
                     case 2:
-                    player.tankUpgradeTree.UpgradeTwo();
-                    break;
+                        player.tankUpgradeTree.UpgradeTwo();
+                        break;
 
                     case 3:
-                    player.tankUpgradeTree.UpgradeThree();
-                    break;
+                        player.tankUpgradeTree.UpgradeThree();
+                        break;
                 }
 
                 if (player.GetComponent<WeaponSlot>())
@@ -79,6 +81,7 @@ public class UpgradeController : MonoBehaviour
     {
         bool upgraded = false;
         TankState tS = player.GetComponentInChildren<TankState>();
+
         for (int i = tS.LevelOfTank; i < currentUpgradeLevel; i++)
         {
             tS.LevelOfTank++;
