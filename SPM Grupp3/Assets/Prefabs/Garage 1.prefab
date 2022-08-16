@@ -42,6 +42,7 @@ GameObject:
   - component: {fileID: 2775096603921905629}
   - component: {fileID: 101305572191142679}
   - component: {fileID: 6740927894083390865}
+  - component: {fileID: 5479766735958042131}
   m_Layer: 15
   m_Name: Garage 1
   m_TagString: Garage
@@ -63,6 +64,7 @@ Transform:
   - {fileID: 424944938253400340}
   - {fileID: 4404341536948264390}
   - {fileID: 9112833394987272956}
+  - {fileID: 199451576369754209}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -129,6 +131,25 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 3390558720134950976, guid: 3e87f4d3299b0354d9609565ed3d8623, type: 3}
+--- !u!95 &5479766735958042131
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1902511983317951170}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 4f8e560c6b3055742af90f552eecfc7b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &2896327160454515331
 GameObject:
   m_ObjectHideFlags: 0
@@ -548,3 +569,65 @@ Transform:
   m_Father: {fileID: 1237579764834203768}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &5670397830295917950
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1237579764834203768}
+    m_Modifications:
+    - target: {fileID: 5509543839947695376, guid: 8287b04d26e8770438321e17f8e7f80f, type: 3}
+      propertyPath: m_Name
+      value: TankUpgradeEffect
+      objectReference: {fileID: 0}
+    - target: {fileID: 5509543839947695391, guid: 8287b04d26e8770438321e17f8e7f80f, type: 3}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5509543839947695391, guid: 8287b04d26e8770438321e17f8e7f80f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5509543839947695391, guid: 8287b04d26e8770438321e17f8e7f80f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5509543839947695391, guid: 8287b04d26e8770438321e17f8e7f80f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5509543839947695391, guid: 8287b04d26e8770438321e17f8e7f80f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 5509543839947695391, guid: 8287b04d26e8770438321e17f8e7f80f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.7071068
+      objectReference: {fileID: 0}
+    - target: {fileID: 5509543839947695391, guid: 8287b04d26e8770438321e17f8e7f80f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5509543839947695391, guid: 8287b04d26e8770438321e17f8e7f80f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5509543839947695391, guid: 8287b04d26e8770438321e17f8e7f80f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -90
+      objectReference: {fileID: 0}
+    - target: {fileID: 5509543839947695391, guid: 8287b04d26e8770438321e17f8e7f80f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5509543839947695391, guid: 8287b04d26e8770438321e17f8e7f80f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 8287b04d26e8770438321e17f8e7f80f, type: 3}
+--- !u!4 &199451576369754209 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5509543839947695391, guid: 8287b04d26e8770438321e17f8e7f80f, type: 3}
+  m_PrefabInstance: {fileID: 5670397830295917950}
+  m_PrefabAsset: {fileID: 0}

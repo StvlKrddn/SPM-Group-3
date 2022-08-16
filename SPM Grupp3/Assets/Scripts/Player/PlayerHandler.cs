@@ -49,7 +49,9 @@ public class PlayerHandler : MonoBehaviour
     {
         // Disable Build
         buildMode.SetActive(false);
-        cursor.GetComponent<CursorHandler>().HideCursor();
+
+        if(cursor.activeInHierarchy)
+            cursor.GetComponent<CursorHandler>().HideCursor();
 
         // Enable Tank
         tankMode.SetActive(true);

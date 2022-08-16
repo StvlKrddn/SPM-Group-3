@@ -90,6 +90,7 @@ public class BuilderController : MonoBehaviour
 
     private bool isPaused = false;
 
+    // Checks if the game becomes paused
     private void LateUpdate()
     {
         if(Time.timeScale == 0 && isPaused == false)
