@@ -59,7 +59,15 @@ public class TutorialUI : MonoBehaviour
 
 
     //private int whichWaveIsItOn; 
-    private PlayerInput playerInput; 
+    private PlayerInput playerInput;
+
+
+    public InputActionMap tankActionMap;
+
+    private InputActionMap builderActionMap; 
+
+   
+    
 
     // Start is called before the first frame update
     void Start()
@@ -70,21 +78,24 @@ public class TutorialUI : MonoBehaviour
             child.gameObject.layer = 0; 
             listOfAllTiles.Add(child.gameObject) ; 
         }
+        playerInput.SwitchCurrentActionMap("Tank");
+        tankActionMap = playerInput.currentActionMap;
+
+        playerInput.SwitchCurrentActionMap("Builder");
+
+        builderActionMap = playerInput.currentActionMap;
 
 
-        
 
-
-
-   //     if(gameObjectsToStartDisabled.Count != 0 )
-   //     {
-   //         foreach (GameObject obj in gameObjectsToStartDisabled)
-   //         {
-   //
-   //             obj.SetActive(false);
-   //         }
-   //
-   //     }
+        //     if(gameObjectsToStartDisabled.Count != 0 )
+        //     {
+        //         foreach (GameObject obj in gameObjectsToStartDisabled)
+        //         {
+        //
+        //             obj.SetActive(false);
+        //         }
+        //
+        //     }
 
         //     ShowAmountOfTiles.text = "hej " + listOfAllTiles.Count;
 
@@ -118,21 +129,30 @@ public class TutorialUI : MonoBehaviour
             upgradeButton.enabled = false ;
         }
 
+        print(tankActionMap.FindAction("EnterGarage").enabled);
+
+
         foreach (string obj in modesToDisableTankMode)
         {
-            if(playerInput.currentActionMap.name == "Tank")
-            {
-                playerInput.actions[obj].Disable();
-            }
+            //    if(playerInput.currentActionMap.name == "Tank")
+            //    {
+            //        playerInput.actions[obj].Disable();
+            //
+            //        
+            //    }
+
+            tankActionMap.FindAction(obj).Disable();
         }
 
 
         foreach(string obj in modesToDisableBuildMode)
         {
-            if(playerInput.currentActionMap.name == "Builder")
-            {
-                playerInput.actions[obj].Disable();
-            }
+         //   if(playerInput.currentActionMap.name == "Builder")
+         //   {
+         //       playerInput.actions[obj].Disable();
+         //   }
+
+            builderActionMap.FindAction(obj).Disable();
         }
 
         if (firstEventActivated && firstEventNotStarted)

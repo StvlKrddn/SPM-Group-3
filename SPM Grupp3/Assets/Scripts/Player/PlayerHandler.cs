@@ -16,7 +16,7 @@ public class PlayerHandler : MonoBehaviour
     private UI uiCanvas;
     private PlayerInput playerInput;
     private bool destroyed;
-
+   
     public bool Destroyed { get { return destroyed; } set { destroyed = value; } }
     public PlayerMode CurrentMode { get { return currentMode; } }
 
@@ -47,10 +47,12 @@ public class PlayerHandler : MonoBehaviour
 
     void EnterTankMode()
     {
+    
+                
         // Disable Build
         buildMode.SetActive(false);
         cursor.SetActive(false);
-
+         
         // Enable Tank
         tankMode.SetActive(true);
 
@@ -77,11 +79,12 @@ public class PlayerHandler : MonoBehaviour
     {
         // Disable Tank
         tankMode.SetActive(false);
+    
 
         // Enable Build
         buildMode.SetActive(true);
         cursor.SetActive(true);
-
+        print("går in i buildmode");
         EventHandler.InvokeEvent(new EnterBuildModeEvent(
             description: "Player entered build mode",
             player: gameObject
@@ -97,9 +100,14 @@ public class PlayerHandler : MonoBehaviour
     public void SwitchMode()
     {
         // If in Tank mode, switch to Build
-        if (currentMode == PlayerMode.Tank)
-        {
-            EnterBuildMode();
+        if (currentMode == PlayerMode.Tank )
+        {   
+                if(playerInput.currentActionMap.FindAction("EnterGarage").enabled)
+                {
+                    EnterBuildMode();
+                }
+               
+                      
         }
         // If in Build mode, switch to Tank
         else if (currentMode == PlayerMode.Build && !destroyed)

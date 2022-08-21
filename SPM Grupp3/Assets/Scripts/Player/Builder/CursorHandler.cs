@@ -17,6 +17,13 @@ public class CursorHandler : MonoBehaviour
         cursorImage.sprite = normalCursor;
     }
 
+    private void OnEnable()
+    {
+        print("varfor sker detta");
+
+        int test = 5; 
+    }
+
     public void ToggleClick(bool isClicked)
     {
         cursorImage.sprite = isClicked ? cursorImage.sprite = clickedCursor : cursorImage.sprite = normalCursor;
