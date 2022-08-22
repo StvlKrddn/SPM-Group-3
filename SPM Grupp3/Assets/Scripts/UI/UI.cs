@@ -58,9 +58,17 @@ public class UI : MonoBehaviour
 
             EventSystem.current.SetSelectedGameObject(null);
             EventSystem.current.SetSelectedGameObject(resumeButton);
+
+            if (FindObjectOfType<TutorialUI>() != null)
+            {
+                FindObjectOfType<TutorialUI>().isPaused = true; 
+            }
         }
         else
         {
+
+
+            
             Resume();
             
         }
@@ -107,6 +115,12 @@ public class UI : MonoBehaviour
 
     public void Resume()
     {
+
+
+        if (FindObjectOfType<TutorialUI>() != null)
+        {
+            FindObjectOfType<TutorialUI>().isPaused = false;
+        }
         MusicManager.instance.SetMusicPLay(true);
         IsPaused = false;
         Time.timeScale = 1f;

@@ -66,7 +66,7 @@ public class TutorialUI : MonoBehaviour
 
     private InputActionMap builderActionMap;
 
-
+    public bool isPaused = false; 
     private void Awake()
     {
         
@@ -112,7 +112,9 @@ public class TutorialUI : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    {
+    {   
+
+
 
         //   if(!disableStartWaveTankMode)
         //   {

@@ -145,7 +145,11 @@ public class PlayerHandler : MonoBehaviour
         {
             uiCanvas.SetFirstSelectedButton("Resume");
             uiCanvas.PauseGame();
+
+      
         }
+
+        
     }
 
 }
