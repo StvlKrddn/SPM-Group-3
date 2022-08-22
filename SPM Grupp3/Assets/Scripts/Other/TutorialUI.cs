@@ -244,7 +244,7 @@ public class TutorialUI : MonoBehaviour
                 break;
            
             case 2:
-                lastWaveActivate.SetActive(true);
+        //        lastWaveActivate.SetActive(true);
               
 
                 break;

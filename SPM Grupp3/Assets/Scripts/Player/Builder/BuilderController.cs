@@ -209,7 +209,7 @@ public class BuilderController : MonoBehaviour
                 if (playerInput.currentActionMap.name == "Builder" && playerInput.currentActionMap.FindAction("EnterTank").enabled)
                 {
                     
-                        print("Ar actionen enabeld " + context.action.name);
+                      //  print("Ar actionen enabeld " + context.action.name);
                         Deselect();
                         EventHandler.InvokeEvent(new PlayerSwitchEvent(
                             description: "Player switched mode",

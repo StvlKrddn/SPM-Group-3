@@ -47,7 +47,7 @@ public class TutorialEnterGarage : MonoBehaviour
      //   trigger = acceptAction.IsPressed();
         if (other.CompareTag("Tank"))
         {
-            print("vad är trigger " + trigger + " vad är hasTriggered " + hasTriggered);
+         //   print("vad är trigger " + trigger + " vad är hasTriggered " + hasTriggered);
             if (hasItBeenRightInput && !hasTriggered)
             {
                 hasTriggered = true; 
@@ -80,7 +80,7 @@ public class TutorialEnterGarage : MonoBehaviour
 
         hasItBeenRightInput = trigger;
 
-        print(trigger);
+     //   print(trigger);
 
     }
 }
