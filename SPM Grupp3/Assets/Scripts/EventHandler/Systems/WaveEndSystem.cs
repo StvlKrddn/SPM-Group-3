@@ -30,11 +30,16 @@ public class WaveEndSystem : MonoBehaviour
         if (tutorial != null)
         {
             tutorial.waveEnded();
+            
+        }
+        else
+        {
+            EventHandler.InvokeEvent(new SaveGameEvent(
+                description: "Game is saving"
+                ));
         }
 
-        EventHandler.InvokeEvent(new SaveGameEvent(
-            description: "Game is saving"
-        ));
+
     }
 
 }

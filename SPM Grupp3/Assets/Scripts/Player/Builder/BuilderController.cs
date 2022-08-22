@@ -190,15 +190,36 @@ public class BuilderController : MonoBehaviour
     }
 
     public void EnterTank(InputAction.CallbackContext context)
-    {
-        if (context.performed && !stopMouse)
+    {   if(!FindObjectOfType<TutorialUI>())
         {
-            Deselect();
-            EventHandler.InvokeEvent(new PlayerSwitchEvent(
-                description: "Player switched mode",
-                playerContainer: transform.parent.gameObject
-            ));
+            if (context.performed && !stopMouse)
+            {
+                print("Ar actionen enabeld " + context.action.name);
+                Deselect();
+                EventHandler.InvokeEvent(new PlayerSwitchEvent(
+                    description: "Player switched mode",
+                    playerContainer: transform.parent.gameObject
+                ));
+            }
         }
+        else
+        {
+            if (context.performed && !stopMouse)
+            {
+                if (playerInput.currentActionMap.name == "Builder" && playerInput.currentActionMap.FindAction("EnterTank").enabled)
+                {
+                    
+                        print("Ar actionen enabeld " + context.action.name);
+                        Deselect();
+                        EventHandler.InvokeEvent(new PlayerSwitchEvent(
+                            description: "Player switched mode",
+                            playerContainer: transform.parent.gameObject
+                        ));
+                    
+                }
+            }
+        }
+
     }
 
     public void Deselect()
@@ -386,10 +407,11 @@ public class BuilderController : MonoBehaviour
     {
         RaycastHit garageHover = CastRayFromCamera(garageLayer);
         Transform selection = null;
-
+       
         if (garageHover.collider != null)
         {
             selection = garageHover.transform;
+            
             selection.GetComponent<GarageTrigger>().ShowIndicator();
             garageSelection = selection;
         }

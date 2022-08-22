@@ -84,7 +84,7 @@ public class PlayerHandler : MonoBehaviour
         // Enable Build
         buildMode.SetActive(true);
         cursor.SetActive(true);
-        print("går in i buildmode");
+    //    print("går in i buildmode");
         EventHandler.InvokeEvent(new EnterBuildModeEvent(
             description: "Player entered build mode",
             player: gameObject

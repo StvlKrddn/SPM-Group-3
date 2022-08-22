@@ -34,6 +34,8 @@ public class tutorialDisableIInputs : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        mainTutorial = FindObjectOfType<TutorialUI>();
+
         playerInput = FindObjectOfType<PlayerInput>();
         foreach (string name in inputsToDisableUpdate)
         {
@@ -52,10 +54,8 @@ public class tutorialDisableIInputs : MonoBehaviour
         {
             foreach(string obj in inputsToEnableTankTutorialUI)
             {
-                mainTutorial.modesToDisableTankMode.Remove(obj);
 
-
-                playerInput.actions[obj].Enable();
+                mainTutorial.stopDisablingInputTankMode(obj);
             }
             foreach(string obj in inputsToEnableBuildTutorialUI)
             {

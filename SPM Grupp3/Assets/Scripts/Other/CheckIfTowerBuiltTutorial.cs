@@ -9,7 +9,9 @@ public class CheckIfTowerBuiltTutorial : MonoBehaviour
 
     public GameObject[] objectsToDisable;
 
-    public GameObject[] objectsToEnable; 
+    public GameObject[] objectsToEnable;
+
+    public ButtonClick enableTankUpgrade; 
     // Start is called before the first frame update
     void Start()
     {
@@ -30,7 +32,7 @@ public class CheckIfTowerBuiltTutorial : MonoBehaviour
                 obj.SetActive(true);
             }
 
-
+            enableTankUpgrade.buttonEnabled = true;
             this.enabled = false;
         }
     }

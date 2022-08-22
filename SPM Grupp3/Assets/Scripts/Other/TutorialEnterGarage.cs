@@ -26,13 +26,16 @@ public class TutorialEnterGarage : MonoBehaviour
 
     private GarageTrigger garageTrigger;
 
-    public GameObject objectGarageTriggerEnable; 
+    public GameObject objectGarageTriggerEnable;
+
+    public TutorialUI tutorialUi; 
 
     // Start is called before the first frame update
     void Start()
     {
         garageTrigger = FindObjectOfType<GarageTrigger>();
 
+        tutorialUi = FindObjectOfType<TutorialUI>();
 
         PlayerInput playerInput = FindObjectOfType<PlayerInput>();
         acceptAction = playerInput.actions["EnterGarage"];
@@ -58,7 +61,7 @@ public class TutorialEnterGarage : MonoBehaviour
                 arrowToShow.SetActive(true);
 
 
-                objectGarageTriggerEnable.SetActive(true);
+             //   objectGarageTriggerEnable.SetActive(true);
 
                 
 

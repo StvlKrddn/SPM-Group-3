@@ -64,10 +64,13 @@ public class TutorialUI : MonoBehaviour
 
     public InputActionMap tankActionMap;
 
-    private InputActionMap builderActionMap; 
+    private InputActionMap builderActionMap;
 
-   
-    
+
+    private void Awake()
+    {
+        
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -129,7 +132,7 @@ public class TutorialUI : MonoBehaviour
             upgradeButton.enabled = false ;
         }
 
-        print(tankActionMap.FindAction("EnterGarage").enabled);
+       // print(tankActionMap.FindAction("EnterGarage").enabled);
 
 
         foreach (string obj in modesToDisableTankMode)
@@ -181,6 +184,33 @@ public class TutorialUI : MonoBehaviour
         
     }
 
+
+    public void stopDisablingInputTankMode(string inputToStopDisable)
+    {
+        modesToDisableTankMode.Remove(inputToStopDisable);
+        print("hej");
+        tankActionMap.FindAction(inputToStopDisable).Enable();
+    }
+
+    public void startDisablingInputTankMode(string inputToDisable)
+    {
+        modesToDisableTankMode.Add(inputToDisable);
+
+        tankActionMap.FindAction(inputToDisable).Disable();
+    }
+    public void stopDisablingInputBuildMode(string inputToStopDisable)
+    {
+        modesToDisableBuildMode.Remove(inputToStopDisable);
+
+        builderActionMap.FindAction(inputToStopDisable).Enable();
+    }
+
+    public void startDisablingInputBuildMode(string inputToDisable)
+    {
+        modesToDisableBuildMode.Add(inputToDisable);
+
+        builderActionMap.FindAction(inputToDisable).Disable();
+    }
 
     public void stopDisablingUpgradeButton()
     {

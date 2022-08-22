@@ -9,6 +9,7 @@ public class TutorialButton : MonoBehaviour
     public GameObject[] objectsToDisable;
     public GameObject[] objectsToEnable;
 
+    private bool canBeActivated = true;
 
     public bool disableOnActivation = false;
 
@@ -37,23 +38,32 @@ public class TutorialButton : MonoBehaviour
         if(objectsToDisable.Length != 0)
         {
             foreach (GameObject obj in objectsToDisable)
-            {
-                obj.SetActive(false);
+            {   if(canBeActivated)
+                {
+                    obj.SetActive(false);
+                }
+              
             }
         }
 
         if(objectsToEnable.Length != 0)
         {
             foreach (GameObject obj in objectsToEnable)
-            {
-                obj.SetActive(true);
+            {   
+
+                if(canBeActivated)
+                {
+                    obj.SetActive(true);
+                }
+               
             }
         }      
 
 
         if(disableOnActivation)
         {
-            this.enabled = false; 
+            this.enabled = false;
+            canBeActivated = false; 
         }
     }
 }

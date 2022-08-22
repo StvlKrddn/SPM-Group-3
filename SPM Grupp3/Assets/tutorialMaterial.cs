@@ -32,6 +32,12 @@ public class tutorialMaterial : MonoBehaviour
     [SerializeField] private float[] zValues = new float[2];
     [SerializeField] private AudioClip pickUpSound;
 
+    public GameObject gameObjectToEnable;
+
+    public GameObject gameObjectToDisable;
+
+    public GameObject activateGarageTrigger; 
+
 
     // Sverkers remake på materialkoden
     // Han tyckte att att det skulle vara mer hårdkodade värden
@@ -114,6 +120,10 @@ public class tutorialMaterial : MonoBehaviour
         }
         if (other.gameObject.CompareTag("Tank"))
         {
+            gameObjectToDisable.SetActive(false);
+            gameObjectToEnable.SetActive(true);
+            
+            activateGarageTrigger.SetActive(true);
             gameManager.AddMaterial(materialValue);
             EventHandler.InvokeEvent(new PlaySoundEvent("Picking up material sound", pickUpSound));
 

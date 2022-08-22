@@ -7,8 +7,14 @@ public class ButtonClick : MonoBehaviour
 {
     public UnityEvent unityEvent;
 
+    public bool buttonEnabled = true; 
+
     public void Click()
-    {
-        unityEvent.Invoke();
+    {   
+        if(buttonEnabled)
+        {
+            unityEvent.Invoke();
+        }
+       
     }
 }
