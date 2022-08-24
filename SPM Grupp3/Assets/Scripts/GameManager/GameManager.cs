@@ -49,6 +49,9 @@ public class GameManager : MonoBehaviour
     private int enemiesKilled;
     private int moneyCollected;
     private int materialCollected;
+
+    public bool enableCheats = true; 
+
     public PlayerMode StartingMode { get { return startingMode; } }
     public int EnemiesKilled { get { return enemiesKilled; } set { enemiesKilled = value; } }
     public float Money { get { return money; } set { money = value; } }
@@ -221,21 +224,24 @@ public class GameManager : MonoBehaviour
     }
 
     private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
+    {   
+
+
+
+        if (Input.GetKeyDown(KeyCode.Space) && enableCheats )
         {
             Victory();
         }
-        if (Input.GetKeyDown(KeyCode.Backspace))
+        if (Input.GetKeyDown(KeyCode.Backspace) && enableCheats)
         {
             Defeat();
         }
-        if (Input.GetKey(KeyCode.UpArrow))
+        if (Input.GetKey(KeyCode.UpArrow) && enableCheats)
         {
             money += 1000;
             material += 50;
         }
-        if (Input.GetKeyDown(KeyCode.DownArrow))
+        if (Input.GetKeyDown(KeyCode.DownArrow) && enableCheats)
         {
             if (money - 1000 > 0 && material - 50 > 0)
             {
@@ -243,19 +249,19 @@ public class GameManager : MonoBehaviour
                 material -= 50;
             }
         }
-        if (Input.GetKeyDown(KeyCode.Alpha4))
+        if (Input.GetKeyDown(KeyCode.Alpha4) && enableCheats)
         {
             waveManager.CurrentWave = 4;
         }
-        if (Input.GetKeyDown(KeyCode.Alpha5))
+        if (Input.GetKeyDown(KeyCode.Alpha5) && enableCheats)
         {
             waveManager.CurrentWave = 5;
         }
-        if (Input.GetKeyDown(KeyCode.Alpha6))
+        if (Input.GetKeyDown(KeyCode.Alpha6) && enableCheats)
         {
             waveManager.CurrentWave = 6;
         }
-        if (Input.GetKeyDown(KeyCode.Alpha0))
+        if (Input.GetKeyDown(KeyCode.Alpha0) && enableCheats  )
         {
             waveManager.CurrentWave = 9;
         }
