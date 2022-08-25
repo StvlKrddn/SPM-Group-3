@@ -8,6 +8,8 @@ public class FadeBehaviour : MonoBehaviour
 
     private bool faded = false;
 
+    [SerializeField] private bool fadeByReset;
+
     private IEnumerator currentOperation;
 
     public float duration = 0.4f;
@@ -28,6 +30,9 @@ public class FadeBehaviour : MonoBehaviour
 
     public void ResetFade()
     {
+        if (!fadeByReset)
+            return;
+
         if (currentOperation != null)
             StopCoroutine(currentOperation);
 

@@ -101,6 +101,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 081e3dea97e8ecb499a7d80ba6b2d40e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fadeByReset: 0
   duration: 0.2
   destroyAfterFade: 0
 --- !u!1 &5306285413542456574
@@ -468,6 +469,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 081e3dea97e8ecb499a7d80ba6b2d40e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fadeByReset: 0
   duration: 0.4
   destroyAfterFade: 0
 --- !u!1 &7856946925499733579
@@ -484,7 +486,7 @@ GameObject:
   - component: {fileID: 8441882588601711771}
   - component: {fileID: 6209608974510023765}
   m_Layer: 5
-  m_Name: DynamiteIcon
+  m_Name: BombIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -507,7 +509,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -1.46, y: -0}
-  m_SizeDelta: {x: 1.1, y: 2}
+  m_SizeDelta: {x: 2, y: 2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4280965492037530182
 CanvasRenderer:
@@ -537,7 +539,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: a0def630e2ff4b04982587743fbf9df0, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 983af00108402be4fba7dcda495ab57a, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -571,5 +573,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 081e3dea97e8ecb499a7d80ba6b2d40e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fadeByReset: 0
   duration: 0.2
   destroyAfterFade: 0

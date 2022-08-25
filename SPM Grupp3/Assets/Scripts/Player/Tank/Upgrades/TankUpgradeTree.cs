@@ -9,6 +9,7 @@ public abstract class TankUpgradeTree : MonoBehaviour
     private FadeBehaviour abilityIcon;
     private Slider slider;
     private float abilityDuration = 0.5f;
+    private GameObject abilityUI;
 
     protected GameManager gameManager;
     protected TankState tankState;
@@ -50,18 +51,18 @@ public abstract class TankUpgradeTree : MonoBehaviour
         tankState = GetComponent<TankState>();
         weapon = GetComponent<WeaponSlot>();
         gameManager = FindObjectOfType<GameManager>();
-        GameObject abilityUi = gameObject.transform.Find("AbilityUI").gameObject;
+        abilityUI = gameObject.transform.Find("AbilityUI").gameObject;
 
         if(tankState.gameObject.GetComponent<SniperTank>().isActiveAndEnabled == true)
-            abilityIcon = abilityUi.gameObject.transform.Find("SniperIcon").gameObject.GetComponent<FadeBehaviour>();
+            abilityIcon = abilityUI.gameObject.transform.Find("SniperIcon").gameObject.GetComponent<FadeBehaviour>();
         else
-            abilityIcon = abilityUi.gameObject.transform.Find("DynamiteIcon").gameObject.GetComponent<FadeBehaviour>();
+            abilityIcon = abilityUI.gameObject.transform.Find("BombIcon").gameObject.GetComponent<FadeBehaviour>();
 
-        slider = abilityUi.GetComponent<Slider>();
+        slider = abilityUI.GetComponent<Slider>();
 
-        abilityAnimator = abilityUi.GetComponent<Animator>();
+        abilityAnimator = abilityUI.GetComponent<Animator>();
 
-        abilityFill = abilityUi.transform.Find("Fill").GetComponent<FadeBehaviour>();
+        abilityFill = abilityUI.transform.Find("Fill").GetComponent<FadeBehaviour>();
 	}
 
     public virtual void UpgradeOne() {}
@@ -130,10 +131,12 @@ public abstract class TankUpgradeTree : MonoBehaviour
 
         slider.value = slider.maxValue;
 
-        abilityIcon.Fade();
+        if(abilityIcon.Faded())
+            abilityIcon.Fade();
         ResetCooldown();
 
-        abilityFill.Fade();
+        if(!abilityFill.Faded())
+            abilityFill.Fade();
     }
 
     public void ResetCooldown()
