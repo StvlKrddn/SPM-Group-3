@@ -150,7 +150,22 @@ public class MainMenu : MonoBehaviour
         yield return new WaitForSeconds(4);
 
         if (levelIndex >= 0)
-            SceneManager.LoadScene(levelIndex);
+        {
+            //AsyncOperation operation = 
+
+            SceneManager.LoadSceneAsync(levelIndex);
+
+            /*
+            while (!operation.isDone)
+            {
+                float progressValue = Mathf.Clamp01(operation.progress / 0.9f);
+
+                LoadingBarFill.fillAmount = progressValue;
+
+                yield return null;
+            }
+            */
+        }     
         else
             Application.Quit();
     }

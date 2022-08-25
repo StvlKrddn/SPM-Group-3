@@ -121,7 +121,20 @@ public class UI : MonoBehaviour
 
         yield return new WaitForSecondsRealtime(4);
 
-        SceneManager.LoadScene(levelIndex);
+        //AsyncOperation operation = 
+            
+        SceneManager.LoadSceneAsync(levelIndex);
+
+        /*
+        while (!operation.isDone)
+        {
+            float progressValue = Mathf.Clamp01(operation.progress / 0.9f);
+
+            LoadingBarFill.fillAmount = progressValue;
+
+            yield return null;
+        }
+        */
     }
 
     public void Quit()
