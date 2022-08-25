@@ -304,6 +304,8 @@ public class WaveManager : MonoBehaviour
 
             int slimeEnemies = 0;
 
+            int portalEnemies = 0; 
+
             for (int j = 0; j < waveInfo.subWaves.Length; j++)
             {
                 SubWave subwave = waveInfo.subWaves[j];
@@ -343,12 +345,17 @@ public class WaveManager : MonoBehaviour
                         tankEnemies += enemy.amount;
                     }
 
+                    if(enemy.enemyPrefab.name == "EnemyPortal")
+                    {
+                        portalEnemies += enemy.amount; 
+                    }
+
 
                 }
             }
            print("Wave " + (i + 1) + " is " + temp + "enemies: \n Amount of meele enemies: " + meeleEnemies  + "\n Amount of Slime: " + slimeEnemies +
                "\n Amount of Ranged: " + rangedEnemies + "\n Amount of Mortar: " + mortarEnemies + "\n Amount of Ice: "  + 
-               iceEnemies + "\n Amount of Tank: " + tankEnemies);
+               iceEnemies + "\n Amount of Tank: " + tankEnemies + "\n Amount of portal: " + portalEnemies);
 
            // print(temp);
         }
