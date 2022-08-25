@@ -43,7 +43,8 @@ public abstract class TankUpgradeTree : MonoBehaviour
 
     private void Update()
     {
-        abilityAnimator.SetFloat("Value", slider.value);
+        if(gameObject.activeInHierarchy)
+            abilityAnimator.SetFloat("Value", slider.value);
     }
 
     protected virtual void Start()
