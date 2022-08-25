@@ -35,8 +35,8 @@ public abstract class TankUpgradeTree : MonoBehaviour
                 if (abilityFill.Faded())
                     abilityFill.Fade();
 
-                ResetCooldown();
-                //StartCoroutine(RechargeAbilityBar());
+                //ResetCooldown();
+                StartCoroutine(RechargeAbilityBar());
             }
         }
     }
@@ -133,6 +133,7 @@ public abstract class TankUpgradeTree : MonoBehaviour
 
         if(abilityIcon.Faded())
             abilityIcon.Fade();
+
         ResetCooldown();
 
         if(!abilityFill.Faded())
