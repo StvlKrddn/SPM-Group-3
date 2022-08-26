@@ -11,7 +11,7 @@ public class EnemyMortarShot : MonoBehaviour
     private int radiusYRotation = 0;
     private Quaternion radiusRotation;
     [SerializeField] private float speed = 20;
-    [SerializeField] private GameObject radius;
+    [SerializeField] private GameObject mortarAim;
     [SerializeField] private AudioClip mortarHitSound;
 
     public float Damage;
@@ -25,13 +25,13 @@ public class EnemyMortarShot : MonoBehaviour
 	private void OnEnable()
 	{
         gameObject.SetActive(true);
-        radius.transform.parent = transform;
+        mortarAim.transform.parent = transform;
         phase = 1;
     }
 
 	private void OnDestroy()
 	{
-        Destroy(radius);
+        Destroy(mortarAim);
     }
 
 	// Update is called once per frame
@@ -40,24 +40,31 @@ public class EnemyMortarShot : MonoBehaviour
         switch (phase) //Checks phase of shot
         {
             case 1:
-            direction = Vector3.up;
+                direction = Vector3.up;
             break;
 
             case 2:
-            direction = Vector3.down;
-            radiusYRotation++;
-            radiusRotation = Quaternion.Euler(90f, radiusYRotation, 0);
-            radius.transform.rotation = radiusRotation;
-            if (radiusYRotation == 360)
-            {
-                radiusYRotation = 0;
-            }
-            break;
+                direction = Vector3.down;
+                radiusYRotation++;
+                radiusRotation = Quaternion.Euler(90f, radiusYRotation, 0);
+                mortarAim.transform.rotation = radiusRotation;
+                if (radiusYRotation == 360)
+                {
+                    radiusYRotation = 0;
+                }
+
+                break;
 
             case 3:
             direction = Vector3.zero;
             break;
         }
+
+        if(direction == Vector3.down)
+        {
+            mortarAim.GetComponent<Animator>().SetTrigger("Activate");
+        }
+
         transform.Translate(speed * Time.deltaTime * direction, Space.World);
     }
 
@@ -78,7 +85,9 @@ public class EnemyMortarShot : MonoBehaviour
             TankState tankToTarget = tanks[Random.Range(0, tanks.Length)];
             Vector3 tempVector = new Vector3(tankToTarget.transform.position.x + Random.Range(-4, 4), tankToTarget.transform.position.y, tankToTarget.transform.position.z + Random.Range(-4, 4));
             target = tempVector;
-            if (radius.transform.parent == true)
+            mortarAim.SetActive(true);
+
+            if (mortarAim.transform.parent == true)
             {
                 Shot();
             }
@@ -92,12 +101,11 @@ public class EnemyMortarShot : MonoBehaviour
 
     private void Shot()
     {
-        radius.SetActive(true);
         transform.position = new Vector3(target.x, transform.position.y + 10, target.z);
-        radius.transform.position = new Vector3(target.x, target.y, target.z);
-        if (radius.transform.parent)
+        mortarAim.transform.position = new Vector3(target.x, target.y, target.z);
+        if (mortarAim.transform.parent)
         {
-            radius.transform.parent = null;
+            mortarAim.transform.parent = null;
         }
     }
 
@@ -115,10 +123,11 @@ public class EnemyMortarShot : MonoBehaviour
         yield return new WaitForSeconds(particle[0].main.duration);
         if (gameObject.activeSelf == true)
         {
-            radius.transform.parent = transform;
+            mortarAim.transform.parent = transform;
             gameObject.SetActive(false);
         }
     }
+
     private void OnTriggerEnter(Collider collider)
     {
         if (phase == 2)
@@ -126,7 +135,7 @@ public class EnemyMortarShot : MonoBehaviour
             if (collider.gameObject.CompareTag("Tank") || collider.gameObject.CompareTag("GameBoard"))
             {
                 EventHandler.InvokeEvent(new PlaySoundEvent("MortarShot Explode", mortarHitSound));
-                radius.SetActive(false);
+                mortarAim.SetActive(false);
                 StartCoroutine(Particle());
             }
         }
