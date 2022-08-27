@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class CustomizationMenu : MonoBehaviour
 {
     [SerializeField] private Slider[] colorSliders;
+    [SerializeField] private GameObject[] SelectionArrows;
     [SerializeField] private Text classText;
     [SerializeField] private GameObject tankBody;
     [SerializeField] private GameObject sniperTurret;
@@ -138,6 +139,12 @@ public class CustomizationMenu : MonoBehaviour
         {
             classText.text = "Sniper";
             TankClass = 0;
+
+            if (SelectionArrows.Length >= 2)
+            {
+                SelectionArrows[1].SetActive(true);
+                SelectionArrows[0].SetActive(false);
+            }
             fireTurret.SetActive(false);
             sniperTurret.SetActive(true);
         }
@@ -146,6 +153,12 @@ public class CustomizationMenu : MonoBehaviour
         {
             classText.text = "Fire";
             TankClass = 1;
+
+            if (SelectionArrows.Length >= 2)
+            {
+                SelectionArrows[1].SetActive(false);
+                SelectionArrows[0].SetActive(true);
+            }
             fireTurret.SetActive(true);
             sniperTurret.SetActive(false);
         }
